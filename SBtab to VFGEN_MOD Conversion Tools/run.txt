@@ -1,0 +1,3 @@
+tsv.files <- list.files(pattern = "tsv")
+sbtabdoc<-sbtab_from_tsv(tsv.files)
+sbtab_to_vfgen(sbtabdoc)

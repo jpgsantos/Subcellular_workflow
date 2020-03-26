@@ -1,0 +1,7 @@
+
+**/Data/*.mat
+**/Data/*.sbproj
+*.sbproj
+**/Formulas/*.m
+**/Data/Exp/*.mat
+*.xml

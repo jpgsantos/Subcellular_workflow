@@ -1,0 +1,6 @@
+!!SBtab	SBtabVersion='1.0' TableName='Output' TableTitle='Model output functions' TableType='Quantity' Document='D1 LTP time window'						
+!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!Location	!Formula
+Y0	pSubstrate_Out	pSubstrate	SD_Y0	pSubstrate	nanomolarity	Spine	pSubstrate
+Y1	PP1_Out	PP1	SD_Y1	PP1	nanomolarity	Spine	PP1
+Y2	CaM_Out	CaM	SD_Y2	CaM	nanomolarity	Spine	CaM
+Y3	D32_Out	D32	SD_Y3	D32	nanomolarity	Spine	D32
