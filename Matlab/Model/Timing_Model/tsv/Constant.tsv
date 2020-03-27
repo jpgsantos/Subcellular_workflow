@@ -1,7 +1,0 @@
-!!SBtab	Document='D1 LTP time window' TableName='Constant' TableType='Constant' TableTitle='D1 LTP time window Constants' SBtabVersion='1.0'			
-!ID	!Name	!Value	!Unit	!Location
-C0	tau_DA1	5	millisecond	Spine
-C1	tau_DA2	100	millisecond	Spine
-C2	DA_max	1500	nanomolarity	Spine
-C3	DA_basal	20	nanomolarity	Spine
-C4	Ca_basal	60	nanomolarity	Spine

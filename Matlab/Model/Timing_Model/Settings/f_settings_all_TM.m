@@ -9,7 +9,7 @@ stg.import = 1;
 stg.folder_model = "Timing_Model";
 
 % Name of the excel file with the sbtab
-stg.sbtab_excel_name = "Timing_model_SBtab.xlsx";
+stg.sbtab_excel_name = "D1_LTP_time_window_SBtab.xlsx";
 
 % Name of the model
 stg.name = "Timing_model";
@@ -121,14 +121,14 @@ stg.pa(1,:) = zeros(1,6);
 % stg.pa(1,:)=[-4.244125144,-1.823908741,4.977888149,-2.823908741,...
 %     3.368547198,3.569865286]; % Best rounded parameter set with log values
 
-stg.pa(1,:) = [-7.244125144,-4.823908741,1.977888149,-5.823908741,...
+stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,...
     0.368547198,0.569865286];
 
 % Best parameter found so far for the model
 % stg.bestx = [-4.244125144,-1.823908741,4.977888149,-2.823908741,...
 %     3.368547198,3.569865286];
 
-stg.bestx = [-7.244125144,-4.823908741,1.977888149,-5.823908741,...
+stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,...
     0.368547198,0.569865286];
 
 %% Plots
