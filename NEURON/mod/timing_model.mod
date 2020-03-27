@@ -42,7 +42,7 @@ NEURON {
 	RANGE B72PP2A_Ca_D32p75 : compound
 	RANGE B72PP2A_Ca : compound
 	RANGE B72PP2A_Ca_pARPP21 : compound
-	:RANGE Ca : compound
+	RANGE Ca : compound
 	RANGE CaM : compound
 	RANGE CaM_Ca2 : compound
 	RANGE CaM_Ca4 : compound
@@ -518,8 +518,8 @@ ASSIGNED {
 	PP1_out (nanomolarity): an observable
 	CaM_out (nanomolarity): an observable
 	D32_out (nanomolarity): an observable
+	Ca (nanomolarity)
 	ca_nmdai (millimolarity)
-
 }
 PROCEDURE assign_calculated_values() {
 
@@ -540,7 +540,7 @@ PROCEDURE assign_calculated_values() {
 	   DA_expression = DA_basal
 	}
 	DA = DA_expression
-	Ca = ca_nmdai*(1e6)
+ 	Ca = ca_nmdai*(1e6)
 	ReactionFlux0 = kf_R0*GaolfGTP : flux expression R0
 	ReactionFlux1 = kf_R1*D1R_Golf_DA : flux expression R1
 	ReactionFlux2 = kf_R2*D1R_Golf*DA-kr_R2*D1R_Golf_DA : flux expression R2
@@ -780,109 +780,108 @@ STATE {
 	CaMKII_CaM_psd_Substrate (nanomolarity) : a state variable
 	CaMKII_CaM_Ca2_psd_Substrate (nanomolarity) : a state variable
 	CaMKII_CaM_Ca4_psd_Substrate (nanomolarity) : a state variable
-	Ca (millimolarity)
 
 }
 INITIAL {
-	AC5 = 2.657992
-	AC5_ATP = 664.600121
-	AC5_Ca = 0.011456
-	AC5_Ca_ATP = 2.864302
-	AC5_Ca_GaolfGTP = 0.000509
-	AC5_Ca_GaolfGTP_ATP = 0.127656
-	AC5_GaolfGTP = 0.117586
-	AC5_GaolfGTP_ATP = 29.620376
-	AMP = 106928297.143961
-	ATP = 5000000.000000
-	B56PP2A = 891.385413
-	B56PP2A_D32p75 = 774.002637
-	B56PP2A_pARPP21 = 21.999120
-	B56PP2Ap = 119.786132
-	B56PP2Ap_D32p75 = 183.285039
-	B56PP2Ap_pARPP21 = 4.750213
-	B72PP2A = 998.115253
-	B72PP2A_D32p34 = 0.029565
-	B72PP2A_D32p75 = 866.677676
-	B72PP2A_pARPP21 = 24.633180
-	B72PP2A_Ca_D32p34 = 0.001274
-	B72PP2A_Ca_D32p75 = 65.820275
-	B72PP2A_Ca = 43.016911
-	B72PP2A_Ca_pARPP21 = 1.705869
-	Ca = 43.098140
-	CaM = 3271.195869
-	CaM_Ca2 = 42.294732
-	CaM_Ca4 = 0.182282
-	CaM_Ca4_pARPP21 = 5.679566
-	CaMKII = 16861.340655
-	CaMKII_CaM_Ca4 = 7.652493
-	CaMKII_CaM = 1378.760909
-	CaMKII_CaM_Ca2 = 178.078402
-	CaMKII_CaM_Ca2_psd = 15.341817
-	CaMKII_CaM_psd = 117.206573
-	CaMKII_CaM_Ca4_psd = 0.683530
-	CaMKII_psd = 1431.265985
-	cAMP = 38.066044
-	Substrate = 2898.441307
-	CDK5 = 1354.613702
-	CDK5_D32 = 445.386299
-	D1R = 1476.998472
-	D1R_DA = 5.959225
-	D1R_Golf_DA = 2.008902
-	D1R_Golf = 515.033401
-	D32p34 = 0.236965
-	D32p75 = 11016.736773
-	DA = 20.000000
-	D32 = 36167.132222
-	GaolfGDP = 0.010083
-	GaolfGTP = 0.008913
-	Gbgolf = 29.885118
-	Golf = 1453.072572
-	pCaMKII = 0.002906
-	pCaMKII_CaM_Ca4 = 0.000459
-	pCaMKII_CaM = 0.002374
-	pCaMKII_CaM_Ca2 = 0.000374
-	pCaMKII_CaM_Ca2_psd = 0.000325
-	pCaMKII_CaM_psd = 0.002439
-	pCaMKII_CaM_Ca4_psd = 0.000165
-	pCaMKII_psd = 0.002979
-	pSubstrate = 82.249594
-	PDE4 = 1507.976769
-	PDE4_cAMP = 492.023230
-	PDE10r = 396.998790
-	PDE10r_cAMP = 302.243469
-	PDE10c = 0.575261
-	PDE10c_cAMP = 0.182482
-	PKA = 1143.844090
-	PKAc = 2.687639
-	PKAc_B56PP2A = 4.791445
-	PKAc_D32 = 4.628772
-	PKAc_ARPP21 = 11.119312
-	PKA_Ca2MP = 3.234520
-	PKA_Ca4MP = 0.085203
-	PKAc_D32p75 = 29.609017
-	PKAreg = 52.836186
-	PP1 = 2582.384948
-	PP1_pCaMKII_psd = 0.003077
-	PP1_pSubstrate = 9.654551
-	PP1_D32p34 = 407.957426
-	CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd = 0.000000
-	pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd = 0.000000
-	CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 = 0.000000
-	pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 = 0.000000
-	PP2B = 26.736649
-	PP2Bc = 162.454040
-	PP2Bc_D32p34 = 38.496003
-	PP2B_CaM = 2.915360
-	PP2B_CaM_Ca2 = 3769.397950
-	pARPP21 = 623.162292
-	ARPP21 = 19306.950432
-	pCaMKII_psd_Substrate = 0.000216
-	pCaMKII_CaM_psd_Substrate = 0.000177
-	pCaMKII_CaM_Ca2_psd_Substrate = 0.000024
-	pCaMKII_CaM_Ca4_psd_Substrate = 0.000012
-	CaMKII_CaM_psd_Substrate = 8.492909
-	CaMKII_CaM_Ca2_psd_Substrate = 1.111684
-	CaMKII_CaM_Ca4_psd_Substrate = 0.049529
+	 AC5 = 700 : initial condition
+	 AC5_ATP = 0 : initial condition
+	 AC5_Ca = 0 : initial condition
+	 AC5_Ca_ATP = 0 : initial condition
+	 AC5_Ca_GaolfGTP = 0 : initial condition
+	 AC5_Ca_GaolfGTP_ATP = 0 : initial condition
+	 AC5_GaolfGTP = 0 : initial condition
+	 AC5_GaolfGTP_ATP = 0 : initial condition
+	 AMP = 0 : initial condition
+	 ATP = 5e+06 : initial condition
+	 B56PP2A = 2000 : initial condition
+	 B56PP2A_D32p75 = 0 : initial condition
+	 B56PP2A_pARPP21 = 0 : initial condition
+	 B56PP2Ap = 0 : initial condition
+	 B56PP2Ap_D32p75 = 0 : initial condition
+	 B56PP2Ap_pARPP21 = 0 : initial condition
+	 B72PP2A = 2000 : initial condition
+	 B72PP2A_D32p34 = 0 : initial condition
+	 B72PP2A_D32p75 = 0 : initial condition
+	 B72PP2A_pARPP21 = 0 : initial condition
+	 B72PP2A_Ca_D32p34 = 0 : initial condition
+	 B72PP2A_Ca_D32p75 = 0 : initial condition
+	 B72PP2A_Ca = 0 : initial condition
+	 B72PP2A_Ca_pARPP21 = 0 : initial condition
+	 Ca = 60 : initial condition
+	 CaM = 9000 : initial condition
+	 CaM_Ca2 = 0 : initial condition
+	 CaM_Ca4 = 0 : initial condition
+	 CaM_Ca4_pARPP21 = 0 : initial condition
+	 CaMKII = 20000 : initial condition
+	 CaMKII_CaM_Ca4 = 0 : initial condition
+	 CaMKII_CaM = 0 : initial condition
+	 CaMKII_CaM_Ca2 = 0 : initial condition
+	 CaMKII_CaM_Ca2_psd = 0 : initial condition
+	 CaMKII_CaM_psd = 0 : initial condition
+	 CaMKII_CaM_Ca4_psd = 0 : initial condition
+	 CaMKII_psd = 0 : initial condition
+	 cAMP = 0 : initial condition
+	 Substrate = 3000 : initial condition
+	 CDK5 = 1800 : initial condition
+	 CDK5_D32 = 0 : initial condition
+	 D1R = 2000 : initial condition
+	 D1R_DA = 0 : initial condition
+	 D1R_Golf_DA = 0 : initial condition
+	 D1R_Golf = 0 : initial condition
+	 D32p34 = 0 : initial condition
+	 D32p75 = 0 : initial condition
+	 DA = 20 : initial condition
+	 D32 = 50000 : initial condition
+	 GaolfGDP = 0 : initial condition
+	 GaolfGTP = 0 : initial condition
+	 Gbgolf = 0 : initial condition
+	 Golf = 2000 : initial condition
+	 pCaMKII = 0 : initial condition
+	 pCaMKII_CaM_Ca4 = 0 : initial condition
+	 pCaMKII_CaM = 0 : initial condition
+	 pCaMKII_CaM_Ca2 = 0 : initial condition
+	 pCaMKII_CaM_Ca2_psd = 0 : initial condition
+	 pCaMKII_CaM_psd = 0 : initial condition
+	 pCaMKII_CaM_Ca4_psd = 0 : initial condition
+	 pCaMKII_psd = 0 : initial condition
+	 pSubstrate = 0 : initial condition
+	 PDE4 = 2000 : initial condition
+	 PDE4_cAMP = 0 : initial condition
+	 PDE10r = 700 : initial condition
+	 PDE10r_cAMP = 0 : initial condition
+	 PDE10c = 0 : initial condition
+	 PDE10c_cAMP = 0 : initial condition
+	 PKA = 1200 : initial condition
+	 PKAc = 0 : initial condition
+	 PKAc_B56PP2A = 0 : initial condition
+	 PKAc_D32 = 0 : initial condition
+	 PKAc_ARPP21 = 0 : initial condition
+	 PKA_Ca2MP = 0 : initial condition
+	 PKA_Ca4MP = 0 : initial condition
+	 PKAc_D32p75 = 0 : initial condition
+	 PKAreg = 0 : initial condition
+	 PP1 = 3000 : initial condition
+	 PP1_pCaMKII_psd = 0 : initial condition
+	 PP1_pSubstrate = 0 : initial condition
+	 PP1_D32p34 = 0 : initial condition
+	 CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd = 0 : initial condition
+	 pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd = 0 : initial condition
+	 CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 = 0 : initial condition
+	 pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 = 0 : initial condition
+	 PP2B = 4000 : initial condition
+	 PP2Bc = 0 : initial condition
+	 PP2Bc_D32p34 = 0 : initial condition
+	 PP2B_CaM = 0 : initial condition
+	 PP2B_CaM_Ca2 = 0 : initial condition
+	 pARPP21 = 0 : initial condition
+	 ARPP21 = 20000 : initial condition
+	 pCaMKII_psd_Substrate = 0 : initial condition
+	 pCaMKII_CaM_psd_Substrate = 0 : initial condition
+	 pCaMKII_CaM_Ca2_psd_Substrate = 0 : initial condition
+	 pCaMKII_CaM_Ca4_psd_Substrate = 0 : initial condition
+	 CaMKII_CaM_psd_Substrate = 0 : initial condition
+	 CaMKII_CaM_Ca2_psd_Substrate = 0 : initial condition
+	 CaMKII_CaM_Ca4_psd_Substrate = 0 : initial condition
 }
 BREAKPOINT {
 	SOLVE ode METHOD cnexp
@@ -897,7 +896,7 @@ DERIVATIVE ode {
 	AC5_Ca_GaolfGTP_ATP' = ReactionFlux51+ReactionFlux53-ReactionFlux61+ReactionFlux62-ReactionFlux66 : affects compound with ID S5
 	AC5_GaolfGTP' = ReactionFlux4-ReactionFlux48+ReactionFlux55-ReactionFlux56-ReactionFlux63 : affects compound with ID S6
 	AC5_GaolfGTP_ATP' = ReactionFlux48+ReactionFlux52-ReactionFlux55+ReactionFlux56-ReactionFlux65 : affects compound with ID S7
-	AMP' = ReactionFlux42+ReactionFlux44+ReactionFlux46 : affects compound with ID S8
+	:AMP' = ReactionFlux42+ReactionFlux44+ReactionFlux46 : affects compound with ID S8
 	:ATP' = -ReactionFlux48-ReactionFlux49-ReactionFlux50-ReactionFlux51 : affects compound with ID S9
 	B56PP2A' = -ReactionFlux10-ReactionFlux30+ReactionFlux31+ReactionFlux37+ReactionFlux89-ReactionFlux90 : affects compound with ID S10
 	B56PP2A_D32p75' = ReactionFlux30-ReactionFlux31 : affects compound with ID S11
