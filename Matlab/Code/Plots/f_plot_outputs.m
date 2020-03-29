@@ -1,7 +1,7 @@
 function f_plot_outputs(rst,stg,sbtab,Data)
 
 % Inform the user that fig3 is being ploted
-disp("Plotting Diag3")
+disp("Plotting Outputs")
 
 % Get the total number of outputs to set the total number of plots
 [plot_tn,~] = f_get_outputs(stg);
