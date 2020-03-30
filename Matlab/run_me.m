@@ -9,7 +9,7 @@ addpath(genpath(pwd));
 % can be either "all" or any combination of "import","analysis",...
 % "simulation","model","diagnostics","plots","optimization".
 
-[stg] = f_load_settings_part1("TM","Timing_Model","all");
+[stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
 
 
 %Create needed folders

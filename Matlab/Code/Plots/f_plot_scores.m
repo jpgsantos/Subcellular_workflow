@@ -1,7 +1,7 @@
 function f_plot_scores(rst,stg,sbtab)
 
 % Inform the user that fig1 is being ploted
-disp("Plotting fig1")
+disp("Plotting Scores")
 
 %Closes previous instances of the figure and generates a new one
 figHandles = findobj('type', 'figure', 'name', 'Scores');

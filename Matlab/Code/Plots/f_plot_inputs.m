@@ -2,7 +2,7 @@ function f_plot_inputs(rst,stg,sbtab)
 
 
 % Inform the user that fig2 is being ploted
-disp("Plotting fig2")
+disp("Plotting Inputs")
 
 plot_n = 1;
 fig_n = 0;

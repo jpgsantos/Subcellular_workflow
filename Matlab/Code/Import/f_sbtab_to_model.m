@@ -129,15 +129,15 @@ for n = 1:size(sb.Experiments.ID,1)
     end
     
     for m = 1:size(sb.Compound.ID,1)
-        if isfield(eval(("sb.E")+(n-1)),"Input_Time_S"+(m-1))
+        if isfield(eval(("sb.E")+(n-1)+"I"),"Input_Time_S"+(m-1))
             nInputTime = nInputTime + 1;
             sbtab.datasets(n).input_time{1,nInputTime} = ...
-                eval(("[sb.E") + (n-1) + ".Input_Time_S" + (m-1) + "{:}]");
+                eval(("[sb.E") + (n-1) + "I.Input_Time_S" + (m-1) + "{:}]");
         end
-        if isfield(eval(("sb.E")+(n-1)),"S"+(m-1))
+        if isfield(eval(("sb.E")+(n-1)+"I"),"S"+(m-1))
             nInput = nInput + 1;
             sbtab.datasets(n).input_value{1,nInput} = ...
-                eval(("[sb.E") + (n-1) + ".S" + (m-1) + "{:}]");
+                eval(("[sb.E") + (n-1) + "I.S" + (m-1) + "{:}]");
             sbtab.datasets(n).input{nInput} = char("S" + (m-1));
         end
     end
@@ -205,7 +205,7 @@ if isfield(sb,"Constant")
         end
     end
 end
-    
+
 if ispc
     sbiosaveproject("Model\" + stg.folder_model + "\Data\model_" + ...
         stg.name + ".sbproj",'modelobj')

@@ -1,4 +1,4 @@
-function [stg] = f_settings_all_TM()
+function [stg] = f_settings_all_TW()
 
 %% Import
 
@@ -6,13 +6,13 @@ function [stg] = f_settings_all_TM()
 stg.import = 1;
 
 % Name of the folder where everything related to the model is stored
-stg.folder_model = "Timing_Model";
+stg.folder_model = "D1_LTP_time_window";
 
 % Name of the excel file with the sbtab
 stg.sbtab_excel_name = "Timing_model_SBtab.xlsx";
 
 % Name of the model
-stg.name = "Timing_model";
+stg.name = "D1_LTP_time_window";
 
 % Name of the model compartment
 stg.cname = "Spine";
@@ -80,7 +80,7 @@ stg.ms.simtime = "second";
 stg.ms.sbioacc = 0;
 
 % Max step size in the simulation (if empty matlab decides whats best)
-stg.maxstep = 1;
+stg.maxstep = [];
 
 %% Model
 
@@ -161,7 +161,7 @@ stg.plfm = 0;
 stg.plfmo = optimoptions('fmincon','Display','off',...
     'Algorithm','interior-point',...
     'MaxIterations',1,'OptimalityTolerance',0,...
-    'StepTolerance',1e-6,'FiniteDifferenceType','central','UseParallel',0);
+    'StepTolerance',1e-6,'FiniteDifferenceType','central','UseParallel',logical(0));
 
 %% Sensitivity analysis
 
