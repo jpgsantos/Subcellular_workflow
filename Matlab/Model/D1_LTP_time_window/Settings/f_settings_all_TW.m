@@ -9,7 +9,7 @@ stg.import = 1;
 stg.folder_model = "D1_LTP_time_window";
 
 % Name of the excel file with the sbtab
-stg.sbtab_excel_name = "Timing_model_SBtab.xlsx";
+stg.sbtab_excel_name = "D1_LTP_time_window_SBtab.xlsx";
 
 % Name of the model
 stg.name = "D1_LTP_time_window";
@@ -57,7 +57,7 @@ stg.save_results = 0;
 stg.ms.maxt = 10;
 
 % Equilibration time
-stg.ms.eqt  = 100000;
+stg.ms.eqt  = 50000;
 
 % 0 or 1 to decide whether to do Dimensional Analysis
 stg.ms.dimenanal = true;
@@ -86,9 +86,11 @@ stg.maxstep = [];
 
 % Number of parameters to optimize
 stg.ms.parnum = 6;
+% stg.ms.parnum = 5;
 
 % Index for the parameters that have thermodynamic constrains
 stg.ms.tci = [];
+% stg.ms.tci = [];
 
 % Parameters to multiply to the first parameter (in Stg.ms.partest to get
 % to the correct thermodynamic constrain formula)
@@ -102,7 +104,7 @@ stg.ms.tcd = [];
 stg.lb = zeros(1,stg.ms.parnum)-5;
 
 % Array with the upper bound of all parameters
-stg.ub = zeros(1,stg.ms.parnum)+4;
+stg.ub = zeros(1,stg.ms.parnum)+5;
 
 %% Diagnostics
 
@@ -116,11 +118,18 @@ stg.pat = 1;
 
 stg.pa(1,:) = zeros(1,6);
 
-stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
+% stg.pa(1,:)=[-4.244125144,-1.823908741,4.977888149,-2.823908741,...
+%     3.368547198,3.569865286]; % Best rounded parameter set with log values
 
-% % Best parameter found so far for the model
+stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,...
+    0.368547198,0.569865286];
 
-stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
+% Best parameter found so far for the model
+% stg.bestx = [-4.244125144,-1.823908741,4.977888149,-2.823908741,...
+%     3.368547198,3.569865286];
+
+stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,...
+    0.368547198,0.569865286];
 
 %% Plots
 
@@ -129,48 +138,6 @@ stg.plot = 1;
 
 % 0 or 1 to decide whether to use long names in plot Diag3
 stg.plotnames = 1;
-
-%% Profile Likelihood
-
-% Parameter(optimization array) that is being worked on in a specific
-% iteration of PL (if -1 no parameter is being worked in PL)
-stg.PLind = -1;
-
-% Which parameters to do PL on, it should be all parameters but can also be
-% a subset for testing purposes
-stg.pltest = (1:6);
-
-% How many points to do for each parameter in the PL
-stg.plres = 20;
-
-% 0 or 1 to decide whether to do plots after calculating PL
-stg.plplot = 1;
-
-% 0 or 1 to decide whether to run simulated annealing
-stg.plsa = 0;
-
-% Options for simulated annealing
-stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
-    'InitialTemperature',...
-    ones(1,stg.ms.parnum)*1,'MaxTime',1,'ReannealInterval',40);
-
-% 0 or 1 to decide whether to run fmincon
-stg.plfm = 0;
-
-% Options for fmincon
-stg.plfmo = optimoptions('fmincon','Display','off',...
-    'Algorithm','interior-point',...
-    'MaxIterations',1,'OptimalityTolerance',0,...
-    'StepTolerance',1e-6,'FiniteDifferenceType','central','UseParallel',logical(0));
-
-%% Sensitivity analysis
-
-% Number of samples to use in SA
-stg.sansamples = 5;
-
-% 0 or 1 to decide whether to subtract the mean before calculating SI and
-% SIT
-stg.sasubmean = 1;
 
 %% Optimization
 
@@ -255,16 +222,4 @@ stg.sopt_options = optimoptions('surrogateopt',...
     'MaxFunctionEvaluations',5000,...
     'MinSampleDistance',0.2,'MinSurrogatePoints',32*2+1);
 
-%% Cluster
-
-% Number of cluster workers to use
-stg.clw = 1;
-
-% Name of your accont in the cluster you are using
-stg.claccount =  'snic2019-3-94';
-
-% Amount of time the code is going to be given to run on the cluster
-stg.cltime = 60;
-
 end
-
