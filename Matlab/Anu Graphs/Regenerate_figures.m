@@ -2,27 +2,82 @@
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
 clear
-proj = sbioloadproject('D1_LTP_time_window_SimBiology.sbproj');
-obj = proj.m1;
+proj = sbioloadproject('Timing_model_SimBiology.sbproj');
+obj = proj.modelobj;
 
-effector = {'Neuron.pSubstrate'};
-
-DA = [-4:0.2:4];
-CaStart = obj.parameters(240).Value;
+%% Get steady state values after equilibrating for 100000 s
 
 cnfst = getconfigset(obj);
+cnfst.SolverType = 'ode15s';
+cnfst.StopTime = 100000;
+cnfst.TimeUnits = 'second';
+cnfst.SolverOptions.AbsoluteTolerance = 1e-9;
+cnfst.SolverOptions.RelativeTolerance = 1e-6;
+cnfst.CompileOptions.UnitConversion = 1;
+cnfst.SolverOptions.AbsoluteToleranceScaling = 0;
+cnfst.RunTimeOptions.StatesToLog = 'all';
+% set(obj.rules(2), 'Active', 0); % Uncomment if Ca input is incorporated
+% set(obj.rules(3), 'Active', 0); % Uncomment if DA input is incorporated
+
+[t,species,names] = sbiosimulate(obj);
+
+SteadyState=species(length(t),:);
+
+for i=1:length(SteadyState)
+    if SteadyState(i)<0
+        SteadyState(i)=0;
+    end
+end
+
+for i=1:length(SteadyState)
+    set(obj.species(i), 'InitialAmount', SteadyState(i));
+end
+
+%% Add parameters used by the Calcium input
+
+addparameter(obj, 'nCa_peaksn', 10);
+addparameter(obj, 'nCa_peakfirst', 4);
+addparameter(obj, 'nCa_minpeaklngth', 0.01);
+addparameter(obj, 'nCa_minburstinter', 5);
+addparameter(obj, 'nCa_k2', 9.3);
+addparameter(obj, 'nCa_k1', 39.4);
+addparameter(obj, 'nCa_frequency', 10);
+addparameter(obj, 'nCa_burstn', 1.0);
+addparameter(obj, 'nCa_burstfreq', 0.03);
+addparameter(obj, 'nCa_ampmax_noMg', 1200);
+addparameter(obj, 'nCa_ampbasal', 60);
+set(obj.parameters(231:241), 'ValueUnits', 'dimensionless');
+
+ruleobj=addrule(obj, 'Spine.Ca = spiketraindd_Ca(time,nCa_peakfirst,nCa_frequency,nCa_peaksn,nCa_ampbasal,nCa_ampmax_noMg,nCa_k1,nCa_k2,nCa_minpeaklngth,[],nCa_burstfreq,nCa_burstn,nCa_minburstinter,1)');
+set(ruleobj,'RuleType','RepeatedAssignment');
+set(obj.rules(2), 'Name', '0 Ca spikes with 3 AP');
+
+% Assign DA_expression to dopamine
+
+ruleobj=addrule(obj, 'Spine.DA = Spine.DA_expression');
+set(ruleobj,'RuleType','RepeatedAssignment');
+
+
+%% Run simulations
+
+effector = {'Spine.pSubstrate'};
+
+DA = [-4:0.2:4];
+CaStart = obj.parameters(232).Value;
+
 cnfst.StopTime = 30;
-cnfst.SolverType = 'ode15s';   
 cnfst.SolverOptions.MaxStep = 0.01;
 cnfst.SolverOptions.OutputTimes = 0:0.01:30;
 cnfst.RuntimeOptions.StatesToLog = {'pSubstrate'};
+set(obj.rules(2), 'Active', 1);
+set(obj.rules(3), 'Active', 0);
 
-set(obj.rules(2), 'Active', 0);
 [t,x_noDA,names] = sbiosimulate(obj);
 activationArea = sum(x_noDA) - x_noDA(1) * length(x_noDA);
 
-set(obj.rules(2), 'Active', 1);
-obj.parameters(230).Value = CaStart + 1;
+set(obj.rules(3), 'Active', 1);
+set(obj.parameters(228), 'ValueUnits', 'second');
+obj.parameters(228).Value = CaStart + 1;
 [t,x_DA,names] = sbiosimulate(obj);
 
 subplot(2,1,1)
@@ -37,7 +92,7 @@ legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
 activationAreaWithMultipleDA = zeros(1,length(DA));
 
 for i = 1:length(DA)
-    obj.parameters(230).Value = CaStart + DA(i);
+    obj.parameters(228).Value = CaStart + DA(i);
     [t,x,names] = sbiosimulate(obj);
     activationAreaWithMultipleDA(i) = sum(x) - x(1) * length(x);
     clear t x names
