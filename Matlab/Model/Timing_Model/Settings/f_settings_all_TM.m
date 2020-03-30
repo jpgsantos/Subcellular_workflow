@@ -9,7 +9,7 @@ stg.import = 1;
 stg.folder_model = "Timing_Model";
 
 % Name of the excel file with the sbtab
-stg.sbtab_excel_name = "D1_LTP_time_window_SBtab.xlsx";
+stg.sbtab_excel_name = "Timing_model_SBtab.xlsx";
 
 % Name of the model
 stg.name = "Timing_model";
@@ -37,7 +37,7 @@ stg.ms.exprun = [1:9];
 stg.useLog = 1;
 
 % 0 or 1 to decide whether to use multicore everywhere it is available
-stg.optmc = 0;
+stg.optmc = logical(0);
 
 % Choice of ramdom seed
 stg.rseed = 1;
@@ -57,7 +57,7 @@ stg.save_results = 0;
 stg.ms.maxt = 10;
 
 % Equilibration time
-stg.ms.eqt  = 50000;
+stg.ms.eqt  = 100000;
 
 % 0 or 1 to decide whether to do Dimensional Analysis
 stg.ms.dimenanal = true;
@@ -86,11 +86,9 @@ stg.maxstep = 1;
 
 % Number of parameters to optimize
 stg.ms.parnum = 6;
-% stg.ms.parnum = 5;
 
 % Index for the parameters that have thermodynamic constrains
 stg.ms.tci = [];
-% stg.ms.tci = [];
 
 % Parameters to multiply to the first parameter (in Stg.ms.partest to get
 % to the correct thermodynamic constrain formula)
@@ -104,7 +102,7 @@ stg.ms.tcd = [];
 stg.lb = zeros(1,stg.ms.parnum)-5;
 
 % Array with the upper bound of all parameters
-stg.ub = zeros(1,stg.ms.parnum)+5;
+stg.ub = zeros(1,stg.ms.parnum)+4;
 
 %% Diagnostics
 
@@ -118,18 +116,11 @@ stg.pat = 1;
 
 stg.pa(1,:) = zeros(1,6);
 
-% stg.pa(1,:)=[-4.244125144,-1.823908741,4.977888149,-2.823908741,...
-%     3.368547198,3.569865286]; % Best rounded parameter set with log values
+stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
 
-stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,...
-    0.368547198,0.569865286];
+% % Best parameter found so far for the model
 
-% Best parameter found so far for the model
-% stg.bestx = [-4.244125144,-1.823908741,4.977888149,-2.823908741,...
-%     3.368547198,3.569865286];
-
-stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,...
-    0.368547198,0.569865286];
+stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
 
 %% Plots
 

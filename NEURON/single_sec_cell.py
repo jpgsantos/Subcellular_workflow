@@ -16,7 +16,8 @@ morphology = "./morphology/"
 
 h.load_file('stdlib.hoc')
 h.load_file('import3d.hoc')
-h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
+# h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
+
 
 class SingleSecCell(n.Neuron):
     
