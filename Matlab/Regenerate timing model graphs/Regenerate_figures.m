@@ -2,7 +2,7 @@
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
 clear
-proj = sbioloadproject('Timing_model_SimBiology.sbproj');
+proj = sbioloadproject('model_Timing_model.sbproj');
 obj = proj.modelobj;
 
 %% Get steady state values after equilibrating for 100000 s
