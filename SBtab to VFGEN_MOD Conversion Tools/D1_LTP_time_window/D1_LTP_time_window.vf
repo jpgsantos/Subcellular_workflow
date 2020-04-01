@@ -1,252 +1,245 @@
 <?xml version="1.0" ?>
 <VectorField Name="D1_LTP_time_window" Description="model created by an R script «sbtab_to_vfgen.R» (https://github.com/a-kramer/SBtabVFGEN)">
- <Constant Name="tau_DA1" Description="constant C0" Value="5"/>
- <Constant Name="tau_DA2" Description="constant C1" Value="100"/>
- <Constant Name="DA_max" Description="constant C2" Value="1500"/>
- <Constant Name="DA_basal" Description="constant C3" Value="20"/>
- <Constant Name="Ca_basal" Description="constant C4" Value="60"/>
- <Parameter Name="kf_R0" Description="independent parameter K1" DefaultValue="0.03"/>
- <Parameter Name="kf_R1" Description="independent parameter K2" DefaultValue="0.015"/>
- <Parameter Name="kf_R2" Description="independent parameter K3" DefaultValue="50"/>
+ <Constant Name="tau_DA1" Description="constant C0" Value="34.979"/>
+ <Constant Name="tau_DA2" Description="constant C1" Value="420"/>
+ <Constant Name="DA_basal" Description="constant C2" Value="20"/>
+ <Constant Name="Ca_basal" Description="constant C3" Value="60"/>
+ <Parameter Name="kf_R0" Description="independent parameter K1" DefaultValue="0.0299985"/>
+ <Parameter Name="kf_R1" Description="independent parameter K2" DefaultValue="0.0150003"/>
+ <Parameter Name="kf_R2" Description="independent parameter K3" DefaultValue="5.00035e-05"/>
  <Parameter Name="kr_R2" Description="independent parameter K4" DefaultValue="0.25"/>
- <Parameter Name="kf_R3" Description="independent parameter K5" DefaultValue="50"/>
+ <Parameter Name="kf_R3" Description="independent parameter K5" DefaultValue="5.00035e-05"/>
  <Parameter Name="kr_R3" Description="independent parameter K6" DefaultValue="0.25"/>
- <Parameter Name="kf_R4" Description="independent parameter K7" DefaultValue="10000"/>
+ <Parameter Name="kf_R4" Description="independent parameter K7" DefaultValue="0.01"/>
  <Parameter Name="kr_R4" Description="independent parameter K8" DefaultValue="0.001"/>
- <Parameter Name="kf_R5" Description="independent parameter K9" DefaultValue="6"/>
- <Parameter Name="kr_R5" Description="independent parameter K10" DefaultValue="0.02"/>
- <Parameter Name="kf_R6" Description="independent parameter K11" DefaultValue="100"/>
- <Parameter Name="kr_R6" Description="independent parameter K12" DefaultValue="3"/>
- <Parameter Name="kf_R7" Description="independent parameter K13" DefaultValue="100"/>
- <Parameter Name="kr_R7" Description="independent parameter K14" DefaultValue="3e-06"/>
- <Parameter Name="kf_R8" Description="independent parameter K15" DefaultValue="10"/>
+ <Parameter Name="kf_R5" Description="independent parameter K9" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R5" Description="independent parameter K10" DefaultValue="0.0199986"/>
+ <Parameter Name="kf_R6" Description="independent parameter K11" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R6" Description="independent parameter K12" DefaultValue="2.99999"/>
+ <Parameter Name="kf_R7" Description="independent parameter K13" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R7" Description="independent parameter K14" DefaultValue="2.99985e-06"/>
+ <Parameter Name="kf_R8" Description="independent parameter K15" DefaultValue="1e-05"/>
  <Parameter Name="kr_R8" Description="independent parameter K16" DefaultValue="0.2"/>
  <Parameter Name="kf_R9" Description="independent parameter K17" DefaultValue="0.01"/>
- <Parameter Name="kf_R10" Description="independent parameter K18" DefaultValue="1"/>
- <Parameter Name="kr_R10" Description="independent parameter K19" DefaultValue="0.0003"/>
- <Parameter Name="kf_R11" Description="independent parameter K20" DefaultValue="0.0002"/>
- <Parameter Name="kf_R12" Description="independent parameter K21" DefaultValue="1000"/>
- <Parameter Name="kr_R12" Description="independent parameter K22" DefaultValue="0.0015"/>
- <Parameter Name="kf_R13" Description="independent parameter K23" DefaultValue="1"/>
+ <Parameter Name="kf_R10" Description="independent parameter K18" DefaultValue="1e-06"/>
+ <Parameter Name="kr_R10" Description="independent parameter K19" DefaultValue="0.000299985"/>
+ <Parameter Name="kf_R11" Description="independent parameter K20" DefaultValue="0.000199986"/>
+ <Parameter Name="kf_R12" Description="independent parameter K21" DefaultValue="0.001"/>
+ <Parameter Name="kr_R12" Description="independent parameter K22" DefaultValue="0.00150003"/>
+ <Parameter Name="kf_R13" Description="independent parameter K23" DefaultValue="1e-06"/>
  <Parameter Name="kr_R13" Description="independent parameter K24" DefaultValue="0.1"/>
  <Parameter Name="kf_R14" Description="independent parameter K25" DefaultValue="0.01"/>
- <Parameter Name="kf_R15" Description="independent parameter K26" DefaultValue="100"/>
+ <Parameter Name="kf_R15" Description="independent parameter K26" DefaultValue="0.0001"/>
  <Parameter Name="kr_R15" Description="independent parameter K27" DefaultValue="0.1"/>
- <Parameter Name="kf_R16" Description="independent parameter K28" DefaultValue="10"/>
+ <Parameter Name="kf_R16" Description="independent parameter K28" DefaultValue="1e-05"/>
  <Parameter Name="kr_R16" Description="independent parameter K29" DefaultValue="0.01"/>
- <Parameter Name="kf_R17" Description="independent parameter K30" DefaultValue="15"/>
+ <Parameter Name="kf_R17" Description="independent parameter K30" DefaultValue="1.50003e-05"/>
  <Parameter Name="kr_R17" Description="independent parameter K31" DefaultValue="0.1"/>
- <Parameter Name="kf_R18" Description="independent parameter K32" DefaultValue="8"/>
+ <Parameter Name="kf_R18" Description="independent parameter K32" DefaultValue="8.00018e-06"/>
  <Parameter Name="kr_R18" Description="independent parameter K33" DefaultValue="0.1"/>
- <Parameter Name="kf_R19" Description="independent parameter K34" DefaultValue="15"/>
+ <Parameter Name="kf_R19" Description="independent parameter K34" DefaultValue="1.50003e-05"/>
  <Parameter Name="kr_R19" Description="independent parameter K35" DefaultValue="0.1"/>
- <Parameter Name="kf_R20" Description="independent parameter K36" DefaultValue="0.008"/>
- <Parameter Name="kf_R21" Description="independent parameter K37" DefaultValue="0.0015"/>
- <Parameter Name="kf_R22" Description="independent parameter K38" DefaultValue="0.008"/>
- <Parameter Name="kf_R23" Description="independent parameter K39" DefaultValue="1300"/>
+ <Parameter Name="kf_R20" Description="independent parameter K36" DefaultValue="0.00800018"/>
+ <Parameter Name="kf_R21" Description="independent parameter K37" DefaultValue="0.00150003"/>
+ <Parameter Name="kf_R22" Description="independent parameter K38" DefaultValue="0.00800018"/>
+ <Parameter Name="kf_R23" Description="independent parameter K39" DefaultValue="0.00129987"/>
  <Parameter Name="kr_R23" Description="independent parameter K40" DefaultValue="0.0001"/>
  <Parameter Name="kf_R24" Description="independent parameter K41" DefaultValue="0.0001"/>
  <Parameter Name="kr_R24" Description="independent parameter K42" DefaultValue="1"/>
- <Parameter Name="kf_R25" Description="independent parameter K43" DefaultValue="6"/>
- <Parameter Name="kr_R25" Description="independent parameter K44" DefaultValue="2e-07"/>
- <Parameter Name="kf_R26" Description="independent parameter K45" DefaultValue="100"/>
+ <Parameter Name="kf_R25" Description="independent parameter K43" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R25" Description="independent parameter K44" DefaultValue="1.99986e-07"/>
+ <Parameter Name="kf_R26" Description="independent parameter K45" DefaultValue="0.0001"/>
  <Parameter Name="kr_R26" Description="independent parameter K46" DefaultValue="0.1"/>
- <Parameter Name="kf_R27" Description="independent parameter K47" DefaultValue="100"/>
- <Parameter Name="kr_R27" Description="independent parameter K48" DefaultValue="3e-05"/>
- <Parameter Name="kf_R28" Description="independent parameter K49" DefaultValue="1"/>
+ <Parameter Name="kf_R27" Description="independent parameter K47" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R27" Description="independent parameter K48" DefaultValue="2.99985e-05"/>
+ <Parameter Name="kf_R28" Description="independent parameter K49" DefaultValue="1e-06"/>
  <Parameter Name="kr_R28" Description="independent parameter K50" DefaultValue="0.01"/>
- <Parameter Name="kf_R29" Description="independent parameter K51" DefaultValue="10000"/>
+ <Parameter Name="kf_R29" Description="independent parameter K51" DefaultValue="0.01"/>
  <Parameter Name="kr_R29" Description="independent parameter K52" DefaultValue="0.001"/>
- <Parameter Name="kf_R30" Description="independent parameter K53" DefaultValue="8"/>
+ <Parameter Name="kf_R30" Description="independent parameter K53" DefaultValue="8.00018e-06"/>
  <Parameter Name="kr_R30" Description="independent parameter K54" DefaultValue="0.1"/>
- <Parameter Name="kf_R31" Description="independent parameter K55" DefaultValue="0.0015"/>
- <Parameter Name="kf_R32" Description="independent parameter K56" DefaultValue="0.003"/>
- <Parameter Name="kf_R33" Description="independent parameter K57" DefaultValue="0.003"/>
- <Parameter Name="kf_R34" Description="independent parameter K58" DefaultValue="0.5"/>
+ <Parameter Name="kf_R31" Description="independent parameter K55" DefaultValue="0.00150003"/>
+ <Parameter Name="kf_R32" Description="independent parameter K56" DefaultValue="0.00299985"/>
+ <Parameter Name="kf_R33" Description="independent parameter K57" DefaultValue="0.00299985"/>
+ <Parameter Name="kf_R34" Description="independent parameter K58" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R34" Description="independent parameter K59" DefaultValue="0.001"/>
- <Parameter Name="kf_R35" Description="independent parameter K60" DefaultValue="0.5"/>
+ <Parameter Name="kf_R35" Description="independent parameter K60" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R35" Description="independent parameter K61" DefaultValue="0.001"/>
- <Parameter Name="kf_R36" Description="independent parameter K62" DefaultValue="0.0012"/>
- <Parameter Name="kf_R37" Description="independent parameter K63" DefaultValue="8e-06"/>
- <Parameter Name="kf_R38" Description="independent parameter K64" DefaultValue="26"/>
- <Parameter Name="kr_R38" Description="independent parameter K65" DefaultValue="0.35"/>
- <Parameter Name="kf_R39" Description="independent parameter K66" DefaultValue="34.6"/>
- <Parameter Name="kr_R39" Description="independent parameter K67" DefaultValue="0.05"/>
- <Parameter Name="kf_R40" Description="independent parameter K68" DefaultValue="0.05"/>
- <Parameter Name="kr_R40" Description="independent parameter K69" DefaultValue="30"/>
- <Parameter Name="kf_R41" Description="independent parameter K70" DefaultValue="30"/>
+ <Parameter Name="kf_R36" Description="independent parameter K62" DefaultValue="0.00120005"/>
+ <Parameter Name="kf_R37" Description="independent parameter K63" DefaultValue="8.00018e-06"/>
+ <Parameter Name="kf_R38" Description="independent parameter K64" DefaultValue="2.60016e-05"/>
+ <Parameter Name="kr_R38" Description="independent parameter K65" DefaultValue="0.350002"/>
+ <Parameter Name="kf_R39" Description="independent parameter K66" DefaultValue="3.46019e-05"/>
+ <Parameter Name="kr_R39" Description="independent parameter K67" DefaultValue="0.0500035"/>
+ <Parameter Name="kf_R40" Description="independent parameter K68" DefaultValue="0.0500035"/>
+ <Parameter Name="kr_R40" Description="independent parameter K69" DefaultValue="2.99985e-05"/>
+ <Parameter Name="kf_R41" Description="independent parameter K70" DefaultValue="2.99985e-05"/>
  <Parameter Name="kr_R41" Description="independent parameter K71" DefaultValue="0.001"/>
- <Parameter Name="kf_R42" Description="independent parameter K72" DefaultValue="0.0025"/>
- <Parameter Name="kf_R43" Description="independent parameter K73" DefaultValue="0.001"/>
+ <Parameter Name="kf_R42" Description="independent parameter K72" DefaultValue="0.00249977"/>
+ <Parameter Name="kf_R43" Description="independent parameter K73" DefaultValue="1e-09"/>
  <Parameter Name="kr_R43" Description="independent parameter K74" DefaultValue="0.001"/>
- <Parameter Name="kf_R44" Description="independent parameter K75" DefaultValue="0.003"/>
- <Parameter Name="kf_R45" Description="independent parameter K76" DefaultValue="100"/>
- <Parameter Name="kr_R45" Description="independent parameter K77" DefaultValue="0.002"/>
+ <Parameter Name="kf_R44" Description="independent parameter K75" DefaultValue="0.00299985"/>
+ <Parameter Name="kf_R45" Description="independent parameter K76" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R45" Description="independent parameter K77" DefaultValue="0.00199986"/>
  <Parameter Name="kf_R46" Description="independent parameter K78" DefaultValue="0.01"/>
- <Parameter Name="kf_R47" Description="independent parameter K79" DefaultValue="100000"/>
- <Parameter Name="kf_R48" Description="independent parameter K80" DefaultValue="2.55e-06"/>
- <Parameter Name="kr_R48" Description="independent parameter K81" DefaultValue="1000"/>
+ <Parameter Name="kf_R47" Description="independent parameter K79" DefaultValue="0.1"/>
+ <Parameter Name="kf_R48" Description="independent parameter K80" DefaultValue="2.54976e-06"/>
+ <Parameter Name="kr_R48" Description="independent parameter K81" DefaultValue="0.001"/>
  <Parameter Name="kf_R49" Description="independent parameter K82" DefaultValue="1e-07"/>
  <Parameter Name="kr_R49" Description="independent parameter K83" DefaultValue="0.001"/>
- <Parameter Name="kf_R50" Description="independent parameter K84" DefaultValue="0.075"/>
+ <Parameter Name="kf_R50" Description="independent parameter K84" DefaultValue="7.50067e-08"/>
  <Parameter Name="kr_R50" Description="independent parameter K85" DefaultValue="0.001"/>
- <Parameter Name="kf_R51" Description="independent parameter K86" DefaultValue="1.3"/>
+ <Parameter Name="kf_R51" Description="independent parameter K86" DefaultValue="1.29987e-06"/>
  <Parameter Name="kr_R51" Description="independent parameter K87" DefaultValue="0.001"/>
- <Parameter Name="kf_R52" Description="independent parameter K88" DefaultValue="10000"/>
+ <Parameter Name="kf_R52" Description="independent parameter K88" DefaultValue="0.01"/>
  <Parameter Name="kr_R52" Description="independent parameter K89" DefaultValue="0.001"/>
- <Parameter Name="kf_R53" Description="independent parameter K90" DefaultValue="10000"/>
+ <Parameter Name="kf_R53" Description="independent parameter K90" DefaultValue="0.01"/>
  <Parameter Name="kr_R53" Description="independent parameter K91" DefaultValue="0.001"/>
- <Parameter Name="kf_R54" Description="independent parameter K92" DefaultValue="1"/>
+ <Parameter Name="kf_R54" Description="independent parameter K92" DefaultValue="1e-06"/>
  <Parameter Name="kr_R54" Description="independent parameter K93" DefaultValue="0.01"/>
- <Parameter Name="kf_R55" Description="independent parameter K94" DefaultValue="0.05"/>
- <Parameter Name="kf_R56" Description="independent parameter K95" DefaultValue="2550"/>
+ <Parameter Name="kf_R55" Description="independent parameter K94" DefaultValue="0.0500035"/>
+ <Parameter Name="kf_R56" Description="independent parameter K95" DefaultValue="0.00254976"/>
  <Parameter Name="kf_R57" Description="independent parameter K96" DefaultValue="0.001"/>
- <Parameter Name="kf_R58" Description="independent parameter K97" DefaultValue="2"/>
- <Parameter Name="kf_R59" Description="independent parameter K98" DefaultValue="0.0005"/>
- <Parameter Name="kf_R60" Description="independent parameter K99" DefaultValue="0.75"/>
- <Parameter Name="kf_R61" Description="independent parameter K100" DefaultValue="0.025"/>
- <Parameter Name="kf_R62" Description="independent parameter K101" DefaultValue="650"/>
+ <Parameter Name="kf_R58" Description="independent parameter K97" DefaultValue="1.99986e-06"/>
+ <Parameter Name="kf_R59" Description="independent parameter K98" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R60" Description="independent parameter K99" DefaultValue="7.50067e-07"/>
+ <Parameter Name="kf_R61" Description="independent parameter K100" DefaultValue="0.0249977"/>
+ <Parameter Name="kf_R62" Description="independent parameter K101" DefaultValue="0.00064998"/>
  <Parameter Name="kf_R63" Description="independent parameter K102" DefaultValue="0.001"/>
  <Parameter Name="kf_R64" Description="independent parameter K103" DefaultValue="0.001"/>
  <Parameter Name="kf_R65" Description="independent parameter K104" DefaultValue="0.001"/>
  <Parameter Name="kf_R66" Description="independent parameter K105" DefaultValue="0.001"/>
- <Parameter Name="kf_R67" Description="independent parameter K106" DefaultValue="60"/>
+ <Parameter Name="kf_R67" Description="independent parameter K106" DefaultValue="6.00067e-05"/>
  <Parameter Name="kr_R67" Description="independent parameter K107" DefaultValue="0.25"/>
- <Parameter Name="kf_R68" Description="independent parameter K108" DefaultValue="60"/>
+ <Parameter Name="kf_R68" Description="independent parameter K108" DefaultValue="6.00067e-05"/>
  <Parameter Name="kr_R68" Description="independent parameter K109" DefaultValue="0.25"/>
- <Parameter Name="kf_R69" Description="independent parameter K110" DefaultValue="100"/>
- <Parameter Name="kr_R69" Description="independent parameter K111" DefaultValue="0.002"/>
- <Parameter Name="kf_R70" Description="independent parameter K112" DefaultValue="100"/>
- <Parameter Name="kr_R70" Description="independent parameter K113" DefaultValue="0.04"/>
- <Parameter Name="kf_R71" Description="independent parameter K114" DefaultValue="100"/>
+ <Parameter Name="kf_R69" Description="independent parameter K110" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R69" Description="independent parameter K111" DefaultValue="0.00199986"/>
+ <Parameter Name="kf_R70" Description="independent parameter K112" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R70" Description="independent parameter K113" DefaultValue="0.0400037"/>
+ <Parameter Name="kf_R71" Description="independent parameter K114" DefaultValue="0.0001"/>
  <Parameter Name="kr_R71" Description="independent parameter K115" DefaultValue="0.4"/>
- <Parameter Name="kf_R72" Description="independent parameter K116" DefaultValue="100"/>
+ <Parameter Name="kf_R72" Description="independent parameter K116" DefaultValue="0.0001"/>
  <Parameter Name="kr_R72" Description="independent parameter K117" DefaultValue="4"/>
- <Parameter Name="kf_R73" Description="independent parameter K118" DefaultValue="100"/>
+ <Parameter Name="kf_R73" Description="independent parameter K118" DefaultValue="0.0001"/>
  <Parameter Name="kr_R73" Description="independent parameter K119" DefaultValue="0.1"/>
- <Parameter Name="kf_R74" Description="independent parameter K120" DefaultValue="6"/>
- <Parameter Name="kr_R74" Description="independent parameter K121" DefaultValue="0.002"/>
- <Parameter Name="kf_R75" Description="independent parameter K122" DefaultValue="100"/>
+ <Parameter Name="kf_R74" Description="independent parameter K120" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R74" Description="independent parameter K121" DefaultValue="0.00199986"/>
+ <Parameter Name="kf_R75" Description="independent parameter K122" DefaultValue="0.0001"/>
  <Parameter Name="kr_R75" Description="independent parameter K123" DefaultValue="0.01"/>
- <Parameter Name="kf_R76" Description="independent parameter K124" DefaultValue="6"/>
- <Parameter Name="kr_R76" Description="independent parameter K125" DefaultValue="0.002"/>
- <Parameter Name="kf_R77" Description="independent parameter K126" DefaultValue="100"/>
- <Parameter Name="kr_R77" Description="independent parameter K127" DefaultValue="0.0004"/>
- <Parameter Name="kf_R78" Description="independent parameter K128" DefaultValue="100"/>
- <Parameter Name="kr_R78" Description="independent parameter K129" DefaultValue="0.04"/>
- <Parameter Name="kf_R79" Description="independent parameter K130" DefaultValue="100"/>
+ <Parameter Name="kf_R76" Description="independent parameter K124" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R76" Description="independent parameter K125" DefaultValue="0.00199986"/>
+ <Parameter Name="kf_R77" Description="independent parameter K126" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R77" Description="independent parameter K127" DefaultValue="0.000400037"/>
+ <Parameter Name="kf_R78" Description="independent parameter K128" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R78" Description="independent parameter K129" DefaultValue="0.0400037"/>
+ <Parameter Name="kf_R79" Description="independent parameter K130" DefaultValue="0.0001"/>
  <Parameter Name="kr_R79" Description="independent parameter K131" DefaultValue="0.4"/>
- <Parameter Name="kf_R80" Description="independent parameter K132" DefaultValue="45"/>
+ <Parameter Name="kf_R80" Description="independent parameter K132" DefaultValue="4.49987e-05"/>
  <Parameter Name="kr_R80" Description="independent parameter K133" DefaultValue="0.2"/>
  <Parameter Name="kf_R81" Description="independent parameter K134" DefaultValue="0.01"/>
- <Parameter Name="kf_R82" Description="independent parameter K135" DefaultValue="500"/>
+ <Parameter Name="kf_R82" Description="independent parameter K135" DefaultValue="0.000500035"/>
  <Parameter Name="kr_R82" Description="independent parameter K136" DefaultValue="0.01"/>
  <Parameter Name="kf_R83" Description="independent parameter K137" DefaultValue="0.01"/>
- <Parameter Name="kf_R84" Description="independent parameter K138" DefaultValue="7"/>
+ <Parameter Name="kf_R84" Description="independent parameter K138" DefaultValue="7.00003e-06"/>
  <Parameter Name="kr_R84" Description="independent parameter K139" DefaultValue="0.1"/>
  <Parameter Name="kf_R85" Description="independent parameter K140" DefaultValue="0.001"/>
- <Parameter Name="kf_R86" Description="independent parameter K141" DefaultValue="4"/>
+ <Parameter Name="kf_R86" Description="independent parameter K141" DefaultValue="4.00037e-06"/>
  <Parameter Name="kr_R86" Description="independent parameter K142" DefaultValue="0.1"/>
  <Parameter Name="kf_R87" Description="independent parameter K143" DefaultValue="0.01"/>
- <Parameter Name="kf_R88" Description="independent parameter K144" DefaultValue="7"/>
+ <Parameter Name="kf_R88" Description="independent parameter K144" DefaultValue="7.00003e-06"/>
  <Parameter Name="kr_R88" Description="independent parameter K145" DefaultValue="0.1"/>
  <Parameter Name="kf_R89" Description="independent parameter K146" DefaultValue="0.001"/>
- <Parameter Name="kf_R90" Description="independent parameter K147" DefaultValue="4"/>
+ <Parameter Name="kf_R90" Description="independent parameter K147" DefaultValue="4.00037e-06"/>
  <Parameter Name="kr_R90" Description="independent parameter K148" DefaultValue="0.1"/>
- <Parameter Name="kf_R91" Description="independent parameter K149" DefaultValue="0.5"/>
+ <Parameter Name="kf_R91" Description="independent parameter K149" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R91" Description="independent parameter K150" DefaultValue="0.001"/>
  <Parameter Name="kf_R92" Description="independent parameter K151" DefaultValue="0.01"/>
- <Parameter Name="kf_R93" Description="independent parameter K152" DefaultValue="0.5"/>
+ <Parameter Name="kf_R93" Description="independent parameter K152" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R93" Description="independent parameter K153" DefaultValue="0.01"/>
  <Parameter Name="kf_R94" Description="independent parameter K154" DefaultValue="0.01"/>
  <Parameter Name="kf_R95" Description="independent parameter K155" DefaultValue="0.0001"/>
- <Parameter Name="kf_R96" Description="independent parameter K156" DefaultValue="0.5"/>
+ <Parameter Name="kf_R96" Description="independent parameter K156" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R96" Description="independent parameter K157" DefaultValue="0.01"/>
  <Parameter Name="kf_R97" Description="independent parameter K158" DefaultValue="0.01"/>
- <Parameter Name="kf_R98" Description="independent parameter K159" DefaultValue="0.5"/>
+ <Parameter Name="kf_R98" Description="independent parameter K159" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R98" Description="independent parameter K160" DefaultValue="0.01"/>
  <Parameter Name="kf_R99" Description="independent parameter K161" DefaultValue="0.01"/>
- <Parameter Name="kf_R100" Description="independent parameter K162" DefaultValue="0.5"/>
+ <Parameter Name="kf_R100" Description="independent parameter K162" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R100" Description="independent parameter K163" DefaultValue="0.01"/>
  <Parameter Name="kf_R101" Description="independent parameter K164" DefaultValue="0.01"/>
- <Parameter Name="kf_R102" Description="independent parameter K165" DefaultValue="0.5"/>
+ <Parameter Name="kf_R102" Description="independent parameter K165" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R102" Description="independent parameter K166" DefaultValue="0.01"/>
  <Parameter Name="kf_R103" Description="independent parameter K167" DefaultValue="0.01"/>
- <Parameter Name="kf_R104" Description="independent parameter K168" DefaultValue="0.5"/>
+ <Parameter Name="kf_R104" Description="independent parameter K168" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R104" Description="independent parameter K169" DefaultValue="0.01"/>
  <Parameter Name="kf_R105" Description="independent parameter K170" DefaultValue="0.01"/>
- <Parameter Name="kf_R106" Description="independent parameter K171" DefaultValue="0.5"/>
+ <Parameter Name="kf_R106" Description="independent parameter K171" DefaultValue="5.00035e-07"/>
  <Parameter Name="kr_R106" Description="independent parameter K172" DefaultValue="0.01"/>
  <Parameter Name="kf_R107" Description="independent parameter K173" DefaultValue="0.01"/>
- <Parameter Name="kf_R108" Description="independent parameter K174" DefaultValue="0.0005"/>
+ <Parameter Name="kf_R108" Description="independent parameter K174" DefaultValue="0.000500035"/>
  <Parameter Name="kr_R108" Description="independent parameter K175" DefaultValue="1e-06"/>
- <Parameter Name="kf_R109" Description="independent parameter K176" DefaultValue="0.0005"/>
+ <Parameter Name="kf_R109" Description="independent parameter K176" DefaultValue="0.000500035"/>
  <Parameter Name="kr_R109" Description="independent parameter K177" DefaultValue="1e-06"/>
- <Parameter Name="kf_R110" Description="independent parameter K178" DefaultValue="0.0005"/>
+ <Parameter Name="kf_R110" Description="independent parameter K178" DefaultValue="0.000500035"/>
  <Parameter Name="kr_R110" Description="independent parameter K179" DefaultValue="1e-06"/>
- <Parameter Name="kf_R111" Description="independent parameter K180" DefaultValue="0.0005"/>
+ <Parameter Name="kf_R111" Description="independent parameter K180" DefaultValue="0.000500035"/>
  <Parameter Name="kr_R111" Description="independent parameter K181" DefaultValue="1e-06"/>
- <Parameter Name="kf_R112" Description="independent parameter K182" DefaultValue="100"/>
- <Parameter Name="kr_R112" Description="independent parameter K183" DefaultValue="0.0004"/>
- <Parameter Name="kf_R113" Description="independent parameter K184" DefaultValue="100"/>
- <Parameter Name="kr_R113" Description="independent parameter K185" DefaultValue="0.04"/>
- <Parameter Name="kf_R114" Description="independent parameter K186" DefaultValue="100"/>
+ <Parameter Name="kf_R112" Description="independent parameter K182" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R112" Description="independent parameter K183" DefaultValue="0.000400037"/>
+ <Parameter Name="kf_R113" Description="independent parameter K184" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R113" Description="independent parameter K185" DefaultValue="0.0400037"/>
+ <Parameter Name="kf_R114" Description="independent parameter K186" DefaultValue="0.0001"/>
  <Parameter Name="kr_R114" Description="independent parameter K187" DefaultValue="0.4"/>
- <Parameter Name="kf_R115" Description="independent parameter K188" DefaultValue="6"/>
- <Parameter Name="kr_R115" Description="independent parameter K189" DefaultValue="0.002"/>
- <Parameter Name="kf_R116" Description="independent parameter K190" DefaultValue="100"/>
+ <Parameter Name="kf_R115" Description="independent parameter K188" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R115" Description="independent parameter K189" DefaultValue="0.00199986"/>
+ <Parameter Name="kf_R116" Description="independent parameter K190" DefaultValue="0.0001"/>
  <Parameter Name="kr_R116" Description="independent parameter K191" DefaultValue="0.01"/>
- <Parameter Name="kf_R117" Description="independent parameter K192" DefaultValue="0.8"/>
+ <Parameter Name="kf_R117" Description="independent parameter K192" DefaultValue="8.00018e-07"/>
  <Parameter Name="kr_R117" Description="independent parameter K193" DefaultValue="0.001"/>
  <Parameter Name="kf_R118" Description="independent parameter K194" DefaultValue="0.001"/>
- <Parameter Name="kf_R119" Description="independent parameter K195" DefaultValue="0.0005"/>
- <Parameter Name="kf_R120" Description="independent parameter K196" DefaultValue="100"/>
- <Parameter Name="kr_R120" Description="independent parameter K197" DefaultValue="0.04"/>
- <Parameter Name="kf_R121" Description="independent parameter K198" DefaultValue="100"/>
+ <Parameter Name="kf_R119" Description="independent parameter K195" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R120" Description="independent parameter K196" DefaultValue="0.0001"/>
+ <Parameter Name="kr_R120" Description="independent parameter K197" DefaultValue="0.0400037"/>
+ <Parameter Name="kf_R121" Description="independent parameter K198" DefaultValue="0.0001"/>
  <Parameter Name="kr_R121" Description="independent parameter K199" DefaultValue="0.4"/>
- <Parameter Name="kf_R122" Description="independent parameter K200" DefaultValue="100"/>
+ <Parameter Name="kf_R122" Description="independent parameter K200" DefaultValue="0.0001"/>
  <Parameter Name="kr_R122" Description="independent parameter K201" DefaultValue="4"/>
- <Parameter Name="kf_R123" Description="independent parameter K202" DefaultValue="100"/>
+ <Parameter Name="kf_R123" Description="independent parameter K202" DefaultValue="0.0001"/>
  <Parameter Name="kr_R123" Description="independent parameter K203" DefaultValue="0.1"/>
- <Parameter Name="kf_R124" Description="independent parameter K204" DefaultValue="6"/>
- <Parameter Name="kr_R124" Description="independent parameter K205" DefaultValue="0.002"/>
- <Parameter Name="kf_R125" Description="independent parameter K206" DefaultValue="0.0005"/>
- <Parameter Name="kr_R125" Description="independent parameter K207" DefaultValue="0.0005"/>
- <Parameter Name="kf_R126" Description="independent parameter K208" DefaultValue="0.0005"/>
- <Parameter Name="kr_R126" Description="independent parameter K209" DefaultValue="0.0005"/>
- <Parameter Name="kf_R127" Description="independent parameter K210" DefaultValue="0.0005"/>
- <Parameter Name="kr_R127" Description="independent parameter K211" DefaultValue="0.0005"/>
- <Parameter Name="kf_R128" Description="independent parameter K212" DefaultValue="0.057"/>
- <Parameter Name="kr_R128" Description="independent parameter K213" DefaultValue="1.5e-05"/>
- <Parameter Name="kf_R129" Description="independent parameter K214" DefaultValue="95.036"/>
- <Parameter Name="kf_R130" Description="independent parameter K215" DefaultValue="1.5"/>
- <Parameter Name="kr_R130" Description="independent parameter K216" DefaultValue="2.3364"/>
- <Parameter Name="kf_R131" Description="independent parameter K217" DefaultValue="3.7142"/>
- <Parameter Name="kf_R132" Description="independent parameter K218" DefaultValue="0.057"/>
- <Parameter Name="kr_R132" Description="independent parameter K219" DefaultValue="1.5e-05"/>
- <Parameter Name="kf_R133" Description="independent parameter K220" DefaultValue="95.036"/>
- <Parameter Name="kf_R134" Description="independent parameter K221" DefaultValue="1.5"/>
- <Parameter Name="kr_R134" Description="independent parameter K222" DefaultValue="2.3364"/>
- <Parameter Name="kf_R135" Description="independent parameter K223" DefaultValue="3.7142"/>
- <Parameter Name="kf_R136" Description="independent parameter K224" DefaultValue="0.0005"/>
- <Parameter Name="kr_R136" Description="independent parameter K225" DefaultValue="0.0005"/>
- <Parameter Name="kf_R137" Description="independent parameter K226" DefaultValue="1e-06"/>
- <Parameter Name="kr_R137" Description="independent parameter K227" DefaultValue="0.0005"/>
+ <Parameter Name="kf_R124" Description="independent parameter K204" DefaultValue="6.00067e-06"/>
+ <Parameter Name="kr_R124" Description="independent parameter K205" DefaultValue="0.00199986"/>
+ <Parameter Name="kf_R125" Description="independent parameter K206" DefaultValue="0.000500035"/>
+ <Parameter Name="kr_R125" Description="independent parameter K207" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R126" Description="independent parameter K208" DefaultValue="0.000500035"/>
+ <Parameter Name="kr_R126" Description="independent parameter K209" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R127" Description="independent parameter K210" DefaultValue="0.000500035"/>
+ <Parameter Name="kr_R127" Description="independent parameter K211" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R128" Description="independent parameter K212" DefaultValue="0.000500035"/>
+ <Parameter Name="kr_R128" Description="independent parameter K213" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R129" Description="independent parameter K214" DefaultValue="1e-06"/>
+ <Parameter Name="kr_R129" Description="independent parameter K215" DefaultValue="0.000500035"/>
+ <Parameter Name="kf_R130" Description="independent parameter K216" DefaultValue="3.59998e-07"/>
+ <Parameter Name="kr_R130" Description="independent parameter K217" DefaultValue="0.0229985"/>
+ <Parameter Name="kf_R131" Description="independent parameter K218" DefaultValue="0.00390032"/>
+ <Parameter Name="kf_R132" Description="independent parameter K219" DefaultValue="1.10002e-06"/>
+ <Parameter Name="kr_R132" Description="independent parameter K220" DefaultValue="0.00540008"/>
+ <Parameter Name="kf_R133" Description="independent parameter K221" DefaultValue="10"/>
+ <Parameter Name="kf_R134" Description="independent parameter K222" DefaultValue="3.59998e-07"/>
+ <Parameter Name="kr_R134" Description="independent parameter K223" DefaultValue="0.0229985"/>
+ <Parameter Name="kf_R135" Description="independent parameter K224" DefaultValue="0.00390032"/>
+ <Parameter Name="kf_R136" Description="independent parameter K225" DefaultValue="1.10002e-06"/>
+ <Parameter Name="kr_R136" Description="independent parameter K226" DefaultValue="0.00540008"/>
+ <Parameter Name="kf_R137" Description="independent parameter K227" DefaultValue="10"/>
  <Parameter Name="DA_start" Description="input parameter INP0" DefaultValue="100"/>
  <Expression Name="ATP_expression" Description="defined expression EX0" Formula="5000000"/>
- <Expression Name="Ca_expression" Description="defined expression EX1" Formula="SCI"/>
- <Expression Name="DA_Tpk" Description="defined expression EX2" Formula="tau_DA1*tau_DA2 / (tau_DA2 - tau_DA1) * log(tau_DA2/tau_DA1)"/>
- <Expression Name="DA_scale_factor" Description="defined expression EX3" Formula="DA_max / ( exp(-DA_Tpk/tau_DA1) - exp(-DA_Tpk/tau_DA2) )"/>
- <Expression Name="switch_on" Description="defined expression EX4" Formula="1/(1+exp(-(t-DA_start)))"/>
- <Expression Name="DA_expression" Description="defined expression EX5" Formula="DA_basal + switch_on * (DA_time_course)"/>
- <Expression Name="a1" Description="defined expression EX6" Formula="- (t - DA_start) / tau_DA1"/>
- <Expression Name="e1" Description="defined expression EX7" Formula="exp(a1)"/>
- <Expression Name="a2" Description="defined expression EX8" Formula="- (t - DA_start) / tau_DA2"/>
- <Expression Name="e2" Description="defined expression EX9" Formula="exp(a2)"/>
- <Expression Name="DA_time_course" Description="defined expression EX10" Formula="DA_scale_factor * (e1 - e2)"/>
- <Expression Name="ATP" Description="defined expression S9" Formula="ATP_expression"/>
- <Expression Name="Ca" Description="defined expression S24" Formula="Ca_expression"/>
- <Expression Name="DA" Description="defined expression S47" Formula="DA_expression"/>
+ <Expression Name="Ca_expression" Description="defined expression EX1" Formula="0"/>
+ <Expression Name="DA_expression" Description="defined expression EX2" Formula="DA_basal+(1/(1+exp((-10E+10)*(time-DA_start)))*(DA_max/(exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA1)-exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA2))*(exp(-(time-DA_start)/tau_DA1)-exp(-(time-DA_start)/tau_DA2))))"/>
+ <Expression Name="DA_max" Description="defined expression EX3" Formula="1480"/>
+ <Expression Name="AMP" Description="defined expression S8" Formula="0"/>
+ <Expression Name="ATP" Description="defined expression S9" Formula="5e+06"/>
+ <Expression Name="Ca" Description="defined expression S24" Formula="60"/>
+ <Expression Name="DA" Description="defined expression S47" Formula="20"/>
  <Expression Name="ReactionFlux0" Description="flux R0" Formula="kf_R0*GaolfGTP"/>
  <Expression Name="ReactionFlux1" Description="flux R1" Formula="kf_R1*D1R_Golf_DA"/>
  <Expression Name="ReactionFlux2" Description="flux R2" Formula="kf_R2*D1R_Golf*DA-kr_R2*D1R_Golf_DA"/>
@@ -287,7 +280,7 @@
  <Expression Name="ReactionFlux37" Description="flux R37" Formula="kf_R37*B56PP2Ap"/>
  <Expression Name="ReactionFlux38" Description="flux R38" Formula="kf_R38*cAMP*PKA-kr_R38*PKA_Ca2MP"/>
  <Expression Name="ReactionFlux39" Description="flux R39" Formula="kf_R39*cAMP*PKA_Ca2MP-kr_R39*PKA_Ca4MP"/>
- <Expression Name="ReactionFlux40" Description="flux R40" Formula="kr_R40*PKA_Ca4MP-kf_R40*PKAc*PKAreg"/>
+ <Expression Name="ReactionFlux40" Description="flux R40" Formula="kf_R40*PKA_Ca4MP-kr_R40*PKAc*PKAreg"/>
  <Expression Name="ReactionFlux41" Description="flux R41" Formula="kf_R41*cAMP*PDE4-kr_R41*PDE4_cAMP"/>
  <Expression Name="ReactionFlux42" Description="flux R42" Formula="kf_R42*PDE4_cAMP"/>
  <Expression Name="ReactionFlux43" Description="flux R43" Formula="kf_R43*PDE10r*cAMP^2-kr_R43*PDE10c"/>
@@ -353,7 +346,7 @@
  <Expression Name="ReactionFlux103" Description="flux R103" Formula="kf_R103*CaMKII_CaM_psd_Substrate"/>
  <Expression Name="ReactionFlux104" Description="flux R104" Formula="kf_R104*Substrate*CaMKII_CaM_Ca2_psd-kr_R104*CaMKII_CaM_Ca2_psd_Substrate"/>
  <Expression Name="ReactionFlux105" Description="flux R105" Formula="kf_R105*CaMKII_CaM_Ca2_psd_Substrate"/>
- <Expression Name="ReactionFlux106" Description="flux R106" Formula="kf_R106*Substrate*CaMKII_CaM_Ca4_psd-kr_R106*CaMKII_CaM_Ca4_psd*Substrate"/>
+ <Expression Name="ReactionFlux106" Description="flux R106" Formula="kf_R106*Substrate*CaMKII_CaM_Ca4_psd-kr_R106*CaMKII_CaM_Ca4_psd_Substrate"/>
  <Expression Name="ReactionFlux107" Description="flux R107" Formula="kf_R107*CaMKII_CaM_Ca4_psd_Substrate"/>
  <Expression Name="ReactionFlux108" Description="flux R108" Formula="kf_R108*pCaMKII_CaM_Ca4-kr_R108*pCaMKII_CaM_Ca4_psd"/>
  <Expression Name="ReactionFlux109" Description="flux R109" Formula="kf_R109*pCaMKII_CaM_Ca2-kr_R109*pCaMKII_CaM_Ca2_psd"/>
@@ -375,16 +368,16 @@
  <Expression Name="ReactionFlux125" Description="flux R125" Formula="kf_R125*CaMKII_CaM-kr_R125*CaMKII_CaM_psd"/>
  <Expression Name="ReactionFlux126" Description="flux R126" Formula="kf_R126*CaMKII_CaM_Ca2-kr_R126*CaMKII_CaM_Ca2_psd"/>
  <Expression Name="ReactionFlux127" Description="flux R127" Formula="kf_R127*CaMKII_CaM_Ca4-kr_R127*CaMKII_CaM_Ca4_psd"/>
- <Expression Name="ReactionFlux128" Description="flux R128" Formula="kf_R128*CaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R128*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
- <Expression Name="ReactionFlux129" Description="flux R129" Formula="kf_R129*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
- <Expression Name="ReactionFlux130" Description="flux R130" Formula="kf_R130*pCaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R130*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
- <Expression Name="ReactionFlux131" Description="flux R131" Formula="kf_R131*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
- <Expression Name="ReactionFlux132" Description="flux R132" Formula="kf_R132*CaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R132*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
- <Expression Name="ReactionFlux133" Description="flux R133" Formula="kf_R133*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
- <Expression Name="ReactionFlux134" Description="flux R134" Formula="kf_R134*pCaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R134*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
- <Expression Name="ReactionFlux135" Description="flux R135" Formula="kf_R135*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
- <Expression Name="ReactionFlux136" Description="flux R136" Formula="kf_R136*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R136*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
- <Expression Name="ReactionFlux137" Description="flux R137" Formula="kf_R137*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R137*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux128" Description="flux R128" Formula="kf_R128*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R128*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux129" Description="flux R129" Formula="kf_R129*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R129*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux130" Description="flux R130" Formula="kf_R130*CaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R130*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux131" Description="flux R131" Formula="kf_R131*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux132" Description="flux R132" Formula="kf_R132*pCaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R132*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux133" Description="flux R133" Formula="kf_R133*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4"/>
+ <Expression Name="ReactionFlux134" Description="flux R134" Formula="kf_R134*CaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R134*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
+ <Expression Name="ReactionFlux135" Description="flux R135" Formula="kf_R135*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
+ <Expression Name="ReactionFlux136" Description="flux R136" Formula="kf_R136*pCaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R136*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
+ <Expression Name="ReactionFlux137" Description="flux R137" Formula="kf_R137*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd"/>
  <StateVariable Name="AC5" Description="compound S0" DefaultInitialCondition="700" Formula="-ReactionFlux4-ReactionFlux28-ReactionFlux49+ReactionFlux57-ReactionFlux58+ReactionFlux63"/>
  <StateVariable Name="AC5_ATP" Description="compound S1" DefaultInitialCondition="0" Formula="+ReactionFlux49-ReactionFlux52-ReactionFlux54-ReactionFlux57+ReactionFlux58+ReactionFlux65"/>
  <StateVariable Name="AC5_Ca" Description="compound S2" DefaultInitialCondition="0" Formula="+ReactionFlux28-ReactionFlux29-ReactionFlux50+ReactionFlux59-ReactionFlux60+ReactionFlux64"/>
@@ -393,7 +386,6 @@
  <StateVariable Name="AC5_Ca_GaolfGTP_ATP" Description="compound S5" DefaultInitialCondition="0" Formula="+ReactionFlux51+ReactionFlux53-ReactionFlux61+ReactionFlux62-ReactionFlux66"/>
  <StateVariable Name="AC5_GaolfGTP" Description="compound S6" DefaultInitialCondition="0" Formula="+ReactionFlux4-ReactionFlux48+ReactionFlux55-ReactionFlux56-ReactionFlux63"/>
  <StateVariable Name="AC5_GaolfGTP_ATP" Description="compound S7" DefaultInitialCondition="0" Formula="+ReactionFlux48+ReactionFlux52-ReactionFlux55+ReactionFlux56-ReactionFlux65"/>
- <StateVariable Name="AMP" Description="compound S8" DefaultInitialCondition="0" Formula="+ReactionFlux42+ReactionFlux44+ReactionFlux46"/>
  <StateVariable Name="B56PP2A" Description="compound S10" DefaultInitialCondition="2000" Formula="-ReactionFlux10-ReactionFlux30+ReactionFlux31+ReactionFlux37+ReactionFlux89-ReactionFlux90"/>
  <StateVariable Name="B56PP2A_D32p75" Description="compound S11" DefaultInitialCondition="0" Formula="+ReactionFlux30-ReactionFlux31"/>
  <StateVariable Name="B56PP2A_pARPP21" Description="compound S12" DefaultInitialCondition="0" Formula="-ReactionFlux89+ReactionFlux90"/>
@@ -413,12 +405,12 @@
  <StateVariable Name="CaM_Ca4" Description="compound S27" DefaultInitialCondition="0" Formula="-ReactionFlux7+ReactionFlux24-ReactionFlux70-ReactionFlux77-ReactionFlux82-ReactionFlux112-ReactionFlux120"/>
  <StateVariable Name="CaM_Ca4_pARPP21" Description="compound S28" DefaultInitialCondition="0" Formula="+ReactionFlux82"/>
  <StateVariable Name="CaMKII" Description="compound S29" DefaultInitialCondition="20000" Formula="-ReactionFlux70-ReactionFlux71-ReactionFlux72+ReactionFlux95+ReactionFlux119"/>
- <StateVariable Name="CaMKII_CaM_Ca4" Description="compound S30" DefaultInitialCondition="0" Formula="+ReactionFlux70+ReactionFlux73-ReactionFlux127-ReactionFlux128-ReactionFlux128+ReactionFlux129-ReactionFlux130"/>
+ <StateVariable Name="CaMKII_CaM_Ca4" Description="compound S30" DefaultInitialCondition="0" Formula="+ReactionFlux70+ReactionFlux73-ReactionFlux127-ReactionFlux130-ReactionFlux130+ReactionFlux131-ReactionFlux132"/>
  <StateVariable Name="CaMKII_CaM" Description="compound S31" DefaultInitialCondition="0" Formula="+ReactionFlux72-ReactionFlux74-ReactionFlux125"/>
  <StateVariable Name="CaMKII_CaM_Ca2" Description="compound S32" DefaultInitialCondition="0" Formula="+ReactionFlux71-ReactionFlux73+ReactionFlux74-ReactionFlux126"/>
  <StateVariable Name="CaMKII_CaM_Ca2_psd" Description="compound S33" DefaultInitialCondition="0" Formula="-ReactionFlux104+ReactionFlux105+ReactionFlux121-ReactionFlux123+ReactionFlux124+ReactionFlux126"/>
  <StateVariable Name="CaMKII_CaM_psd" Description="compound S34" DefaultInitialCondition="0" Formula="-ReactionFlux102+ReactionFlux103+ReactionFlux122-ReactionFlux124+ReactionFlux125"/>
- <StateVariable Name="CaMKII_CaM_Ca4_psd" Description="compound S35" DefaultInitialCondition="0" Formula="-ReactionFlux106+ReactionFlux107+ReactionFlux120+ReactionFlux123+ReactionFlux127-ReactionFlux132-ReactionFlux132+ReactionFlux133-ReactionFlux134"/>
+ <StateVariable Name="CaMKII_CaM_Ca4_psd" Description="compound S35" DefaultInitialCondition="0" Formula="-ReactionFlux106+ReactionFlux107+ReactionFlux120+ReactionFlux123+ReactionFlux127-ReactionFlux134-ReactionFlux134+ReactionFlux135-ReactionFlux136"/>
  <StateVariable Name="CaMKII_psd" Description="compound S36" DefaultInitialCondition="0" Formula="+ReactionFlux118-ReactionFlux119-ReactionFlux120-ReactionFlux121-ReactionFlux122"/>
  <StateVariable Name="cAMP" Description="compound S37" DefaultInitialCondition="0" Formula="-ReactionFlux38-ReactionFlux39-ReactionFlux41-2*ReactionFlux43-ReactionFlux45+ReactionFlux55-ReactionFlux56+ReactionFlux57-ReactionFlux58+ReactionFlux59-ReactionFlux60+ReactionFlux61-ReactionFlux62-ReactionFlux69"/>
  <StateVariable Name="Substrate" Description="compound S38" DefaultInitialCondition="3000" Formula="+ReactionFlux92-ReactionFlux93-ReactionFlux96-ReactionFlux98-ReactionFlux100-ReactionFlux102-ReactionFlux104-ReactionFlux106"/>
@@ -436,12 +428,12 @@
  <StateVariable Name="Gbgolf" Description="compound S51" DefaultInitialCondition="0" Formula="+ReactionFlux1-ReactionFlux47"/>
  <StateVariable Name="Golf" Description="compound S52" DefaultInitialCondition="2000" Formula="+ReactionFlux47-ReactionFlux67-ReactionFlux68"/>
  <StateVariable Name="pCaMKII" Description="compound S53" DefaultInitialCondition="0" Formula="-ReactionFlux77-ReactionFlux78-ReactionFlux79-ReactionFlux95-ReactionFlux111"/>
- <StateVariable Name="pCaMKII_CaM_Ca4" Description="compound S54" DefaultInitialCondition="0" Formula="+ReactionFlux75+ReactionFlux77-ReactionFlux108+ReactionFlux129-ReactionFlux130+ReactionFlux131+ReactionFlux131"/>
+ <StateVariable Name="pCaMKII_CaM_Ca4" Description="compound S54" DefaultInitialCondition="0" Formula="+ReactionFlux75+ReactionFlux77-ReactionFlux108+ReactionFlux131-ReactionFlux132+ReactionFlux133+ReactionFlux133"/>
  <StateVariable Name="pCaMKII_CaM" Description="compound S55" DefaultInitialCondition="0" Formula="-ReactionFlux76+ReactionFlux79-ReactionFlux110"/>
  <StateVariable Name="pCaMKII_CaM_Ca2" Description="compound S56" DefaultInitialCondition="0" Formula="-ReactionFlux75+ReactionFlux76+ReactionFlux78-ReactionFlux109"/>
  <StateVariable Name="pCaMKII_CaM_Ca2_psd" Description="compound S57" DefaultInitialCondition="0" Formula="-ReactionFlux98+ReactionFlux99+ReactionFlux109+ReactionFlux113+ReactionFlux115-ReactionFlux116"/>
  <StateVariable Name="pCaMKII_CaM_psd" Description="compound S58" DefaultInitialCondition="0" Formula="-ReactionFlux96+ReactionFlux97+ReactionFlux110+ReactionFlux114-ReactionFlux115"/>
- <StateVariable Name="pCaMKII_CaM_Ca4_psd" Description="compound S59" DefaultInitialCondition="0" Formula="-ReactionFlux100+ReactionFlux101+ReactionFlux108+ReactionFlux112+ReactionFlux116+ReactionFlux133-ReactionFlux134+ReactionFlux135+ReactionFlux135"/>
+ <StateVariable Name="pCaMKII_CaM_Ca4_psd" Description="compound S59" DefaultInitialCondition="0" Formula="-ReactionFlux100+ReactionFlux101+ReactionFlux108+ReactionFlux112+ReactionFlux116+ReactionFlux135-ReactionFlux136+ReactionFlux137+ReactionFlux137"/>
  <StateVariable Name="pCaMKII_psd" Description="compound S60" DefaultInitialCondition="0" Formula="-ReactionFlux93+ReactionFlux94+ReactionFlux111-ReactionFlux112-ReactionFlux113-ReactionFlux114-ReactionFlux117"/>
  <StateVariable Name="pSubstrate" Description="compound S61" DefaultInitialCondition="0" Formula="-ReactionFlux91+ReactionFlux94+ReactionFlux97+ReactionFlux99+ReactionFlux101+ReactionFlux103+ReactionFlux105+ReactionFlux107"/>
  <StateVariable Name="PDE4" Description="compound S62" DefaultInitialCondition="2000" Formula="-ReactionFlux41+ReactionFlux42"/>
@@ -463,10 +455,10 @@
  <StateVariable Name="PP1_pCaMKII_psd" Description="compound S78" DefaultInitialCondition="0" Formula="+ReactionFlux117-ReactionFlux118"/>
  <StateVariable Name="PP1_pSubstrate" Description="compound S79" DefaultInitialCondition="0" Formula="+ReactionFlux91-ReactionFlux92"/>
  <StateVariable Name="PP1_D32p34" Description="compound S80" DefaultInitialCondition="0" Formula="+ReactionFlux12"/>
- <StateVariable Name="CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd" Description="compound S81" DefaultInitialCondition="0" Formula="+ReactionFlux132-ReactionFlux133-ReactionFlux136"/>
- <StateVariable Name="pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd" Description="compound S82" DefaultInitialCondition="0" Formula="+ReactionFlux134-ReactionFlux135-ReactionFlux137"/>
- <StateVariable Name="CaMKII_CaM_Ca4_CaMKII_CaM_Ca4" Description="compound S83" DefaultInitialCondition="0" Formula="+ReactionFlux128-ReactionFlux129+ReactionFlux136"/>
- <StateVariable Name="pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4" Description="compound S84" DefaultInitialCondition="0" Formula="+ReactionFlux130-ReactionFlux131+ReactionFlux137"/>
+ <StateVariable Name="CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd" Description="compound S81" DefaultInitialCondition="0" Formula="-ReactionFlux128+ReactionFlux134-ReactionFlux135"/>
+ <StateVariable Name="pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd" Description="compound S82" DefaultInitialCondition="0" Formula="-ReactionFlux129+ReactionFlux136-ReactionFlux137"/>
+ <StateVariable Name="CaMKII_CaM_Ca4_CaMKII_CaM_Ca4" Description="compound S83" DefaultInitialCondition="0" Formula="+ReactionFlux128+ReactionFlux130-ReactionFlux131"/>
+ <StateVariable Name="pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4" Description="compound S84" DefaultInitialCondition="0" Formula="+ReactionFlux129+ReactionFlux132-ReactionFlux133"/>
  <StateVariable Name="PP2B" Description="compound S85" DefaultInitialCondition="4000" Formula="-ReactionFlux6-ReactionFlux7-ReactionFlux27"/>
  <StateVariable Name="PP2Bc" Description="compound S86" DefaultInitialCondition="0" Formula="+ReactionFlux7-ReactionFlux23+ReactionFlux26+ReactionFlux36"/>
  <StateVariable Name="PP2Bc_D32p34" Description="compound S87" DefaultInitialCondition="0" Formula="+ReactionFlux23-ReactionFlux36"/>
