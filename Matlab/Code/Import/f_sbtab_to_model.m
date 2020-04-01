@@ -191,6 +191,30 @@ if isfield(sb,"Expression")
     end
 end
 
+if isfield(sb,"Input")
+    for m = 1:size(sb.Input.ID,1)
+        try
+            if isa(sb.Input.Formula{m},'double')
+                addspecies (modelobj, char(sb.Input.Name(m)),...
+                    str2double(string(sb.Input.DefaultValue{m})),...
+                    'InitialAmountUnits',sb.Input.Unit{m});
+            else
+                addspecies (modelobj, char(sb.Input.Name(m)),0,...
+                    'InitialAmountUnits',sb.Input.Unit{m});
+                addrule(modelobj, char({convertStringsToChars(...
+                    string(sb.Input.Location{m}) + "." +...
+                    string(sb.Input.Name{m}) + " = " +...
+                    string(sb.Input.DefaultValue{m}))}),...
+                    'repeatedAssignment');
+            end
+        catch
+            addparameter(modelobj,char(sb.Input.Name(m)),...
+                str2double(string(sb.Input.DefaultValue{m})),...
+                'ValueUnits',sb.Input.Unit{m});
+        end
+    end
+end
+
 if isfield(sb,"Constant")
     for m = 1:size(sb.Constant.ID,1)
         try
