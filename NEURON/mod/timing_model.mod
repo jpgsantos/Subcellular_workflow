@@ -1,23 +1,20 @@
 TITLE D1_LTP_time_window
 COMMENT
 	automatically generated from an SBtab file
-	date: Mon Mar 16 10:37:21 2020
+	date: Wed Apr 01 11:25:27 2020
 ENDCOMMENT
 NEURON {
 	SUFFIX timing_model : OR perhaps POINT_PROCESS ?
-	RANGE DA_start, tau_DA1, tau_DA2, DA_max, DA_basal : input
 	RANGE pSubstrate_out, PP1_out, CaM_out, D32_out : output
 	RANGE ATP_expression : assigned
 	RANGE Ca_expression : assigned
-	RANGE DA_Tpk : assigned
-	RANGE DA_scale_factor : assigned
-	RANGE switch_on : assigned
 	RANGE DA_expression : assigned
-	RANGE a1 : assigned
-	RANGE e1 : assigned
-	RANGE a2 : assigned
-	RANGE e2 : assigned
-	RANGE DA_time_course : assigned
+	RANGE DA_start : assigned
+	RANGE DA_max : assigned
+	RANGE AMP : assigned
+	RANGE ATP : assigned
+	RANGE Ca : assigned
+	RANGE DA : assigned
 	RANGE AC5 : compound
 	RANGE AC5_ATP : compound
 	RANGE AC5_Ca : compound
@@ -26,8 +23,6 @@ NEURON {
 	RANGE AC5_Ca_GaolfGTP_ATP : compound
 	RANGE AC5_GaolfGTP : compound
 	RANGE AC5_GaolfGTP_ATP : compound
-	RANGE AMP : compound
-	RANGE ATP : compound
 	RANGE B56PP2A : compound
 	RANGE B56PP2A_D32p75 : compound
 	RANGE B56PP2A_pARPP21 : compound
@@ -42,7 +37,6 @@ NEURON {
 	RANGE B72PP2A_Ca_D32p75 : compound
 	RANGE B72PP2A_Ca : compound
 	RANGE B72PP2A_Ca_pARPP21 : compound
-	RANGE Ca : compound
 	RANGE CaM : compound
 	RANGE CaM_Ca2 : compound
 	RANGE CaM_Ca4 : compound
@@ -65,7 +59,6 @@ NEURON {
 	RANGE D1R_Golf : compound
 	RANGE D32p34 : compound
 	RANGE D32p75 : compound
-	RANGE DA : compound
 	RANGE D32 : compound
 	RANGE GaolfGDP : compound
 	RANGE GaolfGTP : compound
@@ -117,430 +110,407 @@ NEURON {
 	RANGE CaMKII_CaM_psd_Substrate : compound
 	RANGE CaMKII_CaM_Ca2_psd_Substrate : compound
 	RANGE CaMKII_CaM_Ca4_psd_Substrate : compound
-
-	RANGE Ca_basal
 	USEION ca_nmda READ ca_nmdai VALENCE 2 : sth. like this may be needed for ions you have in your model
 }
-UNITS {
-(molarity) = (1/liter)
+CONSTANT {
+	tau_DA1 = 34.979 (millisecond) : a constant
+	tau_DA2 = 420 (millisecond) : a constant
+	DA_basal = 20 (nanomole/liter) : a constant
+	Ca_basal = 60 (nanomole/liter) : a constant
 }
-
 PARAMETER {
-	kf_R0 = 0.03 (/millisecond): a kinetic parameter
-	kf_R1 = 0.015 (/millisecond): a kinetic parameter
-	kf_R2 = 5e-05 (/nanomolarity-millisecond): a kinetic parameter
+	DA_start = 0 (millisecond) : start of dopamine signal
+	DA_max = 1480 (nanomole/liter) : amplitude of dopamine signal
+	kf_R0 = 0.0299985 (/millisecond): a kinetic parameter
+	kf_R1 = 0.0150003 (/millisecond): a kinetic parameter
+	kf_R2 = 5.00035e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R2 = 0.25 (/millisecond): a kinetic parameter
-	kf_R3 = 5e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R3 = 5.00035e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R3 = 0.25 (/millisecond): a kinetic parameter
-	kf_R4 = 0.01 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R4 = 0.01 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R4 = 0.001 (/millisecond): a kinetic parameter
-	kf_R5 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R5 = 0.02 (/millisecond): a kinetic parameter
-	kf_R6 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R6 = 3 (/millisecond): a kinetic parameter
-	kf_R7 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R7 = 3e-06 (/millisecond): a kinetic parameter
-	kf_R8 = 1e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R5 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R5 = 0.0199986 (/millisecond): a kinetic parameter
+	kf_R6 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R6 = 2.99999 (/millisecond): a kinetic parameter
+	kf_R7 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R7 = 2.99985e-06 (/millisecond): a kinetic parameter
+	kf_R8 = 1e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R8 = 0.2 (/millisecond): a kinetic parameter
 	kf_R9 = 0.01 (/millisecond): a kinetic parameter
-	kf_R10 = 1e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R10 = 0.0003 (/millisecond): a kinetic parameter
-	kf_R11 = 0.0002 (/millisecond): a kinetic parameter
-	kf_R12 = 0.001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R12 = 0.0015 (/millisecond): a kinetic parameter
-	kf_R13 = 1e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R10 = 1e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R10 = 0.000299985 (/millisecond): a kinetic parameter
+	kf_R11 = 0.000199986 (/millisecond): a kinetic parameter
+	kf_R12 = 0.001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R12 = 0.00150003 (/millisecond): a kinetic parameter
+	kf_R13 = 1e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R13 = 0.1 (/millisecond): a kinetic parameter
 	kf_R14 = 0.01 (/millisecond): a kinetic parameter
-	kf_R15 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R15 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R15 = 0.1 (/millisecond): a kinetic parameter
-	kf_R16 = 1e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R16 = 1e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R16 = 0.01 (/millisecond): a kinetic parameter
-	kf_R17 = 1.5e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R17 = 1.50003e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R17 = 0.1 (/millisecond): a kinetic parameter
-	kf_R18 = 8e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R18 = 8.00018e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R18 = 0.1 (/millisecond): a kinetic parameter
-	kf_R19 = 1.5e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R19 = 1.50003e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R19 = 0.1 (/millisecond): a kinetic parameter
-	kf_R20 = 0.008 (/millisecond): a kinetic parameter
-	kf_R21 = 0.0015 (/millisecond): a kinetic parameter
-	kf_R22 = 0.008 (/millisecond): a kinetic parameter
-	kf_R23 = 0.0013 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R20 = 0.00800018 (/millisecond): a kinetic parameter
+	kf_R21 = 0.00150003 (/millisecond): a kinetic parameter
+	kf_R22 = 0.00800018 (/millisecond): a kinetic parameter
+	kf_R23 = 0.00129987 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R23 = 0.0001 (/millisecond): a kinetic parameter
-	kf_R24 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R24 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R24 = 1 (/millisecond): a kinetic parameter
-	kf_R25 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R25 = 2e-07 (/millisecond): a kinetic parameter
-	kf_R26 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R25 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R25 = 1.99986e-07 (/millisecond): a kinetic parameter
+	kf_R26 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R26 = 0.1 (/millisecond): a kinetic parameter
-	kf_R27 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R27 = 3e-05 (/millisecond): a kinetic parameter
-	kf_R28 = 1e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R27 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R27 = 2.99985e-05 (/millisecond): a kinetic parameter
+	kf_R28 = 1e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R28 = 0.01 (/millisecond): a kinetic parameter
-	kf_R29 = 0.01 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R29 = 0.01 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R29 = 0.001 (/millisecond): a kinetic parameter
-	kf_R30 = 8e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R30 = 8.00018e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R30 = 0.1 (/millisecond): a kinetic parameter
-	kf_R31 = 0.0015 (/millisecond): a kinetic parameter
-	kf_R32 = 0.003 (/millisecond): a kinetic parameter
-	kf_R33 = 0.003 (/millisecond): a kinetic parameter
-	kf_R34 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R31 = 0.00150003 (/millisecond): a kinetic parameter
+	kf_R32 = 0.00299985 (/millisecond): a kinetic parameter
+	kf_R33 = 0.00299985 (/millisecond): a kinetic parameter
+	kf_R34 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R34 = 0.001 (/millisecond): a kinetic parameter
-	kf_R35 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R35 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R35 = 0.001 (/millisecond): a kinetic parameter
-	kf_R36 = 0.0012 (/millisecond): a kinetic parameter
-	kf_R37 = 8e-06 (/millisecond): a kinetic parameter
-	kf_R38 = 2.6e-05 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R38 = 0.35 (/millisecond): a kinetic parameter
-	kf_R39 = 3.46e-05 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R39 = 0.05 (/millisecond): a kinetic parameter
-	kf_R40 = 0.05 (/millisecond): a kinetic parameter
-	kr_R40 = 3e-05 (/nanomolarity-millisecond): a kinetic parameter
-	kf_R41 = 3e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R36 = 0.00120005 (/millisecond): a kinetic parameter
+	kf_R37 = 8.00018e-06 (/millisecond): a kinetic parameter
+	kf_R38 = 2.60016e-05 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R38 = 0.350002 (/millisecond): a kinetic parameter
+	kf_R39 = 3.46019e-05 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R39 = 0.0500035 (/millisecond): a kinetic parameter
+	kf_R40 = 0.0500035 (/millisecond): a kinetic parameter
+	kr_R40 = 2.99985e-05 (/nanomole/liter-millisecond): a kinetic parameter
+	kf_R41 = 2.99985e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R41 = 0.001 (/millisecond): a kinetic parameter
-	kf_R42 = 0.0025 (/millisecond): a kinetic parameter
-	kf_R43 = 1e-09 (/nanomolarity-nanomolarity-millisecond): a kinetic parameter
+	kf_R42 = 0.00249977 (/millisecond): a kinetic parameter
+	kf_R43 = 1e-09 (/nanomole/liter^2-millisecond): a kinetic parameter
 	kr_R43 = 0.001 (/millisecond): a kinetic parameter
-	kf_R44 = 0.003 (/millisecond): a kinetic parameter
-	kf_R45 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R45 = 0.002 (/millisecond): a kinetic parameter
+	kf_R44 = 0.00299985 (/millisecond): a kinetic parameter
+	kf_R45 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R45 = 0.00199986 (/millisecond): a kinetic parameter
 	kf_R46 = 0.01 (/millisecond): a kinetic parameter
-	kf_R47 = 0.1 (/nanomolarity-millisecond): a kinetic parameter
-	kf_R48 = 2.55e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R47 = 0.1 (/nanomole/liter-millisecond): a kinetic parameter
+	kf_R48 = 2.54976e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R48 = 0.001 (/millisecond): a kinetic parameter
-	kf_R49 = 1e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R49 = 1e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R49 = 0.001 (/millisecond): a kinetic parameter
-	kf_R50 = 7.5e-08 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R50 = 7.50067e-08 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R50 = 0.001 (/millisecond): a kinetic parameter
-	kf_R51 = 1.3e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R51 = 1.29987e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R51 = 0.001 (/millisecond): a kinetic parameter
-	kf_R52 = 0.01 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R52 = 0.01 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R52 = 0.001 (/millisecond): a kinetic parameter
-	kf_R53 = 0.01 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R53 = 0.01 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R53 = 0.001 (/millisecond): a kinetic parameter
-	kf_R54 = 1e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R54 = 1e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R54 = 0.01 (/millisecond): a kinetic parameter
-	kf_R55 = 0.05 (/millisecond): a kinetic parameter
-	kf_R56 = 0.00255 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R55 = 0.0500035 (/millisecond): a kinetic parameter
+	kf_R56 = 0.00254976 (/nanomole/liter-millisecond): a kinetic parameter
 	kf_R57 = 0.001 (/millisecond): a kinetic parameter
-	kf_R58 = 2e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kf_R59 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R60 = 7.5e-07 (/nanomolarity-millisecond): a kinetic parameter
-	kf_R61 = 0.025 (/millisecond): a kinetic parameter
-	kf_R62 = 0.00065 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R58 = 1.99986e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kf_R59 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R60 = 7.50067e-07 (/nanomole/liter-millisecond): a kinetic parameter
+	kf_R61 = 0.0249977 (/millisecond): a kinetic parameter
+	kf_R62 = 0.00064998 (/nanomole/liter-millisecond): a kinetic parameter
 	kf_R63 = 0.001 (/millisecond): a kinetic parameter
 	kf_R64 = 0.001 (/millisecond): a kinetic parameter
 	kf_R65 = 0.001 (/millisecond): a kinetic parameter
 	kf_R66 = 0.001 (/millisecond): a kinetic parameter
-	kf_R67 = 6e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R67 = 6.00067e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R67 = 0.25 (/millisecond): a kinetic parameter
-	kf_R68 = 6e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R68 = 6.00067e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R68 = 0.25 (/millisecond): a kinetic parameter
-	kf_R69 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R69 = 0.002 (/millisecond): a kinetic parameter
-	kf_R70 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R70 = 0.04 (/millisecond): a kinetic parameter
-	kf_R71 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R69 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R69 = 0.00199986 (/millisecond): a kinetic parameter
+	kf_R70 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R70 = 0.0400037 (/millisecond): a kinetic parameter
+	kf_R71 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R71 = 0.4 (/millisecond): a kinetic parameter
-	kf_R72 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R72 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R72 = 4 (/millisecond): a kinetic parameter
-	kf_R73 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R73 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R73 = 0.1 (/millisecond): a kinetic parameter
-	kf_R74 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R74 = 0.002 (/millisecond): a kinetic parameter
-	kf_R75 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R74 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R74 = 0.00199986 (/millisecond): a kinetic parameter
+	kf_R75 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R75 = 0.01 (/millisecond): a kinetic parameter
-	kf_R76 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R76 = 0.002 (/millisecond): a kinetic parameter
-	kf_R77 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R77 = 0.0004 (/millisecond): a kinetic parameter
-	kf_R78 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R78 = 0.04 (/millisecond): a kinetic parameter
-	kf_R79 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R76 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R76 = 0.00199986 (/millisecond): a kinetic parameter
+	kf_R77 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R77 = 0.000400037 (/millisecond): a kinetic parameter
+	kf_R78 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R78 = 0.0400037 (/millisecond): a kinetic parameter
+	kf_R79 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R79 = 0.4 (/millisecond): a kinetic parameter
-	kf_R80 = 4.5e-05 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R80 = 4.49987e-05 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R80 = 0.2 (/millisecond): a kinetic parameter
 	kf_R81 = 0.01 (/millisecond): a kinetic parameter
-	kf_R82 = 0.0005 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R82 = 0.000500035 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R82 = 0.01 (/millisecond): a kinetic parameter
 	kf_R83 = 0.01 (/millisecond): a kinetic parameter
-	kf_R84 = 7e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R84 = 7.00003e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R84 = 0.1 (/millisecond): a kinetic parameter
 	kf_R85 = 0.001 (/millisecond): a kinetic parameter
-	kf_R86 = 4e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R86 = 4.00037e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R86 = 0.1 (/millisecond): a kinetic parameter
 	kf_R87 = 0.01 (/millisecond): a kinetic parameter
-	kf_R88 = 7e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R88 = 7.00003e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R88 = 0.1 (/millisecond): a kinetic parameter
 	kf_R89 = 0.001 (/millisecond): a kinetic parameter
-	kf_R90 = 4e-06 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R90 = 4.00037e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R90 = 0.1 (/millisecond): a kinetic parameter
-	kf_R91 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R91 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R91 = 0.001 (/millisecond): a kinetic parameter
 	kf_R92 = 0.01 (/millisecond): a kinetic parameter
-	kf_R93 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R93 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R93 = 0.01 (/millisecond): a kinetic parameter
 	kf_R94 = 0.01 (/millisecond): a kinetic parameter
 	kf_R95 = 0.0001 (/millisecond): a kinetic parameter
-	kf_R96 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R96 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R96 = 0.01 (/millisecond): a kinetic parameter
 	kf_R97 = 0.01 (/millisecond): a kinetic parameter
-	kf_R98 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R98 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R98 = 0.01 (/millisecond): a kinetic parameter
 	kf_R99 = 0.01 (/millisecond): a kinetic parameter
-	kf_R100 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R100 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R100 = 0.01 (/millisecond): a kinetic parameter
 	kf_R101 = 0.01 (/millisecond): a kinetic parameter
-	kf_R102 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R102 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R102 = 0.01 (/millisecond): a kinetic parameter
 	kf_R103 = 0.01 (/millisecond): a kinetic parameter
-	kf_R104 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R104 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R104 = 0.01 (/millisecond): a kinetic parameter
 	kf_R105 = 0.01 (/millisecond): a kinetic parameter
-	kf_R106 = 5e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R106 = 5.00035e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R106 = 0.01 (/millisecond): a kinetic parameter
 	kf_R107 = 0.01 (/millisecond): a kinetic parameter
-	kf_R108 = 0.0005 (/millisecond): a kinetic parameter
+	kf_R108 = 0.000500035 (/millisecond): a kinetic parameter
 	kr_R108 = 1e-06 (/millisecond): a kinetic parameter
-	kf_R109 = 0.0005 (/millisecond): a kinetic parameter
+	kf_R109 = 0.000500035 (/millisecond): a kinetic parameter
 	kr_R109 = 1e-06 (/millisecond): a kinetic parameter
-	kf_R110 = 0.0005 (/millisecond): a kinetic parameter
+	kf_R110 = 0.000500035 (/millisecond): a kinetic parameter
 	kr_R110 = 1e-06 (/millisecond): a kinetic parameter
-	kf_R111 = 0.0005 (/millisecond): a kinetic parameter
+	kf_R111 = 0.000500035 (/millisecond): a kinetic parameter
 	kr_R111 = 1e-06 (/millisecond): a kinetic parameter
-	kf_R112 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R112 = 0.0004 (/millisecond): a kinetic parameter
-	kf_R113 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R113 = 0.04 (/millisecond): a kinetic parameter
-	kf_R114 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R112 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R112 = 0.000400037 (/millisecond): a kinetic parameter
+	kf_R113 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R113 = 0.0400037 (/millisecond): a kinetic parameter
+	kf_R114 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R114 = 0.4 (/millisecond): a kinetic parameter
-	kf_R115 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R115 = 0.002 (/millisecond): a kinetic parameter
-	kf_R116 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R115 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R115 = 0.00199986 (/millisecond): a kinetic parameter
+	kf_R116 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R116 = 0.01 (/millisecond): a kinetic parameter
-	kf_R117 = 8e-07 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R117 = 8.00018e-07 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R117 = 0.001 (/millisecond): a kinetic parameter
 	kf_R118 = 0.001 (/millisecond): a kinetic parameter
-	kf_R119 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R120 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R120 = 0.04 (/millisecond): a kinetic parameter
-	kf_R121 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R119 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R120 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R120 = 0.0400037 (/millisecond): a kinetic parameter
+	kf_R121 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R121 = 0.4 (/millisecond): a kinetic parameter
-	kf_R122 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R122 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R122 = 4 (/millisecond): a kinetic parameter
-	kf_R123 = 0.0001 (/nanomolarity-millisecond): a kinetic parameter
+	kf_R123 = 0.0001 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R123 = 0.1 (/millisecond): a kinetic parameter
-	kf_R124 = 6e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R124 = 0.002 (/millisecond): a kinetic parameter
-	kf_R125 = 0.0005 (/millisecond): a kinetic parameter
-	kr_R125 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R126 = 0.0005 (/millisecond): a kinetic parameter
-	kr_R126 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R127 = 0.0005 (/millisecond): a kinetic parameter
-	kr_R127 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R128 = 5.7e-08 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R128 = 1.5e-05 (/millisecond): a kinetic parameter
-	kf_R129 = 9.5036 (/millisecond): a kinetic parameter
-	kf_R130 = 1.5e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R130 = 2.3364 (/millisecond): a kinetic parameter
-	kf_R131 = 3.7142 (/millisecond): a kinetic parameter
-	kf_R132 = 5.7e-08 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R132 = 1.5e-05 (/millisecond): a kinetic parameter
-	kf_R133 = 9.5036 (/millisecond): a kinetic parameter
-	kf_R134 = 1.5e-06 (/nanomolarity-millisecond): a kinetic parameter
-	kr_R134 = 2.3364 (/millisecond): a kinetic parameter
-	kf_R135 = 3.7142 (/millisecond): a kinetic parameter
-	kf_R136 = 0.0005 (/millisecond): a kinetic parameter
-	kr_R136 = 0.0005 (/millisecond): a kinetic parameter
-	kf_R137 = 1e-06 (/millisecond): a kinetic parameter
-	kr_R137 = 0.0005 (/millisecond): a kinetic parameter
-
-	tau_DA1 = 5 (millisecond) : a constant
-	tau_DA2 = 100 (millisecond) : a constant
-	DA_max = 1500 (nanomolarity) : a constant
-	DA_basal = 20 (nanomolarity) : a constant
-	Ca_basal = 60 (nanomolarity) : a constant
-
+	kf_R124 = 6.00067e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R124 = 0.00199986 (/millisecond): a kinetic parameter
+	kf_R125 = 0.000500035 (/millisecond): a kinetic parameter
+	kr_R125 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R126 = 0.000500035 (/millisecond): a kinetic parameter
+	kr_R126 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R127 = 0.000500035 (/millisecond): a kinetic parameter
+	kr_R127 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R128 = 0.000500035 (/millisecond): a kinetic parameter
+	kr_R128 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R129 = 1e-06 (/millisecond): a kinetic parameter
+	kr_R129 = 0.000500035 (/millisecond): a kinetic parameter
+	kf_R130 = 3.59998e-07 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R130 = 0.0229985 (/millisecond): a kinetic parameter
+	kf_R131 = 0.00390032 (/millisecond): a kinetic parameter
+	kf_R132 = 1.10002e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R132 = 0.00540008 (/millisecond): a kinetic parameter
+	kf_R133 = 10 (/millisecond): a kinetic parameter
+	kf_R134 = 3.59998e-07 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R134 = 0.0229985 (/millisecond): a kinetic parameter
+	kf_R135 = 0.00390032 (/millisecond): a kinetic parameter
+	kf_R136 = 1.10002e-06 (/nanomole/liter-millisecond): a kinetic parameter
+	kr_R136 = 0.00540008 (/millisecond): a kinetic parameter
+	kf_R137 = 10 (/millisecond): a kinetic parameter
 }
 ASSIGNED {
-	ATP (nanomolarity)
+	time (millisecond) : alias for t
 	ATP_expression : a pre-defined algebraic expression
 	Ca_expression : a pre-defined algebraic expression
-	DA_Tpk (millisecond): a pre-defined algebraic expression
-	DA_scale_factor (nanomolarity): a pre-defined algebraic expression
-	:switch_on : a pre-defined algebraic expression
-	DA_expression (nanomolarity): a pre-defined algebraic expression
-	a1 : a pre-defined algebraic expression
-	e1 : a pre-defined algebraic expression
-	a2 : a pre-defined algebraic expression
-	e2 : a pre-defined algebraic expression
-	DA_time_course (nanomolarity): a pre-defined algebraic expression
-	ReactionFlux0 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux1 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux2 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux3 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux4 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux5 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux6 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux7 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux8 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux9 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux10 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux11 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux12 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux13 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux14 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux15 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux16 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux17 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux18 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux19 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux20 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux21 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux22 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux23 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux24 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux25 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux26 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux27 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux28 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux29 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux30 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux31 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux32 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux33 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux34 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux35 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux36 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux37 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux38 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux39 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux40 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux41 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux42 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux43 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux44 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux45 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux46 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux47 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux48 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux49 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux50 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux51 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux52 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux53 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux54 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux55 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux56 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux57 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux58 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux59 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux60 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux61 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux62 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux63 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux64 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux65 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux66 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux67 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux68 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux69 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux70 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux71 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux72 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux73 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux74 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux75 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux76 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux77 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux78 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux79 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux80 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux81 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux82 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux83 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux84 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux85 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux86 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux87 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux88 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux89 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux90 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux91 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux92 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux93 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux94 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux95 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux96 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux97 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux98 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux99 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux100 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux101 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux102 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux103 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux104 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux105 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux106 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux107 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux108 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux109 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux110 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux111 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux112 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux113 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux114 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux115 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux116 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux117 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux118 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux119 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux120 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux121 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux122 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux123 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux124 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux125 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux126 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux127 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux128 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux129 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux130 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux131 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux132 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux133 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux134 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux135 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux136 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	ReactionFlux137 (nanomolarity/millisecond): a flux, for use in DERIVATIVE mechanism
-	DA_start (millisecond): = 100 an input
-	DA (nanomolarity)
-	pSubstrate_out (nanomolarity): an observable
-	PP1_out (nanomolarity): an observable
-	CaM_out (nanomolarity): an observable
-	D32_out (nanomolarity): an observable
-	Ca (nanomolarity)
-	ca_nmdai (millimolarity)
+	DA_expression : a pre-defined algebraic expression
+	AMP : a pre-defined algebraic expression
+	ATP : a pre-defined algebraic expression
+	Ca : a pre-defined algebraic expression
+	DA : a pre-defined algebraic expression
+	ReactionFlux0 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux1 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux2 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux3 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux4 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux5 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux6 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux7 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux8 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux9 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux10 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux11 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux12 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux13 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux14 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux15 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux16 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux17 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux18 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux19 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux20 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux21 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux22 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux23 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux24 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux25 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux26 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux27 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux28 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux29 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux30 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux31 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux32 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux33 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux34 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux35 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux36 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux37 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux38 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux39 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux40 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux41 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux42 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux43 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux44 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux45 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux46 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux47 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux48 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux49 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux50 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux51 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux52 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux53 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux54 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux55 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux56 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux57 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux58 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux59 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux60 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux61 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux62 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux63 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux64 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux65 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux66 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux67 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux68 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux69 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux70 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux71 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux72 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux73 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux74 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux75 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux76 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux77 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux78 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux79 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux80 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux81 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux82 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux83 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux84 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux85 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux86 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux87 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux88 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux89 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux90 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux91 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux92 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux93 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux94 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux95 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux96 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux97 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux98 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux99 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux100 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux101 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux102 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux103 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux104 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux105 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux106 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux107 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux108 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux109 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux110 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux111 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux112 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux113 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux114 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux115 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux116 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux117 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux118 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux119 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux120 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux121 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux122 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux123 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux124 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux125 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux126 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux127 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux128 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux129 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux130 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux131 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux132 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux133 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux134 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux135 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux136 : a flux, for use in DERIVATIVE mechanism
+	ReactionFlux137 : a flux, for use in DERIVATIVE mechanism
+	pSubstrate_out : an observable
+	PP1_out : an observable
+	CaM_out : an observable
+	D32_out : an observable
+	ca_nmdai
 }
 PROCEDURE assign_calculated_values() {
-
+	time = t : an alias for the time variable, if needed.
 	ATP_expression = 5000000 : assignment for expression EX0
-	ATP = ATP_expression	
-	Ca_expression = -1 : assignment for expression EX1
-	DA_Tpk = tau_DA1*tau_DA2 / (tau_DA2 - tau_DA1) * log(tau_DA2/tau_DA1) : assignment for expression EX2
-	DA_scale_factor = DA_max / ( exp(-DA_Tpk/tau_DA1) - exp(-DA_Tpk/tau_DA2) ) : assignment for expression EX3
-	
-	if (t>DA_start) {
-	   a1 = - (t - DA_start) / tau_DA1 : assignment for expression EX6
-	   e1 = exp(a1) : assignment for expression EX7
-	   a2 = - (t - DA_start) / tau_DA2 : assignment for expression EX8
-	   e2 = exp(a2) : assignment for expression EX9
-	   DA_time_course = DA_scale_factor * (e1 - e2)
-	   DA_expression = DA_basal + DA_time_course : assignment for expression 		   EX5 : assignment for expression EX10
-        }  else {
-	   DA_expression = DA_basal
-	}
-	DA = DA_expression
- 	Ca = ca_nmdai*(1e6)
+	Ca_expression = 0 : assignment for expression EX1
+	DA_expression = DA_basal+(1/(1+exp((-10E+10)*(time-DA_start)))*(DA_max/(exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA1)-exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA2))*(exp(-(time-DA_start)/tau_DA1)-exp(-(time-DA_start)/tau_DA2)))) : assignment for expression EX2
+	AMP = 0 : assignment for expression S8
+	ATP = 5e+06 : assignment for expression S9
+	Ca = ca_nmdai*(1e6) : assignment for expression S24
+	DA = DA_expression : assignment for expression S47
 	ReactionFlux0 = kf_R0*GaolfGTP : flux expression R0
 	ReactionFlux1 = kf_R1*D1R_Golf_DA : flux expression R1
 	ReactionFlux2 = kf_R2*D1R_Golf*DA-kr_R2*D1R_Golf_DA : flux expression R2
@@ -669,118 +639,113 @@ PROCEDURE assign_calculated_values() {
 	ReactionFlux125 = kf_R125*CaMKII_CaM-kr_R125*CaMKII_CaM_psd : flux expression R125
 	ReactionFlux126 = kf_R126*CaMKII_CaM_Ca2-kr_R126*CaMKII_CaM_Ca2_psd : flux expression R126
 	ReactionFlux127 = kf_R127*CaMKII_CaM_Ca4-kr_R127*CaMKII_CaM_Ca4_psd : flux expression R127
-	ReactionFlux128 = kf_R128*CaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R128*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R128
-	ReactionFlux129 = kf_R129*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R129
-	ReactionFlux130 = kf_R130*pCaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R130*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R130
-	ReactionFlux131 = kf_R131*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R131
-	ReactionFlux132 = kf_R132*CaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R132*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R132
-	ReactionFlux133 = kf_R133*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R133
-	ReactionFlux134 = kf_R134*pCaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R134*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R134
-	ReactionFlux135 = kf_R135*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R135
-	ReactionFlux136 = kf_R136*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R136*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R136
-	ReactionFlux137 = kf_R137*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R137*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R137
+	ReactionFlux128 = kf_R128*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R128*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R128
+	ReactionFlux129 = kf_R129*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd-kr_R129*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R129
+	ReactionFlux130 = kf_R130*CaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R130*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R130
+	ReactionFlux131 = kf_R131*CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R131
+	ReactionFlux132 = kf_R132*pCaMKII_CaM_Ca4*CaMKII_CaM_Ca4-kr_R132*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R132
+	ReactionFlux133 = kf_R133*pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 : flux expression R133
+	ReactionFlux134 = kf_R134*CaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R134*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R134
+	ReactionFlux135 = kf_R135*CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R135
+	ReactionFlux136 = kf_R136*pCaMKII_CaM_Ca4_psd*CaMKII_CaM_Ca4_psd-kr_R136*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R136
+	ReactionFlux137 = kf_R137*pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd : flux expression R137
 }
 STATE {
-	AC5 (nanomolarity) : a state variable
-	AC5_ATP (nanomolarity) : a state variable
-	AC5_Ca (nanomolarity) : a state variable
-	AC5_Ca_ATP (nanomolarity) : a state variable
-	AC5_Ca_GaolfGTP (nanomolarity) : a state variable
-	AC5_Ca_GaolfGTP_ATP (nanomolarity) : a state variable
-	AC5_GaolfGTP (nanomolarity) : a state variable
-	AC5_GaolfGTP_ATP (nanomolarity) : a state variable
-	AMP (nanomolarity) : a state variable
-	:ATP (nanomolarity) : a state variable
-	B56PP2A (nanomolarity) : a state variable
-	B56PP2A_D32p75 (nanomolarity) : a state variable
-	B56PP2A_pARPP21 (nanomolarity) : a state variable
-	B56PP2Ap (nanomolarity) : a state variable
-	B56PP2Ap_D32p75 (nanomolarity) : a state variable
-	B56PP2Ap_pARPP21 (nanomolarity) : a state variable
-	B72PP2A (nanomolarity) : a state variable
-	B72PP2A_D32p34 (nanomolarity) : a state variable
-	B72PP2A_D32p75 (nanomolarity) : a state variable
-	B72PP2A_pARPP21 (nanomolarity) : a state variable
-	B72PP2A_Ca_D32p34 (nanomolarity) : a state variable
-	B72PP2A_Ca_D32p75 (nanomolarity) : a state variable
-	B72PP2A_Ca (nanomolarity) : a state variable
-	B72PP2A_Ca_pARPP21 (nanomolarity) : a state variable
-	:Ca (nanomolarity) : a state variable
-	CaM (nanomolarity) : a state variable
-	CaM_Ca2 (nanomolarity) : a state variable
-	CaM_Ca4 (nanomolarity) : a state variable
-	CaM_Ca4_pARPP21 (nanomolarity) : a state variable
-	CaMKII (nanomolarity) : a state variable
-	CaMKII_CaM_Ca4 (nanomolarity) : a state variable
-	CaMKII_CaM (nanomolarity) : a state variable
-	CaMKII_CaM_Ca2 (nanomolarity) : a state variable
-	CaMKII_CaM_Ca2_psd (nanomolarity) : a state variable
-	CaMKII_CaM_psd (nanomolarity) : a state variable
-	CaMKII_CaM_Ca4_psd (nanomolarity) : a state variable
-	CaMKII_psd (nanomolarity) : a state variable
-	cAMP (nanomolarity) : a state variable
-	Substrate (nanomolarity) : a state variable
-	CDK5 (nanomolarity) : a state variable
-	CDK5_D32 (nanomolarity) : a state variable
-	D1R (nanomolarity) : a state variable
-	D1R_DA (nanomolarity) : a state variable
-	D1R_Golf_DA (nanomolarity) : a state variable
-	D1R_Golf (nanomolarity) : a state variable
-	D32p34 (nanomolarity) : a state variable
-	D32p75 (nanomolarity) : a state variable
-	:DA (nanomolarity) : a state variable
-	D32 (nanomolarity) : a state variable
-	GaolfGDP (nanomolarity) : a state variable
-	GaolfGTP (nanomolarity) : a state variable
-	Gbgolf (nanomolarity) : a state variable
-	Golf (nanomolarity) : a state variable
-	pCaMKII (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca4 (nanomolarity) : a state variable
-	pCaMKII_CaM (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca2 (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca2_psd (nanomolarity) : a state variable
-	pCaMKII_CaM_psd (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca4_psd (nanomolarity) : a state variable
-	pCaMKII_psd (nanomolarity) : a state variable
-	pSubstrate (nanomolarity) : a state variable
-	PDE4 (nanomolarity) : a state variable
-	PDE4_cAMP (nanomolarity) : a state variable
-	PDE10r (nanomolarity) : a state variable
-	PDE10r_cAMP (nanomolarity) : a state variable
-	PDE10c (nanomolarity) : a state variable
-	PDE10c_cAMP (nanomolarity) : a state variable
-	PKA (nanomolarity) : a state variable
-	PKAc (nanomolarity) : a state variable
-	PKAc_B56PP2A (nanomolarity) : a state variable
-	PKAc_D32 (nanomolarity) : a state variable
-	PKAc_ARPP21 (nanomolarity) : a state variable
-	PKA_Ca2MP (nanomolarity) : a state variable
-	PKA_Ca4MP (nanomolarity) : a state variable
-	PKAc_D32p75 (nanomolarity) : a state variable
-	PKAreg (nanomolarity) : a state variable
-	PP1 (nanomolarity) : a state variable
-	PP1_pCaMKII_psd (nanomolarity) : a state variable
-	PP1_pSubstrate (nanomolarity) : a state variable
-	PP1_D32p34 (nanomolarity) : a state variable
-	CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd (nanomolarity) : a state variable
-	CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 (nanomolarity) : a state variable
-	PP2B (nanomolarity) : a state variable
-	PP2Bc (nanomolarity) : a state variable
-	PP2Bc_D32p34 (nanomolarity) : a state variable
-	PP2B_CaM (nanomolarity) : a state variable
-	PP2B_CaM_Ca2 (nanomolarity) : a state variable
-	pARPP21 (nanomolarity) : a state variable
-	ARPP21 (nanomolarity) : a state variable
-	pCaMKII_psd_Substrate (nanomolarity) : a state variable
-	pCaMKII_CaM_psd_Substrate (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca2_psd_Substrate (nanomolarity) : a state variable
-	pCaMKII_CaM_Ca4_psd_Substrate (nanomolarity) : a state variable
-	CaMKII_CaM_psd_Substrate (nanomolarity) : a state variable
-	CaMKII_CaM_Ca2_psd_Substrate (nanomolarity) : a state variable
-	CaMKII_CaM_Ca4_psd_Substrate (nanomolarity) : a state variable
-
+	AC5 (nanomole/liter) : a state variable
+	AC5_ATP (nanomole/liter) : a state variable
+	AC5_Ca (nanomole/liter) : a state variable
+	AC5_Ca_ATP (nanomole/liter) : a state variable
+	AC5_Ca_GaolfGTP (nanomole/liter) : a state variable
+	AC5_Ca_GaolfGTP_ATP (nanomole/liter) : a state variable
+	AC5_GaolfGTP (nanomole/liter) : a state variable
+	AC5_GaolfGTP_ATP (nanomole/liter) : a state variable
+	B56PP2A (nanomole/liter) : a state variable
+	B56PP2A_D32p75 (nanomole/liter) : a state variable
+	B56PP2A_pARPP21 (nanomole/liter) : a state variable
+	B56PP2Ap (nanomole/liter) : a state variable
+	B56PP2Ap_D32p75 (nanomole/liter) : a state variable
+	B56PP2Ap_pARPP21 (nanomole/liter) : a state variable
+	B72PP2A (nanomole/liter) : a state variable
+	B72PP2A_D32p34 (nanomole/liter) : a state variable
+	B72PP2A_D32p75 (nanomole/liter) : a state variable
+	B72PP2A_pARPP21 (nanomole/liter) : a state variable
+	B72PP2A_Ca_D32p34 (nanomole/liter) : a state variable
+	B72PP2A_Ca_D32p75 (nanomole/liter) : a state variable
+	B72PP2A_Ca (nanomole/liter) : a state variable
+	B72PP2A_Ca_pARPP21 (nanomole/liter) : a state variable
+	CaM (nanomole/liter) : a state variable
+	CaM_Ca2 (nanomole/liter) : a state variable
+	CaM_Ca4 (nanomole/liter) : a state variable
+	CaM_Ca4_pARPP21 (nanomole/liter) : a state variable
+	CaMKII (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca4 (nanomole/liter) : a state variable
+	CaMKII_CaM (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca2 (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca2_psd (nanomole/liter) : a state variable
+	CaMKII_CaM_psd (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca4_psd (nanomole/liter) : a state variable
+	CaMKII_psd (nanomole/liter) : a state variable
+	cAMP (nanomole/liter) : a state variable
+	Substrate (nanomole/liter) : a state variable
+	CDK5 (nanomole/liter) : a state variable
+	CDK5_D32 (nanomole/liter) : a state variable
+	D1R (nanomole/liter) : a state variable
+	D1R_DA (nanomole/liter) : a state variable
+	D1R_Golf_DA (nanomole/liter) : a state variable
+	D1R_Golf (nanomole/liter) : a state variable
+	D32p34 (nanomole/liter) : a state variable
+	D32p75 (nanomole/liter) : a state variable
+	D32 (nanomole/liter) : a state variable
+	GaolfGDP (nanomole/liter) : a state variable
+	GaolfGTP (nanomole/liter) : a state variable
+	Gbgolf (nanomole/liter) : a state variable
+	Golf (nanomole/liter) : a state variable
+	pCaMKII (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca4 (nanomole/liter) : a state variable
+	pCaMKII_CaM (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca2 (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca2_psd (nanomole/liter) : a state variable
+	pCaMKII_CaM_psd (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca4_psd (nanomole/liter) : a state variable
+	pCaMKII_psd (nanomole/liter) : a state variable
+	pSubstrate (nanomole/liter) : a state variable
+	PDE4 (nanomole/liter) : a state variable
+	PDE4_cAMP (nanomole/liter) : a state variable
+	PDE10r (nanomole/liter) : a state variable
+	PDE10r_cAMP (nanomole/liter) : a state variable
+	PDE10c (nanomole/liter) : a state variable
+	PDE10c_cAMP (nanomole/liter) : a state variable
+	PKA (nanomole/liter) : a state variable
+	PKAc (nanomole/liter) : a state variable
+	PKAc_B56PP2A (nanomole/liter) : a state variable
+	PKAc_D32 (nanomole/liter) : a state variable
+	PKAc_ARPP21 (nanomole/liter) : a state variable
+	PKA_Ca2MP (nanomole/liter) : a state variable
+	PKA_Ca4MP (nanomole/liter) : a state variable
+	PKAc_D32p75 (nanomole/liter) : a state variable
+	PKAreg (nanomole/liter) : a state variable
+	PP1 (nanomole/liter) : a state variable
+	PP1_pCaMKII_psd (nanomole/liter) : a state variable
+	PP1_pSubstrate (nanomole/liter) : a state variable
+	PP1_D32p34 (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca4_CaMKII_CaM_Ca4 (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4 (nanomole/liter) : a state variable
+	PP2B (nanomole/liter) : a state variable
+	PP2Bc (nanomole/liter) : a state variable
+	PP2Bc_D32p34 (nanomole/liter) : a state variable
+	PP2B_CaM (nanomole/liter) : a state variable
+	PP2B_CaM_Ca2 (nanomole/liter) : a state variable
+	pARPP21 (nanomole/liter) : a state variable
+	ARPP21 (nanomole/liter) : a state variable
+	pCaMKII_psd_Substrate (nanomole/liter) : a state variable
+	pCaMKII_CaM_psd_Substrate (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca2_psd_Substrate (nanomole/liter) : a state variable
+	pCaMKII_CaM_Ca4_psd_Substrate (nanomole/liter) : a state variable
+	CaMKII_CaM_psd_Substrate (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca2_psd_Substrate (nanomole/liter) : a state variable
+	CaMKII_CaM_Ca4_psd_Substrate (nanomole/liter) : a state variable
 }
 INITIAL {
 	 AC5 = 700 : initial condition
@@ -791,8 +756,6 @@ INITIAL {
 	 AC5_Ca_GaolfGTP_ATP = 0 : initial condition
 	 AC5_GaolfGTP = 0 : initial condition
 	 AC5_GaolfGTP_ATP = 0 : initial condition
-	 AMP = 0 : initial condition
-	 ATP = 5e+06 : initial condition
 	 B56PP2A = 2000 : initial condition
 	 B56PP2A_D32p75 = 0 : initial condition
 	 B56PP2A_pARPP21 = 0 : initial condition
@@ -807,7 +770,6 @@ INITIAL {
 	 B72PP2A_Ca_D32p75 = 0 : initial condition
 	 B72PP2A_Ca = 0 : initial condition
 	 B72PP2A_Ca_pARPP21 = 0 : initial condition
-	 Ca = 60 : initial condition
 	 CaM = 9000 : initial condition
 	 CaM_Ca2 = 0 : initial condition
 	 CaM_Ca4 = 0 : initial condition
@@ -830,7 +792,6 @@ INITIAL {
 	 D1R_Golf = 0 : initial condition
 	 D32p34 = 0 : initial condition
 	 D32p75 = 0 : initial condition
-	 DA = 20 : initial condition
 	 D32 = 50000 : initial condition
 	 GaolfGDP = 0 : initial condition
 	 GaolfGTP = 0 : initial condition
@@ -896,8 +857,6 @@ DERIVATIVE ode {
 	AC5_Ca_GaolfGTP_ATP' = ReactionFlux51+ReactionFlux53-ReactionFlux61+ReactionFlux62-ReactionFlux66 : affects compound with ID S5
 	AC5_GaolfGTP' = ReactionFlux4-ReactionFlux48+ReactionFlux55-ReactionFlux56-ReactionFlux63 : affects compound with ID S6
 	AC5_GaolfGTP_ATP' = ReactionFlux48+ReactionFlux52-ReactionFlux55+ReactionFlux56-ReactionFlux65 : affects compound with ID S7
-	:AMP' = ReactionFlux42+ReactionFlux44+ReactionFlux46 : affects compound with ID S8
-	:ATP' = -ReactionFlux48-ReactionFlux49-ReactionFlux50-ReactionFlux51 : affects compound with ID S9
 	B56PP2A' = -ReactionFlux10-ReactionFlux30+ReactionFlux31+ReactionFlux37+ReactionFlux89-ReactionFlux90 : affects compound with ID S10
 	B56PP2A_D32p75' = ReactionFlux30-ReactionFlux31 : affects compound with ID S11
 	B56PP2A_pARPP21' = -ReactionFlux89+ReactionFlux90 : affects compound with ID S12
@@ -912,18 +871,17 @@ DERIVATIVE ode {
 	B72PP2A_Ca_D32p75' = ReactionFlux19-ReactionFlux22 : affects compound with ID S21
 	B72PP2A_Ca' = ReactionFlux16-ReactionFlux19+ReactionFlux22+ReactionFlux32-ReactionFlux34+ReactionFlux83-ReactionFlux84 : affects compound with ID S22
 	B72PP2A_Ca_pARPP21' = -ReactionFlux83+ReactionFlux84 : affects compound with ID S23
-	:Ca' = (-ReactionFlux5-ReactionFlux16-ReactionFlux24-ReactionFlux25-ReactionFlux26-ReactionFlux28-ReactionFlux54-ReactionFlux73-ReactionFlux74-ReactionFlux75-ReactionFlux76-ReactionFlux115-ReactionFlux116-ReactionFlux123-ReactionFlux124) : affects compound with ID S24
 	CaM' = -ReactionFlux5-ReactionFlux6-ReactionFlux72-ReactionFlux79-ReactionFlux114-ReactionFlux122 : affects compound with ID S25
 	CaM_Ca2' = ReactionFlux5-ReactionFlux24-ReactionFlux27-ReactionFlux71-ReactionFlux78-ReactionFlux113-ReactionFlux121 : affects compound with ID S26
 	CaM_Ca4' = -ReactionFlux7+ReactionFlux24-ReactionFlux70-ReactionFlux77-ReactionFlux82-ReactionFlux112-ReactionFlux120 : affects compound with ID S27
 	CaM_Ca4_pARPP21' = ReactionFlux82 : affects compound with ID S28
 	CaMKII' = -ReactionFlux70-ReactionFlux71-ReactionFlux72+ReactionFlux95+ReactionFlux119 : affects compound with ID S29
-	CaMKII_CaM_Ca4' = ReactionFlux70+ReactionFlux73-ReactionFlux127-ReactionFlux128-ReactionFlux128+ReactionFlux129-ReactionFlux130 : affects compound with ID S30
+	CaMKII_CaM_Ca4' = ReactionFlux70+ReactionFlux73-ReactionFlux127-ReactionFlux130-ReactionFlux130+ReactionFlux131-ReactionFlux132 : affects compound with ID S30
 	CaMKII_CaM' = ReactionFlux72-ReactionFlux74-ReactionFlux125 : affects compound with ID S31
 	CaMKII_CaM_Ca2' = ReactionFlux71-ReactionFlux73+ReactionFlux74-ReactionFlux126 : affects compound with ID S32
 	CaMKII_CaM_Ca2_psd' = -ReactionFlux104+ReactionFlux105+ReactionFlux121-ReactionFlux123+ReactionFlux124+ReactionFlux126 : affects compound with ID S33
 	CaMKII_CaM_psd' = -ReactionFlux102+ReactionFlux103+ReactionFlux122-ReactionFlux124+ReactionFlux125 : affects compound with ID S34
-	CaMKII_CaM_Ca4_psd' = -ReactionFlux106+ReactionFlux107+ReactionFlux120+ReactionFlux123+ReactionFlux127-ReactionFlux132-ReactionFlux132+ReactionFlux133-ReactionFlux134 : affects compound with ID S35
+	CaMKII_CaM_Ca4_psd' = -ReactionFlux106+ReactionFlux107+ReactionFlux120+ReactionFlux123+ReactionFlux127-ReactionFlux134-ReactionFlux134+ReactionFlux135-ReactionFlux136 : affects compound with ID S35
 	CaMKII_psd' = ReactionFlux118-ReactionFlux119-ReactionFlux120-ReactionFlux121-ReactionFlux122 : affects compound with ID S36
 	cAMP' = -ReactionFlux38-ReactionFlux39-ReactionFlux41-2*ReactionFlux43-ReactionFlux45+ReactionFlux55-ReactionFlux56+ReactionFlux57-ReactionFlux58+ReactionFlux59-ReactionFlux60+ReactionFlux61-ReactionFlux62-ReactionFlux69 : affects compound with ID S37
 	Substrate' = ReactionFlux92-ReactionFlux93-ReactionFlux96-ReactionFlux98-ReactionFlux100-ReactionFlux102-ReactionFlux104-ReactionFlux106 : affects compound with ID S38
@@ -935,19 +893,18 @@ DERIVATIVE ode {
 	D1R_Golf' = -ReactionFlux2+ReactionFlux67 : affects compound with ID S44
 	D32p34' = ReactionFlux9-ReactionFlux12-ReactionFlux23-ReactionFlux34-ReactionFlux35 : affects compound with ID S45
 	D32p75' = ReactionFlux14-ReactionFlux15-ReactionFlux17-ReactionFlux18-ReactionFlux19-ReactionFlux30 : affects compound with ID S46
-	:DA' = -ReactionFlux2-ReactionFlux3 : affects compound with ID S47
 	D32' = -ReactionFlux8-ReactionFlux13+ReactionFlux20+ReactionFlux21+ReactionFlux22+ReactionFlux31+ReactionFlux32+ReactionFlux33+ReactionFlux36 : affects compound with ID S48
 	GaolfGDP' = ReactionFlux0-ReactionFlux47+ReactionFlux63+ReactionFlux64+ReactionFlux65+ReactionFlux66 : affects compound with ID S49
 	GaolfGTP' = -ReactionFlux0+ReactionFlux1-ReactionFlux4-ReactionFlux29-ReactionFlux52-ReactionFlux53 : affects compound with ID S50
 	Gbgolf' = ReactionFlux1-ReactionFlux47 : affects compound with ID S51
 	Golf' = ReactionFlux47-ReactionFlux67-ReactionFlux68 : affects compound with ID S52
 	pCaMKII' = -ReactionFlux77-ReactionFlux78-ReactionFlux79-ReactionFlux95-ReactionFlux111 : affects compound with ID S53
-	pCaMKII_CaM_Ca4' = ReactionFlux75+ReactionFlux77-ReactionFlux108+ReactionFlux129-ReactionFlux130+ReactionFlux131+ReactionFlux131 : affects compound with ID S54
+	pCaMKII_CaM_Ca4' = ReactionFlux75+ReactionFlux77-ReactionFlux108+ReactionFlux131-ReactionFlux132+ReactionFlux133+ReactionFlux133 : affects compound with ID S54
 	pCaMKII_CaM' = -ReactionFlux76+ReactionFlux79-ReactionFlux110 : affects compound with ID S55
 	pCaMKII_CaM_Ca2' = -ReactionFlux75+ReactionFlux76+ReactionFlux78-ReactionFlux109 : affects compound with ID S56
 	pCaMKII_CaM_Ca2_psd' = -ReactionFlux98+ReactionFlux99+ReactionFlux109+ReactionFlux113+ReactionFlux115-ReactionFlux116 : affects compound with ID S57
 	pCaMKII_CaM_psd' = -ReactionFlux96+ReactionFlux97+ReactionFlux110+ReactionFlux114-ReactionFlux115 : affects compound with ID S58
-	pCaMKII_CaM_Ca4_psd' = -ReactionFlux100+ReactionFlux101+ReactionFlux108+ReactionFlux112+ReactionFlux116+ReactionFlux133-ReactionFlux134+ReactionFlux135+ReactionFlux135 : affects compound with ID S59
+	pCaMKII_CaM_Ca4_psd' = -ReactionFlux100+ReactionFlux101+ReactionFlux108+ReactionFlux112+ReactionFlux116+ReactionFlux135-ReactionFlux136+ReactionFlux137+ReactionFlux137 : affects compound with ID S59
 	pCaMKII_psd' = -ReactionFlux93+ReactionFlux94+ReactionFlux111-ReactionFlux112-ReactionFlux113-ReactionFlux114-ReactionFlux117 : affects compound with ID S60
 	pSubstrate' = -ReactionFlux91+ReactionFlux94+ReactionFlux97+ReactionFlux99+ReactionFlux101+ReactionFlux103+ReactionFlux105+ReactionFlux107 : affects compound with ID S61
 	PDE4' = -ReactionFlux41+ReactionFlux42 : affects compound with ID S62
@@ -969,10 +926,10 @@ DERIVATIVE ode {
 	PP1_pCaMKII_psd' = ReactionFlux117-ReactionFlux118 : affects compound with ID S78
 	PP1_pSubstrate' = ReactionFlux91-ReactionFlux92 : affects compound with ID S79
 	PP1_D32p34' = ReactionFlux12 : affects compound with ID S80
-	CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd' = ReactionFlux132-ReactionFlux133-ReactionFlux136 : affects compound with ID S81
-	pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd' = ReactionFlux134-ReactionFlux135-ReactionFlux137 : affects compound with ID S82
-	CaMKII_CaM_Ca4_CaMKII_CaM_Ca4' = ReactionFlux128-ReactionFlux129+ReactionFlux136 : affects compound with ID S83
-	pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4' = ReactionFlux130-ReactionFlux131+ReactionFlux137 : affects compound with ID S84
+	CaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd' = -ReactionFlux128+ReactionFlux134-ReactionFlux135 : affects compound with ID S81
+	pCaMKII_CaM_Ca4_psd_CaMKII_CaM_Ca4_psd' = -ReactionFlux129+ReactionFlux136-ReactionFlux137 : affects compound with ID S82
+	CaMKII_CaM_Ca4_CaMKII_CaM_Ca4' = ReactionFlux128+ReactionFlux130-ReactionFlux131 : affects compound with ID S83
+	pCaMKII_CaM_Ca4_CaMKII_CaM_Ca4' = ReactionFlux129+ReactionFlux132-ReactionFlux133 : affects compound with ID S84
 	PP2B' = -ReactionFlux6-ReactionFlux7-ReactionFlux27 : affects compound with ID S85
 	PP2Bc' = ReactionFlux7-ReactionFlux23+ReactionFlux26+ReactionFlux36 : affects compound with ID S86
 	PP2Bc_D32p34' = ReactionFlux23-ReactionFlux36 : affects compound with ID S87
