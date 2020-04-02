@@ -13,6 +13,7 @@ import random as rnd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+import json
 
 class Timing_Experiment(e.Experiment):
     
@@ -97,7 +98,6 @@ class Timing_Experiment(e.Experiment):
                             syn = self.cell.insert_synapse('glutamate_ica_nmda', self.cell.dendlist[loc], pos, 
                                                            add_spine = add_spine, on_spine = on_spine)
                             self.add_input_generator(syn, 'glutamate_ica_nmda')
-    #                        h.setpointer(h._ref_dopamine, 'dopamine', syn.obj)
                             print(self.cell.dendlist[loc].name(), "%f" % (h.distance(llim, sec = self.cell.dendlist[loc])))
                 
                 elif (type(syn_loc) == dict):
@@ -107,7 +107,6 @@ class Timing_Experiment(e.Experiment):
                                                            syn_loc['pos'][ind], add_spine = add_spine, on_spine = on_spine)
                             self.add_input_generator(syn, 'glutamate_ica_nmda', 1.0 , start = syn_loc['start'][ind], 
                                                      end = syn_loc['end'][ind])
-    #                        h.setpointer(h._ref_dopamine, 'dopamine', syn.obj)
     
             elif deterministic == 1:
                 if (type(syn_loc) == list):
@@ -239,6 +238,7 @@ class Timing_Experiment(e.Experiment):
         if self.exptype == 'record_ca':
             self.species = []
             self.integral = []
+            self.dopamine = []
             indices = []
             for s in p.species_to_plot:
                 indices.append(p.cascade_species.index(s))
@@ -259,6 +259,9 @@ class Timing_Experiment(e.Experiment):
                 self.cali[-1].record(spine.head(0.5)._ref_cali, record_step)
                 self.cai_nmda[-1].record(spine.head(0.5)._ref_ca_nmdai, record_step)
                 self.cali_dend[-1].record(self.cell.dendlist[d](p.pos)._ref_cali, record_step)
+                
+                self.dopamine.append(h.Vector())
+                self.dopamine[-1].record(spine.head(0.5)._ref_DA_timing_model, record_step)
             
                 for i in range(0,len(p.species_to_plot)):
                     self.species.append(h.Vector())
@@ -309,6 +312,13 @@ class Timing_Experiment(e.Experiment):
             ax_vs.set_ylabel('Vs')
             ax_vs.set_xlabel('t')
             ax_vs.plot(self.tout, self.vs)
+            
+            fig_DA = plt.figure()
+            ax_DA = fig_DA.add_subplot(111)
+            ax_DA.set_ylabel('DA (nM)')
+            ax_DA.set_xlabel('t')
+            for i in range(0,len(self.dopamine)):
+                ax_DA.plot(self.tout, self.dopamine[i])
 
 #            fig_ampa_depol = plt.figure()
 #            ax_ampa_depol = fig_ampa_depol.add_subplot(111)
@@ -442,21 +452,25 @@ class Timing_Experiment(e.Experiment):
             h.load_file("stdrun.hoc")
             h.init()
             h.tstop = simtime        
-            
-            if self.exptype in ['xor', 'xor_test_set']:
-                fih1 = h.FInitializeHandler((self.seti_dopamine_release, self.reward_times))
-#                fih2 = h.FInitializeHandler((self.seti_xor_input_times, self.xor_input_times))    
-                print("Reward times"); print(self.reward_times)
-                print("Xor input times"); print(self.xor_input_times)
-        
-            fih3 = h.FInitializeHandler((self.seti_print_status))
+                   
+            fih1 = h.FInitializeHandler((self.seti_print_status))
+            fih2 = h.FInitializeHandler((self.seti_steady_states))
             
             h.run()
 
         end = time.time()
         print("It took %.2f hours or %.4f seconds to simulate." % ((end-start)/3600 , (end-start)))
 
-       
+    def seti_steady_states(self):
+        with open('steady_states.dat', 'r', encoding = 'utf-8') as f:
+            to_read = json.load(f)
+            result = json.loads(to_read)
+            steady_states = result['steady_states']
+            for spine in self.cell.spines:
+                for i in range(0,len(steady_states)):
+                    cmd = 'spine.head(0.5).' + p.cascade_species[i] + '_timing_model' + '=' + str(steady_states[i])
+                    exec(cmd)
+                    
     def seti_print_status(self):
         update_points = np.arange(0, p.simtime, p.simtime/100. )
         for t in update_points:

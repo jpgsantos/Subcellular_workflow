@@ -27,7 +27,8 @@ nprocs = comm.Get_size()
 print("Number of processes = %d" % nprocs)
 
 if rank == 0:
-    DA_start = [-4000, -3000, -2000, -1000, -0, 1000, 2000, 3000, 4000]
+    DA_start = [-4000, -3500 -3000, -2500, -2000, -1500, -1000, -500, -0, 
+                500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
     
     div, res = divmod(len(DA_start), nprocs)
     counts = [div + 1 if p < res else div for p in range(nprocs)]
@@ -66,14 +67,14 @@ for d in DA_start:
 
     ex.simulate()
     w_ampa.append(ex.w_ampa[0].to_python())
-    start = int(pp.glutamate_phos_start*pp.nrn_dots_per_1ms)
-    end = int((pp.glutamate_phos_start+50)*pp.nrn_dots_per_1ms)
-    before_LTP = ex.vs.to_python()[start:end] 
-    start = int((pp.glutamate_phos_start+pp.glutamate_phos_interval)*pp.nrn_dots_per_1ms)
-    end = int((pp.glutamate_phos_start+pp.glutamate_phos_interval+50)*pp.nrn_dots_per_1ms)
-    after_LTP = ex.vs.to_python()[start:end]
-    vs_before_LTP.append(before_LTP)
-    vs_after_LTP.append(after_LTP)
+#    start = int(pp.glutamate_phos_start*pp.nrn_dots_per_1ms)
+#    end = int((pp.glutamate_phos_start+50)*pp.nrn_dots_per_1ms)
+#    before_LTP = ex.vs.to_python()[start:end] 
+#    start = int((pp.glutamate_phos_start+pp.glutamate_phos_interval)*pp.nrn_dots_per_1ms)
+#    end = int((pp.glutamate_phos_start+pp.glutamate_phos_interval+50)*pp.nrn_dots_per_1ms)
+#    after_LTP = ex.vs.to_python()[start:end]
+#    vs_before_LTP.append(before_LTP)
+#    vs_after_LTP.append(after_LTP)
     integral.append(ex.integral[0].to_python()[-1])
 
 DA_start = comm.gather(DA_start, root = 0)    
@@ -83,7 +84,7 @@ vs_after_LTP = comm.gather(vs_after_LTP, root = 0)
 integral = comm.gather(integral, root = 0)    
 # 5. Calculate and plot results
 if rank == 0:
-    integral0 = 37.8 # pSubstrate area from just Ca input 
+    integral0 = 19.88 # pSubstrate area from just Ca input 
     DA_start = extend_list(DA_start) 
     w_ampa = extend_list(w_ampa) 
     vs_before_LTP = extend_list(vs_before_LTP)
@@ -99,19 +100,19 @@ if rank == 0:
     with open('timing_window.dat', 'w', encoding = 'utf-8') as f:
         json.dump(to_save, f)
     
-    vs = ex.vs.to_python()
-    vs_ss = vs[len(vs)-1]  
-    vs_before_LTP = np.array(vs_before_LTP)
-    vs_after_LTP = np.array(vs_after_LTP)
-    max_before_LTP = (vs_before_LTP - vs_ss).max(axis = 1)
-    max_after_LTP = (vs_after_LTP - vs_ss).max(axis = 1)             
+#    vs = ex.vs.to_python()
+#    vs_ss = vs[len(vs)-1]  
+#    vs_before_LTP = np.array(vs_before_LTP)
+#    vs_after_LTP = np.array(vs_after_LTP)
+#    max_before_LTP = (vs_before_LTP - vs_ss).max(axis = 1)
+#    max_after_LTP = (vs_after_LTP - vs_ss).max(axis = 1)             
     integral = np.array(integral)
-    
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.plot(DA_start, np.divide(max_after_LTP, max_before_LTP))
-    ax.set_xlabel('t_Ca - t_Da (ms)')
-    ax.set_ylabel('increase in somatic depolarization')
+#    
+#    fig = plt.figure()
+#    ax = fig.add_subplot(111)
+#    ax.plot(DA_start, np.divide(max_after_LTP, max_before_LTP))
+#    ax.set_xlabel('t_Ca - t_Da (ms)')
+#    ax.set_ylabel('increase in somatic depolarization')
 
     fig_parea = plt.figure()
     ax_parea = fig_parea.add_subplot(111)
