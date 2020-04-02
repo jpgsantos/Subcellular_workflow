@@ -23,12 +23,13 @@ rt.par(:,1) = [sbtab.defpar{:,2}];
 % Iterate over all the parameters of the model
 for n = 1:size(rt.par,1)
     
-    % Check if the parametrer needs to be tset to the value relevant for
+    % Check if the parametrer needs to be set to the value relevant for
     % Profile Likelihood
-    if stg.ms.partest(n,1) == stg.PLind
-        parameters(stg.ms.partest(n,1)) = stg.PLval;
+    if isfield(stg,"PLind")
+        if stg.ms.partest(n,1) == stg.PLind
+            parameters(stg.ms.partest(n,1)) = stg.PLval;
+        end
     end
-
     % Check that a parameter should be changed from default
     if stg.ms.partest(n) > 0
         
