@@ -2,7 +2,7 @@
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
 clear
-proj = sbioloadproject('model_Timing_model.sbproj');
+proj = sbioloadproject('model_D1_LTP_time_window.sbproj');
 obj = proj.modelobj;
 
 %% Get steady state values after equilibrating for 100000 s
@@ -19,7 +19,7 @@ cnfst.RunTimeOptions.StatesToLog = 'all';
 % set(obj.rules(2), 'Active', 0); % Uncomment if Ca input is incorporated
 % set(obj.rules(3), 'Active', 0); % Uncomment if DA input is incorporated
 
-[t,species,names] = sbiosimulate(obj);
+[t,species,~] = sbiosimulate(obj);
 
 SteadyState=species(length(t),:);
 
@@ -57,14 +57,12 @@ set(obj.rules(2), 'Name', '0 Ca spikes with 3 AP');
 ruleobj=addrule(obj, 'Spine.DA = Spine.DA_expression');
 set(ruleobj,'RuleType','RepeatedAssignment');
 
-
 %% Run simulations
 
 effector = {'Spine.pSubstrate'};
 
 DA = [-4:0.2:4];
 CaStart = obj.parameters(232).Value;
-
 cnfst.StopTime = 30;
 cnfst.SolverOptions.MaxStep = 0.01;
 cnfst.SolverOptions.OutputTimes = 0:0.01:30;
@@ -72,29 +70,28 @@ cnfst.RuntimeOptions.StatesToLog = {'pSubstrate'};
 set(obj.rules(2), 'Active', 1);
 set(obj.rules(3), 'Active', 0);
 
-[t,x_noDA,names] = sbiosimulate(obj);
+[t_noDA,x_noDA,~] = sbiosimulate(obj);
 activationArea = sum(x_noDA) - x_noDA(1) * length(x_noDA);
 
 set(obj.rules(3), 'Active', 1);
 set(obj.parameters(228), 'ValueUnits', 'second');
 obj.parameters(228).Value = CaStart + 1;
-[t,x_DA,names] = sbiosimulate(obj);
+[t_DA,x_DA,~] = sbiosimulate(obj);
 
 subplot(2,1,1)
 hold on
-plot(t, x_noDA/max(x_noDA), '-.', 'LineWidth', 2)
-plot(t, x_DA/max(x_noDA), 'LineWidth', 2)
+plot(t_noDA, x_noDA/max(x_noDA), '-.', 'LineWidth', 2)
+plot(t_DA, x_DA/max(x_noDA), 'LineWidth', 2)
 set(gca,'FontSize',12, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
 legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
 
 activationAreaWithMultipleDA = zeros(1,length(DA));
-
-for i = 1:length(DA)
-    obj.parameters(228).Value = CaStart + DA(i);
-    [t,x,names] = sbiosimulate(obj);
-    activationAreaWithMultipleDA(i) = sum(x) - x(1) * length(x);
+for n = 1:length(DA)
+    obj.parameters(228).Value = CaStart + DA(n);
+    [t,x,~] = sbiosimulate(obj);
+    activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
     clear t x names
 end
 
@@ -106,4 +103,3 @@ plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWid
 set(gca,'FontSize',12, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
 ylabel('Substrate phosphorylation');
-
