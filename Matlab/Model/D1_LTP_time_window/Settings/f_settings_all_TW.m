@@ -9,7 +9,7 @@ stg.import = 1;
 stg.folder_model = "D1_LTP_time_window";
 
 % Name of the excel file with the sbtab
-stg.sbtab_excel_name = "Timing_model_SBtab.xlsx";
+stg.sbtab_excel_name = "D1_LTP_time_window_SBtab.xlsx";
 
 % Name of the model
 stg.name = "D1_LTP_time_window";
@@ -80,7 +80,7 @@ stg.ms.simtime = "second";
 stg.ms.sbioacc = 0;
 
 % Max step size in the simulation (if empty matlab decides whats best)
-stg.maxstep = [];
+stg.maxstep = 1;
 
 %% Model
 
@@ -116,11 +116,11 @@ stg.pat = 1;
 
 stg.pa(1,:) = zeros(1,6);
 
-stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
+stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
-% % Best parameter found so far for the model
+% Best parameter found so far for the model
 
-stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,0.368547198,0.569865286];
+stg.bestx = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
 %% Plots
 
@@ -130,53 +130,11 @@ stg.plot = 1;
 % 0 or 1 to decide whether to use long names in plot Diag3
 stg.plotnames = 1;
 
-%% Profile Likelihood
-
-% Parameter(optimization array) that is being worked on in a specific
-% iteration of PL (if -1 no parameter is being worked in PL)
-stg.PLind = -1;
-
-% Which parameters to do PL on, it should be all parameters but can also be
-% a subset for testing purposes
-stg.pltest = (1:6);
-
-% How many points to do for each parameter in the PL
-stg.plres = 20;
-
-% 0 or 1 to decide whether to do plots after calculating PL
-stg.plplot = 1;
-
-% 0 or 1 to decide whether to run simulated annealing
-stg.plsa = 0;
-
-% Options for simulated annealing
-stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
-    'InitialTemperature',...
-    ones(1,stg.ms.parnum)*1,'MaxTime',1,'ReannealInterval',40);
-
-% 0 or 1 to decide whether to run fmincon
-stg.plfm = 0;
-
-% Options for fmincon
-stg.plfmo = optimoptions('fmincon','Display','off',...
-    'Algorithm','interior-point',...
-    'MaxIterations',1,'OptimalityTolerance',0,...
-    'StepTolerance',1e-6,'FiniteDifferenceType','central','UseParallel',logical(0));
-
-%% Sensitivity analysis
-
-% Number of samples to use in SA
-stg.sansamples = 5;
-
-% 0 or 1 to decide whether to subtract the mean before calculating SI and
-% SIT
-stg.sasubmean = 1;
-
 %% Optimization
 
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
-stg.optt = 60*5;
+stg.optt = 60*1000;
 
 % Population size (for the algorithms that use populations)
 stg.popsize = 36;
@@ -255,16 +213,4 @@ stg.sopt_options = optimoptions('surrogateopt',...
     'MaxFunctionEvaluations',5000,...
     'MinSampleDistance',0.2,'MinSurrogatePoints',32*2+1);
 
-%% Cluster
-
-% Number of cluster workers to use
-stg.clw = 1;
-
-% Name of your accont in the cluster you are using
-stg.claccount =  'snic2019-3-94';
-
-% Amount of time the code is going to be given to run on the cluster
-stg.cltime = 60;
-
 end
-
