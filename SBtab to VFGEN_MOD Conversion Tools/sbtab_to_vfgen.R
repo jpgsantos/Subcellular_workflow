@@ -494,7 +494,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     Mod <- list()    
     fmt <- list(const="\t%s = %s (%s) : a constant",
                 par="\t%s = %g (%s): a kinetic parameter",
-                input="\t%s : = %g  an input",
+                input="\t%s  = %g (%s) : an input",
                 total="\t%s = %g : the total amount of a conserved sub-set of states",
                 ConservationLaw="\t%s = %s : conservation law",
                 expression="\t%s : a pre-defined algebraic expression",
@@ -502,7 +502,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                 comment="\t: Compound %s with ID %s and initial condition %g had derivative %s, but is calculated by conservation law.",
                 state="\t%s (%s) : a state variable",
                 ode="\t%s' = %s : affects compound with ID %s",
-                reaction="\t %s <-> %s (%s, %s)",
+                reactigon="\t %s <-> %s (%s, %s)",
                 output="\t%s = %s : Output ID %s",
                 assignment="\t%s = %s : assignment for expression %s")
 ##    Mod[["header"]] <- "TITLE Mod file for componen"
@@ -545,7 +545,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                            "}")
     Mod[["PARAMETER"]] <- c("PARAMETER {",                            
                             sprintf(fmt$par,row.names(Parameter),Parameter$Value, NeuronUnit(Parameter$Unit)),
-                            ##sprintf(fmt$input,row.names(Input),Input$DefaultValue),
+                            sprintf(fmt$input,row.names(Input),Input$DefaultValue, NeuronUnit(Input$Unit)),
                             ConservationInput,
                             "}")
 
@@ -556,7 +556,6 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                            sprintf(fmt$expression,row.names(Expression)),
                            sprintf(fmt$flux,row.names(Reaction)),
                            sprintf("\t%s : computed from conservation law",CName),
-                           sprintf(fmt$input,row.names(Input),Input$DefaultValue),
                            sprintf("\t%s : an observable",row.names(Output)),
                            "}")
     Assignment <- sprintf(fmt$assignment,row.names(Expression),Expression$Formula,Expression$ID)
