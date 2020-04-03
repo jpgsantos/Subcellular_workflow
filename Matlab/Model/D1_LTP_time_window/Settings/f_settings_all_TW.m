@@ -57,7 +57,7 @@ stg.save_results = 0;
 stg.ms.maxt = 10;
 
 % Equilibration time
-stg.ms.eqt  = 50000;
+stg.ms.eqt  = 100000;
 
 % 0 or 1 to decide whether to do Dimensional Analysis
 stg.ms.dimenanal = true;
@@ -80,17 +80,15 @@ stg.ms.simtime = "second";
 stg.ms.sbioacc = 0;
 
 % Max step size in the simulation (if empty matlab decides whats best)
-stg.maxstep = [];
+stg.maxstep = 1;
 
 %% Model
 
 % Number of parameters to optimize
 stg.ms.parnum = 6;
-% stg.ms.parnum = 5;
 
 % Index for the parameters that have thermodynamic constrains
 stg.ms.tci = [];
-% stg.ms.tci = [];
 
 % Parameters to multiply to the first parameter (in Stg.ms.partest to get
 % to the correct thermodynamic constrain formula)
@@ -104,7 +102,7 @@ stg.ms.tcd = [];
 stg.lb = zeros(1,stg.ms.parnum)-5;
 
 % Array with the upper bound of all parameters
-stg.ub = zeros(1,stg.ms.parnum)+5;
+stg.ub = zeros(1,stg.ms.parnum)+4;
 
 %% Diagnostics
 
@@ -118,18 +116,11 @@ stg.pat = 1;
 
 stg.pa(1,:) = zeros(1,6);
 
-% stg.pa(1,:)=[-4.244125144,-1.823908741,4.977888149,-2.823908741,...
-%     3.368547198,3.569865286]; % Best rounded parameter set with log values
-
-stg.pa(1,:) = [-7.244125144,-4.823908741,1,-5.823908741,...
-    0.368547198,0.569865286];
+stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
 % Best parameter found so far for the model
-% stg.bestx = [-4.244125144,-1.823908741,4.977888149,-2.823908741,...
-%     3.368547198,3.569865286];
 
-stg.bestx = [-7.244125144,-4.823908741,1,-5.823908741,...
-    0.368547198,0.569865286];
+stg.bestx = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
 %% Plots
 
@@ -143,7 +134,7 @@ stg.plotnames = 1;
 
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
-stg.optt = 60*5;
+stg.optt = 60*1000;
 
 % Population size (for the algorithms that use populations)
 stg.popsize = 36;
