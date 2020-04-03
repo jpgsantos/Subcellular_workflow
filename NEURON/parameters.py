@@ -80,11 +80,11 @@ plateau_cluster_size = 20
 cluster_start_pos = 0.85
 cluster_end_pos = 0.99
 
-probe_time = 15000
-glutamate_phos_start = 500
+probe_time = 45000
+glutamate_phos_start = 35000
 glutamate_phos_interval = probe_time - glutamate_phos_start
 DA_start = 500
-DA_max = 1500
+DA_max = 1480
 
 pf_input_rate = 20.0
 pf_input_start = plateau_burst_start
@@ -322,3 +322,4 @@ cascade_species = [
 	'CaMKII_CaM_psd_Substrate', 
 	'CaMKII_CaM_Ca2_psd_Substrate', 
 	'CaMKII_CaM_Ca4_psd_Substrate']
+ 

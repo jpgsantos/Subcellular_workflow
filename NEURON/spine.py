@@ -73,7 +73,7 @@ class Spine():
                         'cadyn',    \
                         'caldyn',   \
                         'cadyn_nmda',
-                        'timing_model']:
+                        'D1_LTP_time_window']:
 
             head.insert(mech)
         

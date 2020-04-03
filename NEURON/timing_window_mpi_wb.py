@@ -62,16 +62,16 @@ integral = []
 
 if rank == 0:
     for spine in ex.cell.spines:
-        spine.head(0.5).timing_model.DA_max = 0
-        spine.head(0.5).timing_model.DA_start = 100 
+        spine.head(0.5).D1_LTP_time_window.DA_max = 0
+        spine.head(0.5).D1_LTP_time_window.DA_start = 100 
         
     ex.simulate()
     integral0 = ex.integral[0].to_python()[-1]
 
 for d in DA_start:
     for spine in ex.cell.spines:
-        spine.head(0.5).timing_model.DA_max = pp.DA_max
-        spine.head(0.5).timing_model.DA_start = d + pp.plateau_burst_start 
+        spine.head(0.5).D1_LTP_time_window.DA_max = pp.DA_max
+        spine.head(0.5).D1_LTP_time_window.DA_start = d + pp.plateau_burst_start 
 
     ex.simulate()
     integral.append(ex.integral[0].to_python()[-1])

@@ -232,7 +232,7 @@ class Timing_Experiment(e.Experiment):
             
             for i in range(0,len(p.species_to_plot)):
                 self.species.append(h.Vector())
-                cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_timing_model'                                                
+                cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_D1_LTP_time_window'                                                
                 self.species[-1].record(eval(cmd), record_step)
             
         if self.exptype == 'record_ca':
@@ -261,11 +261,11 @@ class Timing_Experiment(e.Experiment):
                 self.cali_dend[-1].record(self.cell.dendlist[d](p.pos)._ref_cali, record_step)
                 
                 self.dopamine.append(h.Vector())
-                self.dopamine[-1].record(spine.head(0.5)._ref_DA_timing_model, record_step)
+                self.dopamine[-1].record(spine.head(0.5)._ref_DA_D1_LTP_time_window, record_step)
             
                 for i in range(0,len(p.species_to_plot)):
                     self.species.append(h.Vector())
-                    cmd = 'spine.head(0.5)._ref_' + p.cascade_species[indices[i]] + '_timing_model'                                                
+                    cmd = 'spine.head(0.5)._ref_' + p.cascade_species[indices[i]] + '_D1_LTP_time_window'                                                
                     self.species[-1].record(eval(cmd), record_step)
                             
             self.w_ampa = []
@@ -468,7 +468,7 @@ class Timing_Experiment(e.Experiment):
             steady_states = result['steady_states']
             for spine in self.cell.spines:
                 for i in range(0,len(steady_states)):
-                    cmd = 'spine.head(0.5).' + p.cascade_species[i] + '_timing_model' + '=' + str(steady_states[i])
+                    cmd = 'spine.head(0.5).' + p.cascade_species[i] + '_D1_LTP_time_window' + '=' + str(steady_states[i])
                     exec(cmd)
                     
     def seti_print_status(self):
