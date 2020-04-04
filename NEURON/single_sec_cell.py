@@ -16,7 +16,7 @@ morphology = "./morphology/"
 
 h.load_file('stdlib.hoc')
 h.load_file('import3d.hoc')
-# h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
+h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
 
 
 class SingleSecCell(n.Neuron):
@@ -27,6 +27,6 @@ class SingleSecCell(n.Neuron):
         
     def insert_channels(self):
         self.somalist[0].insert('pas')
-        self.somalist[0].insert('timing_model')
+        self.somalist[0].insert('D1_LTP_time_window')
         self.somalist[0].insert('cadyn_nmda')
     
