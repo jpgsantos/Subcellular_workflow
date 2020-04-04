@@ -130,7 +130,7 @@ class Neuron(object):
             syn.obj.tau2_nmda = p.nmda['tcoff']
             syn.obj.w_ampa0 = p.gAMPAmax_plateau
             syn.obj.w_nmda0 = p.gNMDAmax_plateau
-            h.setpointer(sec(pos)._ref_pSubstrate_timing_model, 'pSubstrate', syn.obj)
+            h.setpointer(sec(pos)._ref_pSubstrate_D1_LTP_time_window, 'pSubstrate', syn.obj)
             self.esyn.append(syn)
             return syn
             

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+﻿<?xml version="1.0" ?>
 <VectorField Name="D1_LTP_time_window" Description="model created by an R script «sbtab_to_vfgen.R» (https://github.com/a-kramer/SBtabVFGEN)">
  <Constant Name="tau_DA1" Description="constant C0" Value="34.979"/>
  <Constant Name="tau_DA2" Description="constant C1" Value="420"/>
@@ -232,10 +232,10 @@
  <Parameter Name="kr_R136" Description="independent parameter K226" DefaultValue="0.00540008"/>
  <Parameter Name="kf_R137" Description="independent parameter K227" DefaultValue="10"/>
  <Parameter Name="DA_start" Description="input parameter INP0" DefaultValue="100"/>
+ <Parameter Name="DA_max" Description="input parameter INP1" DefaultValue="1480"/>
  <Expression Name="ATP_expression" Description="defined expression EX0" Formula="5000000"/>
  <Expression Name="Ca_expression" Description="defined expression EX1" Formula="0"/>
  <Expression Name="DA_expression" Description="defined expression EX2" Formula="DA_basal+(1/(1+exp((-10E+10)*(time-DA_start)))*(DA_max/(exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA1)-exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA2))*(exp(-(time-DA_start)/tau_DA1)-exp(-(time-DA_start)/tau_DA2))))"/>
- <Expression Name="DA_max" Description="defined expression EX3" Formula="1480"/>
  <Expression Name="AMP" Description="defined expression S8" Formula="0"/>
  <Expression Name="ATP" Description="defined expression S9" Formula="5e+06"/>
  <Expression Name="Ca" Description="defined expression S24" Formula="60"/>

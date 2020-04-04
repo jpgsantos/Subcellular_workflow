@@ -56,8 +56,8 @@ ex.insert_synapses('plateau_cluster', plateau_cluster_list, deterministic = 1,
 ex.insert_synapses('glutamate_phos', plateau_cluster_list, deterministic = 1)
 
 for spine in d1.spines:
-    spine.head(0.5).timing_model.DA_max = p.DA_max
-    spine.head(0.5).timing_model.DA_start = p.DA_start
+    spine.head(0.5).D1_LTP_time_window.DA_max = p.DA_max
+    spine.head(0.5).D1_LTP_time_window.DA_start = p.DA_start
 
 ex.set_up_recording(dend_record_list)
 ex.simulate()

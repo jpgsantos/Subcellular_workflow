@@ -1,16 +1,15 @@
-TITLE D1_LTP_time_window_MOD
+TITLE D1_LTP_time_window
 COMMENT
 	automatically generated from an SBtab file
-	date: Wed Apr 01 19:49:13 2020
+	date: Fri Apr 03 16:29:37 2020
 ENDCOMMENT
 NEURON {
 	SUFFIX D1_LTP_time_window : OR perhaps POINT_PROCESS ?
-	RANGE DA_start : input
+	RANGE DA_start, DA_max : input
 	RANGE pSubstrate_out, PP1_out, CaM_out, D32_out : output
 	RANGE ATP_expression : assigned
 	RANGE Ca_expression : assigned
 	RANGE DA_expression : assigned
-	RANGE DA_max : assigned
 	RANGE AMP : assigned
 	RANGE ATP : assigned
 	RANGE Ca : assigned
@@ -110,7 +109,7 @@ NEURON {
 	RANGE CaMKII_CaM_psd_Substrate : compound
 	RANGE CaMKII_CaM_Ca2_psd_Substrate : compound
 	RANGE CaMKII_CaM_Ca4_psd_Substrate : compound
- USEION ca_nmda READ ca_nmdai VALENCE 2 : sth. like this may be needed for ions you have in your model
+        USEION ca_nmda READ ca_nmdai VALENCE 2 : sth. like this may be needed for ions you have in your model
 }
 CONSTANT {
 	tau_DA1 = 34.979 (millisecond) : a constant
@@ -346,14 +345,15 @@ PARAMETER {
 	kf_R136 = 1.10002e-06 (/nanomole/liter-millisecond): a kinetic parameter
 	kr_R136 = 0.00540008 (/millisecond): a kinetic parameter
 	kf_R137 = 10 (/millisecond): a kinetic parameter
+	DA_start  = 100 (millisecond) : an input
+	DA_max  = 1480 (nanomole/liter) : an input
 }
 ASSIGNED {
-  ca_nmdai
+	ca_nmdai (millimolarity): Ca concentration from NMDA channels 
 	time (millisecond) : alias for t
 	ATP_expression : a pre-defined algebraic expression
 	Ca_expression : a pre-defined algebraic expression
 	DA_expression : a pre-defined algebraic expression
-	DA_max : a pre-defined algebraic expression
 	AMP : a pre-defined algebraic expression
 	ATP : a pre-defined algebraic expression
 	Ca : a pre-defined algebraic expression
@@ -496,7 +496,6 @@ ASSIGNED {
 	ReactionFlux135 : a flux, for use in DERIVATIVE mechanism
 	ReactionFlux136 : a flux, for use in DERIVATIVE mechanism
 	ReactionFlux137 : a flux, for use in DERIVATIVE mechanism
-	DA_start : = 100  an input
 	pSubstrate_out : an observable
 	PP1_out : an observable
 	CaM_out : an observable
@@ -507,10 +506,9 @@ PROCEDURE assign_calculated_values() {
 	ATP_expression = 5000000 : assignment for expression EX0
 	Ca_expression = 0 : assignment for expression EX1
 	DA_expression = DA_basal+(1/(1+exp((-10E+10)*(time-DA_start)))*(DA_max/(exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA1)-exp(-tau_DA1*tau_DA2/(tau_DA2-tau_DA1)*log(tau_DA2/tau_DA1)/tau_DA2))*(exp(-(time-DA_start)/tau_DA1)-exp(-(time-DA_start)/tau_DA2)))) : assignment for expression EX2
-	DA_max = 1480 : assignment for expression EX3
 	AMP = 0 : assignment for expression S8
 	ATP = 5e+06 : assignment for expression S9
-	Ca = (ca_nmdai)*1e6 : assignment for expression S24
+	Ca = ca_nmdai*(1e6) : assignment for expression S24
 	DA = DA_expression : assignment for expression S47
 	ReactionFlux0 = kf_R0*GaolfGTP : flux expression R0
 	ReactionFlux1 = kf_R1*D1R_Golf_DA : flux expression R1
