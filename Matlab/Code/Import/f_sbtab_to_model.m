@@ -217,16 +217,9 @@ end
 
 if isfield(sb,"Constant")
     for m = 1:size(sb.Constant.ID,1)
-        try
-            addspecies (modelobj, char(sb.Constant.Name(m)),...
-                str2double(string(sb.Constant.Value{m})),...
-                'InitialAmountUnits',sb.Constant.Unit{m});
-            
-        catch
-            addparameter(modelobj,char(sb.Constant.Name(m)),...
-                str2double(string(sb.Constant.Value{m})),...
-                'ValueUnits',sb.Constant.Unit{m});
-        end
+        addparameter(modelobj,char(sb.Constant.Name(m)),...
+            str2double(string(sb.Constant.Value{m})),...
+            'ValueUnits',sb.Constant.Unit{m});
     end
 end
 
