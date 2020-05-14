@@ -48,6 +48,12 @@ end
 
 % Save Analysis results if chosen in settings
 if stg.save_results
+    if ispc
+        mkdir("Model\" + stg.folder_model,"Data");
+    else
+        mkdir("Model/" + stg.folder_model,"Data"); 
+    end
+    
     date_stamp = string(year(datetime)) + "_" + ...
         string(month(datetime,'shortname')) + "_" + string(day(datetime))...
         + "_" + string(hour(datetime)) + "_" + string(minute(datetime))...

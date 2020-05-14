@@ -26,8 +26,8 @@ for exp_n = 1:size(sbtab.datasets,2)
         if size(sbtab.datasets(exp_n).input_value{n},2) > 100
 %             sim_scale = 1/(Data(exp_n).Experiment.t(2)-Data(exp_n).Experiment.t(1));
             
-            name = modelobj.species(1+str2double(strrep(...
-                sbtab.datasets(exp_n).input(n),'S',''))).name;
+            name = strrep(modelobj.species(1+str2double(strrep(...
+                sbtab.datasets(exp_n).input(n),'S',''))).name,".","");
             if ispc
                 fullFileName = sprintf('%s.m',"Model\" +...
                     stg.folder_model + "\Formulas\" + stg.name +...
@@ -102,8 +102,8 @@ helper = 0;
 for exp_n = 1:size(sbtab.datasets,2)
     for n =1:size(sbtab.datasets(exp_n).input,2)
         if size(sbtab.datasets(exp_n).input_value{n},2) > 100
-            name = modelobj.species(1+str2double(strrep(...
-                sbtab.datasets(exp_n).input(n),'S',''))).name;
+            name = strrep(modelobj.species(1+str2double(strrep(...
+                sbtab.datasets(exp_n).input(n),'S',''))).name,".","");
             if helper == 0
                helper = 1;
                helper2 = exp_n;
