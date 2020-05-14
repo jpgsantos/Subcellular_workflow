@@ -37,7 +37,7 @@ stg.ms.exprun = [1:9];
 stg.useLog = 1;
 
 % 0 or 1 to decide whether to use multicore everywhere it is available
-stg.optmc = logical(0);
+stg.optmc = logical(1);
 
 % Choice of ramdom seed
 stg.rseed = 1;
@@ -77,7 +77,7 @@ stg.ms.simtime = "second";
 
 % 0 or 1 to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
-stg.ms.sbioacc = 0;
+stg.ms.sbioacc = 1;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 stg.maxstep = 1;
@@ -129,6 +129,19 @@ stg.plot = 1;
 
 % 0 or 1 to decide whether to use long names in plot Diag3
 stg.plotnames = 1;
+
+%% Sensitivity analysis
+
+% Number of samples to use in SA
+stg.sansamples = 4;
+
+% 0 or 1 to decide whether to subtract the mean before calculating SI and
+% SIT
+stg.sasubmean = 1;
+
+% Choose the way you want to perform SA, 0 for doing the SA with the scores
+% and 1 to do it with the last value of the simulation
+stg.samode = 0;
 
 %% Optimization
 

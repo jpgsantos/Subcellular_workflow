@@ -21,6 +21,9 @@ end
 if contains(mode,"plots")
     stg = load_setting_chunk(model_name,"plots",stg);
 end
+if contains(mode,"sensitivity_analysis")
+    stg = load_setting_chunk(model_name,"sensitivity_analysis",stg);
+end
 if contains(mode,"optimization")
     stg = load_setting_chunk(model_name,"optimization",stg);
 end
