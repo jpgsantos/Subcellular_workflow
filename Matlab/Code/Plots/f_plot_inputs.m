@@ -26,12 +26,13 @@ for n = stg.ms.exprun
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
                 
-
-                
                 % Plot the inputs to each experiment
-                scatter(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
-                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))...
-                    +1),5,'filled','MarkerFaceAlpha',0.5)
+%                 scatter(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
+%                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))...
+%                     +1),5,'filled','MarkerFaceAlpha',0.5)
+%                 
+                plot(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
+                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',1.5)
                 
                 % Get the correct label for each input of the experiment
                 labelfig2(j) = rst(m).simd{1,n}.DataNames(str2double(...
@@ -42,6 +43,8 @@ for n = stg.ms.exprun
         end
     end
     
+    xlabel('seconds') 
+    ylabel('nanomole/liter') 
     % Add a legend to each plot
     legend(labelfig2)
     legend boxoff
@@ -52,4 +55,5 @@ for n = stg.ms.exprun
     
     hold off
 end
+
 end
