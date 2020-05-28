@@ -1,5 +1,8 @@
 function [score,rst] = f_sim_score(parameters,stg)
 
+%Turn off Dimension analysis warning from simbiology
+warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
+
 % Call the function that simulates the model
 rst = f_prep_sim(parameters,stg);
 

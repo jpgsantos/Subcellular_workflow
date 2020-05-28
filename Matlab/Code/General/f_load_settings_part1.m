@@ -39,8 +39,15 @@ end
 
 function [stg] = load_setting_chunk(name,chunk,stg)
 
-if isfile("Model\" + stg.folder_model + "\Settings\f_settings_" +...
-        chunk + "_" + name + ".m")
+if ispc
+    settings_filename = "Model\" + stg.folder_model + "\Settings\f_settings_" +...
+        chunk + "_" + name + ".m";
+else
+    settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
+        chunk + "_" + name + ".m";
+end
+
+if isfile(settings_filename)
     
     [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");
     
