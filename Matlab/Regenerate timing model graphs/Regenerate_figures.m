@@ -9,7 +9,7 @@ obj = proj.modelobj;
 
 cnfst = getconfigset(obj);
 cnfst.SolverType = 'ode15s';
-cnfst.StopTime = 100000;
+cnfst.StopTime = 50000;
 cnfst.TimeUnits = 'second';
 cnfst.SolverOptions.AbsoluteTolerance = 1e-9;
 cnfst.SolverOptions.RelativeTolerance = 1e-6;
@@ -46,7 +46,7 @@ addparameter(obj, 'nCa_burstn', 1.0);
 addparameter(obj, 'nCa_burstfreq', 0.03);
 addparameter(obj, 'nCa_ampmax_noMg', 1200);
 addparameter(obj, 'nCa_ampbasal', 60);
-set(obj.parameters(231:241), 'ValueUnits', 'dimensionless');
+set(obj.parameters(end-10:end), 'ValueUnits', 'dimensionless');
 
 ruleobj=addrule(obj, 'Spine.Ca = spiketraindd_Ca(time,nCa_peakfirst,nCa_frequency,nCa_peaksn,nCa_ampbasal,nCa_ampmax_noMg,nCa_k1,nCa_k2,nCa_minpeaklngth,[],nCa_burstfreq,nCa_burstn,nCa_minburstinter,1)');
 set(ruleobj,'RuleType','RepeatedAssignment');
@@ -62,7 +62,7 @@ set(ruleobj,'RuleType','RepeatedAssignment');
 effector = {'Spine.pSubstrate'};
 
 DA = [-4:0.2:4];
-CaStart = obj.parameters(232).Value;
+CaStart = 4;
 cnfst.StopTime = 30;
 cnfst.SolverOptions.MaxStep = 0.01;
 cnfst.SolverOptions.OutputTimes = 0:0.01:30;
@@ -74,11 +74,15 @@ set(obj.rules(3), 'Active', 0);
 activationArea = sum(x_noDA) - x_noDA(1) * length(x_noDA);
 
 set(obj.rules(3), 'Active', 1);
-set(obj.parameters(228), 'ValueUnits', 'second');
-obj.parameters(228).Value = CaStart + 1;
+set(obj.parameters(228), 'ValueUnits', 'second'); % par 228 = DA_start
+obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
 [t_DA,x_DA,~] = sbiosimulate(obj);
 
-subplot(2,1,1)
+figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
+close(figHandles);
+figure('WindowStyle', 'docked','Name','Paper Figure 4','NumberTitle', 'off');
+
+subplot(1,2,1)
 hold on
 plot(t_noDA, x_noDA/max(x_noDA), '-.', 'LineWidth', 2)
 plot(t_DA, x_DA/max(x_noDA), 'LineWidth', 2)
@@ -86,20 +90,21 @@ set(gca,'FontSize',12, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
 legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
+legend boxoff
 
 activationAreaWithMultipleDA = zeros(1,length(DA));
 for n = 1:length(DA)
-    obj.parameters(228).Value = CaStart + DA(n);
+    obj.parameters(228).Value = CaStart + DA(n); % par 228 = DA_start
     [t,x,~] = sbiosimulate(obj);
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
     clear t x names
 end
 
-subplot(2,1,2)
+subplot(1,2,2)
 hold on
 plot(DA, activationAreaWithMultipleDA/activationArea, 'LineWidth', 2)
 plot([-4 4], [1 1], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
 plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',12, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
-ylabel('Substrate phosphorylation');
+ylabel('Substrate phosphorylation integral');
