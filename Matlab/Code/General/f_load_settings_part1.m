@@ -21,6 +21,9 @@ end
 if contains(mode,"plots")
     stg = load_setting_chunk(model_name,"plots",stg);
 end
+if contains(mode,"sensitivity_analysis")
+    stg = load_setting_chunk(model_name,"sensitivity_analysis",stg);
+end
 if contains(mode,"optimization")
     stg = load_setting_chunk(model_name,"optimization",stg);
 end
@@ -36,8 +39,15 @@ end
 
 function [stg] = load_setting_chunk(name,chunk,stg)
 
-if isfile("Model\" + stg.folder_model + "\Settings\f_settings_" +...
-        chunk + "_" + name + ".m")
+if ispc
+    settings_filename = "Model\" + stg.folder_model + "\Settings\f_settings_" +...
+        chunk + "_" + name + ".m";
+else
+    settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
+        chunk + "_" + name + ".m";
+end
+
+if isfile(settings_filename)
     
     [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");
     

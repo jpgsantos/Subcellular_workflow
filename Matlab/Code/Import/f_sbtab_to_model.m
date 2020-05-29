@@ -1,9 +1,7 @@
 function f_sbtab_to_model(stg,sb)
 
 modelobj = sbiomodel (stg.name);
-compObj = addcompartment(modelobj, char(stg.cname));
-
-set(compObj, 'CapacityUnits', 'liter');
+compObj = [];
 
 sbtab.species = cat(2,sb.Compound.Name,sb.Compound.InitialValue,...
     sb.Compound.IsConstant,sb.Compound.Unit,sb.Compound.Location);
@@ -11,8 +9,35 @@ sbtab.species = cat(2,sb.Compound.Name,sb.Compound.InitialValue,...
 sbtab.defpar = cat(2,sb.Parameter.Comment,sb.Parameter.Value_linspace,...
     sb.Parameter.Unit);
 
+compartment_number = 0;
+
 for n = 1:size(sbtab.species,1)
-    addspecies (compObj, sb.Compound.Name{n},sb.Compound.InitialValue{n}...
+    
+    if isempty(compObj)
+        compartment_number = compartment_number+1;
+        compObj{compartment_number} = addcompartment(modelobj, sb.Compound.Location{1});
+        set(compObj{compartment_number}, 'CapacityUnits', 'liter');
+    end
+    
+    for m = 1:size(compObj,2)
+        if string(compObj{m}.Name) ~= string(sb.Compound.Location{n})
+            compartment_number = compartment_number+1;
+        else
+            compartment_number = size(compObj,2);
+        end
+    end
+    if compartment_number > size(compObj,2)
+        compObj{compartment_number} = addcompartment(modelobj, sb.Compound.Location{n});
+        set(compObj{compartment_number}, 'CapacityUnits', 'liter');
+    end
+
+    for m = 1:size(compObj,2)
+        if string(compObj{m}.Name) == string(sb.Compound.Location{n})
+            compartment_number_match = m;
+        end
+    end
+    
+    addspecies (compObj{compartment_number_match}, sb.Compound.Name{n},sb.Compound.InitialValue{n}...
         ,'InitialAmountUnits',sb.Compound.Unit{n});
 end
 
@@ -52,7 +77,23 @@ for n = 1:size(parameter_name,1)
         reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
     end
     
-    reactionObj = addreaction(modelobj,reaction_name);
+    reaction_name_compartment = reaction_name;
+    
+    for m = 1:size(sb.Compound.Name,1)
+        reaction_name_compartment = insertBefore(string(reaction_name_compartment)," " + string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));
+    end
+    
+    while strfind(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}))
+        reaction_name_compartment = strrep(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}), " "+sb.Reaction.Location{n});
+    end
+    
+    while strfind(reaction_name_compartment,"  ")
+        reaction_name_compartment = strrep(reaction_name_compartment,"  "," ");
+    end
+    
+    reaction_name_compartment = strrep(reaction_name_compartment,sb.Reaction.Location{n} + " ",sb.Reaction.Location{n}+".");
+    reaction_name_compartment = string(sb.Reaction.Location{n})+"."+reaction_name_compartment;
+    reactionObj = addreaction(modelobj,reaction_name_compartment);
     kineticlawObj = addkineticlaw(reactionObj, 'MassAction');
     set(kineticlawObj,'ParameterVariableNames',[parameter_name{n,:}])
 end
@@ -217,16 +258,9 @@ end
 
 if isfield(sb,"Constant")
     for m = 1:size(sb.Constant.ID,1)
-        try
-            addspecies (modelobj, char(sb.Constant.Name(m)),...
-                str2double(string(sb.Constant.Value{m})),...
-                'InitialAmountUnits',sb.Constant.Unit{m});
-            
-        catch
-            addparameter(modelobj,char(sb.Constant.Name(m)),...
-                str2double(string(sb.Constant.Value{m})),...
-                'ValueUnits',sb.Constant.Unit{m});
-        end
+        addparameter(modelobj,char(sb.Constant.Name(m)),...
+            str2double(string(sb.Constant.Value{m})),...
+            'ValueUnits',sb.Constant.Unit{m});
     end
 end
 
