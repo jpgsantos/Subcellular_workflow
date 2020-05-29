@@ -69,16 +69,16 @@ for n = stg.ms.exprun
         
         hold off
         
-        set(gca,'FontSize',16)
+        set(gca,'FontSize',12,'Fontweight','bold')
         
-        xlabel('seconds','FontSize', 18)
-        ylabel('nanomole/liter','FontSize', 18)
+        xlabel('seconds','FontSize', 12,'Fontweight','bold')
+        ylabel('nanomole/liter','FontSize', 12,'Fontweight','bold')
         
         % Choose correct title according to settings
         if stg.plotnames == 1
-            title(strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'),'FontSize', 20)
+            title(strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'),'FontSize', 16,'Fontweight','bold')
         else
-            title(string(sbtab.datasets(n).output{1,j}),'FontSize', 20)
+            title(string(sbtab.datasets(n).output{1,j}),'FontSize', 16,'Fontweight','bold')
         end
         
         % Choose number of decimal places for y axis
@@ -120,16 +120,16 @@ function f_plot_in_out_left(rst,stg,sbtab,helper,reuse)
         end
     end
     
-    set(gca,'FontSize',18)
-    xlabel('seconds','FontSize', 20)
-    ylabel('nanomole/liter','FontSize', 20)
+    set(gca,'FontSize',12,'Fontweight','bold')
+    xlabel('seconds','FontSize', 12,'Fontweight','bold')
+    ylabel('nanomole/liter','FontSize', 12,'Fontweight','bold')
     % Add a legend to each plot
-    legend(labelfig2,'FontSize', 20)
+    legend(labelfig2,'FontSize', 16,'Fontweight','bold')
     legend boxoff
     clear labelfig2
     
     % Add a title to each plot
-    title("Inputs",'FontSize', 24)
+    title("Inputs",'FontSize', 18,'Fontweight','bold')
     
     hold off
 end
