@@ -6,8 +6,8 @@ close(figHandles);
 figure('WindowStyle', 'docked','Name','Paper Figure 4','NumberTitle', 'off');
 fig4 = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
 
+% Figure 4A
 nexttile;
-% subplot(1,2,1)
 hold on
 plot(new_data{1}(:,1), new_data{1}(:,2)/max(new_data{1}(:,2)), '-.k', 'LineWidth', 1)
 plot(old_data{1}(:,1), old_data{1}(:,2)/max(old_data{1}(:,2)), '-.r', 'LineWidth', 1)
@@ -20,8 +20,8 @@ legend({'Ca only (new)', 'Ca only (original)','Ca + Da (\Deltat=1s) (new)','Ca +
 legend boxoff
 title('A','position',[-1.875 3.04])
 
+% Figure 4B
 nexttile;
-% subplot(1,2,2)
 hold on
 plot(new_data{3}(:,1), new_data{3}(:,2),'k', 'LineWidth', 1)
 plot(old_data{3}(:,1), old_data{3}(:,2),'r', 'LineWidth', 1)
@@ -34,7 +34,7 @@ legend({'Ca + Da (new)','Ca + Da (original)'},'location','northwest','FontSize',
 legend boxoff
 title('B','position',[-4.5 4.06])
 
-%Only saves the graph if running matlab 2020a or later
+%Saves the graphs if running matlab 2020a or later
 [majorversion, minorversion] = mcrversion;
 if majorversion >= 9
     if minorversion >= 8
@@ -51,4 +51,17 @@ if majorversion >= 9
         fig4.Units = 'normalized';
         fig4.OuterPosition = [0 0 1 1];
     end
+elseif majorversion >= 10
+    
+    fig4.Units = 'inches';
+    fig4.OuterPosition = [0 0 6.5 2.15];
+    
+    if ispc
+        exportgraphics(fig4,'Regenerate timing model graphs\Figure 4.png','Resolution',600)
+    else
+        exportgraphics(fig4,'Regenerate timing model graphs/Figure 4.png','Resolution',600)
+    end
+    
+    fig4.Units = 'normalized';
+    fig4.OuterPosition = [0 0 1 1];
 end
