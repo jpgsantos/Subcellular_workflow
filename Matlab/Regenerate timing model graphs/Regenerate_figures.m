@@ -1,9 +1,10 @@
-%% Running this script will generate figures 1C and 2C from Nair et al 2016 
+%% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
 clear
 proj = sbioloadproject('model_D1_LTP_time_window.sbproj');
 obj = proj.modelobj;
+load('Old_data')
 
 %% Get steady state values after equilibrating for 100000 s
 
@@ -81,16 +82,22 @@ obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
 figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
 close(figHandles);
 figure('WindowStyle', 'docked','Name','Paper Figure 4','NumberTitle', 'off');
+fig4 = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
+% fig4.TileSpacing = 'compact';
 
-subplot(1,2,1)
+nexttile;
+% subplot(1,2,1)
 hold on
-plot(t_noDA, x_noDA/max(x_noDA), '-.', 'LineWidth', 2)
-plot(t_DA, x_DA/max(x_noDA), 'LineWidth', 2)
-set(gca,'FontSize',12, 'FontWeight', 'bold')
+plot(t_noDA, x_noDA/max(x_noDA), '-.k', 'LineWidth', 1)
+plot(results{1}(:,1), results{1}(:,2)/max(results{1}(:,2)), '-.r', 'LineWidth', 1)
+plot(t_DA, x_DA/max(x_noDA),'k', 'LineWidth', 1)
+plot(results{2}(:,1), results{2}(:,2)/max(results{1}(:,2)),'r', 'LineWidth', 1)
+set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
-legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
+legend({'Ca only (new)', 'Ca only (original)','Ca + Da (\Deltat=1s) (new)','Ca + Da (\Deltat=1s) (original)'},'FontSize',6.5);
 legend boxoff
+title('A','position',[-1.875 3.04])
 
 activationAreaWithMultipleDA = zeros(1,length(DA));
 for n = 1:length(DA)
@@ -100,11 +107,33 @@ for n = 1:length(DA)
     clear t x names
 end
 
-subplot(1,2,2)
+nexttile;
+% subplot(1,2,2)
 hold on
-plot(DA, activationAreaWithMultipleDA/activationArea, 'LineWidth', 2)
-plot([-4 4], [1 1], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
-plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
-set(gca,'FontSize',12, 'FontWeight', 'bold')
+plot(DA, activationAreaWithMultipleDA/activationArea,'k', 'LineWidth', 1)
+plot(DA, results{3}(:,2),'r', 'LineWidth', 1)
+plot([-4 4], [1 1], '--k', 'LineWidth', 1)
+plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
+set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
-ylabel('Substrate phosphorylation integral');
+ylabel(" Substrate phosphorylation");
+legend({'Ca + Da (new)','Ca + Da (original)'},'location','northwest','FontSize',6.5);
+legend boxoff
+title('B','position',[-4.5 4.06])
+
+
+
+%Only saves the graph if running matlab 2020a or later
+[majorversion, minorversion] = mcrversion;
+if majorversion >= 9
+    if minorversion >= 8
+        
+        fig4.Units = 'inches';
+        fig4.OuterPosition = [0 0 6.5 2.15];
+        
+        exportgraphics(fig4,'Regenerate timing model graphs\Figure 4.png','Resolution',600)
+        
+        fig4.Units = 'normalized';
+        fig4.OuterPosition = [0 0 1 1];
+    end
+end
