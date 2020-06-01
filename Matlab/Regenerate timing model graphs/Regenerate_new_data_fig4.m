@@ -4,7 +4,6 @@
 clear
 proj = sbioloadproject('model_D1_LTP_time_window.sbproj');
 obj = proj.modelobj;
-load('Old_data')
 
 %% Get steady state values after equilibrating for 100000 s
 
@@ -79,26 +78,6 @@ set(obj.parameters(228), 'ValueUnits', 'second'); % par 228 = DA_start
 obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
 [t_DA,x_DA,~] = sbiosimulate(obj);
 
-figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
-close(figHandles);
-figure('WindowStyle', 'docked','Name','Paper Figure 4','NumberTitle', 'off');
-fig4 = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
-% fig4.TileSpacing = 'compact';
-
-nexttile;
-% subplot(1,2,1)
-hold on
-plot(t_noDA, x_noDA/max(x_noDA), '-.k', 'LineWidth', 1)
-plot(results{1}(:,1), results{1}(:,2)/max(results{1}(:,2)), '-.r', 'LineWidth', 1)
-plot(t_DA, x_DA/max(x_noDA),'k', 'LineWidth', 1)
-plot(results{2}(:,1), results{2}(:,2)/max(results{1}(:,2)),'r', 'LineWidth', 1)
-set(gca,'FontSize',8, 'FontWeight', 'bold')
-xlabel('time (s)');
-ylabel('Substrate phosphorylation');
-legend({'Ca only (new)', 'Ca only (original)','Ca + Da (\Deltat=1s) (new)','Ca + Da (\Deltat=1s) (original)'},'FontSize',6.5);
-legend boxoff
-title('A','position',[-1.875 3.04])
-
 activationAreaWithMultipleDA = zeros(1,length(DA));
 for n = 1:length(DA)
     obj.parameters(228).Value = CaStart + DA(n); % par 228 = DA_start
@@ -107,33 +86,16 @@ for n = 1:length(DA)
     clear t x names
 end
 
-nexttile;
-% subplot(1,2,2)
-hold on
-plot(DA, activationAreaWithMultipleDA/activationArea,'k', 'LineWidth', 1)
-plot(DA, results{3}(:,2),'r', 'LineWidth', 1)
-plot([-4 4], [1 1], '--k', 'LineWidth', 1)
-plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
-set(gca,'FontSize',8, 'FontWeight', 'bold')
-xlabel('\Deltat (s)');
-ylabel(" Substrate phosphorylation");
-legend({'Ca + Da (new)','Ca + Da (original)'},'location','northwest','FontSize',6.5);
-legend boxoff
-title('B','position',[-4.5 4.06])
+new_data{1}(:,1) = t_noDA;
+new_data{1}(:,2) = x_noDA;
+new_data{2}(:,1) = t_DA;
+new_data{2}(:,2) = x_DA;
+new_data{3}(:,1) = DA;
+new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
 
-
-
-%Only saves the graph if running matlab 2020a or later
-[majorversion, minorversion] = mcrversion;
-if majorversion >= 9
-    if minorversion >= 8
-        
-        fig4.Units = 'inches';
-        fig4.OuterPosition = [0 0 6.5 2.15];
-        
-        exportgraphics(fig4,'Regenerate timing model graphs\Figure 4.png','Resolution',600)
-        
-        fig4.Units = 'normalized';
-        fig4.OuterPosition = [0 0 1 1];
-    end
+if ispc
+    save('Regenerate timing model graphs\new_data.mat','new_data')
+else
+    save('Regenerate timing model graphs/new_data.mat','new_data')    
 end
+
