@@ -11,7 +11,7 @@ addpath(genpath(pwd));
 
 [stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
 
-%Create needed folders
+% Create needed folders
 if ispc
     mkdir("Model\" + stg.folder_model,"Data");
     mkdir("Model\" + stg.folder_model,"Formulas");
@@ -24,10 +24,10 @@ else
     mkdir("Model/" + stg.folder_model,"Data/Exp");
 end
 
+% Creates a .mat and a tsvs from the sbtab file
 if stg.import
-% % Imports sbtab into a .mat file and exports the tsvs
-disp("Reading SBtab Excel")
-f_excel_sbtab_importer(stg);
+    disp("Reading SBtab Excel")
+    f_excel_sbtab_importer(stg);
 end
 
 [stg,sb] = f_load_settings_part2(stg);
@@ -44,24 +44,13 @@ if stg.analysis ~= ""
     rst = f_analysis(stg,stg.analysis);
 end
 
+% Plots the results of the analysis, this can be done independently after
+% loading the results of a previously run analysis
+if stg.plot
+    f_plot(rst,stg)
+end
+
 % Save Analysis results if chosen in settings
-if stg.save_results
-    if ispc
-        mkdir("Model\" + stg.folder_model,"Data");
-    else
-        mkdir("Model/" + stg.folder_model,"Data"); 
-    end
-    
-    date_stamp = string(year(datetime)) + "_" + ...
-        string(month(datetime,'shortname')) + "_" + string(day(datetime))...
-        + "_" + string(hour(datetime)) + "_" + string(minute(datetime))...
-        + "_" + string(round(second(datetime)));
-    
-    if ispc
-        save ("Model\" +char(stg.folder_model+"\Results\Analysis_"+...
-            string(date_stamp)+".mat"),'stg','sb','rst');
-    else
-        save ("Model/" +char(stg.folder_model+"/Results/Analysis_"+...
-            string(date_stamp)+".mat"),'stg','sb','rst');
-    end
+if stg.save_results 
+    f_save_analysis(stg,sb,rst)
 end

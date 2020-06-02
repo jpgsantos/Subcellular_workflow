@@ -27,14 +27,14 @@ stg.sbtab_name = "sbtab_"+stg.name;
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 
-stg.analysis = "SAlocal";
+stg.analysis = "diag";
 
 % Experiments to run
 stg.ms.exprun = [1:9];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
-stg.useLog = 1;
+stg.useLog = 0;
 
 % 0 or 1 to decide whether to use multicore everywhere it is available
 stg.optmc = logical(1);
@@ -112,11 +112,10 @@ stg.ub = zeros(1,stg.ms.parnum)+4;
 % there needs to be a match between one and the other.
 stg.ms.partest([216:227],1) =  [1:6,1:6];
 
-stg.pat = 1;
-
-stg.pa(1,:) = zeros(1,6);
+stg.pat = [1,2];
 
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
+stg.pa(2,:) = zeros(1,6);
 
 % Best parameter found so far for the model
 
@@ -127,7 +126,7 @@ stg.bestx = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 % 0 or 1 to decide whether to do plots
 stg.plot = 1;
 
-% 0 or 1 to decide whether to use long names in plot Diag3
+% 0 or 1 to decide whether to use long names in plot Outputs
 stg.plotnames = 1;
 
 %% Sensitivity analysis

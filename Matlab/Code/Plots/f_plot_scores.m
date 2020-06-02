@@ -20,11 +20,11 @@ if stg.useLog ~= 0
     
     % Choose correct title according to settings
     if stg.useLog == 1
-        title("scores total (sum of log10 of datasets)")
+        title("Total scores  (sum of log10 of scores per experimental output)")
     elseif stg.useLog == 2
-        title("scores total (sum of log10 of experiments)")
+        title("Total scores (sum of log10 of scores per experiments)")
     elseif stg.useLog == 3
-        title("scores total log10")
+        title("Log 10 of total scores")
     end
 else
     
@@ -33,7 +33,7 @@ else
     scatter(stg.pat,log10([rst(stg.pat).st]),10,'filled')
     
 %     scatter(stg.pat,[rst(stg.pat).st],10,'filled')
-    title("scores total log10")
+    title("Log 10 of total scores")
 end
 
 % Choose the bounds for the x axis so it aligns with the bottom plot
@@ -44,6 +44,7 @@ subplot(4,1,[2,3,4])
 
 % Generate labels for left of heatmap (Experiment number Dataset number)
 label = [];
+
 % Iterate over the number of experiments
 for n = stg.ms.exprun
     
@@ -78,7 +79,7 @@ if stg.useLog == 1
     % Plot the heatmap
     heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
 
-    title("scores per experiment (sum of log10 of datasets)")
+    title("Log10 of scores per experimental output")
     
 else
     heatline = [];
@@ -103,6 +104,6 @@ else
     % Plot the heatmap
     heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
     
-    title("scores per experiment log10")
+    title("Log10 of scores per experimental output")
 end
 end

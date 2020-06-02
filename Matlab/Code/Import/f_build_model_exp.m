@@ -86,7 +86,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         if isempty(sbtab.datasets(number_exp).max)
             
             if m == 0
-                addspecies (model_run{number_exp}.Compartments(1), char(output{1,n}),0,...
+                addspecies (model_run{number_exp}.Compartments(1),...
+                    char(output{1,n}),0,...
                 'InitialAmountUnits',sb.Output.Unit{n});
             end
             
@@ -100,7 +101,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 'InitialAmountUnits',sb.Output.Unit{n});
             
             if m == 0
-                addspecies (model_run{number_exp}.Compartments(1), char(output{1,n}),0,...
+                addspecies (model_run{number_exp}.Compartments(1),...
+                    char(output{1,n}),0,...
                 'InitialAmountUnits',sb.Output.Unit{n});
             end
             

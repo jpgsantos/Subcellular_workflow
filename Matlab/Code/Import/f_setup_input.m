@@ -1,5 +1,8 @@
 function f_setup_input(stg)
-
+% Creates code that loads the inputs of each experiment into a .mat file, 
+% "Data_D1_LTP_time_window_input" in this case, and creates the code to
+% read this inputs at runtime when the experiments are being simulated, all
+% this generated code is stored on the formulas folder
 
 persistent modelobj
 persistent sbtab
@@ -22,10 +25,10 @@ end
 
 for exp_n = 1:size(sbtab.datasets,2)
     
-    for n =1:size(sbtab.datasets(exp_n).input,2)
+    for n = 1:size(sbtab.datasets(exp_n).input,2)
         if size(sbtab.datasets(exp_n).input_value{n},2) > 100
 %             sim_scale = 1/(Data(exp_n).Experiment.t(2)-Data(exp_n).Experiment.t(1));
-            
+
             name = strrep(modelobj.species(1+str2double(strrep(...
                 sbtab.datasets(exp_n).input(n),'S',''))).name,".","");
             if ispc
@@ -47,12 +50,12 @@ for exp_n = 1:size(sbtab.datasets,2)
             fprintf(fileID, "if isempty(" + name + "X)\n");
             fprintf(fileID, "if ispc\n");
             fprintf(fileID, "Data = coder.load('Model\\" +...
-                stg.folder_model +"\\Data\\Data_" + stg.name +...
-                "_input.mat','exp"+ exp_n + "_" + name + "');\n");
+                stg.folder_model +"\\Data\\Input_" + stg.name +...
+                ".mat','exp"+ exp_n + "_" + name + "');\n");
             fprintf(fileID, "else\n");
             fprintf(fileID, "Data = coder.load('Model/" +...
-                stg.folder_model +"/Data/Data_" + stg.name +...
-                "_input.mat','exp"+ exp_n + "_" + name + "');\n");
+                stg.folder_model +"/Data/Input_" + stg.name +...
+                ".mat','exp"+ exp_n + "_" + name + "');\n");
             fprintf(fileID, "end\n");
             fprintf(fileID, name + "X = Data.exp"+ exp_n +...
                 "_" + name + "(:,2);\n");
@@ -112,10 +115,10 @@ for exp_n = 1:size(sbtab.datasets,2)
                 
                 fprintf(fileID, "if ispc\n");
                 fprintf(fileID, "load('Model\\" + stg.folder_model +...
-                    "\\Data\\Data_" + stg.name + ".mat','sbtab');\n");
+                    "\\Data\\data_" + stg.name + ".mat','sbtab');\n");
                 fprintf(fileID, "else\n");
                 fprintf(fileID, "load('Model/" + stg.folder_model +...
-                    "/Data/Data_" + stg.name + ".mat','sbtab');\n");
+                    "/Data/data_" + stg.name + ".mat','sbtab');\n");
                 fprintf(fileID, "end\n");
                 fprintf(fileID, "exp" + exp_n + "_" + name +...
                     "(:,1) = sbtab.datasets(" + exp_n +...
@@ -125,11 +128,11 @@ for exp_n = 1:size(sbtab.datasets,2)
                     ").input_value{" + n + "};\n");
                 fprintf(fileID, "if ispc\n");
                 fprintf(fileID, "save('Model\\" + stg.folder_model +...
-                    "\\Data\\Data_"+ stg.name + "_input.mat','exp" +...
+                    "\\Data\\Input_"+ stg.name + ".mat','exp" +...
                     exp_n + "_" + name + "');\n");
                 fprintf(fileID, "else\n");
                 fprintf(fileID, "save('Model/" + stg.folder_model +...
-                    "/Data/Data_"+ stg.name + "_input.mat','exp" +...
+                    "/Data/Input_"+ stg.name + ".mat','exp" +...
                     exp_n + "_" + name + "');\n");
                 fprintf(fileID, "end\n");
             else
@@ -141,11 +144,11 @@ for exp_n = 1:size(sbtab.datasets,2)
                     ").input_value{" + n + "};\n");
                 fprintf(fileID, "if ispc\n");
                 fprintf(fileID, "save('Model\\" + stg.folder_model +...
-                    "\\Data\\Data_"+ stg.name + "_input.mat','exp" +...
+                    "\\Data\\Input_"+ stg.name + ".mat','exp" +...
                     exp_n + "_" + name + "','-append');\n");
                 fprintf(fileID, "else\n");
                 fprintf(fileID, "save('Model/" + stg.folder_model +...
-                    "/Data/Data_"+ stg.name + "_input.mat','exp" +...
+                    "/Data/Input_"+ stg.name + ".mat','exp" +...
                     exp_n + "_" + name + "','-append');\n");
                 fprintf(fileID, "end\n");
             end
