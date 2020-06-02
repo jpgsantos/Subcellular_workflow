@@ -1,4 +1,8 @@
 function f_build_model_exp(stg,sb)
+%Creates two a .mat files for each experimetn, with all the added rules,
+%species and parameters needed depending on the inputs and outputs
+%specified on the sbtab, one for the equilibrium simulation run and one for
+%the proper run
 
 persistent modelobj
 persistent sbtab

@@ -2,13 +2,18 @@ clear
 clc
 % clear functions
 
+%Get the date and time
+date_stamp = string(year(datetime)) + "_" + ...
+    string(month(datetime,'shortname')) + "_" + string(day(datetime))...
+    + "__" + string(hour(datetime)) + "_" + string(minute(datetime))...
+    + "_" + string(round(second(datetime)));
+
 addpath(genpath(pwd));
 
 % Code for importing setting that supports setting divided in different
 % parts, the inputs are in the format (model_name,folder_model,mode) mode
 % can be either "all" or any combination of "import","analysis",...
 % "simulation","model","diagnostics","plots","optimization".
-
 [stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
 
 % Create needed folders
@@ -30,6 +35,8 @@ if stg.import
     f_excel_sbtab_importer(stg);
 end
 
+% Creates a struct based on the sbtab that is used elswhere in the code and
+% also adds the number of experiments and outputs to the settings variable
 [stg,sb] = f_load_settings_part2(stg);
 
 addpath(genpath(pwd));
@@ -50,7 +57,8 @@ if stg.plot
     f_plot(rst,stg)
 end
 
-% Save Analysis results if chosen in settings
+% Save Analysis results and plots if chosen in settings
 if stg.save_results 
-    f_save_analysis(stg,sb,rst)
+    f_save_analysis(stg,sb,rst,date_stamp)
+    f_save_plots(stg,date_stamp)
 end

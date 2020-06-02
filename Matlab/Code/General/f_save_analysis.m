@@ -1,15 +1,10 @@
-function f_save_analysis(stg,sb,rst)
+function f_save_analysis(stg,sb,rst,date_stamp)
 
 if ispc
     mkdir("Model\" + stg.folder_model,"Results");
 else
     mkdir("Model/" + stg.folder_model,"Results");
 end
-
-date_stamp = string(year(datetime)) + "_" + ...
-    string(month(datetime,'shortname')) + "_" + string(day(datetime))...
-    + "__" + string(hour(datetime)) + "_" + string(minute(datetime))...
-    + "_" + string(round(second(datetime)));
 
 if ispc
     mkdir("Model\" + stg.folder_model + "\Results","Analysis_" +...

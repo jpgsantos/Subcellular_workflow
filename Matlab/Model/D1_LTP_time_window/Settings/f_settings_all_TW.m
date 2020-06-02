@@ -3,7 +3,7 @@ function [stg] = f_settings_all_TW()
 %% Import
 
 % 0 or 1 to decide whether to run import functions
-stg.import = 1;
+stg.import = 0;
 
 % Name of the folder where everything related to the model is stored
 stg.folder_model = "D1_LTP_time_window";
@@ -27,7 +27,7 @@ stg.sbtab_name = "sbtab_"+stg.name;
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 
-stg.analysis = "diag";
+stg.analysis = "SAlocal";
 
 % Experiments to run
 stg.ms.exprun = [1:9];
@@ -49,7 +49,7 @@ stg.csl = 0;
 stg.console = 1;
 
 % 0 or 1 to decide whether to save results
-stg.save_results = 0;
+stg.save_results = 1;
 
 %% Simulation
 
@@ -112,13 +112,17 @@ stg.ub = zeros(1,stg.ms.parnum)+4;
 % there needs to be a match between one and the other.
 stg.ms.partest([216:227],1) =  [1:6,1:6];
 
-stg.pat = [1,2];
+% Parameter array to test
+stg.pat = 1;
 
+% All the parameter arrays, in this case there is only one
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
-stg.pa(2,:) = zeros(1,6);
+
+% % Example code to test more than one parameter array
+% stg.pat = [1,2];
+% stg.pa(2,:) = zeros(1,6);
 
 % Best parameter found so far for the model
-
 stg.bestx = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
 %% Plots

@@ -81,9 +81,10 @@ for n = 1:size(parameter_name,1)
         reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
     end
     
+    reaction_name_compartment = reaction_name;
+    
     % Check if running matlab 2020a or later
     if f_check_minimum_version(9,8)
-        reaction_name_compartment = reaction_name;
         
         for m = 1:size(sb.Compound.Name,1)
             reaction_name_compartment = insertBefore(string(reaction_name_compartment)," " + string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));

@@ -46,18 +46,18 @@ title('B','position',[-4.5 4.06])
 %Saves the graphs if running matlab 2020a or later
 if f_check_minimum_version(9,8)
     fig4.Units = 'inches';
-        fig4.OuterPosition = [0 0 6.5 2.15];
-        
-        if ispc
-            exportgraphics(fig4,...
-                'Regenerate timing model graphs\Figure 4.png',...
-                'Resolution',600)
-        else
-            exportgraphics(fig4,...
-                'Regenerate timing model graphs/Figure 4.png',...
+    fig4.OuterPosition = [0 0 6.5 2.15];
+    
+    if ispc
+        exportgraphics(fig4,...
+            'Regenerate timing model graphs\Figure 4.png',...
             'Resolution',600)
-        end
-        
-        fig4.Units = 'normalized';
-        fig4.OuterPosition = [0 0 1 1];
+    else
+        exportgraphics(fig4,...
+            'Regenerate timing model graphs/Figure 4.png',...
+            'Resolution',600)
+    end
+    
+    fig4.Units = 'normalized';
+    fig4.OuterPosition = [0 0 1 1];
 end
