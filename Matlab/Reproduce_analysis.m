@@ -1,6 +1,8 @@
-% Script to reproduce previously obtained plots
+% Script to reproduce previously run analysis
+
 clear
 clc
+% clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -10,6 +12,7 @@ date_stamp = string(year(datetime)) + "_" + ...
 
 addpath(genpath(pwd));
 
+% Choose relevant path
 load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
 
 % Create needed folders

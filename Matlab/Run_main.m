@@ -1,3 +1,5 @@
+% Script to import sbtab and run the analyis for the first time
+
 clear
 clc
 % clear functions
