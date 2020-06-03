@@ -25,6 +25,10 @@ if isfield(rst,'diag')
     f_plot_in_out(rst.diag,stg,sbtab,Data)
 end
 
+if isfield(rst,'opt')
+    f_plot_opt(rst,stg)
+end
+
 % Generate figure for Sensitivity Analysis
 if isfield(rst,'SA')
     f_plot_SA_sensitivities(rst.SA,stg);

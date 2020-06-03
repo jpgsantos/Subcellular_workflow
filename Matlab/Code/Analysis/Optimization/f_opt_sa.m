@@ -37,7 +37,7 @@ else
 end
 
 % Save results
-rst.name = 'simulated annealing';
+rst.name = 'Simulated annealing';
 rst.x = x;
 rst.fval = fval;
 rst.exitflag = exitflag;

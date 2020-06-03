@@ -35,7 +35,7 @@ else
 end
 
 % Save results
-rst.name = 'surrogate optimization';
+rst.name = 'Surrogate optimization';
 rst.x = x;
 rst.fval = fval;
 rst.exitflag = exitflag;
