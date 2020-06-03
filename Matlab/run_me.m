@@ -17,17 +17,10 @@ addpath(genpath(pwd));
 [stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
 
 % Create needed folders
-if ispc
-    mkdir("Model\" + stg.folder_model,"Data");
-    mkdir("Model\" + stg.folder_model,"Formulas");
-    mkdir("Model\" + stg.folder_model,"tsv");
-    mkdir("Model\" + stg.folder_model,"Data\Exp");
-else
     mkdir("Model/" + stg.folder_model,"Data");
     mkdir("Model/" + stg.folder_model,"Formulas");
     mkdir("Model/" + stg.folder_model,"tsv");
     mkdir("Model/" + stg.folder_model,"Data/Exp");
-end
 
 % Creates a .mat and a tsvs from the sbtab file
 if stg.import

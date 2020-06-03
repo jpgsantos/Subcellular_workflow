@@ -3,7 +3,7 @@ function [stg] = f_settings_all_TW()
 %% Import
 
 % 0 or 1 to decide whether to run import functions
-stg.import = 0;
+stg.import = 1;
 
 % Name of the folder where everything related to the model is stored
 stg.folder_model = "D1_LTP_time_window";

@@ -5,7 +5,7 @@ persistent Data
 
 % Import the data on the first run
 if isempty(Data)
-    load("data_"+stg.name+".mat",'Data','sbtab')
+    load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 end
 
 % Iterate over the number of experiments

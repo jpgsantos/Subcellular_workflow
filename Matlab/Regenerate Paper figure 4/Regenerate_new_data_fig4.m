@@ -93,9 +93,4 @@ new_data{2}(:,2) = x_DA;
 new_data{3}(:,1) = DA;
 new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
 
-if ispc
-    save('Regenerate timing model graphs\new_data.mat','new_data')
-else
-    save('Regenerate timing model graphs/new_data.mat','new_data')    
-end
-
+save('Regenerate timing model graphs/new_data.mat','new_data')

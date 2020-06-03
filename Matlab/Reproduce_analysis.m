@@ -13,17 +13,10 @@ addpath(genpath(pwd));
 load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
 
 % Create needed folders
-if ispc
-    mkdir("Model\" + stg.folder_model,"Data");
-    mkdir("Model\" + stg.folder_model,"Formulas");
-    mkdir("Model\" + stg.folder_model,"tsv");
-    mkdir("Model\" + stg.folder_model,"Data\Exp");
-else
     mkdir("Model/" + stg.folder_model,"Data");
     mkdir("Model/" + stg.folder_model,"Formulas");
     mkdir("Model/" + stg.folder_model,"tsv");
     mkdir("Model/" + stg.folder_model,"Data/Exp");
-end
 
 f_import(stg,sb)
 

@@ -34,7 +34,7 @@ for n = 1:size(sbtab.species,1)
         compObj{compartment_number} = addcompartment(modelobj, sb.Compound.Location{n});
         set(compObj{compartment_number}, 'CapacityUnits', 'liter');
     end
-
+    
     for m = 1:size(compObj,2)
         if string(compObj{m}.Name) == string(sb.Compound.Location{n})
             compartment_number_match = m;
@@ -52,10 +52,10 @@ end
 
 b = 0;
 for n = 1:size(sb.Parameter.Name,1)
-
+    
     RE = char("(^|[^A-Za-z0-9_])" +...
         sb.Parameter.Name(n) + "([^A-Za-z0-9_]|$)");
-
+    
     a = find(not(cellfun(...
         @isempty,regexp(sb.Reaction.KineticLaw,RE,'start'))));
     
@@ -211,7 +211,7 @@ for n = 1:size(sb.Experiments.ID,1)
             sbtab.datasets(n).output_location{nOutput} = ...
                 sb.Output.Location(m);
         end
-    end   
+    end
     sbtab.datasets(n).stg.outnumber = nOutput;
     sbtab.datasets(n).start_amount = cat(2,startAmountName(:)...
         ,transpose([startamount{:}]),species_INP_matcher);
@@ -273,24 +273,14 @@ if isfield(sb,"Constant")
     end
 end
 
-if ispc
-    sbiosaveproject("Model\" + stg.folder_model + "\Data\model_" + ...
-        stg.name + ".sbproj",'modelobj')
-    save("Model\" + stg.folder_model + "\Data\" + "model_" + ...
-        stg.name + ".mat",'modelobj')
-    save("Model\" + stg.folder_model + "\Data\data_" +...
-        stg.name + ".mat",'Data','sbtab','sb')
-    sbmlexport(modelobj,"Model\" + stg.folder_model + "\Data\model_" +...
-        stg.name + ".xml")
-else
-    sbiosaveproject("Model/" + stg.folder_model + "/Data/model_" +...
-        stg.name + ".sbproj",'modelobj')
-    save("Model/" + stg.folder_model + "/Data/" + "model_" +...
-        stg.name + ".mat",'modelobj')
-    save("Model/" + stg.folder_model + "/Data/data_" +...
-        stg.name + ".mat",...
-        'Data','sbtab','sb')
-    sbmlexport(modelobj,"Model/" + stg.folder_model + "/Data/model_" +...
-        stg.name + ".xml")
-end
+sbiosaveproject("Model/" + stg.folder_model + "/Data/model_" +...
+    stg.name + ".sbproj",'modelobj')
+save("Model/" + stg.folder_model + "/Data/" + "model_" +...
+    stg.name + ".mat",'modelobj')
+save("Model/" + stg.folder_model + "/Data/data_" +...
+    stg.name + ".mat",...
+    'Data','sbtab','sb')
+sbmlexport(modelobj,"Model/" + stg.folder_model + "/Data/model_" +...
+    stg.name + ".xml")
+
 end

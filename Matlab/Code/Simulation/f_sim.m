@@ -15,13 +15,8 @@ if isempty(model_run)
     for n = stg.ms.exprun
         
         % Load the models for equilibrium
-        if ispc
-            load("Model\" + stg.folder_model + "\Data\exp\Model_eq_" + stg.name +...
-                "_" + n + ".mat",'model_exp')
-        else
             load("Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
                 "_" + n + ".mat",'model_exp')
-        end
         
         % Place the loaded models in the correct place in the array, models
         % for equilibrium are set to be on the second half of the array
@@ -34,13 +29,8 @@ if isempty(model_run)
         end
         
         % Load the models for main run
-        if ispc
-            load("Model\" +stg.folder_model + "\Data\exp\Model_" + stg.name +... 
-                "_" + n + ".mat",'model_exp')
-        else
             load("Model/" +stg.folder_model + "/Data/exp/Model_" + stg.name +... 
                 "_" + n + ".mat",'model_exp')
-        end
         
         % Place the loaded models in the correct place in the array, models
         % for main run are set to be on the first half of the array

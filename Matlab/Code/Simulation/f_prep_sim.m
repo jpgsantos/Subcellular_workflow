@@ -9,11 +9,7 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    if ispc
-        load("Model\" +stg.folder_model +"\Data\" + "data_"+stg.name+".mat",'Data','sbtab')
-    else
         load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
-    end
 end
 
 % Set the parameters that are going to be used for the simulation to the

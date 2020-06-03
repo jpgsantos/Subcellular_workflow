@@ -4,7 +4,7 @@ function f_plot(rst,stg)
 disp("Plotting ...")
 
 % Import the data on the first run
-load("data_"+stg.name+".mat",'Data','sbtab')
+load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 
 % Generate Scores figure
 if isfield(rst,'diag')

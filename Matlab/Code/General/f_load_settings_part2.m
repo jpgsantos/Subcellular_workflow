@@ -1,29 +1,15 @@
 function [stg,sb] = f_load_settings_part2(stg)
 
-if ispc
-    if isfile("Model\" + stg.folder_model +"\Data\" +...
-            stg.sbtab_name + ".mat")
-
-        load("Model\" + stg.folder_model +"\Data\" +...
-            stg.sbtab_name + ".mat",'sbtab_excel');
-        
-        sb = f_get_sbtab_fields(sbtab_excel);
-        
-        stg.expn = size(sb.Experiments.ID,1);
-        stg.outn = size(sb.Output.ID,1);
-    end
-else
-    if isfile("Model/" + stg.folder_model +"/Data/" +...
-            stg.sbtab_name + ".mat")
-        
-        load("Model/" + stg.folder_model +"/Data/" +...
-            stg.sbtab_name + ".mat",'sbtab_excel');
-        
-        sb = f_get_sbtab_fields(sbtab_excel);
-        
-        stg.expn = size(sb.Experiments.ID,1);
-        stg.outn = size(sb.Output.ID,1);
-    end
+if isfile("Model/" + stg.folder_model +"/Data/" +...
+        stg.sbtab_name + ".mat")
+    
+    load("Model/" + stg.folder_model +"/Data/" +...
+        stg.sbtab_name + ".mat",'sbtab_excel');
+    
+    sb = f_get_sbtab_fields(sbtab_excel);
+    
+    stg.expn = size(sb.Experiments.ID,1);
+    stg.outn = size(sb.Output.ID,1);
 end
 end
 
@@ -45,7 +31,7 @@ for n = 1:size(sbtab_excel,2)
                 subfield = strrep(subfield,">",'');
                 subfield = strrep(subfield,":",'_');
                 subfield = strrep(subfield," ",'_');
-
+                
                 sb.(field).(subfield)(:,1) = sbtab_excel{1,n}(3:end,k)';
                 
                 sb.(field).(subfield) = sb.(field).(subfield)...

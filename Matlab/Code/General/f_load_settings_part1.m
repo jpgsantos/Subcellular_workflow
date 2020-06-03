@@ -39,13 +39,9 @@ end
 
 function [stg] = load_setting_chunk(name,chunk,stg)
 
-if ispc
-    settings_filename = "Model\" + stg.folder_model + "\Settings\f_settings_" +...
-        chunk + "_" + name + ".m";
-else
-    settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
-        chunk + "_" + name + ".m";
-end
+settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
+    chunk + "_" + name + ".m";
+
 
 if isfile(settings_filename)
     
@@ -53,7 +49,7 @@ if isfile(settings_filename)
     
     f = fieldnames(stg_add);
     for i = 1:length(f)
-       stg.(f{i}) = stg_add.(f{i});
+        stg.(f{i}) = stg_add.(f{i});
     end
 else
     error("You are lacking the f_settings_" + chunk + "_" +...

@@ -1,5 +1,5 @@
-load('Regenerate timing model graphs\old_data')
-load('Regenerate timing model graphs\new_data')
+load('Regenerate timing model graphs/old_data')
+load('Regenerate timing model graphs/new_data')
 
 figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
 close(figHandles);
