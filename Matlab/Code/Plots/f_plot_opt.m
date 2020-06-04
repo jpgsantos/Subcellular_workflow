@@ -4,22 +4,34 @@ figHandles = findobj('type', 'figure', 'name', 'Optimization results');
 close(figHandles);
 figure('WindowStyle', 'docked','Name','Optimization results','NumberTitle', 'off');
 
-hold on
+n_opt_done = 0;
 for n = 1:size(rst.opt,2)
-scatter(rst.opt(n).x,[1:stg.ms.parnum]+(0.05*n)-(0.05*(size(rst.opt,2)+1)/2),25,'filled','MarkerFaceAlpha',0.75)
+    if ~isempty(rst.opt(n).x)
+        for a = 1:size(rst.opt(n).x,1)
+            n_opt_done = n_opt_done+1;
+        end
+    end
+end
+
+hold on
+m = 0;
+for n = 1:size(rst.opt,2)
+    if ~isempty(rst.opt(n).x)
+        for a = 1:size(rst.opt(n).x,1)
+            m = m+1;
+            scatter(rst.opt(n).x(a,:),[1:stg.ms.parnum]+(0.05*m)-(0.05*(n_opt_done+1)/2),25,'filled','MarkerFaceAlpha',0.75)
+            name{m} = char(string(rst.opt(n).name) + " ( Log10 of score = " + log10(rst.opt(n).fval(a)) + " )");
+        end
+    end
 end
 scatter(stg.lb,[1:stg.ms.parnum],50,'x','k','MarkerFaceAlpha',0.75)
 scatter(stg.ub,[1:stg.ms.parnum],50,'x','k','MarkerFaceAlpha',0.75)
-for n = 2:size(rst.opt,2)
-plot([min(stg.lb) max(stg.ub)],[n-0.5 n-0.5],'--k','Color', [0.5 0.5 0.5 0.5])
+for n = 2:stg.ms.parnum
+    plot([min(stg.lb) max(stg.ub)],[n-0.5 n-0.5],'--k','Color', [0.5 0.5 0.5 0.5])
 end
 hold off
 
-for n= 1:size(rst.opt,2)
-    name{n} = char(string(rst.opt(n).name) + " ( Log10 of score = " + log10(rst.opt(n).fval) + " )");
-end
-
-legend({name{:},'Prior bounds'},'Fontweight','bold','location','best')
+legend([name(:)' 'Prior bounds'],'Fontweight','bold','location','best')
 legend boxoff
 
 xlabel('Log10 of parameter value','Fontweight','bold')
@@ -34,7 +46,7 @@ for n = 1:stg.ms.parnum
 end
 
 for n = 1:size(parNames,2)
-    if size(parNames{n},1) > 1 
+    if size(parNames{n},1) > 1
         parNames{n} = parNames{n}(1,:);
     end
 end
