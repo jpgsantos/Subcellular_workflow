@@ -3,7 +3,7 @@ function [stg] = f_settings_all_TW()
 %% Import
 
 % 0 or 1 to decide whether to run import functions
-stg.import = 1;
+stg.import = 0;
 
 % Name of the folder where everything related to the model is stored
 stg.folder_model = "D1_LTP_time_window";
@@ -99,10 +99,10 @@ stg.ms.tcm = [];
 stg.ms.tcd = [];
 
 % Array with the lower bound of all parameters
-stg.lb = zeros(1,stg.ms.parnum)-5;
+stg.lb = zeros(1,stg.ms.parnum)-8;
 
 % Array with the upper bound of all parameters
-stg.ub = zeros(1,stg.ms.parnum)+4;
+stg.ub = zeros(1,stg.ms.parnum)+1;
 
 %% Diagnostics
 
@@ -136,7 +136,7 @@ stg.plotnames = 1;
 %% Sensitivity analysis
 
 % Number of samples to use in SA
-stg.sansamples = 10;
+stg.sansamples = 96;
 
 % 0 or 1 to decide whether to subtract the mean before calculating SI and
 % SIT

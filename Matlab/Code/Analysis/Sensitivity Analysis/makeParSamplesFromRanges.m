@@ -14,7 +14,7 @@ function rst=makeParSamplesFromRanges(stg)
 % N matris of size  (Nsamples X Npars x Npars) with columns exchanged
 %between M1 and M2 (see publication).
 %i.e. in total 2*Nsamples + Nsamples*Npars samples.
-
+        
 % MAKE SAMPLE MATRICES
 M1 = zeros(stg.sansamples, stg.ms.parnum); % Pre-allocate memory for data
 M2 = zeros(stg.sansamples, stg.ms.parnum);
@@ -26,8 +26,12 @@ for i=1:stg.ms.parnum
         M1(:,i) = stg.lb(i) + (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
         M2(:,i) = stg.lb(i) + (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
     elseif stg.sasamplemode == 1
-        M1(:,i) = normrnd(stg.bestx(i),stg.sasamplesigma,stg.sansamples,1);
-        M2(:,i) = normrnd(stg.bestx(i),stg.sasamplesigma,stg.sansamples,1);
+        pd(i) = makedist('Normal','mu',stg.bestx(i),'sigma',stg.sasamplesigma);
+        t(i) = truncate(pd(i),stg.lb(i),stg.ub(i));
+        r{i} = random(t(i),stg.sansamples,1);
+        r2{i} = random(t(i),stg.sansamples,1);
+        M1(:,i) = r{i};
+        M2(:,i) = r2{i};
     end
 end
 
