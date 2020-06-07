@@ -7,7 +7,7 @@ addpath(genpath(pwd));
 
 % Choose relevant path
 % load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
-load("Results/Analysis_2020_Jun_3__15_29_7/Analysis.mat")
+load("Results/Analysis_2020_Jun_6__16_3_43/Analysis.mat")
 
 
 % Create needed folders

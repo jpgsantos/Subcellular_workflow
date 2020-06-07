@@ -62,6 +62,7 @@ stg.ms.eqt  = 50000;
 % 0 or 1 to decide whether to do Dimensional Analysis
 stg.ms.dimenanal = true;
 
+% 0 or 1 to decide whether to do Unit conversion
 stg.ms.UnitConversion = true;
 
 % 0 or 1 to decide whether to do Absolute Tolerance Scaling
@@ -136,15 +137,16 @@ stg.plotnames = 1;
 %% Sensitivity analysis
 
 % Number of samples to use in SA
-stg.sansamples = 96;
+stg.sansamples = 12;
 
 % 0 or 1 to decide whether to subtract the mean before calculating SI and
 % SIT
 stg.sasubmean = 1;
 
 % Choose the way you want to perform SA, 0 for using the SA with the scores
-% and 1 to use the last value of the simulation
-stg.samode = 0;
+% and 1 to use the last value of the simulation both per experimental 
+% output, 2 to use the scores per experiment
+stg.samode = 2;
 
 % Choose the way you want to obtain the samples of the parameters for 
 % performing the SA, 0 for using an upper and lower bound for the 

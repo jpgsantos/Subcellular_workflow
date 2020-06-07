@@ -17,7 +17,7 @@ for n = stg.ms.exprun
         % Calculate score per dataset if there are no errors
         if rst.simd{n} ~= 0
             
-            rst.x{n,1}(:,j) = rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j);
+%             rst.x{n,1}(:,j) = rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j);
             rst.xfinal{n,1}(j) = rst.simd{n}.Data(end,end-size(sbtab.datasets(n).output,2)+j);
             
             % Calculate score using formula that accounts for normalization
