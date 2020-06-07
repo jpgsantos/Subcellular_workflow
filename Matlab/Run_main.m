@@ -49,11 +49,14 @@ end
 % Save Analysis results and plots if chosen in settings
 if stg.save_results 
     f_save_analysis(stg,sb,rst,date_stamp)
-    f_save_plots(stg,date_stamp)
 end
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 if stg.plot
     f_plot(rst,stg)
+end
+
+if stg.save_results 
+    f_save_plots(stg,date_stamp) 
 end

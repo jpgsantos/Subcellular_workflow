@@ -4,11 +4,8 @@ persistent n_out
 persistent out_name
 
 if isempty(n_out)
-    if ispc
-        load("Model\" +stg.folder_model +"\Data\" + "data_"+stg.name+".mat",'sbtab')
-    else
-        load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'sbtab')
-    end
+    
+    load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'sbtab')
     
     n_out = 0;
     out_name = [];
