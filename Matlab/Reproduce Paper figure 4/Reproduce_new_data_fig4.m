@@ -2,7 +2,11 @@
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
 clear
-proj = sbioloadproject('model_D1_LTP_time_window.sbproj');
+
+[stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
+
+proj = sbioloadproject("Model/" + stg.folder_model + "/Data/model_" +...
+    stg.name + ".sbproj");
 obj = proj.modelobj;
 
 %% Get steady state values after equilibrating for 100000 s
@@ -93,4 +97,4 @@ new_data{2}(:,2) = x_DA;
 new_data{3}(:,1) = DA;
 new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
 
-save('Regenerate timing model graphs/new_data.mat','new_data')
+save('Reproduce paper figure 4/new_data.mat','new_data')

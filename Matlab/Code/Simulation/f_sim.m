@@ -12,7 +12,7 @@ if isempty(model_run)
     model_run = cell(1,stg.expn*2);
         
     % Iterate over the experiments thar are being run
-    for n = stg.ms.exprun
+    for n = stg.exprun
         
         % Load the models for equilibrium
             load("Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
@@ -24,7 +24,7 @@ if isempty(model_run)
         
         % Compile the matlab code that is going to simulate the model using
         % matlab built in function if the option is selected in settings
-        if stg.ms.sbioacc
+        if stg.sbioacc
             sbioaccelerate(model_run{n+stg.expn});
         end
         
@@ -38,7 +38,7 @@ if isempty(model_run)
         
         % Compile the matlab code that is going to simulate the model using
         % matlab built in function if the option is selected in settings
-        if stg.ms.sbioacc
+        if stg.sbioacc
             sbioaccelerate(model_run{n});
         end
     end

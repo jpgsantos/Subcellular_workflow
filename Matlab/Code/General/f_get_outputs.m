@@ -9,7 +9,7 @@ if isempty(n_out)
     
     n_out = 0;
     out_name = [];
-    for n = stg.ms.exprun
+    for n = stg.exprun
         for j = 1:size(sbtab.datasets(n).output,2)
             n_out = n_out + 1;
             out_name{n_out} = {"E" + (n-1) + " " + string(sbtab.datasets(n).output{1,j})};

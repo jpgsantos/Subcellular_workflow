@@ -8,17 +8,17 @@ rst = rst.SA;
 for n = 1:size(outputNames.sd,2)
     outputNames.sd{n}{:} = strrep(outputNames.sd{n}{:},"_","\_");
 end
-for n = stg.ms.exprun
+for n = stg.exprun
     outputNames.se{n} = "E " + string(n);
 end
 
 outputNames.xfinal = outputNames.sd;
 
-parNames = cell(1,stg.ms.parnum);
-parNames2 = cell(1,stg.ms.parnum);
+parNames = cell(1,stg.parnum);
+parNames2 = cell(1,stg.parnum);
 
-for n = 1:stg.ms.parnum
-    parNames{n} = char("P" + find(stg.ms.partest==n));
+for n = 1:stg.parnum
+    parNames{n} = char("P" + find(stg.partest==n));
 end
 
 for n = 1:size(parNames,2)
@@ -33,7 +33,7 @@ figHandles = findobj('type', 'figure', 'name', 'SA SI');
 close(figHandles);
 figure('WindowStyle', 'docked','Name','SA SI','NumberTitle', 'off');
 
-h1 = heatmap(outputNames.se,parNames2,transpose(rst.SI.se(:,1:stg.ms.parnum)),...
+h1 = heatmap(outputNames.se,parNames2,transpose(rst.SI.se(:,1:stg.parnum)),...
     'Colormap',jet,'FontSize',8);
 
 h1.Title = "SI";
@@ -54,7 +54,7 @@ figHandles = findobj('type', 'figure', 'name', 'SA SIT');
 close(figHandles);
 figure('WindowStyle', 'docked','Name','SA SIT','NumberTitle', 'off');
 
-h2 = heatmap(outputNames.se,parNames2,transpose(rst.SIT.se(:,1:stg.ms.parnum)),...
+h2 = heatmap(outputNames.se,parNames2,transpose(rst.SIT.se(:,1:stg.parnum)),...
     'Colormap',jet,'FontSize',8);
 
 Ax = gca;

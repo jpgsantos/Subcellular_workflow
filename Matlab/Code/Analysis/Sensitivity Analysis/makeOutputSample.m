@@ -3,7 +3,7 @@ function rst = makeOutputSample(rst,stg)
 
 nSamples = stg.sansamples;
 [nOutputs,~] = f_get_outputs(stg);
-nPars = stg.ms.parnum;
+nPars = stg.parnum;
 % if stg.samode ~= 2
 %     fM1 = NaN(nSamples,nOutputs);
 %     fM2 = NaN(nSamples,nOutputs);

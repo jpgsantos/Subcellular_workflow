@@ -1,4 +1,5 @@
 function f_plot_scores(rst,stg,sbtab)
+% Generates a figure with Scores 
 
 % Inform the user that fig1 is being ploted
 disp("Plotting Scores")
@@ -46,13 +47,13 @@ subplot(4,1,[2,3,4])
 label = [];
 
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-        label{size(label,2)+1} = {"E" + (n-1) + " " + ...
+        label{size(label,2)+1} = {strrep("E" + (n-1) + " " + ...
             string(rst(max(stg.pat)).simd{1,n}.DataNames(...
-            end-size(sbtab.datasets(n).output,2)+j))};
+            end-size(sbtab.datasets(n).output,2)+j)),"_","\_")};
     end
 end
 
@@ -66,7 +67,7 @@ if stg.useLog == 1
         heatpoint{k} = [];
         
         % Iterate over the number of experiments
-        for n = stg.ms.exprun
+        for n = stg.exprun
             
             % Get the score of each dataset
             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
@@ -77,9 +78,11 @@ if stg.useLog == 1
     end
     
     % Plot the heatmap
-    heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
+    h = heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
     
     title("Log10 of scores per experimental output")
+    h.XLabel = 'Parameter arrays being tested';
+    h.YLabel = 'Outputs';
     
 else
     heatline = [];
@@ -89,7 +92,7 @@ else
         heatpoint{k} = [];
         
         % Iterate over the number of experiments
-        for n = stg.ms.exprun
+        for n = stg.exprun
             
             % Get the log base 10 of the score of each dataset
             heatpoint{k} = [heatpoint{k},log10(rst(k).sd{n,1})];
@@ -102,8 +105,10 @@ else
     end
     
     % Plot the heatmap
-    heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
+    h = heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
     
     title("Log10 of scores per experimental output")
+    h.XLabel = 'Parameter arrays being tested';
+    h.YLabel = 'Outputs';
 end
 end

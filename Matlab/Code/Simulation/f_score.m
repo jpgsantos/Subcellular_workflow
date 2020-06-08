@@ -9,7 +9,7 @@ if isempty(Data)
 end
 
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Iterate over the number of datasets per experiment
     for j = 1:size(sbtab.datasets(n).output,2)

@@ -2,7 +2,7 @@
 
 clear
 clc
-% clear functions
+clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -46,7 +46,7 @@ if stg.analysis ~= ""
     rst = f_analysis(stg,stg.analysis);
 end
 
-% Save Analysis results and plots if chosen in settings
+% Save Analysis results if chosen in settings
 if stg.save_results 
     f_save_analysis(stg,sb,rst,date_stamp)
 end
@@ -57,6 +57,7 @@ if stg.plot
     f_plot(rst,stg)
 end
 
+% Save plots results if chosen in settings
 if stg.save_results 
     f_save_plots(stg,date_stamp) 
 end

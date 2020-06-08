@@ -33,20 +33,20 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_run{number_exp} = copyobj(modelobj);
     configsetObj{number_exp} = getconfigset(model_run{number_exp});
     
-    set(configsetObj{number_exp}, 'MaximumWallClock', stg.ms.maxt);
-    set(configsetObj{number_exp}, 'StopTime', stg.ms.eqt);
+    set(configsetObj{number_exp}, 'MaximumWallClock', stg.maxt);
+    set(configsetObj{number_exp}, 'StopTime', stg.eqt);
     set(configsetObj{number_exp}.CompileOptions,...
-        'DimensionalAnalysis', stg.ms.dimenanal);
+        'DimensionalAnalysis', stg.dimenanal);
     set(configsetObj{number_exp}.CompileOptions,...
-        'UnitConversion', stg.ms.UnitConversion);
+        'UnitConversion', stg.UnitConversion);
     set(configsetObj{number_exp}.SolverOptions,...
-        'AbsoluteToleranceScaling', stg.ms.abstolscale);
+        'AbsoluteToleranceScaling', stg.abstolscale);
     set(configsetObj{number_exp}.SolverOptions,...
-        'RelativeTolerance', stg.ms.reltol);
+        'RelativeTolerance', stg.reltol);
     set(configsetObj{number_exp}.SolverOptions,...
-        'AbsoluteTolerance', stg.ms.abstol);
-    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.ms.eqt);
-    set(configsetObj{number_exp}, 'TimeUnits', stg.ms.simtime);
+        'AbsoluteTolerance', stg.abstol);
+    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
+    set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     
     if ~isempty(stg.maxstep)
         set(configsetObj{number_exp}.SolverOptions,...
@@ -124,7 +124,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                     
                     addparameter(model_run{number_exp},char("time_event_t_" + j + "_" +  n),...
                         str2double(string(input_time{j}(n))),...
-                        'ValueUnits',char(stg.ms.simtime));
+                        'ValueUnits',char(stg.simtime));
                     
                     addparameter(model_run{number_exp},char("time_event_r_" + j + "_" +  n),...
                         str2double(string(input_value{j}(n))),...

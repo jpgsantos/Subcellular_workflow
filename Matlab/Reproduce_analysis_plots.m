@@ -16,6 +16,8 @@ load("Results/Analysis_2020_Jun_6__16_3_43/Analysis.mat")
     mkdir("Model/" + stg.folder_model,"tsv");
     mkdir("Model/" + stg.folder_model,"Data/Exp");
 
+% Runs the import scripts if chosen in settings
 f_import(stg,sb)
 
+% Plots the results of the analysis
 f_plot(rst,stg)

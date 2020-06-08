@@ -4,7 +4,7 @@ function rst=makeParSamplesFromRanges(stg)
 %Input from stg:
 %
 % stg.sansamples -> number of samples
-% stg.ms.parnum -> number of parameters on wich to run SA
+% stg.parnum -> number of parameters on wich to run SA
 % stg.ub -> upper bound for all relevant parameters
 % stg.lb -> lower bound for all relevant parameters
 %
@@ -16,13 +16,13 @@ function rst=makeParSamplesFromRanges(stg)
 %i.e. in total 2*Nsamples + Nsamples*Npars samples.
         
 % MAKE SAMPLE MATRICES
-M1 = zeros(stg.sansamples, stg.ms.parnum); % Pre-allocate memory for data
-M2 = zeros(stg.sansamples, stg.ms.parnum);
-N = zeros(stg.sansamples, stg.ms.parnum, stg.ms.parnum);
+M1 = zeros(stg.sansamples, stg.parnum); % Pre-allocate memory for data
+M2 = zeros(stg.sansamples, stg.parnum);
+N = zeros(stg.sansamples, stg.parnum, stg.parnum);
 rng(stg.rseed)
 
 % Create a distribution for each parameter acording to settings
-for i=1:stg.ms.parnum
+for i=1:stg.parnum
     % Flat distribution truncated at the parameter bounds
     if stg.sasamplemode == 0
         M1(:,i) = stg.lb(i) +...
@@ -32,7 +32,7 @@ for i=1:stg.ms.parnum
     % Normal distribution with mu as the best value for a parameter and
     % sigma as stg.sasamplesigma truncated at the parameter bounds
     elseif stg.sasamplemode == 1
-        pd(i) = makedist('Normal','mu',stg.bestx(i),...
+        pd(i) = makedist('Normal','mu',stg.bestpa(i),...
             'sigma',stg.sasamplesigma);
         t(i) = truncate(pd(i),stg.lb(i),stg.ub(i));
         r{i} = random(t(i),stg.sansamples,1);
@@ -41,7 +41,7 @@ for i=1:stg.ms.parnum
         M2(:,i) = r2{i};
     % Same as 1 without truncation
     elseif stg.sasamplemode == 2
-        pd(i) = makedist('Normal','mu',stg.bestx(i),...
+        pd(i) = makedist('Normal','mu',stg.bestpa(i),...
             'sigma',stg.sasamplesigma);
         r{i} = random(pd(i),stg.sansamples,1);
         r2{i} = random(pd(i),stg.sansamples,1);
@@ -68,7 +68,7 @@ for i=1:stg.ms.parnum
     end
 end
 
-for i=1:stg.ms.parnum
+for i=1:stg.parnum
     % Replace the i:th column in M2 by the i:th column from M1 to obtain Ni
     N(:,:,i) = M2;
     N(:,i,i) = M1(:,i);

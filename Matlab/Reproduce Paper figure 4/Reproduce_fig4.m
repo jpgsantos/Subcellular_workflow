@@ -1,5 +1,5 @@
-load('Regenerate timing model graphs/old_data')
-load('Regenerate timing model graphs/new_data')
+load('Reproduce paper figure 4/old_data')
+load('Reproduce paper figure 4/new_data')
 
 figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
 close(figHandles);
@@ -49,7 +49,7 @@ if f_check_minimum_version(9,8)
     fig4.OuterPosition = [0 0 6.5 2.15];
     
     exportgraphics(fig4,...
-        'Regenerate timing model graphs/Figure 4.png',...
+        'Reproduce paper figure 4/Figure 4.png',...
         'Resolution',600)
     
     fig4.Units = 'normalized';

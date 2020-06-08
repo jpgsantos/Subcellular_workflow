@@ -7,7 +7,7 @@ rng(stg.rseed);
 options = stg.ga_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter';
 end
 
@@ -27,13 +27,13 @@ options.InitialPopulationMatrix = startpop;
 if stg.mst
     parfor n = 1:stg.msts
         disp(string(n))
-        [x(n,:),fval(n)] = ga(@(x)f_sim_score(x,stg),stg.ms.parnum,...
+        [x(n,:),fval(n)] = ga(@(x)f_sim_score(x,stg),stg.parnum,...
             [],[],[],[],stg.lb,stg.ub,[],options);
     end
     
     % Optimize the model
 else
-    [x(1,:),fval(1)] = ga(@(x)f_sim_score(x,stg),stg.ms.parnum,...
+    [x(1,:),fval(1)] = ga(@(x)f_sim_score(x,stg),stg.parnum,...
         [],[],[],[],stg.lb,stg.ub,[],options);
 end
 

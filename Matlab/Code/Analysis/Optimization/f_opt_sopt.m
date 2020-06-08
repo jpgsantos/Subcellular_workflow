@@ -7,7 +7,7 @@ rng(stg.rseed);
 options = stg.sopt_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter';
 end
 
