@@ -137,21 +137,21 @@ stg.plotnames = 1;
 %% Sensitivity analysis
 
 % Number of samples to use in SA
-stg.sansamples = 12;
+stg.sansamples = 8;
 
 % 0 or 1 to decide whether to subtract the mean before calculating SI and
 % SIT
 stg.sasubmean = 1;
 
-% Choose the way you want to perform SA, 0 for using the SA with the scores
-% and 1 to use the last value of the simulation both per experimental 
-% output, 2 to use the scores per experiment
-stg.samode = 2;
-
 % Choose the way you want to obtain the samples of the parameters for 
-% performing the SA, 0 for using an upper and lower bound for the 
-% parameters and a flat distribution and 1 for using a normal distribution 
-% with mu as the best value for a parameter and sigma as stg.sasamplesigma
+% performing the SA;
+% 0 flat distribution truncated at the parameter bounds
+% 1 normal distribution with mu as the best value for a parameter and
+% sigma as stg.sasamplesigma truncated at the parameter bounds
+% 2 same as 1 without truncation
+% 3 normal distribution centered at the mean of the parameter bounds and
+% sigma as stg.sasamplesigma truncated at the parameter bounds
+% 4 same as 3 without truncation.
 stg.sasamplemode = 1;
 
 % Sigma for creating the normal distribution of parameters to perform
@@ -162,7 +162,7 @@ stg.sasamplesigma = 0.5;
 
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
-stg.optt = 60*1000;
+stg.optt = 60*1;
 
 % Population size (for the algorithms that use populations)
 stg.popsize = 36;
@@ -176,10 +176,10 @@ stg.osm = 1;
 stg.dbs = 0.1;
 
 % 0 or 1 to decide whether to use Multistart
-stg.mst = 0;
+stg.mst = 1;
 
 % Multistart size
-stg.msts = 1;
+stg.msts = 5;
 
 % 0 or 1 to decide whether to display Plots (Plots doesn't work if using
 % multicore)
