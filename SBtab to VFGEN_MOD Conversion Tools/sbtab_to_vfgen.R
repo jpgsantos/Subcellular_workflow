@@ -103,10 +103,10 @@ AppendAmounts <- function(S,Quantity,QuantityName,Separator){
         ConLaw$ConstantName[j] <- sprintf("%s_ConservedConst",CompoundName[k])
         ConLaw$Text[j] <- paste(ConLaw$ConstantName[j],sub("1[*]","",LawText),sep=" = ")
         m <- (1:nC != k)
-        
+
         ConLaw$Constant[j] <- Const
         ConLaw$Eliminates[j] <- k
-        
+
         FormulaP <- AppendAmounts("", l[p&m], CompoundName[p & m],"+")
         FormulaN <- AppendAmounts("", l[n&m], CompoundName[n & m],"-")
         if (nzchar(FormulaN)){
@@ -124,18 +124,18 @@ AppendAmounts <- function(S,Quantity,QuantityName,Separator){
 PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
     ss <- Compound$SteadyState
     if (any(ss)){
-        CName <- row.names(Compound)[ss]
-        CID <- Compound$ID[ss]
-        ODE <- ODE[ss]
-        header <- character()
-        header[1] <- sprintf("!!SBtabSBtabVersion='1.0'\tTableName='Output' TableTitle='These Outputs describe how well the SteadyState has been achieved' TableType='Quantity' Document='%s'",document.name)
-        header[2] <- sprintf("!ID\t!Name\t!Comment\t!ErrorName\t!ErrorType\t!Unit\t!ProbDist\t!Formula")
-        Id <- sprintf("YSS%s",CID)
-        Name <- sprintf("%s_NetFlux",CName)
-        ErrorName <- sprintf("GAMMA_%s",Id)        
-        SuggestedMeasureOfEquilibrium <- c(header,sprintf("%s\t%s\tmeasures deviation from steady state\t%s\tWeight\tnM\tNormal\t%s",Id,Name,ErrorName,ODE))
-        ssfname <- paste0(document.name,"_SteadyStateMetrics.tsv")
-        cat(SuggestedMeasureOfEquilibrium,sep="\n",file=ssfname)
+    CName <- row.names(Compound)[ss]
+    CID <- Compound$ID[ss]
+    ODE <- ODE[ss]
+    header <- character()
+    header[1] <- sprintf("!!SBtabSBtabVersion='1.0'\tTableName='Output' TableTitle='These Outputs describe how well the SteadyState has been achieved' TableType='Quantity' Document='%s'",document.name)
+    header[2] <- sprintf("!ID\t!Name\t!Comment\t!ErrorName\t!ErrorType\t!Unit\t!ProbDist\t!Formula")
+    Id <- sprintf("YSS%s",CID)
+    Name <- sprintf("%s_NetFlux",CName)
+    ErrorName <- sprintf("GAMMA_%s",Id)        
+    SuggestedMeasureOfEquilibrium <- c(header,sprintf("%s\t%s\tmeasures deviation from steady state\t%s\tWeight\tnM\tNormal\t%s",Id,Name,ErrorName,ODE))
+    ssfname <- paste0(document.name,"_SteadyStateMetrics.tsv")
+    cat(SuggestedMeasureOfEquilibrium,sep="\n",file=ssfname)
     }
 }
 
@@ -185,7 +185,7 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
                          logical=.GetLogical(SBtab[[Name]]),
                          numeric=as.numeric(SBtab[[Name]]),
                          as.character(SBtab[[Name]])
-        )
+                         )
     } else {
         Column <- vector(mode,length=n)
     }
@@ -239,7 +239,7 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
     } else if (length(grep("!Median",colnames(SBtab[["Parameter"]])))>0){
         Value <- SBtab[["Parameter"]][["!Median"]]
     }
-    
+
     message("raw parameter values:")
     ##print(Value)
     message("---")
@@ -281,7 +281,7 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
     Name <- make.cnames(SBtab[["Input"]][["!Name"]][!Disregard])
     DefaultValue <-  SBtab[["Input"]][["!DefaultValue"]][!Disregard]
     Unit <-  SBtab[["Input"]][["!Unit"]][!Disregard]
-    
+
     Input <- data.frame(ID,DefaultValue,Unit,row.names=Name)
     return(Input)
 }
@@ -340,7 +340,7 @@ NFlux <- function(n,RName){
 ParseReactionFormulae <- function(Compound,Reaction,Expression,Input){
     message(class(Reaction$Formula))
     lhs_rhs <- strsplit(as.vector(Reaction$Formula),"<=>")
-    
+
     nC <- dim.data.frame(Compound)
     nR <- dim.data.frame(Reaction)
     ## stoichiometry matrix:
@@ -365,13 +365,13 @@ ParseReactionFormulae <- function(Compound,Reaction,Expression,Input){
         print(a)
         message("   and b: ")
         print(b)
-        
+
         ## the following two «for» blocks (1,2) operate by adding
         ## things to N and ODE. I don't see how to make them into a
         ## function without copying ODE and N a lot into that function
         ## and back into the caller; Weirdly the <<- operator did not
         ## work at all. But perhaps <<- is also bad practice.
-        
+
         ## 1
         message("Products:")
         L <- length(b);
@@ -408,7 +408,7 @@ PrintConLawInfo <- function(ConLaw,CompoundName,document.name){
     SuggestedParameters <- c(header,sprintf("CLU%i\t%s\t%g\tnM\tTRUE\t%s",1:nLaws,ConLaw$ConstantName,ConLaw$Constant,ConLaw$Text))
     infname <- paste0(document.name,"_SuggestedInput.tsv")
     cat(SuggestedParameters,sep="\n",file=infname)
-    
+
     header[1] <- sprintf("!!SBtab\tDocument='%s' TableName='Suggested Output' TableTitle='Automatically determined conservation laws remove state variables, these outputs make them observable' TableType='Quantity'",document.name)
     header[2] <- sprintf("!ID\t!Name\t!Comment\t!ErrorName\t!ErrorType\t!Unit\t!ProbDist\t!Formula")
     k <- ConLaw$Eliminates
@@ -483,7 +483,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         Names <- sprintf("%s %s %s",Prefix,paste0(row.names(Table),collapse=", "),Suffix)
     else
         return(character())
-    
+
     if (nchar(Names)<76)
         return(Names)
     else
@@ -505,22 +505,22 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                 reactigon="\t %s <-> %s (%s, %s)",
                 output="\t%s = %s : Output ID %s",
                 assignment="\t%s = %s : assignment for expression %s")
-    ##    Mod[["header"]] <- "TITLE Mod file for componen"
+##    Mod[["header"]] <- "TITLE Mod file for componen"
     Mod[["TITLE"]] <- sprintf("TITLE %s",H)
     Mod[["COMMENT"]] <- sprintf("COMMENT\n\tautomatically generated from an SBtab file\n\tdate: %s\nENDCOMMENT",date())
-    
+
     Range <- character()
     Range <- c(Range,OneOrMoreLines("\tRANGE",Input,": input"))
     Range <- c(Range,OneOrMoreLines("\tRANGE",Output,": output"))
     Range <- c(Range,OneOrMoreLines("\tRANGE",Expression,": assigned"))
     Range <- c(Range,OneOrMoreLines("\tRANGE",Compound,": compound"))
-    
+
     Mod[["NEURON"]] <- c("NEURON {",
                          sprintf("\tSUFFIX %s : OR perhaps POINT_PROCESS ?",H),
                          Range,
                          ": USEION ca READ cai VALENCE 2 : sth. like this may be needed for ions you have in your model",
                          "}")
-    
+                         
     l <- grepl("0$",row.names(Compound))
     if (any(l)) {
         message(sprintf("possibly problematic names: %s.",paste0(row.names(Compound)[l],collapse=", ")))
@@ -548,7 +548,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                             sprintf(fmt$input,row.names(Input),Input$DefaultValue, NeuronUnit(Input$Unit)),
                             ConservationInput,
                             "}")
-    
+
     
     # Expressions and Reaction Fluxes
     Mod[["ASSIGNED"]] <- c("ASSIGNED {",
@@ -585,7 +585,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                              Assignment,
                              sprintf("\t%s = %s : flux expression %s",row.names(Reaction),Reaction$Flux,Reaction$ID),
                              "}")
-    
+
     Mod[["STATE"]] <- c("STATE {",STATE,"}")
     Mod[["INITIAL"]] <- c("INITIAL {",IVP,"}")
     Mod[["BREAKPOINT"]] <- c("BREAKPOINT {","\tSOLVE ode METHOD cnexp",
@@ -609,7 +609,7 @@ sbtab_from_ods <- function(ods.file){
         SBtab[[i]] <- M[[i]][-c(1,2),]
         names(SBtab[[i]]) <- M[[i]][2,]
     }
-    
+
     names(SBtab) <- table.name
     print(names(SBtab))
     message(table.name)
@@ -654,7 +654,7 @@ sbtab_to_vfgen <- function(SBtabDoc,cla=TRUE){
     Parameter <- .GetParameters(SBtab)
     Output <- .GetOutputs(SBtab)
     Input <- .GetInputs(SBtab)
-    
+
     ## some biological compounds are better represented as expressions/assignments or constants
     ## most will be state variables
     if ("IsConstant" %in% names(Compound)){
@@ -749,7 +749,7 @@ sbtab_to_vfgen <- function(SBtabDoc,cla=TRUE){
     fname<-sprintf("%s.vf",H)
     cat(unlist(vfgen),sep="\n",file=fname)
     message(sprintf("The vf content was written to: %s\n",fname))
-    
+
     Mod <- .make.mod(H,Constant,Parameter,Input,Expression,Reaction,Compound,Output,ODE,ConLaw)
     fname<-sprintf("%s.mod",H)
     cat(unlist(Mod),sep="\n",file=fname)

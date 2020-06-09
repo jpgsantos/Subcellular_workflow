@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <VectorField Name="D1_LTP_time_window" Description="model created by an R script «sbtab_to_vfgen.R» (https://github.com/a-kramer/SBtabVFGEN)">
  <Constant Name="tau_DA1" Description="constant C0" Value="34.979"/>
  <Constant Name="tau_DA2" Description="constant C1" Value="420"/>
