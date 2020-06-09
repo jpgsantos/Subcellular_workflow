@@ -7,7 +7,7 @@ rng(stg.rseed);
 options = stg.pswarm_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter';
 end
 
@@ -26,14 +26,14 @@ if stg.mst
         disp(string(n))
         [x(n,:),fval(n),exitflag(n),output(n)] =...
             particleswarm(@(x)f_sim_score(x,stg),...
-            stg.ms.parnum,stg.lb,stg.ub,options);
+            stg.parnum,stg.lb,stg.ub,options);
     end
     
     % Optimize the model
 else
     [x(1,:),fval(1),exitflag(1),output(1)] =...
         particleswarm(@(x)f_sim_score(x,stg),...
-        stg.ms.parnum,stg.lb,stg.ub,options);
+        stg.parnum,stg.lb,stg.ub,options);
 end
 
 % Save results

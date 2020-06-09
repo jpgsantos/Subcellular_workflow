@@ -1,5 +1,5 @@
 function f_plot_inputs(rst,stg,sbtab)
-
+% Generates a figure with Inputs, one subplot per experiment
 
 % Inform the user that fig2 is being ploted
 disp("Plotting Inputs")
@@ -7,11 +7,11 @@ disp("Plotting Inputs")
 plot_n = 1;
 fig_n = 0;
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Generate the right amount of figures for all plots and calculates
     % proper subploting position
-    fig_n = f_get_subplot(size(stg.ms.exprun,2),plot_n,fig_n,"Inputs");
+    fig_n = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs");
     
     plot_n = plot_n +1;
     
@@ -27,10 +27,6 @@ for n = stg.ms.exprun
             if rst(m).simd{1,n} ~= 0
                 
                 % Plot the inputs to each experiment
-%                 scatter(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
-%                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))...
-%                     +1),5,'filled','MarkerFaceAlpha',0.5)
-%                 
                 plot(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',1.5)
                 

@@ -7,7 +7,7 @@ rng(stg.rseed);
 options = stg.sopt_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter';
 end
 
@@ -35,7 +35,7 @@ else
 end
 
 % Save results
-rst.name = 'surrogate optimization';
+rst.name = 'Surrogate optimization';
 rst.x = x;
 rst.fval = fval;
 rst.exitflag = exitflag;

@@ -1,4 +1,8 @@
 function f_build_model_exp(stg,sb)
+%Creates two a .mat files for each experimetn, with all the added rules,
+%species and parameters needed depending on the inputs and outputs
+%specified on the sbtab, one for the equilibrium simulation run and one for
+%the proper run
 
 persistent modelobj
 persistent sbtab
@@ -7,17 +11,10 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    if ispc
-        load("Model\" +stg.folder_model +"\Data\" + "data_" +...
-            stg.name + ".mat",'Data','sbtab')
-        load("Model\" +stg.folder_model +"\Data\" + "model_" +...
-            stg.name + ".mat",'modelobj');
-    else
-        load("Model/" +stg.folder_model +"/Data/" + "data_" +...
-            stg.name + ".mat",'Data','sbtab')
-        load("Model/" +stg.folder_model +"/Data/" + "model_" +...
-            stg.name + ".mat",'modelobj');
-    end
+    load("Model/" +stg.folder_model +"/Data/" + "data_" +...
+        stg.name + ".mat",'Data','sbtab')
+    load("Model/" +stg.folder_model +"/Data/" + "model_" +...
+        stg.name + ".mat",'modelobj');
 end
 
 model_run = cell(size(sb.Experiments.ID,1),1);
@@ -33,38 +30,33 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     input_value = sbtab.datasets(number_exp).input_value;
     input_species = sbtab.datasets(number_exp).input;
     
-    model_run{number_exp} = copyobj(modelobj);   
+    model_run{number_exp} = copyobj(modelobj);
     configsetObj{number_exp} = getconfigset(model_run{number_exp});
-
-    set(configsetObj{number_exp}, 'MaximumWallClock', stg.ms.maxt);
-    set(configsetObj{number_exp}, 'StopTime', stg.ms.eqt);
+    
+    set(configsetObj{number_exp}, 'MaximumWallClock', stg.maxt);
+    set(configsetObj{number_exp}, 'StopTime', stg.eqt);
     set(configsetObj{number_exp}.CompileOptions,...
-        'DimensionalAnalysis', stg.ms.dimenanal);
+        'DimensionalAnalysis', stg.dimenanal);
     set(configsetObj{number_exp}.CompileOptions,...
-        'UnitConversion', stg.ms.UnitConversion);
+        'UnitConversion', stg.UnitConversion);
     set(configsetObj{number_exp}.SolverOptions,...
-        'AbsoluteToleranceScaling', stg.ms.abstolscale);
+        'AbsoluteToleranceScaling', stg.abstolscale);
     set(configsetObj{number_exp}.SolverOptions,...
-        'RelativeTolerance', stg.ms.reltol);
+        'RelativeTolerance', stg.reltol);
     set(configsetObj{number_exp}.SolverOptions,...
-        'AbsoluteTolerance', stg.ms.abstol);
-    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.ms.eqt);
-    set(configsetObj{number_exp}, 'TimeUnits', stg.ms.simtime);
+        'AbsoluteTolerance', stg.abstol);
+    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
+    set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     
     if ~isempty(stg.maxstep)
         set(configsetObj{number_exp}.SolverOptions,...
             'MaxStep', stg.maxstep);
     end
-
+    
     model_exp = model_run{number_exp};
-
-    if ispc
-        save("Model\" + stg.folder_model + "\Data\Exp\Model_eq_" +...
-            stg.name + "_" + number_exp + ".mat",'model_exp')
-    else
-        save("Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
-            stg.name + "_" + number_exp + ".mat",'model_exp')
-    end
+    
+    save("Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+        stg.name + "_" + number_exp + ".mat",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
@@ -86,8 +78,9 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         if isempty(sbtab.datasets(number_exp).max)
             
             if m == 0
-                addspecies (model_run{number_exp}.Compartments(1), char(output{1,n}),0,...
-                'InitialAmountUnits',sb.Output.Unit{n});
+                addspecies (model_run{number_exp}.Compartments(1),...
+                    char(output{1,n}),0,...
+                    'InitialAmountUnits',sb.Output.Unit{n});
             end
             
             addrule(model_run{number_exp}, char(output_value{1,n}),...
@@ -100,8 +93,9 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 'InitialAmountUnits',sb.Output.Unit{n});
             
             if m == 0
-                addspecies (model_run{number_exp}.Compartments(1), char(output{1,n}),0,...
-                'InitialAmountUnits',sb.Output.Unit{n});
+                addspecies (model_run{number_exp}.Compartments(1),...
+                    char(output{1,n}),0,...
+                    'InitialAmountUnits',sb.Output.Unit{n});
             end
             
             addrule(model_run{number_exp}, ...
@@ -121,16 +115,16 @@ for number_exp = 1:size(sb.Experiments.ID,1)
             end
         end
     end
-
+    
     for j = 1:size(input_species,2)
         if size(input_time{j},2) < 100
-
+            
             for n = 1:size(input_time{j},2)
                 if ~isnan(input_time{j}(n))
-
+                    
                     addparameter(model_run{number_exp},char("time_event_t_" + j + "_" +  n),...
                         str2double(string(input_time{j}(n))),...
-                        'ValueUnits',char(stg.ms.simtime));
+                        'ValueUnits',char(stg.simtime));
                     
                     addparameter(model_run{number_exp},char("time_event_r_" + j + "_" +  n),...
                         str2double(string(input_value{j}(n))),...
@@ -157,13 +151,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     end
     
     model_exp = model_run{number_exp};
-
-    if ispc
-        save("Model\" + stg.folder_model + "\Data\Exp\Model_" +...
-            stg.name + "_" + number_exp + ".mat",'model_exp')
-    else
-        save("Model/" + stg.folder_model + "/Data/Exp/Model_" +...
-            stg.name + "_" + number_exp + ".mat",'model_exp')
-    end
+    
+    save("Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+        stg.name + "_" + number_exp + ".mat",'model_exp')
 end
 end

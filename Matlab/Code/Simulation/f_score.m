@@ -5,11 +5,11 @@ persistent Data
 
 % Import the data on the first run
 if isempty(Data)
-    load("data_"+stg.name+".mat",'Data','sbtab')
+    load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 end
 
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Iterate over the number of datasets per experiment
     for j = 1:size(sbtab.datasets(n).output,2)
@@ -17,7 +17,7 @@ for n = stg.ms.exprun
         % Calculate score per dataset if there are no errors
         if rst.simd{n} ~= 0
             
-            rst.x{n,1}(:,j) = rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j);
+%             rst.x{n,1}(:,j) = rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j);
             rst.xfinal{n,1}(j) = rst.simd{n}.Data(end,end-size(sbtab.datasets(n).output,2)+j);
             
             % Calculate score using formula that accounts for normalization
