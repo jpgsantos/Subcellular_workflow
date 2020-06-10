@@ -1,16 +1,22 @@
 .insert.unit <- function(sbml,unit){
     i <- grep(pattern="<listOfUnitDefinitions>",sbml)
+    message("rows that contain the tag listOfUnitDefinitions")
+    print(i)
     n <- length(sbml)
-    sbml=c(sbml[1:i],
-           paste0('     <unitDefinition id="',unit$id,'" name="',unit$name,'">'),
+    print(n)
+    A <- seq(1,i)
+    B <- c(paste0('     <unitDefinition id="',unit$id,'" name="',unit$name,'">'),
            "      <listOfUnits>",
-           paste0('      <unit kind="',unit$kind,'" ',
+           paste0('       <unit kind="',unit$kind,'" ',
                   'multiplier="',unit$multiplier,'" ',
                   'scale="',unit$scale,'" ',
                   'exponent="',unit$exponent,'"/>'),
            "      </listOfUnits>",
-           "     </unitDefinition>",
-           sbml[i+1:n])
+           "     </unitDefinition>")
+    C <- seq(i+1,n)
+    sbml <- c(sbml[A],B,sbml[C])
+    m <- length(sbml)
+    print(sbml[n:m])
     return(sbml)
 }
 
@@ -35,7 +41,7 @@
                     name=paste0(Unit,collapse=''),
                     kind='dimensionless',
                     multiplier=1,
-                    scale=1,
+                    scale=0,
                     exponent=1)
     n <- length(Unit)
     message(sprintf("number of components in unit: %i\n",n))
@@ -110,11 +116,7 @@
 ## replace "<ci> time </ci>" with "<csymbol> time </csymbol>"
 ## include default units, so that Copasi can use this file
 ## replace super long hex id's with 
-sbml_fix <- function(filename,substanceUnit=c('n','mol'),volumeUnit=c('liter'),areaUnit=c('u','m',2),lengthUnit=c("u","m"),timeUnit=c('m','s')){
-    ##if (filename==NULL){
-    ##    d <- dir(pattern=".*xml$")
-    ##    filename=d[1]
-    ##}
+sbml_fix <- function(filename,substanceUnit=c('n','mol'),volumeUnit=c('liter'),areaUnit=c('u','m',2),lengthUnit=c("u","m"),timeUnit=c('m','s'),outfilename=NULL){
     stopifnot(file.exists(filename))
     sbml <- readLines(filename)
     DefaultUnits=list(substanceUnit,volumeUnit,timeUnit,areaUnit)
@@ -127,5 +129,13 @@ sbml_fix <- function(filename,substanceUnit=c('n','mol'),volumeUnit=c('liter'),a
         sbml <- .fix.ids(sbml,tg)
     }
     sbml <- gsub('<ci>\\s*time\\s*</ci>','<csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> time </csymbol>',sbml)
-    cat(sbml,sep="\n",file=paste0("Fixed_",filename))
+    ## fix compartment unit, set it to default volume unit
+    i <- grep(pattern="<compartment",sbml)
+    stopifnot(length(i)==1)
+    sbml[i] <- gsub(pattern='units="[^"]+"',replacement='units="volume"',sbml[i])
+    ## write changed content to a new file
+    if (is.null(outfilename)){
+        outfilename <- paste0("Fixed_",filename)
+    }
+    cat(sbml,sep="\n",file=outfilename)
 }

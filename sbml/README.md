@@ -26,7 +26,7 @@ The first argument (the file-name) is mandatory. The units themselves are option
 | volume    | liter |
 | substance | nmol |
 | time | ms |
-| area | um² |
+| area | μm² |
 | length | um |
 
 These units are not the defaults from the sbml documentation, they are the defaults we used in this project.
