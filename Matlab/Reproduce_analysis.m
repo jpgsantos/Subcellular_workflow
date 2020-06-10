@@ -24,22 +24,24 @@ load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
 % Runs the import scripts if chosen in settings
 f_import(stg,sb)
 
+addpath(genpath(pwd));
+
 % Runs the Analysis chosen in settings
 if stg.analysis ~= ""
     rst = f_analysis(stg,stg.analysis);
-end
-
-% Save Analysis results if chosen in settings
-if stg.save_results 
-    f_save_analysis(stg,sb,rst,date_stamp)
-end
-
-% Plots the results of the analysis
-if stg.plot
-    f_plot(rst,stg)
-end
-
-% Save plots results if chosen in settings
-if stg.save_results 
-    f_save_plots(stg,date_stamp) 
+    
+    % Save Analysis results if chosen in settings
+    if stg.save_results
+        f_save_analysis(stg,sb,rst,date_stamp)
+    end
+    
+    % Plots the results of the analysis, this can be done independently after
+    % loading the results of a previously run analysis
+    if stg.plot
+        f_plot(rst,stg)
+        % Save plots results if chosen in settings
+        if stg.save_results
+            f_save_plots(stg,date_stamp)
+        end
+    end
 end
