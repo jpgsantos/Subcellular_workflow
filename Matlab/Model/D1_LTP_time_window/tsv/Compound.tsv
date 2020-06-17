@@ -47,8 +47,8 @@ S43	D1R_Golf_DA	nanomole/liter	0	false	false	false	kinetic	Spine	false
 S44	D1R_Golf	nanomole/liter	0	false	false	false	kinetic	Spine	false	
 S45	D32p34	nanomole/liter	0	false	false	false	kinetic	Spine	false	
 S46	D32p75	nanomole/liter	0	false	false	false	kinetic	Spine	false	
-S47	DA	nanomole/liter	20	true	DA_expression	true	kinetic	Spine	true	
-S48	D32	nanomole/liter	50000	false	false	false	kinetic	Spine	false	Q60829
+S47	D32	nanomole/liter	50000	false	false	false	kinetic	Spine	false	Q60829
+S48	DA	nanomole/liter	20	true	DA_expression	true	kinetic	Spine	true	
 S49	GaolfGDP	nanomole/liter	0	false	false	false	kinetic	Spine	false	Q8CGK7
 S50	GaolfGTP	nanomole/liter	0	false	false	false	kinetic	Spine	false	Q8CGK7
 S51	Gbgolf	nanomole/liter	0	false	false	false	kinetic	Spine	false	P62874 Q61012

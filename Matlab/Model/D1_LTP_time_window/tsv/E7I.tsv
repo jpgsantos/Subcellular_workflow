@@ -1,5 +1,5 @@
 !!SBtab	SBtabVersion='1.0'  TableType='QuantityMatrix'  TableName='E7I'  TableTitle=''  Document='D1 LTP time window'		
-!Input_Time_S24	>S24	!Input_Time_S47	>S47
+!Input_Time_S24	>S24	!Input_Time_S48	>S48
 0	60	0	20
 0.01	60	0.01	20
 0.02	60	0.02	20
