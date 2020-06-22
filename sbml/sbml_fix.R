@@ -1,9 +1,6 @@
 .insert.unit <- function(sbml,unit){
     i <- grep(pattern="<listOfUnitDefinitions>",sbml)
-    message("rows that contain the tag listOfUnitDefinitions")
-    print(i)
     n <- length(sbml)
-    print(n)
     A <- seq(1,i)
     B <- c(paste0('     <unitDefinition id="',unit$id,'" name="',unit$name,'">'),
            "      <listOfUnits>",
@@ -16,7 +13,6 @@
     C <- seq(i+1,n)
     sbml <- c(sbml[A],B,sbml[C])
     m <- length(sbml)
-    print(sbml[n:m])
     return(sbml)
 }
 
@@ -44,7 +40,6 @@
                     scale=0,
                     exponent=1)
     n <- length(Unit)
-    message(sprintf("number of components in unit: %i\n",n))
     u$exponent=switch(n,1,1,as.numeric(Unit[3]))
     Kind <- switch(n,Unit[1],Unit[2],Unit[2])
     if (Kind %in% second){
@@ -77,7 +72,6 @@
     }else if (Scale %in% pico){
         u$scale <- -12
     }
-    print(u)
     return(u)    
 }
 
@@ -112,6 +106,25 @@
     return(sbml)
 }
 
+.strip.annotations <- function(sbml){
+    stopifnot(is.character(sbml))
+    a <- grep(pattern='^\\s*<annotation>',sbml)
+    b <- grep(pattern='^\\s*</annotation>',sbml)
+    stopifnot(length(a)==length(b))
+    n <- length(a)
+    message(sprintf("there are %i annotations.",n))
+    print(a)
+    print(b)
+    annotation <- vector(mode="numeric")
+    for (i in 1:n){
+        j <- a[i]:b[i]
+        message("stripping annotation between these lines:")
+        print(j)
+        annotation=c(annotation,j)
+    }
+    return(sbml[-annotation])
+}
+
 ## reads an sbml fiel as exported from MATLABssimbiology toolbox and fixes themistakes therein:
 ## replace "<ci> time </ci>" with "<csymbol> time </csymbol>"
 ## include default units, so that Copasi can use this file
@@ -119,11 +132,14 @@
 sbml_fix <- function(filename,substanceUnit=c('n','mol'),volumeUnit=c('liter'),areaUnit=c('u','m',2),lengthUnit=c("u","m"),timeUnit=c('m','s'),outfilename=NULL){
     stopifnot(file.exists(filename))
     sbml <- readLines(filename)
-    DefaultUnits=list(substanceUnit,volumeUnit,timeUnit,areaUnit)
+    DefaultUnits <- list(substanceUnit,volumeUnit,timeUnit,areaUnit)
     for (u in DefaultUnits){
         unit <- .interpret.unit(u)
         sbml <- .insert.unit(sbml,unit)
     }
+    sbml <- .strip.annotations(sbml)
+
+    
     tags=c('model','compartment','species','parameter','reaction')
     for (tg in tags) {
         sbml <- .fix.ids(sbml,tg)
