@@ -34,11 +34,11 @@ stg.sbtab_name = "sbtab_"+stg.name;
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 % (Analysis)
-stg.analysis = "SAlocal";
+stg.analysis = "diag";
 
 % Experiments to run
 % (Experiments to run)
-stg.exprun = [1:9];
+stg.exprun = [1:10];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -107,7 +107,7 @@ stg.sbioacc = 0;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
-stg.maxstep = [];
+stg.maxstep = 1;
 
 %% Model
 
@@ -153,6 +153,8 @@ stg.pat = 1;
 % (Parameter arrays)
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
+stg.pa(2,:) = [-6.9672   -0.9095   -1.8687   -5.8580   -2.7326    0.5630];
+
 % % Example code to test more than one parameter array
 % stg.pat = [1,2];
 % stg.pa(2,:) = zeros(1,6);
@@ -176,7 +178,7 @@ stg.plotoln = 1;
 
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 10;
+stg.sansamples = 24;
 
 % 0 or 1 to decide whether to subtract the mean before calculating SI and
 % SIT

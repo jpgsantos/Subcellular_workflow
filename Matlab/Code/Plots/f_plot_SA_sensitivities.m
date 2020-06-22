@@ -8,7 +8,7 @@ for n = 1:size(outputNames.sd,2)
     outputNames.sd{n}{:} = strrep(outputNames.sd{n}{:},"_","\_");
 end
 for n = stg.exprun
-    outputNames.se{n} = "E " + string(n);
+    outputNames.se{n} = "E " + string(n-1);
 end
 
 outputNames.xfinal = outputNames.sd;

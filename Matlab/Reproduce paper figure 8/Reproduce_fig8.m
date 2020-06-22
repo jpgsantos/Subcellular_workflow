@@ -1,0 +1,107 @@
+load('Reproduce paper figure 8/auc')
+load('Reproduce paper figure 8/inputs')
+
+
+figHandles = findobj('type', 'figure', 'name', 'Paper Figure 8');
+close(figHandles);
+figure('WindowStyle', 'docked','Name','Paper Figure 8','NumberTitle',...
+    'off');
+layout = tiledlayout(2,2,'Padding','none','TileSpacing','compact');
+
+nexttile(layout);
+
+hold on
+plot (t,Ca,'LineWidth',1)
+plot (t,Da,'LineWidth',1)
+
+xticks([4,5,6,7,9])
+xticklabels({0,5,6,7,50})
+yticks([0,1000,3000,5000])
+
+% text(3,5200,'A','fontsize',12);
+title("\Deltat = 1 s",'FontSize', 8,'Fontweight','bold')
+text(-1.875,5200,'A','fontsize',8,'FontWeight','bold');
+text(8.25,50,'//','fontsize',12);
+text(4.4,50,'//','fontsize',12);
+set(gca,'FontSize',8,'Fontweight','bold')
+xlabel('time (s)','FontSize', 8,'Fontweight','bold')
+ylabel('nanomole/liter','FontSize', 8,'Fontweight','bold')
+% Add a legend to each plot
+legend(["Ca","Da"],'FontSize', 6.5,'Fontweight','bold')
+legend boxoff
+clear labelfig2
+hold off
+xlim ([4 9])
+ylim ([0 5000])
+
+nexttile(layout);
+
+hold on
+plot (DA_start,integral/integral0,'Color',[0 0.7 0], 'LineWidth',1)
+
+% annotation('textarrow',[0.7 0.7], [0.8 0.75],'String','Soma','FontSize',8)
+title('A','position',[-1.875 5200])
+set(gca,'FontSize',8,'Fontweight','bold')
+
+xlabel('\Deltat (s)','FontSize', 8,'Fontweight','bold')
+ylabel('pSubstrate','FontSize', 8,'Fontweight','bold')
+% Add a legend to each plot
+% clear labelfig2
+plot([-4 4], [1 1], '--k', 'LineWidth', 1)
+plot([0 0], [0 4.5], '-.',...
+    'LineWidth', 1, 'Color', [0.5 0.5 0.5])
+hold off
+ylim ([0 4.5])
+
+% legend('Ca','FontSize', 6.5,'Fontweight','bold')
+% legend boxoff
+
+load('Reproduce paper figure 8/spine')
+
+nexttile(layout);
+
+hold on
+plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
+plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
+plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
+title('Spine')
+set(gca,'FontSize',8,'Fontweight','bold')
+xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
+ylabel('Vspine (mV)','FontSize', 8,'Fontweight','bold')
+hold off
+
+xlim ([0 50])
+legend({'No Da','Da \Deltat = -1 s','Da \Deltat = 1 s'},'FontSize', 6.5,'Fontweight','bold')
+legend boxoff
+
+
+load('Reproduce paper figure 8/soma')
+
+nexttile(layout);
+
+hold on
+plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
+plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
+plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
+% title
+t1=text(5,5,'A','fontsize',12);
+title('Soma')
+set(gca,'FontSize',8,'Fontweight','bold')
+xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
+ylabel('Vspine (mV)','FontSize', 8,'Fontweight','bold')
+hold off
+xlim ([0 50])
+legend({'No Da','Da \Deltat = -1 s','Da \Deltat = 1 s'},'FontSize', 6.5,'Fontweight','bold')
+legend boxoff
+
+
+
+
+layout.Units = 'inches';
+layout.OuterPosition = [0 0 4.567 3];
+
+pause (1)
+
+exportgraphics(layout,...
+    'Reproduce paper figure 8/Figure 8.png',...
+    'Resolution',600)

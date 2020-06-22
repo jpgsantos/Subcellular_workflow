@@ -1,0 +1,24 @@
+load('Reproduce paper figure 8/inputs')
+
+Ca1 = [];
+Da1 = [];
+t1 = [];
+
+for n = 1:500000
+   
+    
+    if n < 30000
+         Ca1(n) = Ca(1);
+    Da1(n) = Da(1);
+    t1 = (n*0.0001)
+    elseif n > 90000
+        Ca1(n) = Ca(60000);
+    Da1(n) = Da(60000);
+    
+    end
+    
+    Ca1(n) = Ca(60000);
+    Da1(n) = Da(60000);
+    t1 = (n*0.0001)
+    
+end

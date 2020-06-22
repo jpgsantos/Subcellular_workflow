@@ -37,6 +37,9 @@ h1 = heatmap(outputNames.se,parNames2,transpose(rst.SI.se(:,1:stg.parnum)),...
     'Colormap',jet,'FontSize',8);
 
 h1.Title = "SI";
+% title('Top title','FontSize',12);
+
+% text(5, 0.4, 'Bottom title')
 h1.XLabel = 'Outputs';
 h1.YLabel = 'Parameters';
 
@@ -44,10 +47,13 @@ h1.YLabel = 'Parameters';
 if f_check_minimum_version(9,8)
     h1.Units = 'inches';
     h1.OuterPosition = [0 0 3.55 2.5];
-
-    exportgraphics(h1,...
-        'Reproduce paper figure 5/Figure 5_1.png',...
-        'Resolution',600)
+% txt = text(-1,0,'B');
+% %         txt.FontSize = 8;
+%         txt.FontWeight = 'bold';
+        
+%     exportgraphics(h1,...
+%         'Reproduce paper figure 5/Figure 5_1.png',...
+%         'Resolution',600)
 end
 
 figHandles = findobj('type', 'figure', 'name', 'SA SIT');
@@ -68,15 +74,15 @@ if f_check_minimum_version(9,8)
     h2.Units = 'inches';
     h2.OuterPosition = [0 0 3.55 2.5];
 
-    exportgraphics(h2,...
-        'Reproduce paper figure 5/Figure 5_2.png',...
-        'Resolution',600)
+%     exportgraphics(h2,...
+%         'Reproduce paper figure 5/Figure 5_2.png',...
+%         'Resolution',600)
 end
 
-pause(5)
-h1.Units = 'normalized';
-h1.OuterPosition = [0 0 1 1];
-h2.Units = 'normalized';
-h2.OuterPosition = [0 0 1 1];
+% pause(5)
+% h1.Units = 'normalized';
+% h1.OuterPosition = [0 0 1 1];
+% h2.Units = 'normalized';
+% h2.OuterPosition = [0 0 1 1];
 
 
