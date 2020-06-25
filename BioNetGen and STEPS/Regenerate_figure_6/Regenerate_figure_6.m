@@ -106,52 +106,63 @@ cstn_v2 = Tst_noDA_v2{:,snames3}/(Na*v_Spine_3*1e-9);
 
 snames2=snames2';
 %% Plot for 0.1 um^3 spine
-figure
-%subplot(2,1,1)
-hold on
-
-ii = 1;
-ntrain=10;
-DT = fix(size(Tst,1)/ntrain);
-for j=1:ntrain
-    jj=(j-1)*DT+(1:DT);
-nonz=Tst{jj,'Obs_CaMKII'}>0;
-tst2 = Tst{jj,'Time'};
-cst2 = cst(jj,ii);
-plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.8,0.8, 1.0])
-end
-cst2 = reshape(cst(1:DT*ntrain,ii),DT,[]);
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[0.4,0.4, 1.0])
-%nonzn=Tstn{:,'Obs_CaMKII'}>0;
-%plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
-ntrain=10;
-DT = fix(size(Tstn,1)/ntrain);
-for j=1:ntrain
-    jj=(j-1)*DT+(1:DT);
-nonz=Tstn{jj,'Obs_CaMKII'}>0;
-tst2 = Tstn{jj,'Time'};
-cst2 = cstn(jj,ii);
-plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.8, 0.8])
-end
-cst2 = reshape(cstn(1:DT*ntrain,ii),DT,[]);
-cst2_noDA = cst2;
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[1.0,0.4, 0.4])
-
-plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-.', 'LineWidth', 2)
-plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)), 'LineWidth', 2)
-set(gca,'FontSize',12, 'FontWeight', 'bold')
-xlabel('time (s)');
-ylabel('Substrate phosphorylation');
-legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
-
-xl = xlim;
-%xlim(xl);
-xlim([0,30]);
+% figure
+% %subplot(2,1,1)
+% hold on
+% 
+% ii = 1;
+% ntrain=10;
+% DT = fix(size(Tst,1)/ntrain);
+% for j=1:ntrain
+%     jj=(j-1)*DT+(1:DT);
+% nonz=Tst{jj,'Obs_CaMKII'}>0;
+% tst2 = Tst{jj,'Time'};
+% cst2 = cst(jj,ii);
+% plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.8,0.8, 1.0])
+% end
+% cst2 = reshape(cst(1:DT*ntrain,ii),DT,[]);
+% plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[0.4,0.4, 1.0])
+% %nonzn=Tstn{:,'Obs_CaMKII'}>0;
+% %plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
+% ntrain=10;
+% DT = fix(size(Tstn,1)/ntrain);
+% for j=1:ntrain
+%     jj=(j-1)*DT+(1:DT);
+% nonz=Tstn{jj,'Obs_CaMKII'}>0;
+% tst2 = Tstn{jj,'Time'};
+% cst2 = cstn(jj,ii);
+% plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.8, 0.8])
+% end
+% cst2 = reshape(cstn(1:DT*ntrain,ii),DT,[]);
+% cst2_noDA = cst2;
+% plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[1.0,0.4, 0.4])
+% 
+% plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-.', 'LineWidth', 2)
+% plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)), 'LineWidth', 2)
+% set(gca,'FontSize',12, 'FontWeight', 'bold')
+% xlabel('time (s)');
+% ylabel('Substrate phosphorylation');
+% legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
+% 
+% xl = xlim;
+% %xlim(xl);
+% xlim([0,30]);
 
 %%
-figure
-subplot(1,2,1)
+
+figHandles = findobj('type', 'figure', 'name', 'Paper Figure 6');
+close(figHandles);
+figure('WindowStyle', 'docked','Name','Paper Figure 6','NumberTitle',...
+    'off');
+
+layout = tiledlayout(1,2,'Padding','compact','TileSpacing','compact');
+
+nexttile(layout)
+% figure
+% subplot(1,2,1)
 hold on
+
+
 
 ii = 1;
 ntrain=40;
@@ -169,7 +180,7 @@ cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
 patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[0.4,0.4, 1.0])
+
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
 %plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
 ntrain=50;
@@ -192,14 +203,64 @@ cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
 patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 2,'Color',[1.0,0.4, 0.4])
 
-plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-.', 'LineWidth', 2)
-plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)), 'LineWidth', 2)
-set(gca,'FontSize',12, 'FontWeight', 'bold')
+
+
+plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-','Color',[0.5,0, 0], 'LineWidth', 1)
+
+ii = 1;
+%nonzn=Tstn{:,'Obs_CaMKII'}>0;
+%plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
+ntrain=50;
+DT = 150; %fix(size(Tst_noDA_v2,1)/ntrain);
+%DT1=fix(size(Tst_DA_v2,1)/ntrain);
+%tst2=DT+ones(DT,1);
+%cst2=ones(DT,1);
+%nonz=ones(DT,1)==0;
+for j=1:ntrain
+    DT2=DT;
+    if j==ntrain; DT2=DT*ntrain-size(cstn_v2,1); end
+    jj=(j-1)*DT+(1:DT2);
+nonz=Tst_noDA_v2{jj,'Obs_CaMKII'}>0;
+tst2 = Tst_noDA_v2{jj,'Time'};
+cst2 = cstn_v2(jj,ii);
+%plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.8, 0.8])
+end
+cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
+cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
+cst2_noDA_v2 = cst2;
+tst2 = Tst_noDA_v2{1:DT,'Time'};
+plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
+
+
+
+plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)),'Color',[0,0, 0.5], 'LineWidth', 1)
+
+
+ntrain=40;
+DT = 150; 
+for j=1:ntrain
+    DT2=DT;
+    if j==ntrain; DT2=DT*ntrain-size(cst_v2,1); end
+    jj=(j-1)*DT+(1:DT2);
+nonz=Tst_DA_v2{jj,'Obs_CaMKII'}>0;
+tst2 = Tst_DA_v2{jj,'Time'};
+cst2 = cst_v2(jj,ii);
+%plot(tst2(nonz)-tst2(1), cst2(nonz)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.8,0.8, 1.0])
+end
+cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
+cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
+tst2 = Tst_DA_v2{1:DT,'Time'};
+plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
+text(-2.5,5.25,'A','FontWeight','bold')
+
+
+
+set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
-legend({'Calcium only', 'Calcium + Dopamine (\Deltat=1s)'});
+legend({'Ca Original','Ca STEPS','Ca + Da (\Deltat=1s) Original', 'Ca + Da (\Deltat=1s) STEPS'});
+legend boxoff
 
 xl = xlim;
 %xlim(xl);
@@ -245,19 +306,40 @@ for n = 1:length(DA1)
     clear t x names
 end
 
-subplot(1,2,2)
+nexttile(layout)
+% subplot(1,2,2)
 hold on
-plot(DA1, activationAreaWithMultipleDA/activationArea, 'LineWidth', 2)
-boxplot(activationAreaWithMultipleDA_steps/activationArea_steps, 'Positions',DA,'Labels',DA)
-plot(DA, median(activationAreaWithMultipleDA_steps)/activationArea_steps, 'LineWidth', 2)
-plot([-4 4], [1 1], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
-plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
-set(gca,'FontSize',12, 'FontWeight', 'bold')
+% boxplot(randn(10,5));
+% boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Colors','r','PlotStyle','compact')
+% boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','MedianStyle','target','BoxStyle','filled','OutlierSize',2,'Symbol','ro');
+boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','OutlierSize',2,'Symbol','ro');
+
+
+% scatter(DA1, activationAreaWithMultipleDA/activationArea,'filled','MarkerFaceColor', [0 0 0])
+
+plot(DA1, activationAreaWithMultipleDA/activationArea,'Color', [0 0 0], 'LineWidth', 1)
+plot(DA1, activationAreaWithMultipleDA/activationArea,'r', 'LineWidth', 1)
+plot(DA1, activationAreaWithMultipleDA/activationArea,'Color', [0 0 0], 'LineWidth', 1)
+
+
+% plot(DA, median(activationAreaWithMultipleDA_steps)/activationArea_steps, 'LineWidth', 2)
+
+plot([-5 5], [1 1], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
+% plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
+set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
 ylabel('Substrate phosphorylation');
+legend({'Original','STEPS'}, 'Location', 'Northwest');
+legend boxoff
+
+text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25/5,'B','FontWeight','bold')
 
 
 
+layout.Units = 'inches';
+layout.OuterPosition = [0 0 6.85 3];
 
 
-
+exportgraphics(layout,...
+    'Figure 6.png',...
+    'Resolution',600)
