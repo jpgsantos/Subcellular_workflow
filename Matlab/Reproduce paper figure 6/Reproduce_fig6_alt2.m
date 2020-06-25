@@ -14,7 +14,7 @@ nexttile(layout,[1 2]);
 hold on
 plot (t,x,'LineWidth',1)
 text(2.4,5300,'A','fontsize',10,'FontWeight','bold');
-title("\Deltat = 1 s",'FontSize', 8,'Fontweight','bold')
+% title("\Deltat = 1 s",'FontSize', 8,'Fontweight','bold')
         set(gca,'FontSize',8,'Fontweight','bold')
         xlabel('time (s)','FontSize', 8,'Fontweight','bold')
         ylabel('nanomole/liter','FontSize', 8,'Fontweight','bold')
@@ -60,7 +60,7 @@ plot(copasi_data{2}(:,1), copasi_data{2}(:,2)/max(copasi_data{1}(:,2)),...
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)','FontSize',8);
 ylabel('pSubstrate','FontSize',8);
-legend({'Ca only',...
+legend({'Ca ',...
     'Ca + Da (\Deltat=1s)'},...
     'FontSize',6.5);
 legend boxoff

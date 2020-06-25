@@ -272,7 +272,7 @@ hold off
         yticks([0,1000,3000,5000])
         
         % Add a title to each plot
-        title("\Deltat = 1 s",'FontSize', 8,'Fontweight','bold')
+%         title("\Deltat = 1 s",'FontSize', 8,'Fontweight','bold')
         
         text(7.45,50,'//','fontsize',12);
         text(3.45,50,'//','fontsize',12);
