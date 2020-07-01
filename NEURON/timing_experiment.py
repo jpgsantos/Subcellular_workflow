@@ -83,7 +83,9 @@ class Timing_Experiment(e.Experiment):
                         pos = rnd.uniform(0,1)
                         self.helper_insert(syntype, pos, dend, freq_multiplier)  
         
-        elif syntype == 'plateau_cluster':
+        elif syntype in ['plateau_cluster', 'glutamate_phos_sat']:
+            if syntype == 'plateau_cluster':
+                syntype = 'glutamate_ica_nmda'
             if deterministic == 0:
                 if (type(syn_loc) == list):
                     for list_element in syn_loc:
@@ -95,17 +97,17 @@ class Timing_Experiment(e.Experiment):
                             loc = list_element
                         for i in range(0, num_syns):
                             pos = rnd.uniform(llim, ulim)
-                            syn = self.cell.insert_synapse('glutamate_ica_nmda', self.cell.dendlist[loc], pos, 
+                            syn = self.cell.insert_synapse(syntype, self.cell.dendlist[loc], pos, 
                                                            add_spine = add_spine, on_spine = on_spine)
-                            self.add_input_generator(syn, 'glutamate_ica_nmda')
+                            self.add_input_generator(syn, syntype)
                             print(self.cell.dendlist[loc].name(), "%f" % (h.distance(llim, sec = self.cell.dendlist[loc])))
                 
                 elif (type(syn_loc) == dict):
                     for ind, loc in enumerate(syn_loc['loc']):
                         for i in range(0, num_syns):
-                            syn = self.cell.insert_synapse('glutamate_ica_nmda', self.cell.dendlist[loc], 
+                            syn = self.cell.insert_synapse(syntype, self.cell.dendlist[loc], 
                                                            syn_loc['pos'][ind], add_spine = add_spine, on_spine = on_spine)
-                            self.add_input_generator(syn, 'glutamate_ica_nmda', 1.0 , start = syn_loc['start'][ind], 
+                            self.add_input_generator(syn, syntype, 1.0 , start = syn_loc['start'][ind], 
                                                      end = syn_loc['end'][ind])
     
             elif deterministic == 1:
@@ -114,9 +116,9 @@ class Timing_Experiment(e.Experiment):
                         syn_step = 1.0/num_syns
                         for i in range(0, num_syns):
                             pos = p.cluster_end_pos - (p.cluster_end_pos - p.cluster_start_pos)*i*syn_step
-                            syn = self.cell.insert_synapse('glutamate_ica_nmda', self.cell.dendlist[list_element], 
+                            syn = self.cell.insert_synapse(syntype, self.cell.dendlist[list_element], 
                                                            pos, add_spine = add_spine, on_spine = on_spine)
-                            self.add_input_generator(syn, 'glutamate_ica_nmda', deterministic = deterministic, numsyn = i)
+                            self.add_input_generator(syn, syntype, deterministic = deterministic, numsyn = i)
 
         elif syntype == 'glutamate_phos':
             syn = self.cell.insert_synapse('glutamate_phos', self.cell.spines[-1].head, 0.5)
@@ -128,8 +130,8 @@ class Timing_Experiment(e.Experiment):
         if deterministic == 1:
             noise = 0
             start = start + numsyn*p.deterministic_interval
-            number = 1
-            interval = 1
+            number = p.num_deterministic_spikes
+            interval = p.deterministic_interval
             weight = p.gAMPAmax_plateau
             
             if syntype in ['input_syn']:
@@ -142,7 +144,7 @@ class Timing_Experiment(e.Experiment):
                 end = end    
             elif syntype in ['glutamate_phos']:
                 start = p.glutamate_phos_start
-                number = 2
+                number = 1
                 interval = p.glutamate_phos_interval
                 weight = 1
             
@@ -162,7 +164,8 @@ class Timing_Experiment(e.Experiment):
                 interval = p.inhibitory_syn_interval
                 weight = p.gGABAmax_plateau
 
-            elif syntype in ['expsyn_plateau', 'plateau_cluster', 'glutamate_ica_nmda']:
+            elif syntype in ['expsyn_plateau', 'plateau_cluster', 
+            'glutamate_phos_sat', 'glutamate_ica_nmda']:
                 number = (end-start) * p.plateau_syn_rate
                 interval = p.plateau_syn_interval              
                 weight = 1.0
@@ -205,7 +208,21 @@ class Timing_Experiment(e.Experiment):
             self.inc.append(nc)      
 
         elif syntype in ['expsyn', 'plateau_cluster', 'input_syn', 
-        'expsyn_plateau', 'glutamate', 'glutamate_ica_nmda', 'glutamate_phos']:
+        'expsyn_plateau', 'glutamate', 'glutamate_ica_nmda', 'glutamate_phos', 'glutamate_phos_sat']:
+            self.estim.append(gen)
+            self.enc.append(nc)
+        
+        if syntype in ['glutamate_phos_sat']:        
+            gen = h.NetStim(0.5, sec = self.presyn)
+            gen.seed(int(time.time() + rnd.randint(1,10**7)))
+            gen.start = p.glutamate_phos_start
+            gen.noise = 0
+            gen.number = 1        
+            gen.interval = 1
+            
+            nc = h.NetCon(gen, syn.obj)
+            nc.delay = 0
+            nc.weight[0] = weight
             self.estim.append(gen)
             self.enc.append(nc)
             
@@ -271,13 +288,13 @@ class Timing_Experiment(e.Experiment):
             self.w_ampa = []
             
             for syn in self.cell.esyn:
-                if (syn.type == 'glutamate_phos'):
+                if (syn.type == 'glutamate_phos_sat'):
                     self.w_ampa.append(h.Vector())
                     self.w_ampa[-1].record(syn.obj._ref_w_ampa, record_step)
                     syn.ref_var_ampa = self.w_ampa[-1]
-                    self.integral.append(h.Vector())
-                    self.integral[-1].record(syn.obj._ref_integral, record_step)
-                    
+#                    self.integral.append(h.Vector())
+#                    self.integral[-1].record(syn.obj._ref_integral, record_step)
+#                    
     def plot_results(self):
 #        sns.set(font_scale = 2.0)
         sns.set_style("whitegrid")                
@@ -320,20 +337,20 @@ class Timing_Experiment(e.Experiment):
             for i in range(0,len(self.dopamine)):
                 ax_DA.plot(self.tout, self.dopamine[i])
 
-#            fig_ampa_depol = plt.figure()
-#            ax_ampa_depol = fig_ampa_depol.add_subplot(111)
-#            ax_ampa_depol.set_ylabel('Vs')
-#            ax_ampa_depol.set_xlabel('t')
-#            self.vs = self.vs.to_python()
-#            start = int(p.glutamate_phos_start*p.nrn_dots_per_1ms)
-#            end = int((p.glutamate_phos_start+50)*p.nrn_dots_per_1ms)
-#            before_LTP = self.vs[start:end] 
-#            start = int((p.glutamate_phos_start+p.glutamate_phos_interval)*p.nrn_dots_per_1ms)
-#            end = int((p.glutamate_phos_start+p.glutamate_phos_interval+50)*p.nrn_dots_per_1ms)
-#            after_LTP = self.vs[start:end]
-#            t = np.linspace(0,50, len(self.vs[start:end]))
-#            ax_ampa_depol.plot(t, before_LTP); plt.hold(True)
-#            ax_ampa_depol.plot(t, after_LTP);
+            fig_ampa_depol = plt.figure()
+            ax_ampa_depol = fig_ampa_depol.add_subplot(111)
+            ax_ampa_depol.set_ylabel('Vs')
+            ax_ampa_depol.set_xlabel('t')
+            vs = self.vs.to_python()
+            start = int(p.glutamate_phos_start*p.nrn_dots_per_1ms)
+            end = int((p.glutamate_phos_start+50)*p.nrn_dots_per_1ms)
+            before_LTP = vs[start:end] 
+            start = int((p.glutamate_phos_start+p.glutamate_phos_interval)*p.nrn_dots_per_1ms)
+            end = int((p.glutamate_phos_start+p.glutamate_phos_interval+50)*p.nrn_dots_per_1ms)
+            after_LTP = vs[start:end]
+            t = np.linspace(0,50, len(vs[start:end]))
+            ax_ampa_depol.plot(t, before_LTP); plt.hold(True)
+            ax_ampa_depol.plot(t, after_LTP);
             
             fig_wampa = plt.figure(); 
             ax_wampa = fig_wampa.add_subplot(111);
@@ -373,7 +390,7 @@ class Timing_Experiment(e.Experiment):
 #            
             legend_list = []
             for i in self.dend_record_list:
-                legend_list.append('dend[%d](%.2f) = %.2f um' % (i, p.pos,  h.distance(0.85, sec = self.cell.dendlist[i]) ))
+                legend_list.append('dend[%d](%.2f) = %.2f um' % (i, p.pos,  h.distance(p.pos, sec = self.cell.dendlist[i]) ))
             
             ax_vd.legend(legend_list);  
             ax_cai_nmda.legend(legend_list);
@@ -387,14 +404,14 @@ class Timing_Experiment(e.Experiment):
                 axes[-1].set_xlabel('t')
                 axes[-1].plot(self.tout, self.species[i])
             
-            fig_integral = plt.figure(); 
-            ax_integral = fig_integral.add_subplot(111);
-            ax_integral.set_ylabel('pSubstrate area')
-            ax_integral.set_xlabel('t')
-            plt.hold(True)
-            for i in range(0,len(self.integral)):
-                ax_integral.plot(self.tout, self.integral[i])
-            
+#            fig_integral = plt.figure(); 
+#            ax_integral = fig_integral.add_subplot(111);
+#            ax_integral.set_ylabel('pSubstrate area')
+#            ax_integral.set_xlabel('t')
+#            plt.hold(True)
+#            for i in range(0,len(self.integral)):
+#                ax_integral.plot(self.tout, self.integral[i])
+#            
             plt.show()
             return fig_vs, fig_vd, fig_cai_nmda
 
@@ -452,7 +469,7 @@ class Timing_Experiment(e.Experiment):
             h.load_file("stdrun.hoc")
             h.init()
             h.tstop = simtime        
-                   
+            p.simtime = simtime       
             fih1 = h.FInitializeHandler((self.seti_print_status))
             fih2 = h.FInitializeHandler((self.seti_steady_states))
             
@@ -479,6 +496,10 @@ class Timing_Experiment(e.Experiment):
     def print_status(self):
         print("At time t %f, total simtime %f." % (h.t, p.simtime))
         
+    def calculate_aoc(self, vector):
+        v = np.array(vector.to_python())
+        return sum(v) - v[0]*(len(v))
+        
     def get_synapse_list(self, syntype):
         synlist = []
         for syn in self.cell.esyn:
@@ -487,3 +508,10 @@ class Timing_Experiment(e.Experiment):
         
         return synlist
         
+    def insert_IClamp(self, sec, pos, num_clamps):
+        self.iclamp = []
+        for i in range(0,num_clamps):                   
+            self.iclamp.append(h.IClamp(pos, sec=sec))
+            self.iclamp[-1].amp = p.iclamp_amp 
+            self.iclamp[-1].delay = p.plateau_burst_start + p.iclamp_delay + i*p.iclamp_periodic_delay
+            self.iclamp[-1].dur = p.iclamp_dur
