@@ -1,7 +1,7 @@
-
 **/Data/*.mat
 **/Data/*.sbproj
 *.sbproj
+**/Results/
 **/Formulas/*.m
 **/Data/Exp/*.mat
 *.xml

@@ -21,6 +21,9 @@ end
 if contains(mode,"plots")
     stg = load_setting_chunk(model_name,"plots",stg);
 end
+if contains(mode,"sensitivity_analysis")
+    stg = load_setting_chunk(model_name,"sensitivity_analysis",stg);
+end
 if contains(mode,"optimization")
     stg = load_setting_chunk(model_name,"optimization",stg);
 end
@@ -36,14 +39,17 @@ end
 
 function [stg] = load_setting_chunk(name,chunk,stg)
 
-if isfile("Model\" + stg.folder_model + "\Settings\f_settings_" +...
-        chunk + "_" + name + ".m")
+settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
+    chunk + "_" + name + ".m";
+
+
+if isfile(settings_filename)
     
     [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");
     
     f = fieldnames(stg_add);
     for i = 1:length(f)
-       stg.(f{i}) = stg_add.(f{i});
+        stg.(f{i}) = stg_add.(f{i});
     end
 else
     error("You are lacking the f_settings_" + chunk + "_" +...

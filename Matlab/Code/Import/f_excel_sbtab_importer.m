@@ -1,13 +1,9 @@
 function f_excel_sbtab_importer(stg)
 
 % Get the total number of sheets in the SBTAB
-if ispc
-    [~,sheets] = xlsfinfo(char(stg.folder_main + "\Model\" +...
-        stg.folder_model + "\" + stg.sbtab_excel_name));
-else
-    [~,sheets] = xlsfinfo(char(stg.folder_main + "/Model/" +...
-        stg.folder_model + "/" + stg.sbtab_excel_name));
-end
+[~,sheets] = xlsfinfo(char(stg.folder_main + "/Model/" +...
+    stg.folder_model + "/" + stg.sbtab_excel_name));
+
 
 % Try to run the import the sheets in multicore, depending on the version
 % of excel this migth not work
@@ -22,13 +18,8 @@ catch
 end
 
 % Save the SBTAB tables in .mat format
-if ispc
-    save("Model\" +stg.folder_model + "\Data\" +...
-        stg.sbtab_name + ".mat",'sbtab_excel');
-else
-    save("Model/" +stg.folder_model + "/Data/" +...
-        stg.sbtab_name + ".mat",'sbtab_excel');
-end
+save("Model/" +stg.folder_model + "/Data/" +...
+    stg.sbtab_name + ".mat",'sbtab_excel');
 end
 
 function sbtab_excel = impexp (i,stg)
@@ -36,13 +27,8 @@ function sbtab_excel = impexp (i,stg)
 disp("Reading sbtab_excel Excel sheet number " + i)
 
 % Import the SBTAB to a cell with a sheet per cell
-if ispc
-    sbtab_excel = readcell(char(stg.folder_main + "\Model\" +...
-        stg.folder_model + "\" + stg.sbtab_excel_name),'sheet',i);
-else
-    sbtab_excel = readcell(char(stg.folder_main + "/Model/" +...
-        stg.folder_model + "/" + stg.sbtab_excel_name),'sheet',i);
-end
+sbtab_excel = readcell(char(stg.folder_main + "/Model/" +...
+    stg.folder_model + "/" + stg.sbtab_excel_name),'sheet',i);
 
 % Replace "ismissing" values with empty spaces
 mask = cellfun(@ismissing, sbtab_excel,'UniformOutput',false);
@@ -57,13 +43,8 @@ field = strrep(field,"'",'');
 field = strrep(field," ",'_');
 
 %Export the tsv
-if ispc
-    cell_write_tsv(char(stg.folder_main + "\Model\" +stg.folder_model +...
-        "\tsv\" + field + ".tsv"),sbtab_excel)
-else
-    cell_write_tsv(char(stg.folder_main + "/Model/" +stg.folder_model +...
-        "/tsv/" + field + ".tsv"),sbtab_excel)
-end
+cell_write_tsv(char(stg.folder_main + "/Model/" +stg.folder_model +...
+    "/tsv/" + field + ".tsv"),sbtab_excel)
 end
 
 function cell_write_tsv(filename,origCell)

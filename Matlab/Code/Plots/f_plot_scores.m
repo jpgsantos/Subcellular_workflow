@@ -1,4 +1,5 @@
 function f_plot_scores(rst,stg,sbtab)
+% Generates a figure with Scores 
 
 % Inform the user that fig1 is being ploted
 disp("Plotting Scores")
@@ -20,11 +21,11 @@ if stg.useLog ~= 0
     
     % Choose correct title according to settings
     if stg.useLog == 1
-        title("scores total (sum of log10 of datasets)")
+        title("Total scores  (sum of log10 of scores per experimental output)")
     elseif stg.useLog == 2
-        title("scores total (sum of log10 of experiments)")
+        title("Total scores (sum of log10 of scores per experiments)")
     elseif stg.useLog == 3
-        title("scores total log10")
+        title("Log 10 of total scores")
     end
 else
     
@@ -32,7 +33,8 @@ else
     % test
     scatter(stg.pat,log10([rst(stg.pat).st]),10,'filled')
     
-    title("scores total log10")
+    %     scatter(stg.pat,[rst(stg.pat).st],10,'filled')
+    title("Log 10 of total scores")
 end
 
 % Choose the bounds for the x axis so it aligns with the bottom plot
@@ -43,14 +45,15 @@ subplot(4,1,[2,3,4])
 
 % Generate labels for left of heatmap (Experiment number Dataset number)
 label = [];
+
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-        label{size(label,2)+1} = {"E" + (n-1) + " " + ...
+        label{size(label,2)+1} = {strrep("E" + (n-1) + " " + ...
             string(rst(max(stg.pat)).simd{1,n}.DataNames(...
-            end-size(sbtab.datasets(n).output,2)+j))};
+            end-size(sbtab.datasets(n).output,2)+j)),"_","\_")};
     end
 end
 
@@ -64,7 +67,7 @@ if stg.useLog == 1
         heatpoint{k} = [];
         
         % Iterate over the number of experiments
-        for n = stg.ms.exprun
+        for n = stg.exprun
             
             % Get the score of each dataset
             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
@@ -75,9 +78,11 @@ if stg.useLog == 1
     end
     
     % Plot the heatmap
-    heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
-
-    title("scores per experiment (sum of log10 of datasets)")
+    h = heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
+    
+    title("Log10 of scores per experimental output")
+    h.XLabel = 'Parameter arrays being tested';
+    h.YLabel = 'Outputs';
     
 else
     heatline = [];
@@ -87,10 +92,12 @@ else
         heatpoint{k} = [];
         
         % Iterate over the number of experiments
-        for n = stg.ms.exprun
+        for n = stg.exprun
             
             % Get the log base 10 of the score of each dataset
             heatpoint{k} = [heatpoint{k},log10(rst(k).sd{n,1})];
+            
+            %             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
         end
         
         % Combine heatpoints in order to correctly display heatmap
@@ -98,8 +105,10 @@ else
     end
     
     % Plot the heatmap
-    heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
+    h = heatmap(transpose(heatline),'Colormap',jet,'YDisplayLabels',label);
     
-    title("scores per experiment log10")
+    title("Log10 of scores per experimental output")
+    h.XLabel = 'Parameter arrays being tested';
+    h.YLabel = 'Outputs';
 end
 end

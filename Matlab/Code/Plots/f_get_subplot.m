@@ -1,5 +1,11 @@
 function fig_n = f_get_subplot(plot_tn,plot_n,fig_n,fig_name)
 
+size_x = 4;
+size_y = 6;
+size_t = 24;
+ratio_1 = 2;
+ratio_2 = 3;
+
 % If the amount of plots is bigger thatn the maximum amount of plots per
 % figure subdivide the plots to more than one figure
 if plot_tn > 24
@@ -15,7 +21,7 @@ if plot_tn > 24
         figHandles = findobj('type', 'figure', 'name', fig_name + " " + fig_n);
         close(figHandles);
         figure('WindowStyle', 'docked','Name', fig_name + " " + fig_n,'NumberTitle', 'off');
-        
+        sgtitle(fig_name + " " + fig_n);
     end
     
     % Get the correct subploting position for each plot
@@ -34,6 +40,8 @@ else
         figHandles = findobj('type', 'figure', 'name', fig_name);
         close(figHandles);
         figure('WindowStyle', 'docked','Name', fig_name, 'NumberTitle', 'off');
+        sgtitle(fig_name);
+        
     end
     
     % Get the correct subploting position for each plot

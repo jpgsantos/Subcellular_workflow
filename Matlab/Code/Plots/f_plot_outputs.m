@@ -1,4 +1,5 @@
 function f_plot_outputs(rst,stg,sbtab,Data)
+% Generates a figure with Outputs, one subplot per experimental output
 
 % Inform the user that fig3 is being ploted
 disp("Plotting Outputs")
@@ -9,7 +10,7 @@ plot_n = 1;
 fig_n = 0;
 
 % Iterate over the number of experiments
-for n = stg.ms.exprun
+for n = stg.exprun
     
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
@@ -35,10 +36,10 @@ for n = stg.ms.exprun
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
                 
-                % Plot the outputs to each dataset (new subplots) as they 
+                % Plot the outputs to each dataset (new subplots) as they
                 % are given in the data provided in sbtab
                 plot(rst(m).simd{1,n}.Time,Data(n).Experiment.x(:,j),'k',...
-                    'DisplayName','data')
+                    'DisplayName','data','LineWidth',2)
                 break
             end
         end
@@ -51,34 +52,35 @@ for n = stg.ms.exprun
                 
                 % Plot the outputs to each dataset (new subplots) and
                 % parameter array to test that are simulated using
-                % Sybiology while also normalizating with the starting
+                % Simbiology while also normalizating with the starting
                 % point of the result
                 if sbtab.datasets(n).normstart == 1
-                    scatter(rst(m).simd{1,n}.Time,...
+                    plot(rst(m).simd{1,n}.Time,...
                         rst(m).simd{1,n}.Data(1:end,...
                         end-size(sbtab.datasets(n).output,2)+j)./...
                         rst(m).simd{1,n}.Data(1,end-...
-                        size(sbtab.datasets(n).output,2)+j),...
-                        5,'filled','MarkerFaceAlpha',0.7,'DisplayName',string(m))
+                        size(sbtab.datasets(n).output,2)+j),'DisplayName',...
+                        string("Parameter set "+m),'LineWidth',1.5)
                 else
                     
                     % Plot the outputs to each dataset (new subplots) and
-                    % parameter array to test that are simulated using 
-                    % Sybiology
-                    scatter(rst(m).simd{1,n}.Time,...
+                    % parameter array to test that are simulated using
+                    % Simbiology
+                    plot(rst(m).simd{1,n}.Time,...
                         rst(m).simd{1,n}.Data(1:end,end-...
-                        size(sbtab.datasets(n).output,2)+j),...
-                        5,'filled','MarkerFaceAlpha',0.7,'DisplayName',string(m))
+                        size(sbtab.datasets(n).output,2)+j),'DisplayName',...
+                        string("Parameter set "+m),'LineWidth',1.5)
                 end
             end
         end
         
-
-        
         hold off
         
+        xlabel('seconds')
+        ylabel('nanomole/liter')
+        
         % Choose correct title according to settings
-        if stg.plotnames == 1
+        if stg.plotoln == 1
             title("E" + (n-1) + " " +...
                 strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'))
         else
@@ -87,7 +89,7 @@ for n = stg.ms.exprun
         end
         
         % Choose number of decimal places for y axis
-        ytickformat('%.2f')
+        ytickformat('%.2g')
     end
 end
 end

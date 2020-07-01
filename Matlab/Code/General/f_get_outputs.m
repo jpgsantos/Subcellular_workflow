@@ -4,15 +4,12 @@ persistent n_out
 persistent out_name
 
 if isempty(n_out)
-    if ispc
-        load("Model\" +stg.folder_model +"\Data\" + "data_"+stg.name+".mat",'sbtab')
-    else
-        load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'sbtab')
-    end
+    
+    load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'sbtab')
     
     n_out = 0;
     out_name = [];
-    for n = stg.ms.exprun
+    for n = stg.exprun
         for j = 1:size(sbtab.datasets(n).output,2)
             n_out = n_out + 1;
             out_name{n_out} = {"E" + (n-1) + " " + string(sbtab.datasets(n).output{1,j})};

@@ -10,7 +10,7 @@ rng(stg.rseed);
 options = stg.sa_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter';
 end
 
@@ -37,7 +37,7 @@ else
 end
 
 % Save results
-rst.name = 'simulated annealing';
+rst.name = 'Simulated annealing';
 rst.x = x;
 rst.fval = fval;
 rst.exitflag = exitflag;

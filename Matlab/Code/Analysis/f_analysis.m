@@ -1,7 +1,5 @@
 function rst = f_analysis(stg,analysis)
 
-% % Uncomment the analysis to be run
-
 if contains(analysis,"RS")
     rst.RS = f_RS(stg,10);
 end
@@ -26,10 +24,5 @@ end
 if contains(analysis,"SAcluster")
     f_SA_cluster(stg);
 end
-
-if stg.plot
-    f_plot(rst,stg)
-end
-
 end
 

@@ -10,7 +10,7 @@ rng(stg.rseed);
 options = stg.fm_options;
 
 % Display console messages if chosen in settings
-if stg.console
+if stg.optcsl
     options.Display = 'iter-detailed';
 end
 

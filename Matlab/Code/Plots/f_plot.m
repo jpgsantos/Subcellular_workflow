@@ -4,20 +4,34 @@ function f_plot(rst,stg)
 disp("Plotting ...")
 
 % Import the data on the first run
-load("data_"+stg.name+".mat",'Data','sbtab')
+load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 
-% Generate Diagnostics figure 1
+% Generate figure with Scores 
 if isfield(rst,'diag')
     f_plot_scores(rst.diag,stg,sbtab)
 end
 
-% Generate Diagnostics figure 2
+% Generate figure with Inputs
 if isfield(rst,'diag')
     f_plot_inputs(rst.diag,stg,sbtab)
 end
 
-% Generate Diagnostics figure 3
+% Generate figure with Outputs 
 if isfield(rst,'diag')
     f_plot_outputs(rst.diag,stg,sbtab,Data)
+end
+% Generate figure with input and Output of all experiments
+if isfield(rst,'diag')
+    f_plot_in_out(rst.diag,stg,sbtab,Data)
+end
+
+% Generate figure with optimization results
+if isfield(rst,'opt')
+    f_plot_opt(rst,stg)
+end
+
+% Generate figures for Sensitivity Analysis
+if isfield(rst,'SA')
+    f_plot_SA_sensitivities(rst.SA,stg);
 end
 end
