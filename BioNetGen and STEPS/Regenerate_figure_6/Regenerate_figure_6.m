@@ -179,7 +179,7 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
 
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
 %plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
@@ -202,11 +202,11 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
 
 
 
-plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-','Color',[0.5,0, 0], 'LineWidth', 1)
+plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-','Color',[0,0, 0.5], 'LineWidth', 1)
 
 ii = 1;
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
@@ -230,11 +230,11 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
+plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
 
 
 
-plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)),'Color',[0,0, 0.5], 'LineWidth', 1)
+plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)),'Color',[0.5,0, 0], 'LineWidth', 1)
 
 
 ntrain=40;
@@ -251,7 +251,7 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
+plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
 text(-2.5,5.25,'A','FontWeight','bold')
 
 
