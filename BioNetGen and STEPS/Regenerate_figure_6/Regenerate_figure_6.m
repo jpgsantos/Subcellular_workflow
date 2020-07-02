@@ -259,7 +259,7 @@ text(-2.5,5.25,'A','FontWeight','bold')
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
-legend({'Ca Original','Ca STEPS','Ca + Da (\Deltat=1s) Original', 'Ca + Da (\Deltat=1s) STEPS'});
+legend({'Ca Original','Ca STEPS','Ca + DA (\Deltat=1s) Original', 'Ca + DA (\Deltat=1s) STEPS'});
 legend boxoff
 
 xl = xlim;
@@ -312,7 +312,6 @@ hold on
 % boxplot(randn(10,5));
 % boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Colors','r','PlotStyle','compact')
 % boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','MedianStyle','target','BoxStyle','filled','OutlierSize',2,'Symbol','ro');
-boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','OutlierSize',2,'Symbol','ro');
 
 
 % scatter(DA1, activationAreaWithMultipleDA/activationArea,'filled','MarkerFaceColor', [0 0 0])
@@ -322,13 +321,17 @@ plot(DA1, activationAreaWithMultipleDA/activationArea,'r', 'LineWidth', 1)
 plot(DA1, activationAreaWithMultipleDA/activationArea,'Color', [0 0 0], 'LineWidth', 1)
 
 
+
 % plot(DA, median(activationAreaWithMultipleDA_steps)/activationArea_steps, 'LineWidth', 2)
 
 plot([-5 5], [1 1], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
+
+boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','OutlierSize',2,'Symbol','ro');
+
 % plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
-ylabel('Substrate phosphorylation');
+ylabel('Substrate phosphorylation area');
 legend({'Original','STEPS'}, 'Location', 'Northwest');
 legend boxoff
 
