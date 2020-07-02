@@ -158,11 +158,9 @@ plot(new_data{2}(:,1), new_data{2}(:,2)/max(new_data{1}(:,2)),...
     'r', 'LineWidth', 1)
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 
-
-ylabel('pSubstrate','FontSize',8);
 xlabel('time (s)','FontSize',8);
-legend({'Ca only',...
-   'Ca + Da (\Deltat=1s)'},...
+ylabel('pSubstrate','FontSize',8);
+legend({'Ca','Ca + DA (\Deltat=1s)'},...
     'FontSize',6.5);
 legend boxoff
 text(-1.875,3.45,'C','FontWeight','bold');
@@ -178,7 +176,7 @@ plot([0 0], [0 max(max(new_data{3}(:,2)),max(old_data{3}(:,2)))], '-.',...
     'LineWidth', 1, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel("\Deltat (s)",'FontSize',8);
-ylabel("pSubstrate",'FontSize',8);
+ylabel("pSubstrate area",'FontSize',8);
 % legend({'Ca + Da','Ca + Da'},'location','northwest','FontSize',6.5);
 % legend boxoff
 % title('D','position',[-4.5 4.06])

@@ -19,7 +19,7 @@ text(2.4,5300,'A','fontsize',10,'FontWeight','bold');
         xlabel('time (s)','FontSize', 8,'Fontweight','bold')
         ylabel('nanomole/liter','FontSize', 8,'Fontweight','bold')
         % Add a legend to each plot
-        legend(["Ca","Da"],'FontSize', 6.5,'Fontweight','bold')
+        legend(["Ca","DA"],'FontSize', 6.5,'Fontweight','bold')
         legend boxoff
         clear labelfig2
       
@@ -61,7 +61,7 @@ set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)','FontSize',8);
 ylabel('pSubstrate','FontSize',8);
 legend({'Ca ',...
-    'Ca + Da (\Deltat=1s)'},...
+    'Ca + DA (\Deltat=1s)'},...
     'FontSize',6.5);
 legend boxoff
 text(-1.875,2.85,'B','fontsize',10,'FontWeight','bold');
@@ -80,7 +80,7 @@ plot([0 0], [0 max(max(copasi_data{3}(:,2)),max(new_data{3}(:,2)))], '-.',...
     'LineWidth', 1, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('\Deltat (s)','FontSize',8);
-ylabel("pSubstrate",'FontSize',8);
+ylabel("pSubstrate area",'FontSize',8);
 % legend({'Ca + Da','Ca + Da'},'location','northwest','FontSize',6.5);
 % legend boxoff
 text(-4.5,3.42,'C','fontsize',10,'FontWeight','bold');
