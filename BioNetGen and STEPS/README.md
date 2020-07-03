@@ -12,7 +12,7 @@ D1_LTP_time_window.ebngl - extended BioNetGen model file (json). In addition to 
 stimulation patterns and parameters of simulation.
 
 To load and simulate the model with the subcellular application:
-import D1_LTP_time_window.bngl to the subcellular application (import button of the Model panel)
-import geometry data (add geometry button of the Geometry panel)
-create simulation (New Simulation button of the Simulations panel), select STEPS as a solver,
+1) import D1_LTP_time_window.bngl to the subcellular application (import button of the Model panel)
+2) add geometry data (add geometry button of the Geometry panel)
+3) create simulation (New Simulation button of the Simulations panel), select STEPS as a solver,
 specify stimulation pattern (load stim_DA_complex.tsv or stim_noDA_complex.tsv), then run simulation.
