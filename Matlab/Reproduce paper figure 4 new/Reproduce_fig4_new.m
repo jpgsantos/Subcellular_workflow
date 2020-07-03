@@ -18,8 +18,9 @@ bar(rst.SA.SI.se,'stacked')
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')
+ylabel('SI')
 
-text(min(xlim)-(max(xlim)-min(xlim))*2/30,...
+text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.3/5,...
     'A','fontsize',10,'FontWeight','bold');
 
@@ -33,8 +34,9 @@ legend boxoff
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')
+ylabel('SIT')
 
-text(min(xlim)-(max(xlim)-min(xlim))*2/30,...
+text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.3/5,...
     'B','fontsize',10,'FontWeight','bold');
 
