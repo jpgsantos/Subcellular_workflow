@@ -1,88 +1,101 @@
-load("Reproduce paper figure 5/Analysis.mat")
+load('Reproduce paper figure 5/inputs')
+load('Reproduce paper figure 5/copasi_data')
+load('Reproduce paper figure 5/new_data')
 
-rst = rst.SA;
-
-% Get the total number of outputs
-[~,outputNames.sd] = f_get_outputs(stg);
-
-for n = 1:size(outputNames.sd,2)
-    outputNames.sd{n}{:} = strrep(outputNames.sd{n}{:},"_","\_");
-end
-for n = stg.exprun
-    outputNames.se{n} = "E " + string(n);
-end
-
-outputNames.xfinal = outputNames.sd;
-
-parNames = cell(1,stg.parnum);
-parNames2 = cell(1,stg.parnum);
-
-for n = 1:stg.parnum
-    parNames{n} = char("P" + find(stg.partest==n));
-end
-
-for n = 1:size(parNames,2)
-    parNames2{n} = string(parNames{n}(1,:));
-    for m = 2:size(parNames{n},1)
-        parNames2{n} = string(parNames2{n}) + ", " +...
-            string(parNames{n}(m,:));
-    end
-end
-
-figHandles = findobj('type', 'figure', 'name', 'SA SI');
+figHandles = findobj('type', 'figure', 'name', 'Paper Figure 5');
 close(figHandles);
-figure('WindowStyle', 'docked','Name','SA SI','NumberTitle', 'off');
+figure('WindowStyle', 'docked','Name','Paper Figure 5','NumberTitle',...
+    'off');
+layout = tiledlayout(1,5,'Padding','none','TileSpacing','compact');
 
-h1 = heatmap(outputNames.se,parNames2,transpose(rst.SI.se(:,1:stg.parnum)),...
-    'Colormap',jet,'FontSize',8);
+layout.Units = 'inches';
+layout.OuterPosition = [0 0 6.85 3];
 
-h1.Title = "SI";
-% title('Top title','FontSize',12);
+% Figure 5A
+nexttile(layout,[1 2]);
 
-% text(5, 0.4, 'Bottom title')
-h1.XLabel = 'Outputs';
-h1.YLabel = 'Parameters';
+hold on
+plot (t,x,'LineWidth',1)
+text(2.4,5300,'A','fontsize',10,'FontWeight','bold');
+set(gca,'FontSize',8,'Fontweight','bold')
+xlabel('time (s)','FontSize', 8,'Fontweight','bold')
+ylabel('nanomole/liter','FontSize', 8,'Fontweight','bold')
+legend(["Ca","DA"],'FontSize', 6.5,'Fontweight','bold')
+legend boxoff
+clear labelfig2
 
-% Saves the graphs if running matlab 2020a or later
+ax = gca;
+ax.XLimSpec = 'Tight';
+hold off
+ylim([0 5000])
+xlim([3 10])
+
+xticks([3,4,5,6,7,8,10])
+xticklabels({0,4,5,6,7,8,30})
+
+text(9,50,'//','fontsize',12);
+text(3.45,50,'//','fontsize',12);
+
+layout2 = tiledlayout(layout,2,1,'TileSpacing','compact');
+layout2.Layout.Tile = 3;
+layout2.Layout.TileSpan = [1,3];
+
+% Figure 5B
+nexttile(layout2);
+
+hold on
+plot(new_data{1}(:,1), new_data{1}(:,2)/max(new_data{1}(:,2)),...
+    '-.k', 'LineWidth', 1)
+plot(new_data{2}(:,1), new_data{2}(:,2)/max(new_data{1}(:,2)),...
+    'k', 'LineWidth', 1)
+
+plot(new_data{1}(:,1), new_data{1}(:,2)/max(new_data{1}(:,2)),...
+    '-.r', 'LineWidth', 2)
+plot(new_data{2}(:,1), new_data{2}(:,2)/max(new_data{1}(:,2)),...
+    'r', 'LineWidth', 2)
+plot(copasi_data{1}(:,1), copasi_data{1}(:,2)/max(copasi_data{1}(:,2)),...
+    '-.','Color',[0 0 1], 'LineWidth', 1)
+plot(copasi_data{2}(:,1), copasi_data{2}(:,2)/max(copasi_data{1}(:,2)),...
+    'Color',[0 0 1], 'LineWidth', 1)
+set(gca,'FontSize',8, 'FontWeight', 'bold')
+xlabel('time (s)','FontSize',8);
+ylabel('pSubstrate','FontSize',8);
+legend({'Ca ',...
+    'Ca + DA (\Deltat=1s)'},...
+    'FontSize',6.5);
+legend boxoff
+text(-1.875,2.85,'B','fontsize',10,'FontWeight','bold');
+hold off
+
+ylim ([0 2.5])
+
+% Figure 5C
+nexttile(layout2);
+
+hold on
+plot(new_data{3}(:,1), new_data{3}(:,2),'r', 'LineWidth', 1.5)
+plot(copasi_data{3}(:,1), copasi_data{3}(:,2),'b', 'LineWidth', 1)
+plot([-4 4], [1 1], '--k', 'LineWidth', 1)
+plot([0 0], [0 max(max(copasi_data{3}(:,2)),max(new_data{3}(:,2)))], '-.',...
+    'LineWidth', 1, 'Color', [0.5 0.5 0.5])
+set(gca,'FontSize',8, 'FontWeight', 'bold')
+xlabel('\Deltat (s)','FontSize',8);
+ylabel("pSubstrate area",'FontSize',8);
+text(-4.5,3.42,'C','fontsize',10,'FontWeight','bold');
+hold off
+
+%Saves the graphs if running matlab 2020a or later
 if f_check_minimum_version(9,8)
-    h1.Units = 'inches';
-    h1.OuterPosition = [0 0 3.55 2.5];
-% txt = text(-1,0,'B');
-% %         txt.FontSize = 8;
-%         txt.FontWeight = 'bold';
-        
-%     exportgraphics(h1,...
-%         'Reproduce paper figure 5/Figure 5_1.png',...
-%         'Resolution',600)
+    
+    exportgraphics(layout,...
+        'Reproduce paper figure 5/Figure 5.png',...
+        'Resolution',600)
+    
+    exportgraphics(layout,...
+        'Reproduce paper figure 5/Figure 5.tiff',...
+        'Resolution',600)
+    
+    exportgraphics(layout,...
+        'Reproduce paper figure 5/Figure 5.pdf',...
+        'ContentType','vector')
 end
-
-figHandles = findobj('type', 'figure', 'name', 'SA SIT');
-close(figHandles);
-figure('WindowStyle', 'docked','Name','SA SIT','NumberTitle', 'off');
-
-h2 = heatmap(outputNames.se,parNames2,transpose(rst.SIT.se(:,1:stg.parnum)),...
-    'Colormap',jet,'FontSize',8);
-
-Ax = gca;
-Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-
-h2.Title = "SIT";
-h2.XLabel = 'Outputs';
-
-% Saves the graphs if running matlab 2020a or later
-if f_check_minimum_version(9,8)
-    h2.Units = 'inches';
-    h2.OuterPosition = [0 0 3.55 2.5];
-
-%     exportgraphics(h2,...
-%         'Reproduce paper figure 5/Figure 5_2.png',...
-%         'Resolution',600)
-end
-
-% pause(5)
-% h1.Units = 'normalized';
-% h1.OuterPosition = [0 0 1 1];
-% h2.Units = 'normalized';
-% h2.OuterPosition = [0 0 1 1];
-
-
