@@ -1,5 +1,8 @@
 load("Reproduce paper figure 3/Analysis.mat")
 
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 rst = rst.diag;
 
 addpath(genpath(pwd));

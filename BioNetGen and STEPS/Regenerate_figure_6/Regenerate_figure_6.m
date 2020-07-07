@@ -1,3 +1,6 @@
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 %%  read simbiology version
 
 Regenerate_figures
@@ -337,8 +340,6 @@ legend boxoff
 
 text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25/5,'B','FontWeight','bold')
 
-
-
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 3];
 
@@ -346,3 +347,9 @@ layout.OuterPosition = [0 0 6.85 3];
 exportgraphics(layout,...
     'Figure 6.png',...
     'Resolution',600)
+exportgraphics(layout,...
+    'Figure 6.tiff',...
+    'Resolution',600)
+exportgraphics(layout,...
+    'Figure 6.pdf',...
+    'ContentType','vector')

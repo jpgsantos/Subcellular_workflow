@@ -1,5 +1,8 @@
 load("Reproduce paper figure 4/Analysis.mat")
 
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 figHandles = findobj('type', 'figure', 'name', 'Paper Figure 4');
 close(figHandles);
 figure('WindowStyle', 'docked','Name','Paper Figure 4','NumberTitle',...
