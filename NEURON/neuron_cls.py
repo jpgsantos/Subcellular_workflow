@@ -120,6 +120,20 @@ class Neuron(object):
             syn.obj.w_nmda = p.gNMDAmax_plateau
             self.esyn.append(syn)
             return syn
+
+        elif syntype in ['glutamate_phos_sat'] :
+            syn.obj = h.glutamate_phos_sat(sec(pos))
+            syn.obj.mg = p.Mg            
+            syn.obj.eta = p.eta
+            syn.obj.alpha = p.alpha
+            syn.obj.tau1_nmda = p.nmda['tcon']
+            syn.obj.tau2_nmda = p.nmda['tcoff']
+            syn.obj.w_ampa0 = p.gAMPAmax_plateau
+            syn.obj.w_nmda0 = p.gNMDAmax_plateau
+            syn.obj.total_Substrate = p.total_Substrate
+            h.setpointer(sec(pos)._ref_pSubstrate_D1_LTP_time_window, 'pSubstrate', syn.obj)
+            self.esyn.append(syn)
+            return syn
             
         elif syntype in ['glutamate_phos'] :
             syn.obj = h.glutamate_phos(sec(pos))
@@ -128,8 +142,9 @@ class Neuron(object):
             syn.obj.alpha = p.alpha
             syn.obj.tau1_nmda = p.nmda['tcon']
             syn.obj.tau2_nmda = p.nmda['tcoff']
-            syn.obj.w_ampa0 = p.gAMPAmax_plateau
-            syn.obj.w_nmda0 = p.gNMDAmax_plateau
+            syn.obj.w_ampa0 = p.gAMPAmax_phos
+            syn.obj.w_nmda0 = p.gNMDAmax_phos
+            syn.obj.total_Substrate = p.total_Substrate
             h.setpointer(sec(pos)._ref_pSubstrate_D1_LTP_time_window, 'pSubstrate', syn.obj)
             self.esyn.append(syn)
             return syn

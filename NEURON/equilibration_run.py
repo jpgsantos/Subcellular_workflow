@@ -6,17 +6,17 @@ Created on Thu Dec 15 17:48:41 2016
 """
 
 import single_sec_cell as se
-import timing_experiment as pe
-import parameters as p
+import timing_experiment as te
 import json
 
+simtime = 2000e3
 cell = se.SingleSecCell()
 
-ex = pe.Timing_Experiment('single_sec', cell)
+ex = te.Timing_Experiment('single_sec', cell)
 
-ex.cell.somalist[0].DA_max_timing_model = 0              
+ex.cell.somalist[0].DA_max_D1_LTP_time_window = 0              
 ex.set_up_recording()
-ex.simulate()
+ex.simulate(simtime = simtime)
 ex.plot_results()
 
 steady_states = []

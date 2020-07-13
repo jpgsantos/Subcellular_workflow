@@ -27,8 +27,14 @@ nprocs = comm.Get_size()
 print("Number of processes = %d" % nprocs)
 
 if rank == 0:
-    DA_start = [-4000, -3500, -3000, -2500, -2000, -1500, -1000, -500, -0, 
-                500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
+    DA_start = [-4000, -3750, -3500, -3250, 
+                -3000, -2750, -2500, -2250,
+                -2000, -1750, -1500, -1250,
+                -1000,  -750,  -500,  -250, 
+                    0,   250,   500,   750,
+                 1000,  1250,  1500,  1750, 
+                 2000,  2250,  2500,  2750,                
+                 3000,  3250,  3500,  3750, 4000]
     
     div, res = divmod(len(DA_start), nprocs)
     counts = [div + 1 if p < res else div for p in range(nprocs)]
@@ -53,12 +59,12 @@ dend_record_list = [3]
 plateau_cluster_list = [3]
 
 ex = te.Timing_Experiment('record_ca', cell)            
-ex.insert_synapses('plateau_cluster', plateau_cluster_list, deterministic = 1, 
-                   num_syns = pp.plateau_cluster_size, add_spine = 1)
-ex.insert_synapses('glutamate_phos', plateau_cluster_list, deterministic = 1)
+ex.insert_synapses('glutamate_phos_sat', plateau_cluster_list, deterministic = 1, 
+                   num_syns = 1, add_spine = 1)
+ex.insert_IClamp(ex.cell.somalist[0], 0.5, pp.num_iclamps)
 ex.set_up_recording(dend_record_list)
     
-integral = []   
+integral = []
 
 if rank == 0:
     for spine in ex.cell.spines:
@@ -66,7 +72,7 @@ if rank == 0:
         spine.head(0.5).D1_LTP_time_window.DA_start = 100 
         
     ex.simulate()
-    integral0 = ex.integral[0].to_python()[-1]
+    integral0 = ex.calculate_aoc(ex.species[pp.species_to_plot.index('pSubstrate')])
 
 for d in DA_start:
     for spine in ex.cell.spines:
@@ -74,30 +80,36 @@ for d in DA_start:
         spine.head(0.5).D1_LTP_time_window.DA_start = d + pp.plateau_burst_start 
 
     ex.simulate()
-    integral.append(ex.integral[0].to_python()[-1])
-
+    integral.append(ex.calculate_aoc(ex.species[pp.species_to_plot.index('pSubstrate')]))
+    
 DA_start = comm.gather(DA_start, root = 0)    
-integral = comm.gather(integral, root = 0)    
+integral = comm.gather(integral, root = 0)
+    
 # 5. Calculate and plot results
 if rank == 0:
-    print("pSubstrate area for the baseline case (Ca only) is %.2f" % integral0)
     DA_start = extend_list(DA_start)
     print("DA_start:"); print(DA_start)
     integral = extend_list(integral)
 
-    res_dict = {'integral' : integral
+    res_dict = {'integral': integral,
+                'integral0': integral0
     }    
     to_save = json.dumps(res_dict)
-    with open('timing_window.dat', 'w', encoding = 'utf-8') as f:
+    with open('timing_window_ca_5.dat', 'w', encoding = 'utf-8') as f:
         json.dump(to_save, f)
+    
+    sns.set(font_scale = 1.5)
+    sns.set_style("ticks")
+    plt.rcParams["font.weight"] = "bold"
+    plt.rcParams["axes.labelweight"] = "bold"
     
     integral = np.array(integral)
 
-    fig_parea = plt.figure()
-    ax_parea = fig_parea.add_subplot(111)
-    ax_parea.plot(DA_start, integral/integral0)
-    ax_parea.set_xlabel('t_Ca - t_Da (ms)')
-    ax_parea.set_ylabel('pSubstrate area')
-    
+    fig_parea2 = plt.figure()
+    ax_parea2 = fig_parea2.add_subplot(111)
+    ax_parea2.plot(DA_start, np.array(integral)/integral0)
+    ax_parea2.set_xlabel('t_Ca - t_Da (ms)')
+    ax_parea2.set_ylabel('pSubstrate area')
+    sns.despine()    
     plt.show()
     
