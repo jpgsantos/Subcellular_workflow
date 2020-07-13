@@ -17,7 +17,7 @@ g_record_step = 0.1
 nrn_dots_per_1ms = 1/record_step
 time_to_avg_over = 20 # in seconds
 
-simtime = 25000
+simtime = 1000
 num_trials = 20
 NUMBER_OF_PROCESSES = 7
 
@@ -31,7 +31,7 @@ e_esyn = 0
 e_gaba = -60
 erate = 0.5
 irate = 0.5
-pos = 0.9
+pos = 0.5
 
 # NMDA parameters
 Mg = 1.4 # 1.0
@@ -46,7 +46,7 @@ gGABAmax = 1.5e-3
 g_expsyn_max =  0.2e-3
 g_inhexpsyn_max = gGABAmax
 
-gAMPAmax_plateau = 0.1e-3 
+gAMPAmax_plateau = 0.5e-3 
 gNMDAmax_plateau = 1.5e-3 
 gGABAmax_plateau = 0.0015*1
 nmda_ampa_ratio = gNMDAmax_plateau/gAMPAmax_plateau
@@ -55,6 +55,10 @@ ratio_glutamate_syn = 1.0
 gAMPAmax_pf = 0.05e-3
 gNMDAmax_pf = 1.5e-3 
 
+gAMPAmax_phos = 1.0e-3
+gNMDAmax_phos = 0.5e-3
+total_Substrate = 3000 
+
 glu_thresh1 = 0.5
 glu_thresh2 = 0.5
 
@@ -62,7 +66,13 @@ tNMDAon = 2.76
 tNMDAoff = 115.5
 
 taur_cadyn_nmda = 160
-scale_cadyn_nmda = 0.15
+scale_cadyn_nmda = 0.083
+
+iclamp_amp = 1.85
+iclamp_delay = 5
+iclamp_periodic_delay = 100
+iclamp_dur = 15
+num_iclamps = 10
 
 tau1_exp2syn = 0.1
 tau2_exp2syn = 2.0
@@ -74,22 +84,17 @@ glu_thresh = 0.06
 #-----------------------------------------#
 
 plateau_syn_rate = 10
-plateau_burst_start = 5000
-plateau_burst_end = 5030
-plateau_cluster_size = 20
-cluster_start_pos = 0.85
-cluster_end_pos = 0.99
+plateau_burst_start = 100
+plateau_burst_end = 130
+plateau_cluster_size = 10
+cluster_start_pos = 0.5
+cluster_end_pos = 0.5
 
-probe_time = 45000
-glutamate_phos_start = 35000
+probe_time = 30000
+glutamate_phos_start = 12000
 glutamate_phos_interval = probe_time - glutamate_phos_start
-DA_start = 500
+DA_start = 1000
 DA_max = 1480
-
-pf_input_rate = 20.0
-pf_input_start = plateau_burst_start
-pf_input_end = plateau_burst_end
-pf_input_size = 4
 
 inhibitory_syn_rate = 85.0
 inhibitory_burst_start = 100
@@ -101,18 +106,13 @@ distributed_input_start = 300
 distributed_input_end = 500
 distributed_input_size = 30
 
-deterministic_interval = 1.5
-
-ramp_syn_rate = 100.0
-ramp_slope = 0.5  # Hz/ms
-ramp_burst_start = 200
-ramp_burst_end = 1000
+deterministic_interval = 100
+num_deterministic_spikes = 10
 
 e_interval = 1.0/erate*(10**3)
 i_interval = 1.0/irate*(10**3)
 plateau_syn_interval = 1.0/plateau_syn_rate*(10**3)
 distributed_input_interval = 1.0/distributed_input_rate*(10**3)
-ramp_syn_interval = 1.0/ramp_syn_rate*(10**3)
 inhibitory_syn_interval = 1.0/inhibitory_syn_rate*(10**3)
 
 #--------------------------------#
@@ -221,7 +221,7 @@ species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII',
                    'AC5_GaolfGTP','ATP', 'PP2B', 'PP2B_CaM_Ca2', 
                    'CaM_Ca2', 'CaM_Ca4', 'PP1', 'AMP', 'B56PP2A',
                    'B72PP2A_Ca', 'B56PP2A', 'D32', 'ARPP21', 'B72PP2A']
-species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII']            
+species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']            
 cascade_species = [
      'AC5', 
  	'AC5_ATP', 

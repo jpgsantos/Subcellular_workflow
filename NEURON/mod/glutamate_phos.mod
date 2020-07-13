@@ -40,8 +40,9 @@ NEURON {
 	RANGE tau1_ampa, tau2_ampa, tau1_nmda, tau2_nmda
 	RANGE erev_ampa, erev_nmda, g, i
 	NONSPECIFIC_CURRENT i
-	POINTER pSubstrate
-	
+	POINTER pSubstrate	
+	RANGE total_Substrate
+
 	RANGE i_ampa, i_nmda, g_ampa, g_nmda, w_ampa, w_nmda, w_ampa0, w_nmda0 	       RANGE tau_i
 	RANGE I, G, mg, q, alpha, eta
 	USEION ca_nmda WRITE ica_nmda VALENCE 2
@@ -71,6 +72,7 @@ PARAMETER {
 	w_ampa0 = 0.2 (uS)
 	w_nmda0 = 1.0 (uS)
 	tau_i = 120e3 (ms)
+	total_Substrate = 3000
 }
 
 
@@ -183,10 +185,6 @@ FUNCTION MgBlock() {
 }
 
 PROCEDURE calculate_weights() {
-	if (pSubstrate > 100) {
-		w_ampa = w_ampa0 * (pSubstrate/100)
-	} else {
-		w_ampa = w_ampa0
-	}
+	w_ampa = w_ampa0 * (pSubstrate/total_Substrate)
 }
 
