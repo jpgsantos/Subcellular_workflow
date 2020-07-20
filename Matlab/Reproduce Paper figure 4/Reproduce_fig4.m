@@ -1,4 +1,6 @@
-load("Reproduce paper figure 4/Analysis.mat")
+load("Reproduce paper figure 4/SA_results.mat")
+
+rst.SA = job86_output{1,1};
 
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
@@ -14,11 +16,12 @@ layout.OuterPosition = [0 0 6.85 3];
 
 nexttile(layout);
 
-bar(rst.SA.SI.se,'stacked')
+bar(rst.SA.SI.se(:,1:4),'stacked')
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')
 ylabel('SI')
+ylim([0 0.8])
 
 text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.3/5,...
