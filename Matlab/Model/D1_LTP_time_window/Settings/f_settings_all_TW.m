@@ -34,7 +34,7 @@ stg.sbtab_name = "sbtab_"+stg.name;
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 % (Analysis)
-stg.analysis = "diag";
+stg.analysis = "SAlocal";
 
 % Experiments to run
 % (Experiments to run)
@@ -178,7 +178,7 @@ stg.plotoln = 1;
 
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 24;
+stg.sansamples = 120;
 
 % 0 or 1 to decide whether to subtract the mean before calculating SI and
 % SIT
@@ -187,20 +187,20 @@ stg.sasubmean = 1;
 
 % Choose the way you want to obtain the samples of the parameters for 
 % performing the SA;
-% 0 flat distribution truncated at the parameter bounds
-% 1 normal distribution with mu as the best value for a parameter and
+% 0 Log uniform distribution truncated at the parameter bounds
+% 1 Log normal distribution with mu as the best value for a parameter and
 % sigma as stg.sasamplesigma truncated at the parameter bounds
 % 2 same as 1 without truncation
-% 3 normal distribution centered at the mean of the parameter bounds and
+% 3 Log normal distribution centered at the mean of the parameter bounds and
 % sigma as stg.sasamplesigma truncated at the parameter bounds
 % 4 same as 3 without truncation.
 % (Sensitivity analysis sampling mode)
-stg.sasamplemode = 1;
+stg.sasamplemode = 2;
 
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis
 % (Sensitivity analysis sampling sigma)
-stg.sasamplesigma = 0.5;
+stg.sasamplesigma = 0.1;
 
 %% Optimization
 
