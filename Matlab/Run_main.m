@@ -2,7 +2,7 @@
 
 clear
 clc
-clear functions
+% clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -60,5 +60,3 @@ if stg.analysis ~= ""
         end
     end
 end
-
-
