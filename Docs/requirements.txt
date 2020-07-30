@@ -2,4 +2,4 @@
 sphinx
 sphinx_rtd_theme
 -e git://github.com/ulrobix/sphinxcontrib-contentui.git#egg=sphinxcontrib-contentui
--e git://github.com/sphinx-contrib/matlabdomain
+-e git://github.com/sphinx-contrib/matlabdomain.git
