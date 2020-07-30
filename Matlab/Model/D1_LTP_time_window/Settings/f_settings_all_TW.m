@@ -29,12 +29,12 @@ stg.sbtab_name = "sbtab_"+stg.name;
 
 %% Analysis
 
-% String with the analysis to be run, the options are "RS", "diag",
-% "optlocal", "optcluster", "PLlocal", "PLcluster", "SAlocal", "SAcluster"
+% String with the analysis to be run, the options are "diag",
+% "opt", "SA"
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 % (Analysis)
-stg.analysis = "SAlocal";
+stg.analysis = "SA";
 
 % Experiments to run
 % (Experiments to run)
@@ -88,15 +88,15 @@ stg.UnitConversion = true;
 % (Absolute Tolerance Scaling)
 stg.abstolscale = false;
 
-% Number for Relative tolerance
+% Value of Relative tolerance
 % (Relative tolerance)
 stg.reltol = 1.0E-4;
 
-% Number for Absolute tolerance
+% Value of Absolute tolerance
 % (Absolute tolerance)
 stg.abstol = 1.0E-4;
 
-% Time unit for simulation
+% Time units for simulation
 % (Simulation time)
 stg.simtime = "second";
 
@@ -153,24 +153,22 @@ stg.pat = 1;
 % (Parameter arrays)
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
-stg.pa(2,:) = [-6.9672   -0.9095   -1.8687   -5.8580   -2.7326    0.5630];
-
 % % Example code to test more than one parameter array
 % stg.pat = [1,2];
 % stg.pa(2,:) = zeros(1,6);
 
-% Best parameter found so far for the model
+% Best parameter array found so far for the model
 % (Best parameter array)
 stg.bestpa = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 
 %% Plots
 
-% 0 or 1 to decide whether to do plots
+% 0 or 1 to decide whether to plot results
 % (Plots)
 stg.plot = 1;
 
 % 0 or 1 to decide whether to use long names in the title of the outputs
-% plots plot Outputs
+% plots in f_plot_outputs.m
 % (Plot outputs long names)
 stg.plotoln = 1;
 

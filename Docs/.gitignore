@@ -1,0 +1,6 @@
+_static
+_templates
+_build
+*.bat
+makefile
+htmls
