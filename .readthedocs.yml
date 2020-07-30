@@ -9,5 +9,12 @@ version: 2
 sphinx:
   configuration: Docs/conf.py
 
+
+python:
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt
+
+
 # Optionally build your docs in additional formats such as PDF and ePub
 formats: all
