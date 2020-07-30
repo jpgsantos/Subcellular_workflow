@@ -8,7 +8,7 @@ Both scripts replace spaces in item names with underscores. They do not check fo
 
 ## Script (in R) 
 
-The function `sbml_fix()` in the file [sbml_fix.R](sbml_fix.R) adds default units to the `sbml` file and fixes all ids. It is the most important file in this folder.
+The function `sbml_fix()` in the file [sbml_fix.R](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/sbml_fix.R) adds default units to the `sbml` file and fixes all ids. It is the most important file in this folder.
 
 It can be used like this:
 
@@ -53,7 +53,7 @@ The output is a file named `"Fixed_${ORIGINAL_FILENAME}"`
 
 ### Rscript File `sbml_fix_via_R.sh`
 
-[This](sbml_fix_via_R.sh) is a wrapper file that can be called from the shell (bash, etc.) which then sources and calls the above R script. It is used like this:
+[This](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/sbml_fix_via_R.sh) is a wrapper file that can be called from the shell (bash, etc.) which then sources and calls the above R script. It is used like this:
 ```bash
 [shell stuff] $ ./sbml_fix_via_R.sh D1_LTP_time_window_SBML.xml
 ```
@@ -61,7 +61,7 @@ This will use the default units from the table above. This file is only there fo
 
 ## Real Shell Script
 
-The shell script [sbml_fix.sh](sbml_fix.sh) is similar to the R script but does not add the default units. It only fixes the really long `id`s that simbiology generates.
+The shell script [sbml_fix.sh](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/sbml_fix.sh) is similar to the R script but does not add the default units. It only fixes the really long `id`s that simbiology generates.
 warning: it fixes everything _in place_. So, if this script stops working correctly at some point, it may destroy the file in question.
 
 But, this file is difficult to use for windows users, that's why the `R` script exists.

@@ -1,7 +1,6 @@
-SBtab to VFGEN_MOD Conversion Tools
-===================================
+# SBtab to VFGEN_MOD Conversion Tools
 
-# SBtabVFGEN
+## SBtabVFGEN
 
 This is a copy of the files in the source [Github
 repository](https://github.com/a-kramer/SBtabVFGEN), commit
@@ -47,7 +46,7 @@ Model <- sbtab_to_vfgen(SBtabDoc)
 ```
 
 
-## VFGEN
+### VFGEN
 
 [VFGEN](https://github.com/WarrenWeckesser/vfgen) is a very useful
 tool that can reformat an ODE (given in its custom `xml` format) and
@@ -63,7 +62,7 @@ Biological models don't necessarily map uniquely onto ODE models, a
 compound can be a state variable or an algebraic assignment or a
 constant, this has to be inferred a bit from the SBtab files.
 
-## SBtab
+### SBtab
 
 [SBtab](https://www.sbtab.net/) is a tabular format for biochemical
 models (as in Systems Biology). It is ~perhaps~ easier to understand
@@ -106,7 +105,7 @@ No unit conversion is attempted here.
 
 The names of all tables must be unique.
 
-### Compound
+#### Compound
 
 This table defines the compounds that are supposed to be modeled bu
 state variables and are subject to change by the reactions in the
@@ -130,7 +129,7 @@ fluxes for the compound in question).
 
 Others columns are unused but may be informative to the user, or others.
 
-### Parameters
+#### Parameters
 
 | Column | Values  | Comment |
 | -----: | :-----: | :------ |
@@ -144,7 +143,7 @@ sampling/optimization, the model conversion is unaffected by them, the
 DefaultValue is passed on to the model files (if there is a place to
 put them).
 
-### Reactions
+#### Reactions
 
 The column `!ReactionFormula` determines the stoichiometry of the
 model, the `!KineticLaw` column determines the flux of the given
@@ -161,7 +160,7 @@ kinetics based on the law of mass action it may be important for you
 to have that column as a reminder (for when you are auto generating
 the `!KineticLaw` column, which this script doesn't do).
 
-### Input
+#### Input
 
 The input parameters to the model that distinguish different
 experiments. These quantities are known and can be influenced by the
@@ -186,7 +185,7 @@ _all_ experiments.
 At this moment, a conservation law parameter will be ignored whenever
 the script runs (again), because the script creates those itself (every time it runs).
 
-### Output
+#### Output
 
 The outputs are _observable quantities_ of this system; what is and
 isn't an output depends on what you can measure (or have knowledge
@@ -216,7 +215,7 @@ deviation (etc.) for all data points seems good enough.
 
 The data sheets are not used by this script, but they are used [here](https://github.com/a-kramer/mcmc_clib).
 
-### Expression
+#### Expression
 
 These will be local variables of the model. Expressions are
 assignments that are calculated repeatedly each time the ODEs right
@@ -235,7 +234,7 @@ are up to you use of the model in the language you had in mind.
 The only type of initial assignment that can be specified is the state
 variables' initial conditions.
 
-### Experiments
+#### Experiments
 
 This table holds the mapping between input parameters and data
 sheets. It determines the conditions under which a data set should be
@@ -251,7 +250,7 @@ replicated using the model.
 This is not used by this converter, but useful for parameter fitting
 and interpretation of _the input_ and _output_ concepts.
 
-### Remarks about `!ID`s and `!Name`s
+#### Remarks about `!ID`s and `!Name`s
 
 A long term goal is that IDs can be used everywhere in the rest of the
 document to reference the row in question (but it's not guaranteed
@@ -266,7 +265,7 @@ If an ID is not unique (but is in a different sheet), new entries from
 the new sheet override old entries. IDs have to be unique inside the
 same sheet.
 
-## Open Document Format, Gnumeric and Spreadsheets in General
+### Open Document Format, Gnumeric and Spreadsheets in General
 
 Even though `.tsv` files are more fundamental types (have least amount
 of prerequisites), `.ods` files keep all the sheets in one file and
@@ -287,7 +286,7 @@ office_ export to `tsv` _one sheet at a time_ (with no easy
 workarounds) and lack an option to export all sheets into as many
 files. Gnumeric's `ssconvert` command does.
 
-### Remarks
+#### Remarks
 
 Sometimes, spreadsheet software introduces Unicode characters such as
 `−` ('MINUS SIGN' U+2212, in html «\&minus;»). They should be replaced
@@ -314,7 +313,7 @@ without the `-P` option: perl regular expressions.
 Of course you can use [perl](https://www.perl.org/) directly, or
 anything else that has regular expressions.
 
-# Systems Biology Markup Language (SBML level 2 version 4)
+## Systems Biology Markup Language (SBML level 2 version 4)
 
 The program `sbtab_to_vfgen.R` also produces an `.xml` file in the _Systems Biology Markup Language_ .
 This is only done, if _libsbml_ is installed with `R` bindings, like this:
@@ -327,7 +326,7 @@ $ R CMD INSTALL libSBML_5.18.0.tar.gz
 
 If this check: `if (require(libSBML))` succeeds, then the scripts attempts to make an sbml file.
 
-## Units
+### Units
 
 SBML has support for units in all quantities. The units are specified using these 4 properties: `kind`, `scale`, `multiplier`, and `exponent` .
 These unit attributes are interpreted like this: 
@@ -405,7 +404,7 @@ pat <- paste0("^(G|giga|M|mega|k|kilo|c|centi|m|milli|u|μ|micro|n|nano|p|pico|f
 ```
 
    
-### A list of perfectly fine units
+#### A list of perfectly fine units
 
 Newton, Hertz and M are not parsed automatically, use the long form in column 2.
 
@@ -421,7 +420,7 @@ Newton, Hertz and M are not parsed automatically, use the long form in column 2.
 However, the units are not always interpreted right by importers (in other software).
 Note that `kHz` is a bit unusual as Hertz is reciprocal to a base unit (second), so `kHz` is  `1000/s = 1/0.001 s = ms^-1`. 
 
-## Final Remarks on LIBSBML
+### Final Remarks on LIBSBML
 
 The libSBML R bindings are not documented and there is some guesswork
 involved here. The code in thei repository is not yet tested very
