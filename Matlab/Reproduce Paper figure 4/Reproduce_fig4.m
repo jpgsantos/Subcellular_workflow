@@ -20,7 +20,7 @@ bar(rst.SA.SI.se(:,1:4),'stacked')
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')
-ylabel('SI')
+ylabel('S_I')
 ylim([0 0.8])
 
 text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
@@ -36,7 +36,7 @@ legend boxoff
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')
-ylabel('SIT')
+ylabel('S_T_I')
 
 text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.3/5,...
