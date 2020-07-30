@@ -5,13 +5,21 @@ Subcellular workflow
 Features: !Please add missing features!
 
 Analysis of selected parameter sets
+
 Optimization
+
 Global Sensitivity analysis
+
 Conversion between:
+
 SBtab and Matlab SimBiology
+
 Matlab SimBiology and SBML
+
 SBtab and Mod file
+
 SBtab and SBML
+
 SBtab and R
 
 # Documentation
