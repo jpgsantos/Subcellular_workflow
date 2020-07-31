@@ -8,7 +8,7 @@ Welcome to the Subcelular workflow documentation!
 
 |
 
-!Short desacription needed!
+!Short description needed!
 
 |
 

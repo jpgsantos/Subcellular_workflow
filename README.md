@@ -4,17 +4,22 @@ Subcellular workflow
 
 Features: !Please add missing features!
 
-* Model simulation (Matlab, Neuron, subcellular aplication/STEPS)
-* Analysis of selected parameter sets (Matlab)
-* Parameter optimization (Matlab)
-* Global Sensitivity analysis (Matlab)
-* Conversion between:
-* SBtab and Matlab SimBiology (Matlab)
-* Matlab SimBiology and SBML (Matlab)
-* SBtab and Mod file (R)
-* SBtab and SBML (Matlab,R)
-* SBtab and R (R)
+* Model simulation , using Matlab, subcellular aplication(STEPS), or Neuron
+* Analysis of selected parameter sets , using Matlab
+* Parameter optimization , using Matlab
+* Global Sensitivity analysis , using Matlab
+* Conversion tools:
 
+  * SBtab(.xlsx) to SBtab(.tsv), using Matlab
+  * SBtab(.xlsx) to Matlab SimBiology(.m,.sbproj), using Matlab
+  * Matlab SimBiology to SBML(.xml), using Matlab
+  * SBtab(.tsv) to VFGEN, using R
+  * SBtab(.tsv) to Mod(.mod), using R
+  * SBtab(.tsv) to SBML(.xml), using Matlab or R
+  * SBtab(.tsv) to R(.R), using R
+
+We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
+<sup>superscript</sup>
 # Documentation
 
 To check the online documentation please go to: https://subcellular-workflow.readthedocs.io/
