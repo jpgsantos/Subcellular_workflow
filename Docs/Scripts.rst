@@ -8,7 +8,7 @@ Run_main
      :header: **Code**
 
      .. literalinclude:: ../Matlab/run_main.m
-        :language: matlab
+        :language: Matlab
         :linenos:
 		
 Main functions called from here
