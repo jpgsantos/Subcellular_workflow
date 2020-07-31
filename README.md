@@ -4,15 +4,16 @@ Subcellular workflow
 
 Features: !Please add missing features!
 
-* Analysis of selected parameter sets
-* Optimization
-* Global Sensitivity analysis
+* Model simulation (Matlab, Neuron, subcellular aplication/STEPS)
+* Analysis of selected parameter sets (Matlab)
+* Parameter optimization (Matlab)
+* Global Sensitivity analysis (Matlab)
 * Conversion between:
-* SBtab and Matlab SimBiology
-* Matlab SimBiology and SBML
-* SBtab and Mod file
-* SBtab and SBML
-* SBtab and R
+* SBtab and Matlab SimBiology (Matlab)
+* Matlab SimBiology and SBML (Matlab)
+* SBtab and Mod file (R)
+* SBtab and SBML (Matlab,R)
+* SBtab and R (R)
 
 # Documentation
 
