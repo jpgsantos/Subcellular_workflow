@@ -80,7 +80,7 @@ Sensitivity Analysis
           \end{bmatrix}
 
   - :math:`x =` Parameters
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
   
   
@@ -98,7 +98,7 @@ Sensitivity Analysis
           \end{bmatrix}
 
   - :math:`x =` Parameters
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
 
   .. _rst.SA.N:
@@ -115,7 +115,7 @@ Sensitivity Analysis
           \end{bmatrix}
 
   - :math:`x =` Parameters
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
   - :math:`i =` Index for each parameter
   
@@ -134,7 +134,7 @@ Sensitivity Analysis
 
   :math:`f(M_1^r) = f(x_{1}^{(r)},  x_{2}^{(r)},  ...,  x_{k}^{(r)})`
 
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
 
   .. _rst.SA.fM2:
@@ -152,7 +152,7 @@ Sensitivity Analysis
 
   :math:`f(M_2^r) = f(x_{1}^{(r')},  x_{2}^{(r')},  ...,  x_{k}^{(r')})`
 
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
 
   .. _rst.SA.fN:
@@ -170,7 +170,7 @@ Sensitivity Analysis
 
   :math:`f(N_i^r) = f(x_{1}^{(r')},  x_{2}^{(r')},  ...,  x_{i}^{(r)},  ...,   x_{k}^{(r')})`
 
-  - :math:`k =` Total number of parameters (:ref:`stg.ms.parnum<stg.ms.parnum>`)
+  - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
   - :math:`i =` Index for each parameter
   

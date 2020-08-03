@@ -126,41 +126,41 @@ Simulation
          :start-after: %% Simulation
          :end-before: %% Model
 			 
-  .. _stg.ms.maxt:
+  .. _stg.maxt:
   
-- **stg.ms.maxt** - Maximum time for each individual function to run in seconds
+- **stg.maxt** - Maximum time for each individual function to run in seconds
 
-  .. _stg.ms.eqt:
+  .. _stg.eqt:
 
-- **stg.ms.eqt** - Equilibration time
+- **stg.eqt** - Equilibration time
 
-  .. _stg.ms.dimenanal:
+  .. _stg.dimenanal:
 
-- **stg.ms.dimenanal** - 0 or 1 to decide whether to do Dimensional Analysis
+- **stg.dimenanal** - 0 or 1 to decide whether to do Dimensional Analysis
 
-  .. _stg.ms.abstolscale:
+  .. _stg.abstolscale:
 
 - **stg.UnitConversion** - 0 or 1 to decide whether to do Unit conversion
 
   .. _stg.UnitConversion:
   
-- **stg.ms.abstolscale** - 0 or 1 to decide whether to do Absolute Tolerance Scaling
+- **stg.abstolscale** - 0 or 1 to decide whether to do Absolute Tolerance Scaling
 
-  .. _stg.ms.reltol:
+  .. _stg.reltol:
 
-- **stg.ms.reltol** - Value of Relative tolerance
+- **stg.reltol** - Value of Relative tolerance
 
-  .. _stg.ms.abstol:
+  .. _stg.abstol:
 
-- **stg.ms.abstol** - Value of Absolute tolerance
+- **stg.abstol** - Value of Absolute tolerance
 
   .. _stg.simtime:
 
 - **stg.simtime** - Time units for simulation
 
-  .. _stg.ms.sbioacc:
+  .. _stg.sbioacc:
 
-- **stg.ms.sbioacc** - 0 or 1 to decide whether to run sbioaccelerate (after changing this value you need to run “clear functions” to see an effect)
+- **stg.sbioacc** - 0 or 1 to decide whether to run sbioaccelerate (after changing this value you need to run “clear functions” to see an effect)
 
   .. _stg.maxstep:
 
@@ -178,21 +178,21 @@ Model
          :start-after: %% Model
          :end-before: %% Diagnostics 
 			 
-  .. _stg.ms.parnum:
+  .. _stg.parnum:
 
-- **stg.ms.parnum** - Number of parameters to optimize
+- **stg.parnum** - Number of parameters to optimize
 
-  .. _stg.ms.tci:
+  .. _stg.tci:
 
-- **stg.ms.tci** - Index for the parameters that have thermodynamic constrains
+- **stg.tci** - Index for the parameters that have thermodynamic constrains
 
-  .. _stg.ms.tcm:
+  .. _stg.tcm:
 
-- **stg.ms.tcm** - Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcm** - Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
-  .. _stg.ms.tcd*:
+  .. _stg.tcd*:
 
-- **stg.ms.tcd** - Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcd** - Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
   .. _stg.lb:
 
@@ -214,9 +214,9 @@ Diagnostics
          :start-after: %% Diagnostics
          :end-before: %% Plots
 
-  .. stg.ms.partest:
+  .. stg.partest:
   
-- **stg.ms.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model and the numbers correspond to the parameters in the optimization array, usually not all parameters are optimized so there needs to be a match between one and the other.
+- **stg.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model and the numbers correspond to the parameters in the optimization array, usually not all parameters are optimized so there needs to be a match between one and the other.
 
   .. _stg.pat:
   
