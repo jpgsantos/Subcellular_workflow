@@ -1,7 +1,6 @@
 Matlab
 =======
 
-
 .. toctree::
    :maxdepth: 2
 

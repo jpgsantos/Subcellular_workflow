@@ -1,13 +1,21 @@
 Scripts
 =======
 
+In this workflow we use three matlab scripts:
+
+- Run_main - Runs the analysis predetermined in the settings file
+- Reproduce_analysis - Re-runs the analysis saved in a results file
+- Reproduce_analysis_plots - Re-runs the plots of an analysis saved in a results file
+
+To run these scripts Matlab should be open with the folder called Matlab as the main folder
+
 Run_main
 --------
 
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../Matlab/run_main.m
+     .. literalinclude:: ../Matlab/Run_main.m
         :language: matlab
         :linenos:
 		
