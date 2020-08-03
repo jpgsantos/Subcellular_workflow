@@ -6,8 +6,12 @@ clc
 addpath(genpath(pwd));
 
 % Choose relevant path
-% load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
-load("Results/Analysis_2020_Jun_6__16_3_43/Analysis.mat")
+
+%Example diagnostics
+load("Results/Analysis_diagnostics_example.mat")
+
+%Example Global sensitivitie analysis
+% load("Results/Analysis_GSA_example.mat")
 
 
 % Create needed folders
