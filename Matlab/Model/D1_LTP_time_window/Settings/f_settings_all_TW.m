@@ -34,7 +34,7 @@ stg.sbtab_name = "sbtab_"+stg.name;
 % and can be combined as for example "RS,diag", to not run any analysis set
 % stg.analysis to equal to ""
 % (Analysis)
-stg.analysis = "SA";
+stg.analysis = "diag";
 
 % Experiments to run
 % (Experiments to run)

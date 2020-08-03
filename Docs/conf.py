@@ -20,8 +20,8 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = 'Subcelular workflow'
-copyright = '2020, João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski1, Andrey Stepaniuk, Andrei Kramer'
-author = 'João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski1, Andrey Stepaniuk, Andrei Kramer'
+copyright = '2020, João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrey Stepaniuk, Andrei Kramer'
+author = 'João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrey Stepaniuk, Andrei Kramer'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'

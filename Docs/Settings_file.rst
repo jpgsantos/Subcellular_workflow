@@ -1,11 +1,33 @@
-﻿Settings file
+﻿.. _stg:
+.. _f_settings:
+
+Settings file
 =============
 
-.. _stg:
+A place for the user to define all the relevant properties of model simulation that are not stored in SBTAB, usually things that need to change during optimizations or model development.
+
+
+
+  .. toggle-header::
+      :header: **Code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab	 
+	 
 
 Import
 ------
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Import
+         :end-before: %% Analysis	  
+	   
 Settings struct for model import from SBtab.
 
   .. _stg.import:
@@ -35,6 +57,16 @@ Settings struct for model import from SBtab.
 Analysis
 --------
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Analysis
+         :end-before: %% Simulation	
+
+	   
   .. _stg.analysis:
 
 - **stg.analysis** - String with the analysis to be run, the options are "RS", "diag", "optlocal", "optcluster", "PLlocal", "PLcluster", "SAlocal", "SAcluster" and can be combined as for example "RS,diag", to not run any analysis set stg.analysis to equal to ""
@@ -85,6 +117,15 @@ Analysis
 Simulation
 ----------
 
+  .. toggle-header::
+      :header: **Example model code**
+     
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Simulation
+         :end-before: %% Model
+			 
   .. _stg.ms.maxt:
   
 - **stg.ms.maxt** - Maximum time for each individual function to run in seconds
@@ -128,6 +169,15 @@ Simulation
 Model
 -----
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Model
+         :end-before: %% Diagnostics 
+			 
   .. _stg.ms.parnum:
 
 - **stg.ms.parnum** - Number of parameters to optimize
@@ -155,6 +205,15 @@ Model
 Diagnostics
 -----------
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Diagnostics
+         :end-before: %% Plots
+
   .. stg.ms.partest:
   
 - **stg.ms.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model and the numbers correspond to the parameters in the optimization array, usually not all parameters are optimized so there needs to be a match between one and the other.
@@ -174,6 +233,15 @@ Diagnostics
 Plots
 -----
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Plots
+         :end-before: %% Sensitivity analysis
+
   .. _stg.plot:
 
 - **stg.plot** - 0 or 1 to decide whether to plot results
@@ -185,6 +253,15 @@ Plots
 Sensitivity Analysis (SA)
 -------------------------
 
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Sensitivity analysis
+         :end-before: %% Optimization 
+		 
   .. _stg.sansamples:
 
 - **stg.sansamples** - Number of samples to use in SA
@@ -214,6 +291,14 @@ Sensitivity Analysis (SA)
 
 Optimization
 ------------
+
+  .. toggle-header::
+      :header: **Example model code**
+  
+      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+         :linenos:
+         :language: matlab
+         :start-after: %% Optimization
 
   .. _stg.optt:
 
