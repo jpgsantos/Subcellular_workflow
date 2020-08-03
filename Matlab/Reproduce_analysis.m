@@ -13,7 +13,11 @@ date_stamp = string(year(datetime)) + "_" + ...
 addpath(genpath(pwd));
 
 % Choose relevant path
-load("Results/Analysis_2020_Jun_3__12_50_29/Analysis.mat")
+
+%Example diagnostics
+load("Results/Analysis_diagnostics_example/Analysis.mat")
+%Example Global sensitivitie analysis
+% load("Results/Analysis_GSA_example/Analysis.mat")
 
 % Create needed folders
     mkdir("Model/" + stg.folder_model,"Data");
