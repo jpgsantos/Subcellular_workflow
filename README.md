@@ -37,7 +37,7 @@ If you want to build the documentation offline use [sphinx](https://www.sphinx-d
 
 After installing sphinx, install the following extra extensions to sphinx;
 
-* [recommonmark] (https://recommonmark.readthedocs.io/)
+* [recommonmark](https://recommonmark.readthedocs.io/)
 * [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html)
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
