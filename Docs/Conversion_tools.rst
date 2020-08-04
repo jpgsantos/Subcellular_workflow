@@ -4,7 +4,7 @@ Conversion tools
 .. toctree::
    :maxdepth: 2
 
-   SBtab_vfgen_convertion_tool
+   SBtab_vfgen_conversion_tool
 
 .. toctree::
    :maxdepth: 2

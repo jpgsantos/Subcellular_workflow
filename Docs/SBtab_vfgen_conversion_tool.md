@@ -1,4 +1,4 @@
-# SBtab to VFGEN_MOD Conversion Tools
+# SBtab to VFGEN, MOD and SBML
 
 ## SBtabVFGEN
 

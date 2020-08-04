@@ -1,8 +1,8 @@
-# SBML fixing
+# Fix for Matlab SBML
 
 MATLAB's simbiology toolbox generates sbml code that doesn't work very well and doesn't look very nice (and it cannot be imported into Copasi).
 
-This folder contains an `R` script that fixes most of the issues. The resulting `sbml` file can be imported into Copasi without warnings and runs there.
+We heve provided a [folder (sbml/)](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/) that contains an `R` script that fixes most of the issues. The resulting `sbml` file can be imported into Copasi without warnings and runs there.
 
 Both scripts replace spaces in item names with underscores. They do not check for other weird characters in names (like slashes or similar).
 
