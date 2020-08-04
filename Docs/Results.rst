@@ -66,6 +66,8 @@ Optimization
 Sensitivity Analysis
 --------------------
 
+The calculations performed to obtain these Sensitivities where performed according to the equations described in Halnes et al 2009\ :sup:`1`\.
+
   .. _rst.SA.M1:
 
 - **rst.SA.M1** - Matrix with (:math:`r*k`) random numbers within the lower and upper bound ranges set for each parameter
@@ -180,18 +182,18 @@ Sensitivity Analysis
 
   :math:`S_{i}=\frac{V_{Θ_{i}}(E_{Θ_{-i}}(Y|Θ_{i}))}{V(Y)}=\frac{U_{i}-E^2(Y)}{V(Y)}`
 
-    :math:`U_{i}=\frac{1}{N-1}\sum_{r=1}^Nf(M_1^r)f(N_i^r)`
+    :math:`U_{i}=\frac{1}{n-1}\sum_{r=1}^nf(M_1^r)f(N_i^r)`
   
-    :math:`E^2(Y)=\frac{1}{N}\sum_{r=1}^Nf(M_1^r)f(M_2^r)`
+    :math:`E^2(Y)=\frac{1}{n}\sum_{r=1}^nf(M_1^r)f(M_2^r)`
 
-    :math:`V(Y) = \frac{1}{N-1}f^2(M_1^r)-E^2(Y)`
+    :math:`V(Y) = \frac{1}{n-1}f^2(M_1^r)-E^2(Y)`
 
   - :math:`V  =` Variance
   - :math:`E(... |...)  =` conditional expected value
   - :math:`Θ =` Parameters of the model
   - :math:`Y =` scalar output from the model
-  
-  - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
+  - :math:`n =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
+  - :math:`r =` Index for the Samples number
   - :math:`i =` Index for each parameter
   
   .. _rst.SA.STI:
@@ -200,15 +202,21 @@ Sensitivity Analysis
 
   :math:`S_{Ti}=\frac{V(Y)-V_{Θ_{i}}(E_{Θ_{i}}(Y|Θ_{i}))}{V(Y)}=1-\frac{U_{-i}-E^2(Y)}{V_T(Y)}`
   
-    :math:`U_{-i}=\frac{1}{N-1}\sum_{r=1}^Nf(M_2^r)f(N_i^r)`
+    :math:`U_{-i}=\frac{1}{n-1}\sum_{r=1}^nf(M_2^r)f(N_i^r)`
 
-    :math:`E^2(Y)=\frac{1}{N}\sum_{r=1}^Nf(M_1^r)f(M_2^r)`
+    :math:`E^2(Y)=\frac{1}{n}\sum_{r=1}^nf(M_1^r)f(M_2^r)`
 
-    :math:`V_T(Y) = \frac{1}{N-1}f^2(M_2^r)-E^2(Y)`
+    :math:`V_T(Y) = \frac{1}{n-1}f^2(M_2^r)-E^2(Y)`
 	
   - :math:`V  =` Variance
   - :math:`E(... |...)  =` conditional expected value
   - :math:`Θ =` Parameters of the model
   - :math:`Y =` scalar output from the model
-  - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
+  - :math:`n =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
+  - :math:`r =` Index for the Samples number
   - :math:`i =` Index for each parameter
+  
+References
+----------
+  
+(1) Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.

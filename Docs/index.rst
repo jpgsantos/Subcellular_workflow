@@ -12,7 +12,7 @@ Welcome to the Subcelular workflow documentation! (*Under construction*)
 
 |
 
-Features: !Please add missing features!
+Features:
 
 * Model simulation, using MATLAB, subcellular aplication(STEPS), or Neuron
 * Analysis of selected parameter sets, using MATLAB

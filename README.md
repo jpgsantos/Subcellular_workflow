@@ -5,9 +5,9 @@ Subcellular workflow
 !Short desacription needed!
 
 
-Features: !Please add missing features!
+Features:
 
-* Model simulation ,using MATLAB, subcellular aplication(STEPS), or Neuron
+* Model simulation, using MATLAB, subcellular aplication(STEPS), or Neuron
 * Analysis of selected parameter sets, using MATLAB
 * Parameter optimization, using MATLAB
 * Global Sensitivity analysis, using MATLAB
@@ -19,7 +19,6 @@ Features: !Please add missing features!
   * SBtab(.tsv) to VFGEN(.vf), using R
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using MATLAB or R
-  * SBtab(.tsv) to R(.R), using R
 
 We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
 
@@ -32,7 +31,6 @@ If you want to build the documentation offline use [sphinx](https://www.sphinx-d
 After installing sphinx, install the following extra extensions to sphinx;
 
 * [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html).
-* [sphinxcontrib.matlab](https://pypi.org/project/sphinxcontrib-matlabdomain/)
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
 Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use your browser to open and browse the documentation.

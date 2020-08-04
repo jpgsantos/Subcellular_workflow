@@ -7,6 +7,11 @@ In this workflow we use three matlab scripts:
 - Reproduce_analysis - Re-runs the analysis saved in a results file
 - Reproduce_analysis_plots - Re-runs the plots of an analysis saved in a results file
 
+We have provided an example diagnostics run and an example Global Sensitivity analysis run, the results of which can be found on the following folders: 
+
+- Diagnostics - Matlab/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
+- Global Sensitivity analysis - Matlab/Model/D1_LTP_time_window/Results/Analysis_GSA_example
+
 To run these scripts Matlab should be open with the folder called Matlab as the main folder
 
 Run_main
