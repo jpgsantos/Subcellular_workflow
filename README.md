@@ -1,9 +1,16 @@
 Subcellular workflow
 ====================
 
+This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
 
-!Short desacription needed!
+At the root of our implementation is the SBTAB format, a file that can store biochemical models and associated data in an easily readable and expandable way.
 
+We have also developed tools to convert the SBTAB format into several formats that can be used in MATLAB, Neuron, STEPS and Copasi.
+
+Using Matlab we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+
+We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
+Code to run this model in Matlab, Neuron, and Subcellular aplication(STEPS) can be found on the "Matlab", "Neuron" and "Bionetgen and Steps folders" respectively.
 
 Features:
 
@@ -20,7 +27,7 @@ Features:
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using MATLAB or R
 
-We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
+
 
 # Documentation
 
@@ -30,7 +37,8 @@ If you want to build the documentation offline use [sphinx](https://www.sphinx-d
 
 After installing sphinx, install the following extra extensions to sphinx;
 
-* [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html).
+* [recommonmark] (https://recommonmark.readthedocs.io/)
+* [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html)
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
 Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use your browser to open and browse the documentation.

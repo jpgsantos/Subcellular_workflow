@@ -1,14 +1,18 @@
-.. Subcelular workflow documentation master file, created by
-   sphinx-quickstart on Fri Nov 22 15:04:59 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to the Subcelular workflow documentation! (*Under construction*)
 ========================================================================
 
 |
 
-!Short description needed!
+This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
+
+At the root of our implementation is the SBTAB format, a file that can store biochemical models and associated data in an easily readable and expandable way.
+
+We have also developed tools to convert the SBTAB format into several formats that can be used in MATLAB, Neuron, STEPS and Copasi.
+
+Using Matlab we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+
+We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016\ :sup:`1`\.
+Code to run this model in Matlab, Neuron, and Subcellular aplication(STEPS) can be found on the "Matlab", "Neuron" and "Bionetgen and Steps folders" respectively.
 
 |
 
@@ -27,7 +31,7 @@ Features:
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using MATLAB or R
 
-We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016\ :sup:`1`\.
+
 
 |
 
