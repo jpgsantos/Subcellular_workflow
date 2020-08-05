@@ -325,7 +325,6 @@ Sensitivity Analysis (SA)
 
  #. Log normal distribution with μ as the best value for a parameter and σ as stg.sasamplesigma truncated at the parameter bounds
  
- μ, σ
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
     - :math:`i =` Parameter index 
@@ -348,7 +347,7 @@ Sensitivity Analysis (SA)
     - :math:`σ = stg.sasamplesigma` 
 	
   .. toggle-header::
-       :header: Example distribution with :math:`μ = 0.5, σ = 1, a = -1, b = 1`
+       :header: Example distribution with :math:`μ = 0.5, σ = 1`
  
  	.. image:: ../Docs/Images/SA_Dist_3.png
 
@@ -363,7 +362,7 @@ Sensitivity Analysis (SA)
     - :math:`b_{i} = stg.ub_{i}`
 	
   .. toggle-header::
-       :header: Example distribution with :math:`μ = \frac{a+(a-b)}{2}, σ = 1, a = -1, b = 1`
+       :header: Example distribution with :math:`μ = \frac{a+(b-a)}{2}, σ = 1, a = -1, b = 1`
  
  	.. image:: ../Docs/Images/SA_Dist_4.png
   
@@ -376,7 +375,7 @@ Sensitivity Analysis (SA)
     - :math:`σ = stg.sasamplesigma` 
 	
   .. toggle-header::
-       :header: Example distribution with :math:`μ = \frac{a+(a-b)}{2}, σ = 1, a = -1, b = 1`
+       :header: Example distribution with :math:`μ = \frac{a+(b-a)}{2}, σ = 1, a = -1, b = 1`
  
  	.. image:: ../Docs/Images/SA_Dist_5.png
   
