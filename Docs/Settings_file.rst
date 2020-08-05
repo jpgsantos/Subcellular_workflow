@@ -310,7 +310,7 @@ Sensitivity Analysis (SA)
 
 - **stg.sasamplemode** - Choose the way you want to obtain the samples of the parameters for performing the SA;
 
- 0. Reciprocal distribution truncated at the parameter bounds
+ 0. Reciprocal distribution
 
   :math:`X_{i} \sim Reciprocal(a_{i},b_{i})`
   
