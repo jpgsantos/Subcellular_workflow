@@ -77,22 +77,8 @@ Analysis
 
   .. _stg.useLog:
 
-- **stg.useLog** - Choice between 0,1,2 and 3 to change either and how to apply log10 to the scores
+- **stg.useLog** - Choice between 0,1,2 and 3 to change either and how to apply log10 to the scores, check :ref:`results<rst>`:
 
- 0. :math:`F(θ;Y,τ) = \sum_{k=1}^l \sum_{j=1}^m \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2`
- #. :math:`F(θ;Y,τ) = \sum_{k=1}^l \sum_{j=1}^m log_{10}\left(\frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2\right)`
- #. :math:`F(θ;Y,τ) = \sum_{k=1}^l log_{10}\left(\sum_{j=1}^m \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2\right)`
- #. :math:`F(θ;Y,τ) = log_{10}\left(\sum_{k=1}^l \sum_{j=1}^m \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2\right)`
- 
-  - :math:`F =` Objective function for Particle Swarm optimization 
-  - :math:`Y =` Simulation results from the original (validated) model
-  - :math:`y =` Simulations of the updated model under parameterization θ
-  - :math:`θ =` New parametization for y
-  - :math:`τ =` Allowed mismatch between the two simulation results, analogous to the standard deviation of a Gaussian noise model in data fitting
-  - :math:`n =` number of points in a given experimental output
-  - :math:`m =` number of experimental outputs in an experiment
-  - :math:`l =` number of experiments
-  
   .. _stg.optmc:
 
 - **stg.optmc** - 0 or 1 to decide whether to use multicore everywhere it is available  

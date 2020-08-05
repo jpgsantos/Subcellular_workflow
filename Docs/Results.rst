@@ -13,31 +13,111 @@ Diagnostics
 
 - **rst.diag.st** - Total score
 
-  :math:`\sum_{k=1}^l \sum_{j=1}^m \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2`
+To simplify representations the following correspondence as been used
 
+:math:`score_{i,j,k} = \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2`
+
+  if :ref:`stg.useLog<stg.useLog>` = 0
+  
+  :math:`st(θ;Y,τ) = \sum_{k=1}^l \sum_{j=1}^m score_{i,j,k}`
+  
+  if :ref:`stg.useLog<stg.useLog>` = 1
+  
+  :math:`st(θ;Y,τ) = \sum_{k=1}^l \sum_{j=1}^m log_{10}(score_{i,j,k})`  
+  
+  if :ref:`stg.useLog<stg.useLog>` = 2
+  
+  :math:`st(θ;Y,τ) = \sum_{k=1}^l log_{10}(\sum_{j=1}^m score_{i,j,k})`  
+  
+  if :ref:`stg.useLog<stg.useLog>` = 3
+  
+  :math:`st(θ;Y,τ) = log_{10}(\sum_{k=1}^l \sum_{j=1}^m score_{i,j,k})`
+  
   .. _rst.diag.se:
 
-- **rst.diag.se** - Score per experiment
+- **rst.diag.se** - Score per experiment, in our example model we have 10 experiments, from E0 to E9.
 
-  :math:`\sum_{j=1}^m \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j}-y_{i,j}}{τ_{i,j}}\right)^2`
+  if :ref:`stg.useLog<stg.useLog>` = 0 or 3
   
+  .. math::
+
+      se(θ;Y,τ) = \begin{bmatrix}
+              \sum_{j=1}^m score_{i,j,1} \\
+              \sum_{j=1}^m score_{i,j,2} \\
+              ... \\
+			  \sum_{j=1}^m score_{i,j,k}
+          \end{bmatrix}
+    
+  if :ref:`stg.useLog<stg.useLog>` = 1
+
+  .. math::
+
+      se(θ;Y,τ) = \begin{bmatrix}
+              \sum_{j=1}^m log_{10}(score_{i,j,1}) \\
+              \sum_{j=1}^m log_{10}(score_{i,j,2}) \\
+              ... \\
+			  \sum_{j=1}^m log_{10}(score_{i,j,k})
+          \end{bmatrix}
+		  
+  if :ref:`stg.useLog<stg.useLog>` = 2
+
+  .. math::
+
+      se(θ;Y,τ) = \begin{bmatrix}
+              log_{10}(\sum_{j=1}^m score_{i,j,1}) \\
+              log_{10}(\sum_{j=1}^m score_{i,j,2})\\
+              ... \\
+			  log_{10}(\sum_{j=1}^m score_{i,j,k})
+          \end{bmatrix}
+		  
   .. _rst.diag.sd:
+  
+- **rst.diag.sd** - Score per experimental outputs in an experiment, in our example model we have 4 experimental outputs.
+  
+  if :ref:`stg.useLog<stg.useLog>` = 0,2, or 3
+  
+  .. math::
 
-- **rst.diag.sd** - Score per dataset 
+      sd(θ;Y,τ) = \begin{bmatrix}
+              score_{i,1,1} & score_{i,2,1} & ... & score_{i,j,1}\\
+              score_{i,1,2} & score_{i,2,2} & ... & score_{i,j,2}\\
+              ... & ... & ... & ... \\
+			  score_{i,1,k} & score_{i,2,k} & ... & score_{i,j,k}
+          \end{bmatrix}
+		  
+  if :ref:`stg.useLog<stg.useLog>` = 1
 
-  :math:`\frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i}-y_{i}}{τ_{i}}\right)^2`
-	
+  .. math::
+  
+      sd(θ;Y,τ) = \begin{bmatrix}
+              log_{10}(score_{i,1,1}) & log_{10}(score_{i,2,1}) & ... & log_{10}(score_{i,j,1})\\
+              log_{10}(score_{i,1,2}) & log_{10}(score_{i,2,2}) & ... & log_{10}(score_{i,j,2})\\
+              ... & ... & ... & ... \\
+			  log_{10}(score_{i,1,k}) & log_{10}(score_{i,2,k}) & ... & log_{10}(score_{i,j,k})
+          \end{bmatrix}
+
+- **rst.diag.xfinal** - x value of all the species being tested at the end of the simulation
+
+  .. math::
+
+      xfinal(θ;Y,τ) = \begin{bmatrix}
+              y_{n,1,1} & y_{n,2,1} & ... & y_{n,j,1} \\
+              y_{n,1,2} & y_{n,2,2} & ... & y_{n,j,2} \\
+              ... & ... & ... & ... \\
+			  y_{n,1,k} & y_{n,2,k} & ... & y_{n,j,k}
+          \end{bmatrix}
+
+|
+  
   - :math:`F =` Objective function for Particle Swarm optimization 
-  - :math:`Y =` Simulation results from the original (validated) model
-  - :math:`y =` Simulations of the updated model under parameterization θ
+  - :math:`Y =` Simulation results from the original (validated) model, or data from experiments
+  - :math:`y =` Simulation results of the updated model under parameterization θ
   - :math:`θ =` New parametization for y
   - :math:`τ =` Allowed mismatch between the two simulation results, analogous to the standard deviation of a Gaussian noise model in data fitting
-  - :math:`n =` number of points in a given experimental output
-  - :math:`m =` number of experimental outputs in an experiment
-  - :math:`l =` number of experiments
-  
-- **rst.diag.xfinal** - x value of all the species being tested at the end of the simulation
-  
+  - :math:`n/i =` number/index of points in a given experimental output
+  - :math:`m/j =` number/index of experimental outputs in an experiment
+  - :math:`l/k =` number/index of experiments
+    
   |
 
 Optimization
@@ -77,7 +157,7 @@ The calculations performed to obtain these Sensitivities where performed accordi
       M_1 = \begin{bmatrix}
               x_{1}^{(1)} & x_{2}^{(1)} & ... & x_{k}^{(1)} \\
               x_{1}^{(2)} & x_{2}^{(2)} & ... & x_{k}^{(2)} \\
-              ... & ... & ... &  ... \\
+              ... & ... & ... & ... \\
 			  x_{1}^{(r)} & x_{2}^{(r)} & ... & x_{k}^{(r)}
           \end{bmatrix}
 
@@ -128,13 +208,16 @@ The calculations performed to obtain these Sensitivities where performed accordi
   .. math::
 
        fM_1 = \begin{bmatrix}
-              f(M_1^1) \\
-              f(M_1^2) \\
+              f(M_1^{(1)}) \\
+              f(M_1^{(2)}) \\
               ... \\
-			  f(M_1^r)
+			  f(M_1^{(r)})
+          \end{bmatrix} = \begin{bmatrix}
+              f(x_{1}^{(1)} & x_{2}^{(1)} & ... & x_{k}^{(1)}) \\
+              f(x_{1}^{(2)} & x_{2}^{(2)} & ... & x_{k}^{(2)}) \\
+              ... & ... & ... &  ... \\
+			  f(x_{1}^{(r)} & x_{2}^{(r)} & ... & x_{k}^{(r)})
           \end{bmatrix}
-
-  :math:`f(M_1^r) = f(x_{1}^{(r)},  x_{2}^{(r)},  ...,  x_{k}^{(r)})`
 
   - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
@@ -146,13 +229,16 @@ The calculations performed to obtain these Sensitivities where performed accordi
   .. math::
 
        fM_2 = \begin{bmatrix}
-              f(M_2^1) \\
-              f(M_2^2) \\
+              f(M_2^{(1')}) \\
+              f(M_2^{(2')}) \\
               ... \\
-			  f(M_2^r)
+			  f(M_2^{(r')})
+          \end{bmatrix} = \begin{bmatrix}
+              f(x_{1}^{(1')} & x_{2}^{(1')} & ... & x_{k}^{(1')}) \\
+              f(x_{1}^{(2')} & x_{2}^{(2')} & ... & x_{k}^{(2')}) \\
+              ... & ... & ... &  ... \\
+			  f(x_{1}^{(r')} & x_{2}^{(r')} & ... & x_{k}^{(r')})
           \end{bmatrix}
-
-  :math:`f(M_2^r) = f(x_{1}^{(r')},  x_{2}^{(r')},  ...,  x_{k}^{(r')})`
 
   - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
@@ -164,13 +250,16 @@ The calculations performed to obtain these Sensitivities where performed accordi
   .. math::
 
        fN_i = \begin{bmatrix}
-              f(N_i^1) \\
-              f(N_i^2) \\
+              f(N_i^{(1)}) \\
+              f(N_i^{(2)}) \\
               ... \\
-			  f(N_i^r)
+			  f(N_i^{(r)})
+          \end{bmatrix} = \begin{bmatrix}
+              f(x_{1}^{(1')} & x_{2}^{(1')} & ... & x_{i}^{(1)} & ... & x_{k}^{(1')}) \\
+              f(x_{1}^{(2')} & x_{2}^{(2')} & ... & x_{i}^{(2)} & ... &  x_{k}^{(2')}) \\
+              ... & ... & ... & ... & ... & ... \\
+			  f(x_{1}^{(r')} & x_{2}^{(r')} & ... & x_{i}^{(r)} & ... &  x_{k}^{(r')})
           \end{bmatrix}
-
-  :math:`f(N_i^r) = f(x_{1}^{(r')},  x_{2}^{(r')},  ...,  x_{i}^{(r)},  ...,   x_{k}^{(r')})`
 
   - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
