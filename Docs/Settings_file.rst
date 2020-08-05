@@ -27,8 +27,6 @@ Import
          :language: matlab
          :start-after: %% Import
          :end-before: %% Analysis	  
-	   
-Settings struct for model import from SBtab.
 
   .. _stg.import:
   
@@ -69,7 +67,7 @@ Analysis
 	   
   .. _stg.analysis:
 
-- **stg.analysis** - String with the analysis to be run, the options are "RS", "diag", "optlocal", "optcluster", "PLlocal", "PLcluster", "SAlocal", "SAcluster" and can be combined as for example "RS,diag", to not run any analysis set stg.analysis to equal to ""
+- **stg.analysis** - String with the analysis to be run, the options are "diag", "opt", "SA", they can be combined as for example "diag, opt", to not run any analysis set stg.analysis to equal to ""
 
   .. _stg.exprun:
 
@@ -184,9 +182,25 @@ Model
 
 - **stg.lb** - Array with the lower bound of all parameters
 
+  .. math::
+
+      stg.lb = \begin{bmatrix}
+              lb_{1} & lb_{2} & ... & lb_{i}
+          \end{bmatrix}
+
+  - :math:`i =` Parameter index   
+
   .. _stg.ub:
 
 - **stg.ub** - Array with the upper bound of all parameters
+
+  .. math::
+  
+      stg.up = \begin{bmatrix}
+              ub_{1} & ub_{2} & ... & ub_{i}
+          \end{bmatrix}
+		   
+  - :math:`i =` Parameter index   
 
 Diagnostics
 -----------
@@ -202,19 +216,55 @@ Diagnostics
 
   .. stg.partest:
   
-- **stg.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model and the numbers correspond to the parameters in the optimization array, usually not all parameters are optimized so there needs to be a match between one and the other.
+- **stg.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model
+  SBTAB and the numbers correspond to the parameters in the work array (used for diagnostics, optimization, and Sensitivity
+  analyis), usually not all parameters are optimized so there needs to be a match between one and the other.
 
+  .. math::
+
+      stg.partest_k = \begin{bmatrix}
+              1_{k_1} & 2_{k_2} & ... & m_{k_i}
+          \end{bmatrix}
+
+  In our example model parameter 216 from the SBTAB is or parameter number 1, parameter 217 from the SBTAB is paramter number 2, and successively.
+		  
+  .. math::
+
+      stg.partest_{[216:227]} = \begin{bmatrix}
+              1_{216} & 2_{217} & ... & 6_{221} & 1_{222} & 2_{223} & ... & 6_{227}
+          \end{bmatrix}
+		  
   .. _stg.pat:
   
-- **stg.pat** - Parameter array to test
+- **stg.pat** - Index(:math:`j`) of the Parameter array to test
 
   .. _stg.pa:
 
-- **stg.pa** - All the parameter arrays, in this case there is only one
+- **stg.pa** - All the parameter arrays, in the example model there is only one
+  
+  .. math::
 
+      stg.pa = \begin{bmatrix}
+              x_{1,1} & x_{2,1} & ... & x_{i,1} \\
+			  x_{1,2} & x_{2,2} & ... & x_{i,2} \\
+			  ... & ... & ... & ... \\
+			  x_{1,j} & x_{2,j} & ... & x_{i,j}
+          \end{bmatrix}
+		  
   .. _stg.bestx:
 
 - **stg.bestx** - Best parameter array found so far during optimization
+
+  .. math::
+
+      stg.bestx = \begin{bmatrix}
+              bestx_{1} & bestx_{2} & ... & bestx_{i}
+          \end{bmatrix}
+
+  - :math:`i =` Index of Parameters being worked on
+  - :math:`j =` Index of the Parameter array to test
+  - :math:`k =` Index of the parameters in SBTAB
+  - :math:`x =` Parameters being worked on
 
 Plots
 -----
@@ -260,19 +310,79 @@ Sensitivity Analysis (SA)
 
 - **stg.sasamplemode** - Choose the way you want to obtain the samples of the parameters for performing the SA;
 
- #. Log uniform distribution truncated at the parameter bounds
+ 0. Reciprocal distribution truncated at the parameter bounds
 
- #. Log normal distribution with mu as the best value for a parameter and sigma as stg.sasamplesigma truncated at the parameter bounds
+  :math:`X_{i} \sim Reciprocal(a_{i},b_{i})`
+  
+    - :math:`i =` Parameter index 
+    - :math:`a_{i} = stg.lb_{i}` 
+    - :math:`b_{i} = stg.ub_{i}`
+
+  .. toggle-header::
+       :header: Example distribution with :math:`a = -1, b = 1`
+ 
+ 	.. image:: ../Docs/Images/SA_Dist_1.png
+
+ #. Log normal distribution with μ as the best value for a parameter and σ as stg.sasamplesigma truncated at the parameter bounds
+ 
+ μ, σ
+  :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
+  
+    - :math:`i =` Parameter index 
+    - :math:`μ_{i} = bestx_{i}`
+    - :math:`σ = stg.sasamplesigma` 
+    - :math:`a_{i} = stg.lb_{i}` 
+    - :math:`b_{i} = stg.ub_{i}`
+	
+  .. toggle-header::
+       :header: Example distribution with :math:`μ = 0.5, σ = 1, a = -1, b = 1`
+ 
+ 	.. image:: ../Docs/Images/SA_Dist_2.png
 
  #. same as 1 without truncation
+ 
+  :math:`X_{i} \sim LogNormal(μ, σ)`
+  
+    - :math:`i =` Parameter index 
+    - :math:`μ_{i} = bestx_{i}`
+    - :math:`σ = stg.sasamplesigma` 
+	
+  .. toggle-header::
+       :header: Example distribution with :math:`μ = 0.5, σ = 1, a = -1, b = 1`
+ 
+ 	.. image:: ../Docs/Images/SA_Dist_3.png
 
- #. Log normal distribution centered at the mean of the parameter bounds and sigma as stg.sasamplesigma truncated at the parameter bounds
-
+ #. Log normal distribution centered at the mean of the parameter bounds and σ as stg.sasamplesigma truncated at the parameter bounds
+ 
+  :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
+  
+    - :math:`i =` Parameter index   
+    - :math:`μ_{i} = \frac{stg.lb_{i} + (stg.ub_{i} - stg.lb_{i})}{2}`
+    - :math:`σ = stg.sasamplesigma` 
+    - :math:`a_{i} = stg.lb_{i}` 
+    - :math:`b_{i} = stg.ub_{i}`
+	
+  .. toggle-header::
+       :header: Example distribution with :math:`μ = \frac{a+(a-b)}{2}, σ = 1, a = -1, b = 1`
+ 
+ 	.. image:: ../Docs/Images/SA_Dist_4.png
+  
  #. same as 3 without truncation.
-
+ 
+  :math:`X_{i} \sim LogNormal(mu_{i}, σ)`
+  
+    - :math:`i =` Parameter index 
+    - :math:`μ_{i} = \frac{stg.lb_{i} + (stg.ub_{i} - stg.lb_{i})}{2}`
+    - :math:`σ = stg.sasamplesigma` 
+	
+  .. toggle-header::
+       :header: Example distribution with :math:`μ = \frac{a+(a-b)}{2}, σ = 1, a = -1, b = 1`
+ 
+ 	.. image:: ../Docs/Images/SA_Dist_5.png
+  
   .. _stg.sasamplesigma:
 
-- **stg.sasamplesigma** - Sigma for creating the normal distribution of parameters to perform sensitivity analysis
+- **stg.sasamplesigma** - σ for creating the normal distribution of parameters to perform sensitivity analysis
 
 
 Optimization
