@@ -30,27 +30,27 @@ Import
 
   .. _stg.import:
   
-- **stg.import** - 0 or 1 to decide whether to run import functions
+- **stg.import** - (logical) Decide whether to run import functions
 
   .. _stg.folder_model:
   
-- **stg.folder_model** - Name of the folder where everything related to the model is stored
+- **stg.folder_model** - (string) Name of the folder where everything related to the model is stored
 
   .. _stg.sbtab_excel_name:
 
-- **stg.sbtab_excel_name** - Name of the excel file with the sbtab
+- **stg.sbtab_excel_name** - (string) Name of the excel file with the sbtab
 
   .. _stg.name:
 
-- **stg.name** - Name of the model
+- **stg.name** - (string) Name of the model
 
   .. _stg.cname:
 
-- **stg.cname** - Name of the default model compartment
+- **stg.cname** - (string) Name of the default model compartment
 
   .. _stg.sbtab_name:
 
-- **stg.sbtab_name** - Name of the sbtab saved in .mat format
+- **stg.sbtab_name** - (string) Name of the sbtab saved in .mat format
 
 Analysis
 --------
@@ -67,35 +67,35 @@ Analysis
 	   
   .. _stg.analysis:
 
-- **stg.analysis** - String with the analysis to be run, the options are "diag", "opt", "SA", they can be combined as for example "diag, opt", to not run any analysis set stg.analysis to equal to ""
+- **stg.analysis** - (string) Name of the analysis to be run, the options are "diag", "opt", "SA", they can be combined as for example "diag, opt", to not run any analysis set stg.analysis to equal to ""
 
   .. _stg.exprun:
 
-- **stg.exprun** - Experiments to run
+- **stg.exprun** - (double) Experiments to run
 
   .. _stg.useLog:
 
-- **stg.useLog** - Choice between 0,1,2 and 3 to change either and how to apply log10 to the scores, check :ref:`results<rst>`:
+- **stg.useLog** - (double) Choice between 0,1,2 and 3 to change either and how to apply log10 to the scores, check :ref:`results<rst>`:
 
   .. _stg.optmc:
 
-- **stg.optmc** - 0 or 1 to decide whether to use multicore everywhere it is available  
+- **stg.optmc** - (logical) Decide whether to use multicore everywhere it is available  
   
   .. _stg.rseed:
 
-- **stg.rseed** - Choice of ramdom seed
+- **stg.rseed** - (double) Choice of ramdom seed
 
   .. _stg.simcsl:
 
-- **stg.simcsl** - 0 or 1 to decide whether to use display simulation diagnostics in the console
+- **stg.simcsl** - (logical) Decide whether to use display simulation diagnostics in the console
 
   .. _stg.optcsl:
 
-- **stg.optcsl** - 0 or 1 to decide whether to display optimization results on console 
+- **stg.optcsl** - (logical) Decide whether to display optimization results on console 
 
   .. _stg.save_results:
 
-- **stg.save_results** - 0 or 1 to decide whether to save results
+- **stg.save_results** - (logical) Decide whether to save results
 
 
 Simulation
@@ -112,43 +112,43 @@ Simulation
 			 
   .. _stg.maxt:
   
-- **stg.maxt** - Maximum time for each individual function to run in seconds
+- **stg.maxt** - (double) Maximum time for each individual function to run in seconds
 
   .. _stg.eqt:
 
-- **stg.eqt** - Equilibration time
+- **stg.eqt** - (double) Equilibration time
 
   .. _stg.dimenanal:
 
-- **stg.dimenanal** - 0 or 1 to decide whether to do Dimensional Analysis
+- **stg.dimenanal** - (logical) Decide whether to do Dimensional Analysis
 
   .. _stg.abstolscale:
 
-- **stg.UnitConversion** - 0 or 1 to decide whether to do Unit conversion
+- **stg.UnitConversion** - (logical) Decide whether to do Unit conversion
 
   .. _stg.UnitConversion:
   
-- **stg.abstolscale** - 0 or 1 to decide whether to do Absolute Tolerance Scaling
+- **stg.abstolscale** - (logical) Decide whether to do Absolute Tolerance Scaling
 
   .. _stg.reltol:
 
-- **stg.reltol** - Value of Relative tolerance
+- **stg.reltol** - (double) Value of Relative tolerance
 
   .. _stg.abstol:
 
-- **stg.abstol** - Value of Absolute tolerance
+- **stg.abstol** - (double) Value of Absolute tolerance
 
   .. _stg.simtime:
 
-- **stg.simtime** - Time units for simulation
+- **stg.simtime** - (string) Time units for simulation
 
   .. _stg.sbioacc:
 
-- **stg.sbioacc** - 0 or 1 to decide whether to run sbioaccelerate (after changing this value you need to run “clear functions” to see an effect)
+- **stg.sbioacc** - (logical) Decide whether to run sbioaccelerate (after changing this value you need to run “clear functions” to see an effect)
 
   .. _stg.maxstep:
 
-- **stg.maxstep** - Max step size in the simulation (if empty matlab decides whats best)
+- **stg.maxstep** - (double) Max step size in the simulation (if empty matlab decides whats best)
 
 Model
 -----
@@ -164,23 +164,23 @@ Model
 			 
   .. _stg.parnum:
 
-- **stg.parnum** - Number of parameters to optimize
+- **stg.parnum** - (double) Number of parameters to optimize
 
   .. _stg.tci:
 
-- **stg.tci** - Index for the parameters that have thermodynamic constrains
+- **stg.tci** - (double) Index for the parameters that have thermodynamic constrains
 
   .. _stg.tcm:
 
-- **stg.tcm** - Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcm** - (double) Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
   .. _stg.tcd*:
 
-- **stg.tcd** - Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcd** - (double) Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
   .. _stg.lb:
 
-- **stg.lb** - Array with the lower bound of all parameters
+- **stg.lb** - (double) Lower bound of all parameters
 
   .. math::
 
@@ -192,7 +192,7 @@ Model
 
   .. _stg.ub:
 
-- **stg.ub** - Array with the upper bound of all parameters
+- **stg.ub** - (double) Upper bound of all parameters
 
   .. math::
   
@@ -216,9 +216,10 @@ Diagnostics
 
   .. stg.partest:
   
-- **stg.partest** - Choice of what parameters in the array to test, the indices correspond to the parameters in the model
-  SBTAB and the numbers correspond to the parameters in the work array (used for diagnostics, optimization, and Sensitivity
-  analyis), usually not all parameters are optimized so there needs to be a match between one and the other.
+- **stg.partest** - (double) Choice of what parameters to work on, since depending on the task, not all SBTAB parameters are worked on.
+  k indices correspond to the parameters in the model SBTAB and numbers up to m correspond to the parameters in the work set. 
+  This is the set that actually gets used for diagnostics, optimization, and Sensitivity analyis.
+  
 
   .. math::
 
@@ -226,7 +227,7 @@ Diagnostics
               1_{k_1} & 2_{k_2} & ... & m_{k_i}
           \end{bmatrix}
 
-  In our example model parameter 216 from the SBTAB is or parameter number 1, parameter 217 from the SBTAB is paramter number 2, and successively.
+  In our example model parameter 216 from the SBTAB is or parameter number 1 of the work set, parameter 217 from the SBTAB is paramter number 2 of the work set, and successively.
 		  
   .. math::
 
@@ -236,11 +237,11 @@ Diagnostics
 		  
   .. _stg.pat:
   
-- **stg.pat** - Index(:math:`j`) of the Parameter array to test
+- **stg.pat** - (double) Index(:math:`j`) of the Parameter set to work on
 
   .. _stg.pa:
 
-- **stg.pa** - All the parameter arrays, in the example model there is only one
+- **stg.pa** - (double) All the parameter sets
   
   .. math::
 
@@ -253,7 +254,7 @@ Diagnostics
 		  
   .. _stg.bestx:
 
-- **stg.bestx** - Best parameter array found so far during optimization
+- **stg.bestx** - (double) Best parameter set found so far during optimization
 
   .. math::
 
@@ -262,7 +263,7 @@ Diagnostics
           \end{bmatrix}
 
   - :math:`i =` Index of Parameters being worked on
-  - :math:`j =` Index of the Parameter array to test
+  - :math:`j =` Index of the Parameter set to work on
   - :math:`k =` Index of the parameters in SBTAB
   - :math:`x =` Parameters being worked on
 
@@ -280,11 +281,11 @@ Plots
 
   .. _stg.plot:
 
-- **stg.plot** - 0 or 1 to decide whether to plot results
+- **stg.plot** - (logical) Decide whether to plot results
 
   .. _stg.plotoln:
 
-- **stg.plotoln** - 0 or 1 to decide whether to use long names in the title of the outputs plots in f_plot_outputs.m
+- **stg.plotoln** - (logical) Decide whether to use long names in the title of the outputs plots in f_plot_outputs.m
 
 Sensitivity Analysis (SA)
 -------------------------
@@ -300,15 +301,15 @@ Sensitivity Analysis (SA)
 		 
   .. _stg.sansamples:
 
-- **stg.sansamples** - Number of samples to use in SA
+- **stg.sansamples** - (double) Number of samples to use in SA
 
   .. _stg.sasubmean:
 
-- **stg.sasubmean** - 0 or 1 to decide whether to subtract mean before calculating SI and SIT
+- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating SI and SIT
 
   .. _stg.sasamplemode:
 
-- **stg.sasamplemode** - Choose the way you want to obtain the samples of the parameters for performing the SA;
+- **stg.sasamplemode** - (double) Choose the way you want to obtain the samples of the parameters for performing the SA;
 
  0. Reciprocal distribution
 
@@ -323,7 +324,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_1.png
 
- #. Log normal distribution with μ as the best value for a parameter and σ as stg.sasamplesigma truncated at the parameter bounds
+ 1. Log normal distribution with μ as the best value for a parameter and σ as stg.sasamplesigma truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -338,7 +339,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_2.png
 
- #. same as 1 without truncation
+ 2. same as 1 without truncation
  
   :math:`X_{i} \sim LogNormal(μ, σ)`
   
@@ -351,7 +352,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_3.png
 
- #. Log normal distribution centered at the mean of the parameter bounds and σ as stg.sasamplesigma truncated at the parameter bounds
+ 3. Log normal distribution centered at the mean of the parameter bounds and σ as stg.sasamplesigma truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -366,7 +367,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_4.png
   
- #. same as 3 without truncation.
+ 4. same as 3 without truncation.
  
   :math:`X_{i} \sim LogNormal(mu_{i}, σ)`
   
@@ -381,7 +382,7 @@ Sensitivity Analysis (SA)
   
   .. _stg.sasamplesigma:
 
-- **stg.sasamplesigma** - σ for creating the normal distribution of parameters to perform sensitivity analysis
+- **stg.sasamplesigma** - (double) σ for creating the normal distribution of parameters to perform sensitivity analysis
 
 
 Optimization
@@ -397,15 +398,15 @@ Optimization
 
   .. _stg.optt:
 
-- **stg.optt** - Time for the optimization in seconds (fmincon does not respect this time!!)
+- **stg.optt** - (double) Time for the optimization in seconds (fmincon does not respect this time!!)
 
   .. _stg.popsize:
 
-- **stg.popsize** - Population size (for the algorithms that use populations)
+- **stg.popsize** - (double) Population size (for the algorithms that use populations)
 
   .. _stg.osm:
 
-- **stg.osm** - optimization start method, choose between
+- **stg.osm** - (double) optimization start method, choose between
 
   #. Get a random starting point or group of starting points inside the bounds
   
@@ -413,65 +414,65 @@ Optimization
 
   .. _stg.dbs:
 
-- **stg.dbs** - Distance from best point to be used in stg.osm method 2 
+- **stg.dbs** - (double) Distance from best point to be used in stg.osm method 2 
 
   .. _stg.mst:
 
 
-- **stg.mst** - 0 or 1 to decide whether to use Multistart
+- **stg.mst** - (logical) Decide whether to use Multistart
 
   .. _stg.msts:
 
-- **stg.msts** - Number of starting points for the optimizations
+- **stg.msts** - (double) Number of starting points for the optimizations
 
   .. _stg.optplots:
 
-- **stg.optplots** - 0 or 1 to decide whether to display Plots (Plots doesn’t work if using multicore)
+- **stg.optplots** - (logical) Decide whether to display Plots (Plots doesn’t work if using multicore)
 
   .. _stg.fmincon:
 
-- **stg.fmincon** - 0 or 1 to decide whether to run `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_ (no gradient so this doesn't work very well, no max time!!)
+- **stg.fmincon** - (logical) Decide whether to run `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_ (no gradient so this doesn't work very well, no max time!!)
 
   .. _stg.fm_options:
 
-- **stg.fm_options** - `Options for fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html#busog7r-options>`_
+- **stg.fm_options** - (optim.options.Fmincon) `Options for fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html#busog7r-options>`_
 
   .. _stg.sa:
 
-- **stg.sa** - 0 or 1 to decide whether to run `simulated annealing <https://www.mathworks.com/help/gads/simulannealbnd.html>`_
+- **stg.sa** - (logical) Decide whether to run `simulated annealing <https://www.mathworks.com/help/gads/simulannealbnd.html>`_
 
   .. _stg.sa_options:
 
-- **stg.sa_options** - `Options for simulated annealing <https://www.mathworks.com/help/gads/simulannealbnd.html#buy3g1g-options>`_
+- **stg.sa_options** - (optim.options.SimulannealbndOptions) `Options for simulated annealing <https://www.mathworks.com/help/gads/simulannealbnd.html#buy3g1g-options>`_
 
   .. _stg.psearch:
 
-- **stg.psearch** - 0 or 1 to decide whether to run `Pattern search <https://www.mathworks.com/help/gads/patternsearch.html>`_
+- **stg.psearch** - (logical) Decide whether to run `Pattern search <https://www.mathworks.com/help/gads/patternsearch.html>`_
 
   .. _stg.psearch_options:
 
-- **stg.psearch_options** - `Options for Pattern search <https://www.mathworks.com/help/gads/patternsearch.html#buxdit7-options>`_
+- **stg.psearch_options** - (optim.options.PatternsearchOptions) `Options for Pattern search <https://www.mathworks.com/help/gads/patternsearch.html#buxdit7-options>`_
 
   .. _stg.ga:
 
-- **stg.ga** - 0 or 1 to decide whether to run `Genetic algorithm <https://www.mathworks.com/help/gads/ga.html>`_
+- **stg.ga** - (logical) Decide whether to run `Genetic algorithm <https://www.mathworks.com/help/gads/ga.html>`_
 
   .. _stg.ga_options:
 
-- **stg.ga_options** - `Options for Genetic algorithm <https://www.mathworks.com/help/gads/ga.html#mw_4a8bfdb9-7c4c-4302-8f47-d260b7a43e26>`_
+- **stg.ga_options** - (optim.options.GaOptions) `Options for Genetic algorithm <https://www.mathworks.com/help/gads/ga.html#mw_4a8bfdb9-7c4c-4302-8f47-d260b7a43e26>`_
 
   .. _stg.pswarm:
 
-- **stg.pswarm** - 0 or 1 to decide whether to run `Particle swarm <https://www.mathworks.com/help/gads/particleswarm.html>`_
+- **stg.pswarm** - (logical) Decide whether to run `Particle swarm <https://www.mathworks.com/help/gads/particleswarm.html>`_
 
   .. _stg.pswarm_options:
 
-- **stg.pswarm_options** - `Options for Particle swarm <https://www.mathworks.com/help/gads/particleswarm.html#budidgf-options>`_
+- **stg.pswarm_options** - (optim.options.Particleswarm) `Options for Particle swarm <https://www.mathworks.com/help/gads/particleswarm.html#budidgf-options>`_
 
   .. _stg.sopt:
 
-- **stg.sopt** - 0 or 1 to decide whether to run `Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html>`_
+- **stg.sopt** - (logical) Decide whether to run `Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html>`_
 
   .. _stg.sopt_options:
 
-- **stg.sopt_options** - `Options for Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html#mw_fa3519af-f062-41df-af65-c65ea7a54eb6>`_
+- **stg.sopt_options** - (optim.options.Surrogateopt) `Options for Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html#mw_fa3519af-f062-41df-af65-c65ea7a54eb6>`_

@@ -3,9 +3,9 @@ function [stg] = f_settings_all_TW()
 
 %% Import
 
-% 0 or 1 to decide whether to run import functions
+% True or false to decide whether to run import functions
 % (Import)
-stg.import = 1;
+stg.import = true;
 
 % Name of the folder where everything related to the model is stored
 % (Folder Model)
@@ -45,26 +45,26 @@ stg.exprun = [1:10];
 % (Use logarithm)
 stg.useLog = 0;
 
-% 0 or 1 to decide whether to use multicore everywhere it is available
+% True or false to decide whether to use multicore everywhere it is available
 % (Optimization Multicore)
-stg.optmc = logical(1);
+stg.optmc = true;
 
 % Choice of ramdom seed
 % (Ramdom seed)
 stg.rseed = 1;
 
-% 0 or 1 to decide whether to use display simulation diagnostics in the
+% True or false to decide whether to use display simulation diagnostics in the
 % console
 % (Simulation Console)
-stg.simcsl = 0;
+stg.simcsl = false;
 
-% 0 or 1 to decide whether to display optimization results on console 
+% True or false to decide whether to display optimization results on console 
 % (Optimization console)
-stg.optcsl = 1;
+stg.optcsl = true;
 
-% 0 or 1 to decide whether to save results
+% True or false to decide whether to save results
 % (Save results)
-stg.save_results = 1;
+stg.save_results = true;
 
 %% Simulation
 
@@ -76,15 +76,15 @@ stg.maxt = 10;
 % (Equilibration time)
 stg.eqt  = 50000;
 
-% 0 or 1 to decide whether to do Dimensional Analysis
+% True or false to decide whether to do Dimensional Analysis
 % (Dimensional Analysis)
 stg.dimenanal = true;
 
-% 0 or 1 to decide whether to do Unit conversion
+% True or false to decide whether to do Unit conversion
 % (Unit conversion)
 stg.UnitConversion = true;
 
-% 0 or 1 to decide whether to do Absolute Tolerance Scaling
+% True or false to decide whether to do Absolute Tolerance Scaling
 % (Absolute Tolerance Scaling)
 stg.abstolscale = false;
 
@@ -100,10 +100,10 @@ stg.abstol = 1.0E-4;
 % (Simulation time)
 stg.simtime = "second";
 
-% 0 or 1 to decide whether to run sbioaccelerate (after changing this value
+% True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = 0;
+stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -163,14 +163,14 @@ stg.bestpa = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1]
 
 %% Plots
 
-% 0 or 1 to decide whether to plot results
+% True or false to decide whether to plot results
 % (Plots)
-stg.plot = 1;
+stg.plot = true;
 
-% 0 or 1 to decide whether to use long names in the title of the outputs
+% True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m
 % (Plot outputs long names)
-stg.plotoln = 1;
+stg.plotoln = true;
 
 %% Sensitivity analysis
 
@@ -178,10 +178,10 @@ stg.plotoln = 1;
 % (Sensitivity analysis number of samples)
 stg.sansamples = 120;
 
-% 0 or 1 to decide whether to subtract the mean before calculating SI and
+% True or false to decide whether to subtract the mean before calculating SI and
 % SIT
 % (Sensitivity analysis subtract mean)
-stg.sasubmean = 1;
+stg.sasubmean = true;
 
 % Choose the way you want to obtain the samples of the parameters for 
 % performing the SA;
@@ -221,22 +221,22 @@ stg.osm = 1;
 % (Distance from best parameter array)
 stg.dbpa = 0.1;
 
-% 0 or 1 to decide whether to use Multistart
+% True or false to decide whether to use Multistart
 % (Multistart)
-stg.mst = 1;
+stg.mst = true;
 
 % Number of starting points for the optimizations
 % (Multistart size)
 stg.msts = 5;
 
-% 0 or 1 to decide whether to display Plots (Plots doesn't work if using
+% True or false to decide whether to display Plots (Plots doesn't work if using
 % multicore)
 % (Optimization plots)
-stg.optplots = 0;
+stg.optplots = false;
 
-% 0 or 1 to decide whether to run fmincon (no gradient so this doesn't work
+% True or false to decide whether to run fmincon (no gradient so this doesn't work
 % very well, no max time!!)
-stg.fmincon = 0;
+stg.fmincon = false;
 
 % Options for fmincon
 % (fmincon options)
@@ -247,9 +247,9 @@ stg.fm_options = optimoptions('fmincon',...
     'StepTolerance',1e-6,'FiniteDifferenceType','central',...
     'MaxFunctionEvaluations',10000);
 
-% 0 or 1 to decide whether to run simulated annealing
+% True or false to decide whether to run simulated annealing
 % (Simulated annealing)
-stg.sa = 0;
+stg.sa = false;
 
 % Options for simulated annealing
 % (Simulated annealing options)
@@ -258,9 +258,9 @@ stg.sa_options = optimoptions(@simulannealbnd, ...
     'InitialTemperature',...
     ones(1,stg.parnum)*2,'ReannealInterval',40);
 
-% 0 or 1 to decide whether to run Pattern search
+% True or false to decide whether to run Pattern search
 % (Pattern search)
-stg.psearch = 0;
+stg.psearch = false;
 
 % Options for Pattern search
 % (Pattern search options)
@@ -269,9 +269,9 @@ stg.psearch_options = optimoptions(@patternsearch,...
     'UseCompletePoll',true,'UseCompleteSearch',true,...
     'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
 
-% 0 or 1 to decide whether to run Genetic algorithm
+% True or false to decide whether to run Genetic algorithm
 % (Genetic algorithm)
-stg.ga = 0;
+stg.ga = false;
 
 % Options for Genetic algorithm
 % (Genetic algorithm options)
@@ -280,9 +280,9 @@ stg.ga_options = optimoptions(@ga,'MaxGenerations',100,...
     'PopulationSize',stg.popsize,...
     'MutationFcn','mutationadaptfeasible','Display','diagnose');
 
-% 0 or 1 to decide whether to run Particle swarm
+% True or false to decide whether to run Particle swarm
 % (Particle swarm)
-stg.pswarm = 1;
+stg.pswarm = true;
 
 % Options for Particle swarm
 % (Particle swarm options)
@@ -290,9 +290,9 @@ stg.pswarm_options = optimoptions('particleswarm',...
     'MaxTime',stg.optt,'UseParallel',stg.optmc,...
     'SwarmSize',stg.popsize);
 
-% 0 or 1 to decide whether to run Surrogate optimization
+% True or false to decide whether to run Surrogate optimization
 % (Surrogate optimization)
-stg.sopt = 0;
+stg.sopt = false;
 
 % Options for Surrogate optimization
 % (Surrogate optimization options)
