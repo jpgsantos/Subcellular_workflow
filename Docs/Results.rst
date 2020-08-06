@@ -2,6 +2,8 @@ Results
 ^^^^^^^
 .. _rst:
 
+|
+
 Diagnostics
 -----------
 
@@ -111,14 +113,14 @@ To simplify representations the following correspondence as been used
   
   - :math:`F =` Objective function for Particle Swarm optimization 
   - :math:`Y =` Simulation results from the original (validated) model, or data from experiments
-  - :math:`y =` Simulation results of the updated model under parameterization θ
-  - :math:`θ =` New parametization for y
+  - :math:`y =` Simulation results of the updated model under parameterization :math:`θ =`
+  - :math:`θ =` New parametization for :math:`y =`
   - :math:`τ =` Allowed mismatch between the two simulation results, analogous to the standard deviation of a Gaussian noise model in data fitting
   - :math:`n/i =` number/index of points in a given experimental output
   - :math:`m/j =` number/index of experimental outputs in an experiment
   - :math:`l/k =` number/index of experiments
     
-  |
+|
 
 Optimization
 ------------
@@ -142,6 +144,8 @@ Optimization
   .. _rst.opt.output:
 
 - **rst.opt.output** - diagnostics to see how the optimization went
+
+|
 
 Sensitivity Analysis
 --------------------
@@ -304,7 +308,9 @@ The calculations performed to obtain these Sensitivities where performed accordi
   - :math:`n =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
   - :math:`r =` Index for the Samples number
   - :math:`i =` Index for each parameter
-  
+
+|
+
 References
 ----------
   

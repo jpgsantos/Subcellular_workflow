@@ -25,7 +25,7 @@ Features:
   * MATLAB SimBiology to SBML(.xml), using MATLAB
   * SBtab(.tsv) to VFGEN(.vf), using R
   * SBtab(.tsv) to Mod(.mod), using R
-  * SBtab(.tsv) to SBML(.xml), using MATLAB or R
+  * SBtab(.tsv) to SBML(.xml), using R
 
 
 

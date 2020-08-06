@@ -30,9 +30,7 @@ Features:
   * MATLAB SimBiology to SBML(.xml), using MATLAB
   * SBtab(.tsv) to VFGEN(.vf), using R
   * SBtab(.tsv) to Mod(.mod), using R
-  * SBtab(.tsv) to SBML(.xml), using MATLAB or R
-
-
+  * SBtab(.tsv) to SBML(.xml), using R
 
 |
 
@@ -41,30 +39,16 @@ Features:
 |
 
 .. toctree::
-   :maxdepth: 2
+   :hidden:
+   :maxdepth: 1
 
-   Matlab 
-
-.. toctree::
-   :maxdepth: 2
-
+   SBtab 
+   Matlab
    Neuron
-   
-.. toctree::
-   :maxdepth: 2
-
    Sub_application
-
-.. toctree::
-   :maxdepth: 2
-
    Conversion_tools
+   Model
 
-.. toctree::
-   :maxdepth: 2
-
-   Model 
-   
 References
 ----------
 

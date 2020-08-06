@@ -12,18 +12,6 @@ The Matlab functions used in this workflow are divided acording to its role, we 
    :maxdepth: 2
 
    Functions_Simulation
-
-.. toctree::
-   :maxdepth: 2
-
    Functions_Analysis_index
-
-.. toctree::
-   :maxdepth: 2
-
    Functions_Import
-
-.. toctree::
-   :maxdepth: 2
-
    Functions_Plots

@@ -4,9 +4,8 @@
 Settings file
 =============
 
-A place for the user to define all the relevant properties of model simulation that are not stored in SBTAB, usually things that need to change during optimizations or model development.
-
-
+A place for the user to define all the relevant properties of model simulation that are not stored in SBTAB.
+This are usually things that need to change during optimizations or model development.
 
   .. toggle-header::
       :header: **Code**
@@ -14,8 +13,9 @@ A place for the user to define all the relevant properties of model simulation t
       .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: matlab	 
-	 
-
+	
+|
+	
 Import
 ------
 
@@ -51,6 +51,8 @@ Import
   .. _stg.sbtab_name:
 
 - **stg.sbtab_name** - (string) Name of the sbtab saved in .mat format
+
+|
 
 Analysis
 --------
@@ -97,6 +99,7 @@ Analysis
 
 - **stg.save_results** - (logical) Decide whether to save results
 
+|
 
 Simulation
 ----------
@@ -150,6 +153,8 @@ Simulation
 
 - **stg.maxstep** - (double) Max step size in the simulation (if empty matlab decides whats best)
 
+|
+
 Model
 -----
 
@@ -201,6 +206,8 @@ Model
           \end{bmatrix}
 		   
   - :math:`i =` Parameter index   
+
+|
 
 Diagnostics
 -----------
@@ -267,6 +274,8 @@ Diagnostics
   - :math:`k =` Index of the parameters in SBTAB
   - :math:`j =` Index of the Parameter set to work on
 
+|
+
 Plots
 -----
 
@@ -286,6 +295,8 @@ Plots
   .. _stg.plotoln:
 
 - **stg.plotoln** - (logical) Decide whether to use long names in the title of the outputs plots in f_plot_outputs.m
+
+|
 
 Sensitivity Analysis (SA)
 -------------------------
@@ -384,6 +395,7 @@ Sensitivity Analysis (SA)
 
 - **stg.sasamplesigma** - (double) σ for creating the normal distribution of parameters to perform sensitivity analysis
 
+|
 
 Optimization
 ------------
@@ -417,7 +429,6 @@ Optimization
 - **stg.dbs** - (double) Distance from best point to be used in stg.osm method 2 
 
   .. _stg.mst:
-
 
 - **stg.mst** - (logical) Decide whether to use Multistart
 
