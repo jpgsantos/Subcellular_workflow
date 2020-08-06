@@ -217,14 +217,14 @@ Diagnostics
   .. stg.partest:
   
 - **stg.partest** - (double) Choice of what parameters to work on, since depending on the task, not all SBTAB parameters are worked on.
-  k indices correspond to the parameters in the model SBTAB and numbers up to m correspond to the parameters in the work set. 
+  k indices correspond to the parameters in the model SBTAB and numbers up to i correspond to the parameters in the work set. 
   This is the set that actually gets used for diagnostics, optimization, and Sensitivity analyis.
   
 
   .. math::
 
       stg.partest_k = \begin{bmatrix}
-              1_{k_1} & 2_{k_2} & ... & m_{k_i}
+              1_{k_1} & 2_{k_2} & ... & i_{k_{end}}
           \end{bmatrix}
 
   In our example model parameter 216 from the SBTAB is or parameter number 1 of the work set, parameter 217 from the SBTAB is paramter number 2 of the work set, and successively.
@@ -262,10 +262,10 @@ Diagnostics
               bestx_{1} & bestx_{2} & ... & bestx_{i}
           \end{bmatrix}
 
-  - :math:`i =` Index of Parameters being worked on
-  - :math:`j =` Index of the Parameter set to work on
-  - :math:`k =` Index of the parameters in SBTAB
   - :math:`x =` Parameters being worked on
+  - :math:`i =` Index of Parameters being worked on
+  - :math:`k =` Index of the parameters in SBTAB
+  - :math:`j =` Index of the Parameter set to work on
 
 Plots
 -----
