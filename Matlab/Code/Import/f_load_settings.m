@@ -1,4 +1,4 @@
-function [stg] = f_load_settings_part1(model_name,folder_model,mode)
+function [stg] = f_load_settings(model_name,folder_model,mode)
 
 stg.folder_model = folder_model;
 
@@ -41,7 +41,6 @@ function [stg] = load_setting_chunk(name,chunk,stg)
 
 settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
     chunk + "_" + name + ".m";
-
 
 if isfile(settings_filename)
     

@@ -86,11 +86,15 @@ This file contains input data derived from the SBtab in a .mat format for all th
 Ready to run model
 ------------------
 
+  .. _rr_model.mat:
+
 Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\Exp\\Model\_\ :ref:`name<stg.name>`\_i.mat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 These files contain a version of the model for each experiment contained in the SBtab.
 They include all the neccessary inputs and outputs to simulate the supplied experimental conditions.
+
+  .. _rr_model_eq.mat:
 
 Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\Exp\\Model_eq\_\ :ref:`name<stg.name>`\_i.mat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

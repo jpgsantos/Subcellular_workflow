@@ -1,4 +1,4 @@
-function [stg,sb] = f_load_settings_part2(stg)
+function [stg,sb] = f_generate_sbtab_struct(stg)
 
 if isfile("Model/" + stg.folder_model +"/Data/" +...
         stg.sbtab_name + ".mat")

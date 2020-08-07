@@ -26,8 +26,16 @@ Run_main
 		
 Main functions called from here
 
-- **Calls** - :ref:`f_settings<f_settings>`, :ref:`f_diagnostics<f_diagnostics>`, :ref:`f_opt<f_opt>`,
-  :ref:`f_SA<f_SA>`
+- **Calls**
+
+  - :ref:`f_load_settings<f_load_settings>`
+  - :ref:`f_import<f_import>`
+  - :ref:`f_generate_sbtab_struct<f_generate_sbtab_struct>`
+  - :ref:`f_analysis<f_analysis>`
+  - :ref:`f_save_analysis<f_save_analysis>`
+  - :ref:`f_plot<f_plot>`
+  - :ref:`f_save_plots<f_save_plots>`
+
 - **Loads**
 - **Saves**
 

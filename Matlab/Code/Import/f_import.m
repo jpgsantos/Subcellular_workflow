@@ -1,4 +1,20 @@
-function f_import(stg,sb)
+function [stg,sb] = f_import(stg)
+
+% Create needed folders
+    mkdir("Model/" + stg.folder_model,"Data");
+    mkdir("Model/" + stg.folder_model,"Formulas");
+    mkdir("Model/" + stg.folder_model,"tsv");
+    mkdir("Model/" + stg.folder_model,"Data/Exp");
+
+% Creates a .mat and a tsvs from the sbtab file
+disp("Reading SBtab Excel")
+f_excel_sbtab_importer(stg);
+
+addpath(genpath(pwd));
+
+% Creates a struct based on the sbtab that is used elswhere in the code and
+% also adds the number of experiments and outputs to the settings variable
+[stg,sb] = f_generate_sbtab_struct(stg);
 
 % % Create the model and input output structure from sbtab.mat
 disp("Creating the model, input and output")

@@ -179,7 +179,7 @@ Model
 
 - **stg.tcm** - (double) Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
-  .. _stg.tcd*:
+  .. _stg.tcd:
 
 - **stg.tcd** - (double) Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
 
@@ -221,7 +221,7 @@ Diagnostics
          :start-after: %% Diagnostics
          :end-before: %% Plots
 
-  .. stg.partest:
+  .. _stg.partest:
   
 - **stg.partest** - (double) Choice of what parameters to work on, since depending on the task, not all SBTAB parameters are worked on.
   k indices correspond to the parameters in the model SBTAB and numbers up to i correspond to the parameters in the work set. 
@@ -487,3 +487,14 @@ Optimization
   .. _stg.sopt_options:
 
 - **stg.sopt_options** - (optim.options.Surrogateopt) `Options for Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html#mw_fa3519af-f062-41df-af65-c65ea7a54eb6>`_
+
+Automatic generated at Import
+-----------------------------
+
+  .. _stg.expn:
+  
+- **stg.expn** - (double) Total number of experiments stored in the SBtab
+
+  .. _stg.outn:
+  
+- **stg.outn** - (double) Total number of experimental outputs specified in the SBtab

@@ -8,11 +8,11 @@ Results
 Diagnostics
 -----------
 
-  .. _rst.diag.simd:
+  .. _rst.simd:
 
 - **rst.diag.simd** - Simulation results (MATLAB representation)
 
-  .. _rst.diag.st:
+  .. _rst.st:
 
 - **rst.diag.st** - Total score
 
@@ -36,7 +36,7 @@ To simplify representations the following correspondence as been used
   
   :math:`st(θ;Y,τ) = log_{10}(\sum_{k=1}^l \sum_{j=1}^m score_{i,j,k})`
   
-  .. _rst.diag.se:
+  .. _rst.se:
 
 - **rst.diag.se** - Score per experiment, in our example model we have 10 experiments, from E0 to E9.
 
@@ -73,7 +73,7 @@ To simplify representations the following correspondence as been used
 			  log_{10}(\sum_{j=1}^m score_{i,j,k})
           \end{bmatrix}
 		  
-  .. _rst.diag.sd:
+  .. _rst.sd:
   
 - **rst.diag.sd** - Score per experimental outputs in an experiment, in our example model we have 4 experimental outputs.
   
@@ -98,6 +98,8 @@ To simplify representations the following correspondence as been used
               ... & ... & ... & ... \\
 			  log_{10}(score_{i,1,k}) & log_{10}(score_{i,2,k}) & ... & log_{10}(score_{i,j,k})
           \end{bmatrix}
+
+  .. _rst.xfinal:
 
 - **rst.diag.xfinal** - x value of all the species being tested at the end of the simulation
 
