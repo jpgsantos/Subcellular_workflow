@@ -133,7 +133,7 @@ Corresponds to individual experiments and has to be followed by experiment index
 
 - **`SD_Y**\ :sub:`i`\ - followed by an index represents the standard deviation for each data point.
 
-.. _ei
+.. _ei:
 
 E\ :sub:`i`\I
 -------------

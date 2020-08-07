@@ -18,5 +18,5 @@ f_diagnostics
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs** - :ref:`rst<rst>`
-- **Calls** - f_plot_, f_sim_score_
+- **Calls** - :ref:`f_plot<f_plot>`, :ref:`f_sim_score<f_sim_score>`
 - **Loads**

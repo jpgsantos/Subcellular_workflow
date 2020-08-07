@@ -49,7 +49,7 @@ f_opt_fmincon
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_, f_sim_score_, f_opt_start_
+- **Calls** - `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_, :ref:`f_sim_score<f_sim_score>`, f_opt_start_
 - **Loads**
 
 .. _f_opt_sa:
@@ -66,7 +66,7 @@ f_opt_sa
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `simulannealbnd <https://www.mathworks.com/help/gads/simulannealbnd.html>`_, f_sim_score_ , f_opt_start_
+- **Calls** - `simulannealbnd <https://www.mathworks.com/help/gads/simulannealbnd.html>`_, :ref:`f_sim_score<f_sim_score>` , f_opt_start_
 - **Loads**
 
 .. _f_opt_psearch:
@@ -83,7 +83,7 @@ f_opt_psearch
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `patternsearch <https://www.mathworks.com/help/gads/patternsearch.html>`_, f_sim_score_, f_opt_start_
+- **Calls** - `patternsearch <https://www.mathworks.com/help/gads/patternsearch.html>`_, :ref:`f_sim_score<f_sim_score>`, f_opt_start_
 - **Loads**
 
 .. _f_opt_ga:
@@ -100,7 +100,7 @@ f_opt_ga
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `ga <https://www.mathworks.com/help/gads/ga.html>`_, f_sim_score_, f_opt_start_
+- **Calls** - `ga <https://www.mathworks.com/help/gads/ga.html>`_, :ref:`f_sim_score<f_sim_score>`, f_opt_start_
 - **Loads**
 
 .. _f_opt_pswarm:
@@ -117,7 +117,7 @@ f_opt_pswarm
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `particleswarm <https://www.mathworks.com/help/gads/particleswarm.html>`_, f_sim_score_, f_opt_start_
+- **Calls** - `particleswarm <https://www.mathworks.com/help/gads/particleswarm.html>`_, :ref:`f_sim_score<f_sim_score>`, f_opt_start_
 - **Loads**
 
 .. _f_opt_sopt:
@@ -134,5 +134,5 @@ f_opt_sopt
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs**
-- **Calls** - `Surrogateopt <https://www.mathworks.com/help/gads/surrogateopt.html>`_, f_sim_score_, f_opt_start_
+- **Calls** - `Surrogateopt <https://www.mathworks.com/help/gads/surrogateopt.html>`_, :ref:`f_sim_score<f_sim_score>`, f_opt_start_
 - **Loads**
