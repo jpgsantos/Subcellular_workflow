@@ -19,14 +19,7 @@ load("Results/Analysis_diagnostics_example/Analysis.mat")
 %Example Global sensitivitie analysis
 % load("Results/Analysis_GSA_example/Analysis.mat")
 
-% Create needed folders
-    mkdir("Model/" + stg.folder_model,"Data");
-    mkdir("Model/" + stg.folder_model,"Formulas");
-    mkdir("Model/" + stg.folder_model,"tsv");
-    mkdir("Model/" + stg.folder_model,"Data/Exp");
-    
-% Runs the import scripts if chosen in settings
-f_import(stg,sb)
+[stg,sb] = f_import(stg);
 
 addpath(genpath(pwd));
 
