@@ -1,54 +1,52 @@
-Here you can find a modified version of the D1 MSN subcellular cascade model from Nair et al 2016.
+Subcellular workflow
+====================
 
-## SBtab
+This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
 
-The model along with the simulated data (sheets E0-E8) used for optimization of the CaMKII autophosphorylation 
-module (reactions 128-135) is found in the SBtab format D1_LTP_time_window_SBtab.xlsx. Inputs to all datasets 
-are also represented in the sheet following each dataset (E0I-E8I).
+At the root of our implementation is the SBTAB format, a file that can store biochemical models and associated data in an easily readable and expandable way.
 
-## tsv
+We have also developed tools to convert the SBTAB format into several formats that can be used in MATLAB, Neuron, STEPS and Copasi.
 
-tsv files generated from each SBtab sheet are available in the zipped file D1_LTP_time_window.tar.gz
+Using Matlab we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
-## MATLAB
+We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
+Code to run this model in Matlab, Neuron, and Subcellular aplication(STEPS) can be found on the "Matlab", "Neuron" and "Bionetgen and Steps folders" respectively.
 
-The steady-state model in MATLAB SimBiology format can be found in the MATLAB folder. In addition, there are 
-input scripts (spike.m, spiketraindd_Ca.m, spiketraindd_DA.m) that generate the input curves used in model 
-simulations. These are used by the script Regenerate_figures.m that can be run directly and will produce two 
-figures from the original paper, validating the updated model.
+Features:
 
-## SBML
+* Model simulation, using MATLAB, subcellular aplication(STEPS), or Neuron
+* Analysis of selected parameter sets, using MATLAB
+* Parameter optimization, using MATLAB
+* Global Sensitivity analysis, using MATLAB
+* Conversion tools:
 
-The model in SBML format is called D1_LTP_time_window_SBML.xml
+  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB
+  * SBtab(.xlsx) to MATLAB SimBiology(.m, .sbproj), using MATLAB
+  * MATLAB SimBiology to SBML(.xml), using MATLAB
+  * SBtab(.tsv) to VFGEN(.vf), using R
+  * SBtab(.tsv) to Mod(.mod), using R
+  * SBtab(.tsv) to SBML(.xml), using R
 
-## VFGEN/MOD
 
-The folder "SBtab to VFGEN/MOD Conversion Tools" contains the main script sbtab_to_vfgen.R that converts the model
-in SBtab into a VFGEN (D1_LTP_time_window_VFgen.vf) and a MOD file (D1_LTP_time_window_MOD.mod) that can be run 
-in NEURON. Additional instruction can be found in the README.
 
-## R
+# Documentation
 
-The folder R contains the model in R format D1_LTP_time_window.R
-.
-## Neuron
+To check the online documentation please go to: https://subcellular-workflow.readthedocs.io/
 
-Usage of the MOD file:
+If you want to build the documentation offline use [sphinx](https://www.sphinx-doc.org/en/master/) and the .rst files in the Doc folder.
 
-The model requires input in the form of dopamine and calcium. These need to be specified by the user:
+After installing sphinx, install the following extra extensions to sphinx;
 
-1. Dopamine is set to be 20 nM in assign_calculated_values(). This line should be replaced to whatever the user needs for input. For example, it could be replaced with an expression for dopamine such as the one provided in this mod file, which makes a dopamine pulse with a double exponential shape. The line 
+* [recommonmark](https://recommonmark.readthedocs.io/)
+* [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html)
+* [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
-DA = 20 
+Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use your browser to open and browse the documentation.
 
-should instead read 
+# Compatibility
 
-DA = DA_expression.
+Subcellular workflow MATLAB code and has been tested in 2020a (all packages installed) running on Microsoft Windows, macOS and Linux.
 
-2. The same goes for the calcium input. Additionally, calcium could be provided via the intracellular concentration of a calcium ion. For example, in this mod file we use the intracellular calcium concentration due to influx from NMDA receptors, ca_nmdai, which is written through a mechanism for calcium accumulation provided in a separate MOD file. Access to the ionic concentrations is provided by NEURON's USEION statement. In this case the variable ca_nmdai needs to be added to the ASSIGNED block. 
-*--------------------*
-*   IMPORTANT NOTE   *
-*--------------------* 
-When specifying the calcium input like this needs care needs to be taken to make sure the units used by NEURON and the units used in the imported model match. As mentioned in the article, the models imported as MOD files could have different units for the parameter values from the default units used by NEURON to perform internal calculations of variables such as ionic concentrations. For instance, NEURON's default units for concentration are in millimolars (mM), but the model's parameters are expressed in nanomolars (nM). It is absolutely paramount to match units, i.e. use the correct scaling for, in this case, the variable ca_nmdai, to provide the model with the right quantity of calcium so that it runs properly:
+# References
 
-Ca = ca_nmdai * (1e6)
+(1) Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080.  

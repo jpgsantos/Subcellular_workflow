@@ -8,10 +8,10 @@ addpath(genpath(pwd));
 % Choose relevant path
 
 %Example diagnostics
-load("Results/Analysis_diagnostics_example.mat")
+% load("Results/Analysis_diagnostics_example/Analysis.mat")
 
 %Example Global sensitivitie analysis
-% load("Results/Analysis_GSA_example.mat")
+load("Results/Analysis_GSA_example/Analysis.mat")
 
 
 % Create needed folders
@@ -20,8 +20,8 @@ load("Results/Analysis_diagnostics_example.mat")
     mkdir("Model/" + stg.folder_model,"tsv");
     mkdir("Model/" + stg.folder_model,"Data/Exp");
 
-% Runs the import scripts if chosen in settings
-f_import(stg,sb)
+% Runs the import scripts
+[stg,sb] = f_import(stg);
 
 % Plots the results of the analysis
 f_plot(rst,stg)
