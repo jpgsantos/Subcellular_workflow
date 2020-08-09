@@ -33,7 +33,7 @@ depending on the configurations on the :ref:`settings file<f_settings>` it can c
     * SBtab(.xlsx) to MATLAB SimBiology(.m, .sbproj)
     * MATLAB SimBiology to SBML(.xml)
 	
-  * :ref:`Perform analysis on the model:<f_analysis>`
+  * :ref:`Perform analysis on the model:<f_analysis_index>`
   
     * Diagnostics
     * Parameter estimation

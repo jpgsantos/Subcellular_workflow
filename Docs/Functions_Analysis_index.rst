@@ -1,3 +1,5 @@
+.. _f_analysis_index:
+
 Analysis
 ========
 
