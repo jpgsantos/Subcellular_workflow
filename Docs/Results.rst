@@ -112,12 +112,10 @@ To simplify representations the following correspondence as been used
 			  y_{n,1,k} & y_{n,2,k} & ... & y_{n,j,k}
           \end{bmatrix}
 
-|
-  
   - :math:`F =` Objective function for Particle Swarm optimization 
   - :math:`Y =` Simulation results from the original (validated) model, or data from experiments
-  - :math:`y =` Simulation results of the updated model under parameterization :math:`θ =`
-  - :math:`θ =` New parametization for :math:`y =`
+  - :math:`y =` Simulation results of the updated model under parameterization :math:`θ`
+  - :math:`θ =` New parametization for :math:`y`
   - :math:`τ =` Allowed mismatch between the two simulation results, analogous to the standard deviation of a Gaussian noise model in data fitting
   - :math:`n/i =` number/index of points in a given experimental output
   - :math:`m/j =` number/index of experimental outputs in an experiment
@@ -153,7 +151,7 @@ Optimization
 Sensitivity Analysis
 --------------------
 
-The calculations performed to obtain these Sensitivities where performed according to the equations described in Halnes et al 2009\ :sup:`1`\.
+The calculations performed to obtain these Sensitivities where performed according to the equations described in Halnes et al 2009 [1]_.
 
   .. _rst.SA.M1:
 
@@ -317,4 +315,4 @@ The calculations performed to obtain these Sensitivities where performed accordi
 References
 ----------
   
-(1) Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.
+.. [1] Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.

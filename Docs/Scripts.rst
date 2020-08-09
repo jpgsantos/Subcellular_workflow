@@ -24,18 +24,25 @@ Run_main
         :language: matlab
         :linenos:
 		
-Main functions called from here
+This is the main script from the matlab portion of the workflow, 
+depending on the configurations on the :ref:`settings file<f_settings>` it can call functions to:
 
-- **Calls**
+  * :ref:`Perform the conversions of the SBtab to:<f_import>`
 
-  - :ref:`f_load_settings<f_load_settings>`
-  - :ref:`f_import<f_import>`
-  - :ref:`f_generate_sbtab_struct<f_generate_sbtab_struct>`
-  - :ref:`f_analysis<f_analysis>`
-  - :ref:`f_save_analysis<f_save_analysis>`
-  - :ref:`f_plot<f_plot>`
-  - :ref:`f_save_plots<f_save_plots>`
-
+    * SBtab(.xlsx) to SBtab(.tsv)
+    * SBtab(.xlsx) to MATLAB SimBiology(.m, .sbproj)
+    * MATLAB SimBiology to SBML(.xml)
+	
+  * :ref:`Perform analysis on the model:<f_analysis>`
+  
+    * Diagnostics
+    * Parameter estimation
+    * Global sensitivity analysis
+  
+  * :ref:`Saving results from analysis<f_save_analysis>`
+  * :ref:`Ploting relevant results<f_plot>`
+  * :ref:`Saving plots<f_save_plots>`
+  
 - **Loads**
 - **Saves**
 

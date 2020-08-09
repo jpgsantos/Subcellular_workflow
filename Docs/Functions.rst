@@ -15,3 +15,4 @@ The Matlab functions used in this workflow are divided acording to its role, we 
    Functions_Simulation
    Functions_Analysis_index
    Functions_Plots
+   Functions_General

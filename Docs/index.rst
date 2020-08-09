@@ -11,7 +11,7 @@ We have also developed tools to convert the SBTAB format into several formats th
 
 Using Matlab we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
-We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016\ :sup:`1`\.
+We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016 [1]_.
 
 Code to run this model in Matlab, Neuron, and Subcellular aplication(STEPS) can be found on the "Matlab", "Neuron" and "Bionetgen and Steps folders" respectively.
 
@@ -52,4 +52,4 @@ Features:
 References
 ----------
 
-(1) Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080.
+.. [1] Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080.
