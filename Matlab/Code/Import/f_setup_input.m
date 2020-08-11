@@ -1,8 +1,9 @@
 function f_setup_input(stg)
-% Creates code that loads the inputs of each experiment into a .mat file,
-% "Data_D1_LTP_time_window_input" in this case, and creates the code to
-% read this inputs at runtime when the experiments are being simulated, all
-% this generated code is stored on the formulas folder
+%Creates code that loads the inputs of each experiment into a .mat file and
+%the code to read this inputs at runtime when the experiments are being 
+%simulated. 
+%All this generated code is stored on the 
+%"Matlab/Model/"model folder name"/Formulas" folder.
 
 persistent modelobj
 persistent sbtab

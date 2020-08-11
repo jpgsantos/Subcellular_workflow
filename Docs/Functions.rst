@@ -1,14 +1,18 @@
+.. _functions:
+
 Functions
 =========
 
-The Matlab functions used in this workflow are divided acording to its role, we have:
+The MATLAB functions used in this workflow are divided acording to their role, we have:
 
-  - Functions to import the model to matlab,
-  - Functions relating to the simulation of the model,
-  - Functions with analysis that we can perform on the model,
-  - Functions to plot the result of the different analysis.
+  - :ref:`Functions to import the model to MATLAB and generate model specific files and functions<functions_import>`
+  - :ref:`Functions relating to the simulation of the model,<functions_simulation>`  
+  - :ref:`Functions for analysis that we can perform on the model,<functions_analysis_index>`  
+  - :ref:`Functions to plot the result of the different analyses,<functions_plots>`  
+  - :ref:`General purpose functions.<functions_general>`  
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
    
    Functions_Import

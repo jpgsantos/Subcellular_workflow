@@ -16,7 +16,7 @@ Diagnostics
 
 - **rst.diag.st** - Total score
 
-To simplify representations the following correspondence as been used
+To simplify representations the following correspondence has been used
 
 :math:`score_{i,j,k} = \frac{1}{n} \sum_{i=1}^n \left(\frac{Y_{i,j,k}-y_{i,j,k}}{τ_{i,j,k}}\right)^2`
 
@@ -38,7 +38,7 @@ To simplify representations the following correspondence as been used
   
   .. _rst.se:
 
-- **rst.diag.se** - Score per experiment, in our example model we have 10 experiments, from E0 to E9.
+- **rst.diag.se** - Score per experiment
 
   if :ref:`stg.useLog<stg.useLog>` = 0 or 3
   
@@ -75,7 +75,7 @@ To simplify representations the following correspondence as been used
 		  
   .. _rst.sd:
   
-- **rst.diag.sd** - Score per experimental outputs in an experiment, in our example model we have 4 experimental outputs.
+- **rst.diag.sd** - Score per experimental outputs in all experiments
   
   if :ref:`stg.useLog<stg.useLog>` = 0,2, or 3
   
@@ -113,13 +113,13 @@ To simplify representations the following correspondence as been used
           \end{bmatrix}
 
   - :math:`F =` Objective function for Particle Swarm optimization 
-  - :math:`Y =` Simulation results from the original (validated) model, or data from experiments
+  - :math:`Y =` Data provided for fitting
   - :math:`y =` Simulation results of the updated model under parameterization :math:`θ`
-  - :math:`θ =` New parametization for :math:`y`
+  - :math:`θ =` New parameterization for :math:`y`
   - :math:`τ =` Allowed mismatch between the two simulation results, analogous to the standard deviation of a Gaussian noise model in data fitting
-  - :math:`n/i =` number/index of points in a given experimental output
-  - :math:`m/j =` number/index of experimental outputs in an experiment
-  - :math:`l/k =` number/index of experiments
+  - :math:`n/i =` Number/index of points in a given experimental output
+  - :math:`m/j =` Number/index of experimental outputs
+  - :math:`l/k =` Number/index of experiments
     
 |
 
@@ -128,30 +128,30 @@ Optimization
 
   .. _rst.opt.name:
 
-- **rst.opt.name** - optimizer name
+- **rst.opt.name** - Name of optimizer that was used
 
   .. _rst.opt.x:
 
-- **rst.opt.x** -  best parameter set found by the optimization
+- **rst.opt.x** -  Best parameter set found by the optimization
 
   .. _rst.opt.fval:
 
-- **rst.opt.fval** - score for that best parameter set
+- **rst.opt.fval** - Score for that best parameter set
 
   .. _rst.opt.exitflag:
 
-- **rst.opt.exitflag** - diagnostics to see how the optimization went
+- **rst.opt.exitflag** - Diagnostics to see how the optimization went
 
   .. _rst.opt.output:
 
-- **rst.opt.output** - diagnostics to see how the optimization went
+- **rst.opt.output** - Diagnostics to see how the optimization went
 
 |
 
 Sensitivity Analysis
 --------------------
 
-The calculations performed to obtain these Sensitivities where performed according to the equations described in Halnes et al 2009 [1]_.
+The calculations performed to obtain these sensitivities where performed according to the equations described in Halnes et al 2009 [1]_.
 
   .. _rst.SA.M1:
 
@@ -173,7 +173,7 @@ The calculations performed to obtain these Sensitivities where performed accordi
   
   .. _rst.SA.M2:
 
-- **rst.SA.M2** - same as :ref:`rst.SA.M1<rst.SA.M1>` but different random initialization
+- **rst.SA.M2** - Same as :ref:`rst.SA.M1<rst.SA.M1>` but different random initialization
 
   .. math::
 
@@ -204,7 +204,7 @@ The calculations performed to obtain these Sensitivities where performed accordi
   - :math:`x =` Parameters
   - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
-  - :math:`i =` Index for each parameter
+  - :math:`i =` Index of each parameter
   
   .. _rst.SA.fM1:
 
@@ -268,7 +268,7 @@ The calculations performed to obtain these Sensitivities where performed accordi
 
   - :math:`k =` Total number of parameters (:ref:`stg.parnum<stg.parnum>`)
   - :math:`r =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
-  - :math:`i =` Index for each parameter
+  - :math:`i =` Index of each parameter
   
   .. _rst.SA.SI:
 
@@ -283,12 +283,12 @@ The calculations performed to obtain these Sensitivities where performed accordi
     :math:`V(Y) = \frac{1}{n-1}f^2(M_1^r)-E^2(Y)`
 
   - :math:`V  =` Variance
-  - :math:`E(... |...)  =` conditional expected value
+  - :math:`E(... |...)  =` Conditional expected value
   - :math:`Θ =` Parameters of the model
-  - :math:`Y =` scalar output from the model
+  - :math:`Y =` Scalar output from the model
   - :math:`n =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
-  - :math:`r =` Index for the Samples number
-  - :math:`i =` Index for each parameter
+  - :math:`r =` Index of the Samples
+  - :math:`i =` Index of each parameter
   
   .. _rst.SA.STI:
 
@@ -303,12 +303,12 @@ The calculations performed to obtain these Sensitivities where performed accordi
     :math:`V_T(Y) = \frac{1}{n-1}f^2(M_2^r)-E^2(Y)`
 	
   - :math:`V  =` Variance
-  - :math:`E(... |...)  =` conditional expected value
+  - :math:`E(... |...)  =` Conditional expected value
   - :math:`Θ =` Parameters of the model
-  - :math:`Y =` scalar output from the model
+  - :math:`Y =` Scalar output from the model
   - :math:`n =` Total number of Samples (:ref:`stg.sansamples<stg.sansamples>`)
-  - :math:`r =` Index for the Samples number
-  - :math:`i =` Index for each parameter
+  - :math:`r =` Index of the Samples
+  - :math:`i =` Index of each parameter
 
 |
 

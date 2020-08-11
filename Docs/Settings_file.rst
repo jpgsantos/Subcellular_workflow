@@ -38,7 +38,7 @@ Import
 
   .. _stg.sbtab_excel_name:
 
-- **stg.sbtab_excel_name** - (string) Name of the excel file with the sbtab
+- **stg.sbtab_excel_name** - (string) Name of the Excel file with the SBtab
 
   .. _stg.name:
 
@@ -50,7 +50,7 @@ Import
 
   .. _stg.sbtab_name:
 
-- **stg.sbtab_name** - (string) Name of the sbtab saved in .mat format
+- **stg.sbtab_name** - (string) Name of the SBtab saved in .mat format
 
 |
 
@@ -69,7 +69,7 @@ Analysis
 	   
   .. _stg.analysis:
 
-- **stg.analysis** - (string) Name of the analysis to be run, the options are "diag", "opt", "SA", they can be combined as for example "diag, opt", to not run any analysis set stg.analysis to equal to ""
+- **stg.analysis** - (string) Name of the analysis to be run. The options are "diag", "opt", "SA" and they can be combined, for example "diag, opt". To not run any analysis set stg.analysis to "".
 
   .. _stg.exprun:
 
@@ -85,11 +85,11 @@ Analysis
   
   .. _stg.rseed:
 
-- **stg.rseed** - (double) Choice of ramdom seed
+- **stg.rseed** - (double) Choice of random seed
 
   .. _stg.simcsl:
 
-- **stg.simcsl** - (logical) Decide whether to use display simulation diagnostics in the console
+- **stg.simcsl** - (logical) Decide whether to display simulation diagnostics in the console
 
   .. _stg.optcsl:
 
@@ -115,11 +115,11 @@ Simulation
 			 
   .. _stg.maxt:
   
-- **stg.maxt** - (double) Maximum time for each individual function to run in seconds
+- **stg.maxt** - (double) Maximum time for each individual function has to run in seconds
 
   .. _stg.eqt:
 
-- **stg.eqt** - (double) Equilibration time
+- **stg.eqt** - (double) Equilibration time in seconds
 
   .. _stg.dimenanal:
 
@@ -147,11 +147,11 @@ Simulation
 
   .. _stg.sbioacc:
 
-- **stg.sbioacc** - (logical) Decide whether to run sbioaccelerate (after changing this value you need to run “clear functions” to see an effect)
+- **stg.sbioacc** - (logical) Decide whether to run `sbioaccelerate <https://www.mathworks.com/help/simbio/ref/sbioaccelerate.html>`_ (after changing this value you need to run “clear functions” to see an effect)
 
   .. _stg.maxstep:
 
-- **stg.maxstep** - (double) Max step size in the simulation (if empty matlab decides whats best)
+- **stg.maxstep** - (double) Max step size in the simulation (if empty MATLAB decides what's best)
 
 |
 
@@ -173,15 +173,15 @@ Model
 
   .. _stg.tci:
 
-- **stg.tci** - (double) Index for the parameters that have thermodynamic constrains
+- **stg.tci** - (double) Index for the parameters that have thermodynamic constraints
 
   .. _stg.tcm:
 
-- **stg.tcm** - (double) Parameters to multiply to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcm** - (double) Parameters to multiply to the first parameter (in stg.partest_ to get to the correct thermodynamic constraint formula)
 
   .. _stg.tcd:
 
-- **stg.tcd** - (double) Parameters to divide to the first parameter (in Stg.ms.partest to get to the correct thermodynamic constrain formula)
+- **stg.tcd** - (double) Parameters to divide to the first parameter (in stg.partest_ to get to the correct thermodynamic constraint formula)
 
   .. _stg.lb:
 
@@ -223,9 +223,9 @@ Diagnostics
 
   .. _stg.partest:
   
-- **stg.partest** - (double) Choice of what parameters to work on, since depending on the task, not all SBTAB parameters are worked on.
-  k indices correspond to the parameters in the model SBTAB and numbers up to i correspond to the parameters in the work set. 
-  This is the set that actually gets used for diagnostics, optimization, and Sensitivity analyis.
+- **stg.partest** - (double) Choice of which parameters to work on, since depending on the task, not all SBtab parameters are worked on.
+  k indices correspond to the parameters in the SBtab and numbers up to i correspond to the parameters in the work set. 
+  This is the set that actually gets used for diagnostics, optimization, and sensitivity analyis.
   
 
   .. math::
@@ -234,7 +234,7 @@ Diagnostics
               1_{k_1} & 2_{k_2} & ... & i_{k_{end}}
           \end{bmatrix}
 
-  In our example model parameter 216 from the SBTAB is or parameter number 1 of the work set, parameter 217 from the SBTAB is paramter number 2 of the work set, and successively.
+  In our example model parameter 216 from the SBtab is parameter number 1 of the work set, parameter 217 from the SBtab is parameter number 2 of the work set, and successively.
 		  
   .. math::
 
@@ -244,7 +244,7 @@ Diagnostics
 		  
   .. _stg.pat:
   
-- **stg.pat** - (double) Index(:math:`j`) of the Parameter set to work on
+- **stg.pat** - (double) Index(:math:`j`) of the parameter set to work on
 
   .. _stg.pa:
 
@@ -271,7 +271,7 @@ Diagnostics
 
   - :math:`x =` Parameters being worked on
   - :math:`i =` Index of Parameters being worked on
-  - :math:`k =` Index of the parameters in SBTAB
+  - :math:`k =` Index of the parameters in SBtab
   - :math:`j =` Index of the Parameter set to work on
 
 |
@@ -294,7 +294,7 @@ Plots
 
   .. _stg.plotoln:
 
-- **stg.plotoln** - (logical) Decide whether to use long names in the title of the outputs plots in f_plot_outputs.m
+- **stg.plotoln** - (logical) Decide whether to use long names in the title of the output plots in f_plot_outputs.m
 
 |
 
@@ -316,7 +316,7 @@ Sensitivity Analysis (SA)
 
   .. _stg.sasubmean:
 
-- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating SI and SIT
+- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`
 
   .. _stg.sasamplemode:
 
@@ -335,7 +335,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_1.png
 
- 1. Log normal distribution with μ as the best value for a parameter and σ as stg.sasamplesigma truncated at the parameter bounds
+ 1. Log normal distribution with μ as the best value for a parameter and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -363,7 +363,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_3.png
 
- 3. Log normal distribution centered at the mean of the parameter bounds and σ as stg.sasamplesigma truncated at the parameter bounds
+ 3. Log normal distribution centered at the mean of the parameter bounds and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -426,11 +426,11 @@ Optimization
 
   .. _stg.dbs:
 
-- **stg.dbs** - (double) Distance from best point to be used in stg.osm method 2 
+- **stg.dbs** - (double) Distance from best point to be used in :ref:`stg.osm<stg.osm>` method 2 
 
   .. _stg.mst:
 
-- **stg.mst** - (logical) Decide whether to use Multistart
+- **stg.mst** - (logical) Decide whether to use one or multiple starting points for the optimization
 
   .. _stg.msts:
 
@@ -438,11 +438,11 @@ Optimization
 
   .. _stg.optplots:
 
-- **stg.optplots** - (logical) Decide whether to display Plots (Plots doesn’t work if using multicore)
+- **stg.optplots** - (logical) Decide whether to display optimiazation plots (They aren't ploted if running the code in multicore)
 
   .. _stg.fmincon:
 
-- **stg.fmincon** - (logical) Decide whether to run `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_ (no gradient so this doesn't work very well, no max time!!)
+- **stg.fmincon** - (logical) Decide whether to run `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_ (no gradient in our models so this doesn't work very well, does not respect :ref:`time set for the optimization<stg.optt>`!!)
 
   .. _stg.fm_options:
 
@@ -488,8 +488,8 @@ Optimization
 
 - **stg.sopt_options** - (optim.options.Surrogateopt) `Options for Surrogate optimization <https://www.mathworks.com/help/gads/surrogateopt.html#mw_fa3519af-f062-41df-af65-c65ea7a54eb6>`_
 
-Automatic generated at Import
------------------------------
+Automatically generated at Import
+---------------------------------
 
   .. _stg.expn:
   

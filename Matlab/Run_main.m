@@ -12,7 +12,7 @@ date_stamp = string(year(datetime)) + "_" + ...
 
 addpath(genpath(pwd));
 
-% Code for importing setting that supports setting divided in different
+% Loads the settings file. It supports a settings file divided in different
 % parts, the inputs are in the format (model_name,folder_model,mode) mode
 % can be either "all" or any combination of "import","analysis",...
 % "simulation","model","diagnostics","plots","optimization".

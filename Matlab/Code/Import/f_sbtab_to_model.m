@@ -1,7 +1,7 @@
 function f_sbtab_to_model(stg,sb)
 % Saves the model in .mat, .sbproj and .xml format, while also creating a
 % file whith the data to run the model in all different experimental
-% settings defined in the sbtab
+% settings defined in the SBtab.
 
 
 modelobj = sbiomodel (stg.name);

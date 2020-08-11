@@ -1,4 +1,4 @@
-.. _f_analysis_index:
+.. _functions_analysis_index:
 
 Analysis
 ========
