@@ -1,5 +1,5 @@
-Welcome to the Subcelular workflow documentation! (*Under construction*)
-========================================================================
+Welcome to the Subcelular workflow documentation! (Under construction - last updated |today|)
+=============================================================================================
 
 |
 

@@ -7,7 +7,7 @@ The MATLAB functions used in this workflow are divided acording to their role, w
 
   - :ref:`Functions to import the model to MATLAB and generate model specific files and functions<functions_import>`
   - :ref:`Functions relating to the simulation of the model,<functions_simulation>`  
-  - :ref:`Functions for analysis that we can perform on the model,<functions_analysis_index>`  
+  - :ref:`Functions for analysis that we can perform on the model,<functions_analysis>`  
   - :ref:`Functions to plot the result of the different analyses,<functions_plots>`  
   - :ref:`General purpose functions.<functions_general>`  
 
@@ -17,6 +17,6 @@ The MATLAB functions used in this workflow are divided acording to their role, w
    
    Functions_Import
    Functions_Simulation
-   Functions_Analysis_index
+   Functions_Analysis
    Functions_Plots
    Functions_General

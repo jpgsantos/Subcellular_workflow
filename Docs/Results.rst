@@ -5,16 +5,22 @@ Results
 
 |
 
-Diagnostics
------------
+.. _rst_score:
+
+Scoring and saved simulation output
+-----------------------------------
+
+Every time a simulation is run the simulated results are compared to the results provided and a score is calculated.
+Additionally the end point of the experimental output of all simulations is also stored.
+When performing the diagnostics function an MATLAB representation of the entire run is also saved.
 
   .. _rst.simd:
 
-- **rst.diag.simd** - Simulation results (MATLAB representation)
+- **simd** - Simulation results (MATLAB representation)
 
   .. _rst.st:
 
-- **rst.diag.st** - Total score
+- **st** - Total score
 
 To simplify representations the following correspondence has been used
 
@@ -38,7 +44,7 @@ To simplify representations the following correspondence has been used
   
   .. _rst.se:
 
-- **rst.diag.se** - Score per experiment
+- **se** - Score of each experiment
 
   if :ref:`stg.useLog<stg.useLog>` = 0 or 3
   
@@ -75,7 +81,7 @@ To simplify representations the following correspondence has been used
 		  
   .. _rst.sd:
   
-- **rst.diag.sd** - Score per experimental outputs in all experiments
+- **sd** - Score of each experimental outputs in all experiments
   
   if :ref:`stg.useLog<stg.useLog>` = 0,2, or 3
   
@@ -101,7 +107,7 @@ To simplify representations the following correspondence has been used
 
   .. _rst.xfinal:
 
-- **rst.diag.xfinal** - x value of all the species being tested at the end of the simulation
+- **xfinal** - Value of each experimental outputs at the end of the simulation
 
   .. math::
 
@@ -122,6 +128,37 @@ To simplify representations the following correspondence has been used
   - :math:`l/k =` Number/index of experiments
     
 |
+
+.. _rst_diag:
+
+Diagnostics
+-----------
+
+When running the diagnostics a struct gets created that stores all the :ref:`oputputs<rst_score>` of the :ref:`f_sim_score function.<f_sim_score>`
+
+  .. _rst.diag.simd:
+
+- **rst.diag.simd** - Simulation results (MATLAB representation)
+
+  .. _rst.diag.st:
+
+- **rst.diag.st** - Total score
+  
+  .. _rst.diag.se:
+
+- **rst.diag.se** - Score per experiment
+		  
+  .. _rst.diag.sd:
+  
+- **rst.diag.sd** - Score per experimental outputs in all experiments
+ 
+  .. _rst.diag.xfinal:
+
+- **rst.diag.xfinal** - x value of all the species being tested at the end of the simulation
+    
+|
+
+.. _rst_opt:
 
 Optimization
 ------------

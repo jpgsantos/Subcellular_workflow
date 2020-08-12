@@ -1,7 +1,7 @@
 .. _functions_simulation:
 
-Simulation
-----------
+Simulation and Scoring
+----------------------
 
 .. _f_sim_score:
 
