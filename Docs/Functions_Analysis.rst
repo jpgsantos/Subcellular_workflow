@@ -22,7 +22,11 @@ The supported analysis right now are:
   - :ref:`Optimization<f_opt>`
   - :ref:`Global sensitivity analysis<f_SA>`
   
-- **Inputs** - :ref:`stg<stg>`
+- **Inputs**
+
+  - :ref:`stg<stg>`
+  - analysis - (string) analysis being run (:ref:`stg.analysis<stg.analysis>`)
+  
 - **Outputs** - :ref:`rst<rst>`
 
 .. _diagnostics:
@@ -45,8 +49,11 @@ f_diagnostics
 | Used to understand the effects of different parameters sets on model behaviour or in comparing different parameters sets.
 | It loads the user defined configurations, performs all the needed simulations, and calculates scores of the error functions either per experimental output, per experiment, or in total (:ref:`check results<rst_diag>`).
 
-- **Inputs** - :ref:`stg<stg>`
-- **Outputs** - :ref:`rst.diag<rst_diag>`
+- **Inputs**
+
+  - :ref:`stg<stg>` - :ref:`stg.optmc<stg.optmc>` , :ref:`stg.pat<stg.pat>`
+  
+- **Outputs** - rst (:ref:`diagnostics results<rst_diag>`)
 
 .. _opt:
 
@@ -68,8 +75,11 @@ f_opt
 
 Calls the correct optmizer or optimizers that have been chosen in the settings file.
 
-- **Inputs** - :ref:`stg<stg>`
-- **Outputs** - :ref:`Optimization results<rst_opt>`
+- **Inputs**
+
+  - :ref:`stg<stg>` - :ref:`stg.fmincon<stg.fmincon>`, :ref:`stg.sa<stg.sa>`, :ref:`stg.psearch<stg.psearch>`, :ref:`stg.ga<stg.ga>`, :ref:`stg.pswarm<stg.pswarm>`, :ref:`stg.sopt<stg.sopt>`
+
+- **Outputs** - rst (:ref:`optimization results<rst_opt>`)
 
 .. _f_opt_start:
 
@@ -86,8 +96,11 @@ f_opt_start
 | Creates the starting parameter set or sets of the optimizations, if single or multistart selected in settings file.
 | It supports two different random distributions for the starting points. 
 
-- **Inputs** - :ref:`stg<stg>`
-- **Outputs**
+- **Inputs**
+
+  - :ref:`stg<stg>` - :ref:`stg.rseed<stg.rseed>`, :ref:`stg.osm<stg.osm>`, :ref:`stg.msts<stg.msts>`, :ref:`stg.parnum<stg.parnum>`, :ref:`stg.ub<stg.ub>`, :ref:`stg.lb<stg.lb>`, :ref:`stg.popsize<stg.popsize>`, :ref:`stg.bestpa<stg.bestpa>`, :ref:`stg.dbpa<stg.dbpa>`
+
+- **Outputs** 
 
   - spoint - (double) starting parameter set for the optimization
   - spop - (double) Starting parameter sets for multiple start optimizations
@@ -187,11 +200,11 @@ makeParSamplesFromRanges
  	   :linenos:
 	   :language: matlab
 
-Creates distributions of paramter sets that are used to perform the global sensitivity analysis.
+Creates parameter sets with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
 
 - **Inputs**
 
-  - stg - :ref:`stg.sansamples<stg.sansamples>`, :ref:`stg.parnum<stg.parnum>`, :ref:`stg.ub<stg.ub>`, :ref:`stg.lb<stg.lb>`
+  - stg - :ref:`stg.sansamples<stg.sansamples>`, :ref:`stg.parnum<stg.parnum>`, :ref:`stg.sasamplemode<stg.sasamplemode>`, :ref:`stg.ub<stg.ub>`, :ref:`stg.lb<stg.lb>`
   
 - **Outputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`
 
@@ -210,8 +223,9 @@ makeOutputSample
 	   :language: matlab
 
 For each parameter set given in the matrices :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, and :ref:`N<rst.SA.N>`
-it runs the function :ref:`f_sim_score<f_sim_score>` generating new matrices :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>`
-respectively with the results.
+it runs the function :ref:`f_sim_score<f_sim_score>` generating new matrices
+:ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>`
+respectively.
 
 - **Inputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`, :ref:`stg.sansamples<stg.sansamples>`, :ref:`stg.parnum<stg.parnum>`,
 - **Outputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`

@@ -259,9 +259,9 @@ Diagnostics
 			  x_{1,j} & x_{2,j} & ... & x_{i,j}
           \end{bmatrix}
 		  
-  .. _stg.bestx:
+  .. _stg.bestpa:
 
-- **stg.bestx** - (double) Best parameter set found so far during optimization
+- **stg.bestpa** - (double) Best parameter set found so far during optimization
 
   .. math::
 
@@ -420,21 +420,21 @@ Optimization
 
 - **stg.osm** - (double) optimization start method, choose between
 
-  #. Get a random starting point or group of starting points inside the bounds
+  #. Get a random starting parameter set or group of starting parameter sets inside the bounds
   
-  #. Get a random starting point or group of starting points near the best point
+  #. Get a random starting parameter set or group of starting parameter sets near the best parameter set
 
-  .. _stg.dbs:
+  .. _stg.dbpa:
 
-- **stg.dbs** - (double) Distance from best point to be used in :ref:`stg.osm<stg.osm>` method 2 
+- **stg.dbpa** - (double) Distance from best parameter set to be used in :ref:`stg.osm<stg.osm>` method 2 
 
   .. _stg.mst:
 
-- **stg.mst** - (logical) Decide whether to use one or multiple starting points for the optimization
+- **stg.mst** - (logical) Decide whether to use one or multiple starting parameter sets for the optimization
 
   .. _stg.msts:
 
-- **stg.msts** - (double) Number of starting points for the optimizations
+- **stg.msts** - (double) Number of starting parameter sets for the optimizations
 
   .. _stg.optplots:
 
