@@ -216,7 +216,7 @@ stg.PLind = -1;
 stg.pltest = (1:6);
 
 % How many points to do for each parameter in the PL
-stg.plres = 90;
+stg.plres = 2;
 
 % True or false to decide whether to do plots after calculating PL
 stg.plplot = true;
@@ -235,7 +235,7 @@ stg.plfm = true;
 % Options for fmincon
 stg.plfmo = optimoptions('fmincon','Display','iter-detailed',...
     'Algorithm','interior-point',...
-    'MaxIterations',10,'OptimalityTolerance',0,...
+    'MaxIterations',0,'OptimalityTolerance',0,...
     'StepTolerance',1e-6,'FiniteDifferenceType','central');
 
 

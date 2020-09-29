@@ -9,5 +9,8 @@ end
 if contains(analysis,"SA")
     rst.SA = f_SA(stg);
 end
+if contains(analysis,"PLA")
+    rst.PL = f_PL_m(stg);
+end
 end
 
