@@ -3,18 +3,18 @@ Subcellular workflow
 
 This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
 
-At the root of our implementation is the SBTAB format, a file that can store biochemical models and associated data in an easily readable and expandable way.
+At the root of our implementation is the SBtab format, a file format that can store biochemical models and associated data in an easily readable and expandable way.
 
-We have also developed tools to convert the SBTAB format into several formats that can be used in MATLAB, Neuron, STEPS and Copasi.
+We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB, NEURON, STEPS and Copasi.
 
-Using Matlab we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+Using Matlab we have developed custom scripts for parameter estimation, global sensitivitiy analysis, and diagnostics tools that can be used for model development.
 
-We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
-Code to run this model in Matlab, Neuron, and Subcellular aplication(STEPS) can be found on the "Matlab", "Neuron" and "Bionetgen and Steps folders" respectively.
+We demonstrate all these features using an example model, a modified version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>1</sup>.
+Code to run this model in Matlab, NEURON, and Subcellular aplication(STEPS) can be found on the "Matlab", "NEURON" and "BioNetGen and Steps folders" respectively.
 
 Features:
 
-* Model simulation, using MATLAB, subcellular aplication(STEPS), or Neuron
+* Model simulation, using MATLAB, subcellular aplication(STEPS), or NEURON
 * Analysis of selected parameter sets, using MATLAB
 * Parameter optimization, using MATLAB
 * Global Sensitivity analysis, using MATLAB
@@ -41,7 +41,7 @@ After installing sphinx, install the following extra extensions to sphinx;
 * [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html)
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
-Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use your browser to open and browse the documentation.
+Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use with your browser to open and browse the documentation.
 
 # Compatibility
 
