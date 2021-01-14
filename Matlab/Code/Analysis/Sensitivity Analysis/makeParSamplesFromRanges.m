@@ -1,5 +1,5 @@
 function rst=makeParSamplesFromRanges(stg)
-% Code partly by Geir Halnes et al. (Halnes, Geir, et al. J. comp. neuroscience 27.3 (2009): 471.)
+% Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J. comp. neuroscience 27.3 (2009): 471.)
 %
 %Input from stg:
 %

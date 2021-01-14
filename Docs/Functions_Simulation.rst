@@ -1,5 +1,7 @@
-Simulation
-----------
+.. _functions_simulation:
+
+Simulation and Scoring
+----------------------
 
 .. _f_sim_score:
 
@@ -24,20 +26,9 @@ Calls the function that runs the simulations and the function that scores the ou
 
   - score - :ref:`rst.st<rst.st>`
 
-  - :ref:`rst<rst>`
-  
-    - :ref:`rst.simd<rst.simd>`
-    - :ref:`rst.xfinal<rst.xfinal>`
-    - :ref:`rst.sd<rst.sd>`
-    - :ref:`rst.se<rst.se>`
-    - :ref:`rst.st<rst.st>`
+  - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`, :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
 	
-  - rst_not_simd
-  
-    - :ref:`rst.xfinal<rst.xfinal>`
-    - :ref:`rst.sd<rst.sd>`
-    - :ref:`rst.se<rst.se>`
-    - :ref:`rst.st<rst.st>`
+  - rst_not_simd - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
 	
 - **Calls** - f_prep_sim_, f_score_
 - **Loads**
@@ -54,22 +45,11 @@ f_prep_sim
  	   :linenos:
 	   :language: matlab
 
-Prepares the simulation to be run making sure that an equilibration run is run every time it is needed before the main simulation run.
+Prepares the simulation making sure that an equilibration is preformed when necessary before running the main simulation.
 
 - **Inputs**
 
-  - :ref:`stg<stg>`
-  
-    - :ref:`stg.folder_model<stg.folder_model>`
-    - :ref:`stg.name<stg.name>`
-    - :ref:`stg.partest<stg.partest>`
-    - :ref:`stg.tci<stg.tci>`
-    - :ref:`stg.tcm<stg.tcm>`
-    - :ref:`stg.tcd<stg.tcd>`
-    - :ref:`stg.exprun<stg.exprun>`
-    - :ref:`stg.simcsl<stg.simcsl>`
-    - :ref:`stg.expn<stg.expn>`
-	
+  - :ref:`stg<stg>` - :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.partest<stg.partest>`, :ref:`stg.tci<stg.tci>`, :ref:`stg.tcm<stg.tcm>`, :ref:`stg.tcd<stg.tcd>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.simcsl<stg.simcsl>`, :ref:`stg.expn<stg.expn>`
   - parameters - (double) Set of parameters that we are working on
   
 - **Created Variables**
@@ -99,18 +79,13 @@ f_sim
 	   :language: matlab
 
 Simulates the model with the provided configurations.
-First time it is run it loads a representation of the model and the simulation and compiles this information to C code.
+The first time it is run it loads a representation of the model and the simulation, and compiles this information to C code.
 
 
 - **Inputs**
 
   - exp_n - (double) Unique number to identify the model for each experiment or equilibrium reaction (it needs a new model object for each one)
-  - :ref:`stg<stg>`
-  
-    - :ref:`stg.expn<stg.expn>`
-    - :ref:`stg.folder_model<stg.folder_model>`
-    - :ref:`stg.name<stg.name>`
-    - :ref:`stg.sbioacc<stg.sbioacc>`
+  - :ref:`stg<stg>` - :ref:`stg.expn<stg.expn>`, :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.sbioacc<stg.sbioacc>`
 	
   - rt
   
@@ -143,22 +118,11 @@ Uses the results from the simulation of the model and the Data provided via the 
 - **Inputs**
 
   - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
-
-  - :ref:`stg<stg>`
-  
-    - :ref:`stg.folder_model<stg.folder_model>`
-    - :ref:`stg.name<stg.name>`  
-    - :ref:`stg.exprun<stg.exprun>`  
-    - :ref:`stg.useLog<stg.useLog>`  
+  - :ref:`stg<stg>` - :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.useLog<stg.useLog>`  
 	
 - **Outputs**
 
-  - :ref:`rst.st<rst.st>`
-  
-    - :ref:`rst.xfinal<rst.xfinal>`
-    - :ref:`rst.sd<rst.sd>`
-    - :ref:`rst.se<rst.se>`
-    - :ref:`rst.st<rst.st>`
+  - :ref:`rst.st<rst.st>` - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, :ref:`rst.st<rst.st>`
 	
 - **Calls**
 - **Loads** - :ref:`data.mat<data.mat>`

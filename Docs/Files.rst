@@ -1,7 +1,9 @@
+.. _files:
+
 Model files and folders 
 =======================
 
-Extra non code files that should either be provided for the matlab part of the workflow to work or are generated after its run.
+Extra model-specific files that should be provided by the user or are generated after the setup and import functions have been run.
 
 |
 
@@ -14,7 +16,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\sbtab\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the SBtab in .xlsx format. 
-It needs to be provided for the matlab part of the workflow to work.
+It needs to be provided for the MATLAB part of the workflow to work.
 
   .. _sbtab.mat:
 
@@ -22,7 +24,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\sbtab\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the SBtab in .mat format.
-It is generated after the run of the matlab part of the workflow if :ref:`import<stg.import>` is chosen in settings
+It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _sbtab.tsv:
 
@@ -30,7 +32,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\tsv
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This folder contains the SBtab in .tsv format.
-It is generated after the run of the matlab part of the workflow if :ref:`import<stg.import>` is chosen in settings
+It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
 |
 
@@ -43,7 +45,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the model derived from the SBtab in .sbproj (MATLAB SimBiology) format.
-It is generated after the run of the matlab part of the workflow if :ref:`import<stg.import>` is chosen in settings
+It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _model.mat:
 
@@ -51,7 +53,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the model derived from the SBtab in .mat format.
-It is generated after the run of the matlab part of the workflow if :ref:`import<stg.import>` is chosen in settings
+It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _model.xml:
 
@@ -59,7 +61,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the model derived from the SBtab in .xml (SBML) format.
-It is generated after the run of the matlab part of the workflow if :ref:`import<stg.import>` is chosen in settings
+It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
 |
 
@@ -83,6 +85,8 @@ This file contains input data derived from the SBtab in a .mat format for all th
 
 |
 
+  .. _rr_model:
+
 Ready to run model
 ------------------
 
@@ -102,6 +106,8 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\Exp\\Model_eq\_\ :ref:
 Same as previously but tailor made for the equilibration step of the simulation.
 
 |
+
+  .. _files_functions:
 
 Functions
 ---------
@@ -124,5 +130,5 @@ Settings
 :ref:`Model\\model_folder_name\\Settings\\<stg>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A place for the user to define all the relevant properties of model simulation that are not stored in SBTAB.
-This are usually things that need to change during optimizations or model development.
+A place for the user to define all the relevant properties of model simulation that are not stored in SBtab.
+These are usually things that need to change during optimizations or model development.
