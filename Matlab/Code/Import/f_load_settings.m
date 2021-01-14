@@ -42,6 +42,8 @@ function [stg] = load_setting_chunk(name,chunk,stg)
 settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
     chunk + "_" + name + ".m";
 
+settings_filename
+
 if isfile(settings_filename)
     
     [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");

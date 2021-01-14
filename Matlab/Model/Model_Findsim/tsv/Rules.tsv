@@ -1,0 +1,3 @@
+!!SBtab	Document='Findsim' TableName='Rules' TableType='Expression' TableTitle='D1 LTP time window Expressions' SBtabVersion='1.0'			
+!ID	!Name	!Formula	!Unit	!Location
+Ru0	PKC_active	PKC_DAG_AA_p+PKC_Ca_memb_p+PKC_Ca_AA_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p	millimole/litre	Cell

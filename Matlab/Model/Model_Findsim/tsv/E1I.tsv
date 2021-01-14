@@ -1,0 +1,4 @@
+!!SBtab	SBtabVersion='1.0' TableType='QuantityMatrix' TableName='E1I' 'TableTitle='' Document='Findsim'	
+!Input_Time_S9	>S51	!Sim_Time
+0	0	40000
+3600	1e-06	
