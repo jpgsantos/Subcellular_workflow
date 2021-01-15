@@ -1,5 +1,5 @@
 !!SBtab	SBtabVersion='1.0' TableType='QuantityMatrix' TableName='E1' 'TableTitle='' Document='Findsim'		
-!TimePoint	!Time	>Y6	SD_Y6
+!ID	!Time	>Y6	SD_Y6
 E0T0	3600	1	0.01
 E0T1	3900	2.5	1
 E0T2	5400	1.5	0.3
