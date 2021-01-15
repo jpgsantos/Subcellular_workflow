@@ -44,27 +44,13 @@ if isempty(model_run)
     end
 end
 
-% Iterate over the species in the model 
-for k = 1:size(rt.ssa(:,exp_n),1)
-    
-    % If the values after equilibration are to low set the start amount of
-    % the species in the model to 0 to avoid numerical problems
-    if rt.ssa(k,exp_n) < 1.0e-15
-        model_run{exp_n}.species(k).InitialAmount = 0;
-        
-    % Else substitute the start amount of the species in the model with the 
-    % correct ones for  simulations
-    else
-        model_run{exp_n}.species(k).InitialAmount =...
-            rt.ssa(k,exp_n);
-    end
-end
+% substitute the start amount of the species in the model with the
+% correct ones for  simulations
+set(model_run{exp_n}.species(1:size(rt.ssa(:,exp_n),1)),{'InitialAmount'},num2cell(rt.ssa(:,exp_n)))
 
 % Substitute the values of the parameters in the model for the correct
 % one for simultaions
-for i = 1:size(rt.par,1)
-    model_run{exp_n}.parameters(i).value = rt.par(i);
-end
+set(model_run{exp_n}.parameters(1:size(rt.par,1)),{'Value'},num2cell(rt.par))
 
 %simulate the model using matlab built in function
 rst.simd{exp_n} = sbiosimulate(model_run{exp_n});

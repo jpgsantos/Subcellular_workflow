@@ -2,7 +2,7 @@
 
 clear
 clc
-% clear functions
+clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -16,7 +16,11 @@ addpath(genpath(pwd));
 % parts, the inputs are in the format (model_name,folder_model,mode) mode
 % can be either "all" or any combination of "import","analysis",...
 % "simulation","model","diagnostics","plots","optimization".
-[stg] = f_load_settings("TW","D1_LTP_time_window","all");
+
+% [stg] = f_load_settings("TW","Model_D1_LTP_time_window","all");
+[stg] = f_load_settings("Akt","Model_Akt","all");
+% [stg] = f_load_settings("Findsim","Model_Findsim","all");
+
 
 % Runs the import scripts if chosen in settings
 if stg.import

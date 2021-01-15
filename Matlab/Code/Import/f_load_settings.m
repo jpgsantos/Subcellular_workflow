@@ -35,6 +35,7 @@ end
 
 %  Get the working folder
 stg.folder_main = pwd;
+stg.folder_main = strrep(stg.folder_main,"\","/");
 end
 
 function [stg] = load_setting_chunk(name,chunk,stg)
@@ -42,17 +43,20 @@ function [stg] = load_setting_chunk(name,chunk,stg)
 settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
     chunk + "_" + name + ".m";
 
-if isfile(settings_filename)
-    
+% if isfile(settings_filename)
+%     try
+        
     [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");
     
     f = fieldnames(stg_add);
     for i = 1:length(f)
         stg.(f{i}) = stg_add.(f{i});
     end
-else
-    error("You are lacking the f_settings_" + chunk + "_" +...
-        name + ".m file")
-end
+%     catch
+% % else
+%     error("You are lacking the f_settings_" + chunk + "_" +...
+%         name + ".m file")
+% % end
+%     end
 end
 

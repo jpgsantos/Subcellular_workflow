@@ -9,23 +9,22 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-        load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
+    load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
 end
 
 % Set the parameters that are going to be used for the simulation to the
 % default ones as definded in the SBTAB
 rt.par(:,1) = [sbtab.defpar{:,2}];
 
+% Check if the parametrer needs to be set to the value relevant for
+% Profile Likelihood
+if isfield(stg,"PLind") && isfield(stg,"PLval")
+    parameters = [parameters(1:stg.PLind-1) stg.PLval parameters(stg.PLind:end)];
+end
+
 % Iterate over all the parameters of the model
 for n = 1:size(rt.par,1)
     
-    % Check if the parametrer needs to be set to the value relevant for
-    % Profile Likelihood
-    if isfield(stg,"PLind")
-        if stg.partest(n,1) == stg.PLind
-            parameters(stg.partest(n,1)) = stg.PLval;
-        end
-    end
     % Check that a parameter should be changed from default
     if stg.partest(n) > 0
         
@@ -134,11 +133,12 @@ for n = stg.exprun
         
         % Check that this is not the first time the experiments are being
         % run and that the start values for the species are different
-        % fromthe previous experiment
+        % from the previous experiment
         if n ~= stg.exprun(1) && ...
-            min([sbtab.datasets(n).start_amount{:,2}] ==...
-            [sbtab.datasets(max(1,stg.exprun(...
-            find(stg.exprun==n)-1))).start_amount{:,2}])
+                min([sbtab.datasets(n).start_amount{:,2}] ==...
+                [sbtab.datasets(max(1,stg.exprun(...
+                find(stg.exprun==n)-1))).start_amount{:,2}])
+            
             
             % Set the values of the start amounts to the values obtained
             % after the first equilibration
@@ -167,7 +167,7 @@ for n = stg.exprun
                 if rst.simd{n+stg.expn}.Data(end,j) < 1.0e-15
                     rt.ssa(j,n) = 0;
                     
-                % Set the starting amount for the rest of the species
+                    % Set the starting amount for the rest of the species
                 else
                     rt.ssa(j,n) =...
                         rst.simd{n+stg.expn}.Data(end,j);

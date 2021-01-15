@@ -22,6 +22,52 @@ for n = stg.exprun
             
             % Calculate score using formula that accounts for normalization
             % with the starting point of the result
+            if stg.useLog == 4
+                
+%                 Data(n).Experiment.x_SD(:,j)
+
+%                 rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
+%                      (Data(n).Experiment.x_SD(:,j))
+%                  
+%                  prod(rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
+%                      (Data(n).Experiment.x_SD(:,j)))
+%                  
+%                  ((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2
+                
+
+%                  (1/(sqrt(2*pi)*(sum(Data(n).Experiment.x_SD(:,j))/...
+%                      (size(Data(n).Experiment.x(:,j),1)-2))))
+%                  
+%                  (exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)))
+                 
+                 
+%                 sqrt(size(Data(n).Experiment.x(:,j),1)-2)
+
+%                 (1/(sqrt(2*pi)*...
+%                     prod(Data(n).Experiment.x_SD(:,j))))
+% %                 
+%                 -1/2*sum(((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)
+% 
+%                 exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2))
+%                 
+%                 rst.sd{n,1}(j) = (1/sqrt(2*pi))*...
+%                     exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2));
+                
+                rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
+                    rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                    (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2);
+                
+            else
             if sbtab.datasets(n).normstart == 1
                 rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
                     (rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
@@ -36,11 +82,17 @@ for n = stg.exprun
                     (Data(n).Experiment.x_SD(:,j))).^2)/...
                     (size(Data(n).Experiment.x(:,j),1)-2);
             end
-            
+            end
             % If there are errors output a very high score value (10^10)
         elseif rst.simd{n} == 0 || rst.sd{n,1}(j) == inf
-            rst.sd{n,1}(j) = 10^10;
-            rst.xfinal{n,1}(j) = 0;
+            
+            if stg.useLog == 4
+                rst.sd{n,1}(j) = 1000;
+                rst.xfinal{n,1}(j) = 0;
+            else
+                rst.sd{n,1}(j) = 10^10;
+                rst.xfinal{n,1}(j) = 0;
+            end
         end
         
         % Calculate the log10 of dataset score if option selected
@@ -48,9 +100,15 @@ for n = stg.exprun
             rst.sd{n,1}(j) = max(0,log10(rst.sd{n,1}(j)));
         end
     end
-    
+%     rst.sd{n,1}
+%     prod(rst.sd{n,1})
+
+    if stg.useLog == 4
+         rst.se(n,1) = sum(rst.sd{n,1});
+    else
     % Calculate score per experiment
     rst.se(n,1) = sum(rst.sd{n,1});
+    end
     
     % Calculate the log10 of experiment score if option selected
     if stg.useLog == 2
@@ -58,8 +116,14 @@ for n = stg.exprun
     end
 end
 
+if stg.useLog == 4
+%     sum(rst.se)
+%     exp(-1/2*sum(rst.se))
+rst.st = log10(sum(rst.se));
+else
 % Calculate score per experiment
 rst.st = sum(rst.se);
+end
 
 % Calculate the log10 of total score if option selected
 if stg.useLog == 3

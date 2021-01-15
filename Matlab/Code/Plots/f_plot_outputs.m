@@ -71,14 +71,15 @@ for n = stg.exprun
                         size(sbtab.datasets(n).output,2)+j),'DisplayName',...
                         string("Parameter set "+m),'LineWidth',1.5)
                 end
+                    
+                ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+                        size(sbtab.datasets(n).output,2)+j,1}.Units))
             end
         end
         
         hold off
         
         xlabel('seconds')
-        ylabel('nanomole/liter')
-        
         % Choose correct title according to settings
         if stg.plotoln == 1
             title("E" + (n-1) + " " +...

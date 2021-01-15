@@ -1,0 +1,16 @@
+!!SBtab	SBtabVersion='1.0' TableName='Output' TableTitle='Model output functions' TableType='Quantity' Document='MGluR'								
+!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!ProbDist	!LaTeX	!Location	!Formula
+Y0	pEGFR_tot	Total pEGFR	SD_Y0	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	0.000181735*(pEGFR+pEGFR_Akt)
+Y1	pAkt_tot	Total pAkt	SD_Y1	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	60.0588*(pAkt+pAkt_S6)
+Y2	pS6_tot	Total pS6	SD_Y2	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	49886.2*pS6
+Y3	EGFR_test		SD_Y3	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	EGFR
+Y4	pEGFR_test		SD_Y4	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pEGFR
+Y5	pEGFR_Akt_test		SD_Y5	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pEGFR_Akt
+Y6	Akt_test		SD_Y6	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	Akt
+Y7	pAkt_test		SD_Y7	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pAkt
+Y8	S6_test		SD_Y8	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	S6
+Y9	pAkt_S6_test		SD_Y9	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pAkt_S6
+Y10	pS6_test		SD_Y10	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pS6
+Y11	EGF_EGFR_test		SD_Y11	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	EGF_EGFR
+Y12	EGF_test		SD_Y12	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	EGF
+Y13	pro_EGFR_test		SD_Y13	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Cell	pro_EGFR

@@ -1,0 +1,4 @@
+!!SBtab	SBtabVersion='1.0' TableName='Experiments' TableTitle='Model Inputs and Measurement Mapping' TableType='QuantityMatrix' Document='Findsim'																														
+!ID	!Name	!RelativeTo	!Type	>Output	!Event	>S5	>S10	>S12	>S17	>S21	>S28	>S29	>S31	>S33	>S34	>S41	>S44	>S46	>S49	>S54	>S57	>S60	>S62	>S66	>S67	>S68	>S69	!ReferenceDOI	!T0	!Likelihood	!Sim_Time
+E0	Experiment 1		Time Series	Y0	EE0	2e-05	0.001	0.0004	0.030001	0.0008	0.00073	0.007	0.0002	0.00018001	0.00036	0.0001	0.0005	2e-05	0.00016666	0.00050001	0.001	0.0001	0.00082001	7.0002e-07	2e-05	0.00026001	8e-05			true	10000
+E1	Experiment 2		Time Series	Y1	EE1	2e-05	0.001	0.0004	0.030001	0.0008	0.00073	0.007	0.0002	0.00018001	0.00036	0.0001	0.0005	2e-05	0.00016666	0.00050001	0.001	0.0001	0.00082001	7.0002e-07	2e-05	0.00026001	8e-05			true	40000

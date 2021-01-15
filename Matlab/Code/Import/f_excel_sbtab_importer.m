@@ -18,7 +18,7 @@ catch
 end
 
 % Save the SBTAB tables in .mat format
-save("Model/" +stg.folder_model + "/Data/" +...
+save(stg.folder_main + "/Model/" +stg.folder_model + "/Data/" +...
     stg.sbtab_name + ".mat",'sbtab_excel');
 end
 

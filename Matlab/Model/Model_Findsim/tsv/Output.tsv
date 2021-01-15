@@ -1,0 +1,9 @@
+!!SBtab	SBtabVersion='1.0' TableName='Output' TableTitle='Model output functions' TableType='Quantity' Document='Findsim'								
+!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!ProbDist	!LaTeX	!Location	!Formula
+Y0	pERK1_2_ratio1		SD_Y0	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	(MAPK_p+MAPK_p_p+MAPK_p_p_cplx+MAPK_p_p_feedback_cplx)*10000
+Y1	MAPK_out		SD_Y1	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	MAPK
+Y2	MAPK_p_out		SD_Y2	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	MAPK_p
+Y3	MAPK_p_p_out		SD_Y3	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	MAPK_p_p
+Y4	MAPK_p_p_cplx_out		SD_Y4	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	MAPK_p_p_cplx
+Y5	MAPK_p_p_feedback_cplx_out		SD_Y5	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	MAPK_p_p_feedback_cplx
+Y6	pERK1_2_ratio2		SD_Y6	abs+rel random noise (std)	millimole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	(MAPK_p+MAPK_p_p+MAPK_p_p_cplx+MAPK_p_p_feedback_cplx)*300000

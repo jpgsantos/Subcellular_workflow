@@ -11,9 +11,9 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    load("Model/" +stg.folder_model +"/Data/" + "data_" +...
+    load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
         stg.name + ".mat",'Data','sbtab')
-    load("Model/" +stg.folder_model +"/Data/" + "model_" +...
+    load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
         stg.name + ".mat",'modelobj');
 end
 
@@ -24,6 +24,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
     Compounds = sbtab.species;
     maxi = sbtab.datasets(number_exp).max;
+%     output_value = sbtab.datasets(number_exp).output_value;
+% sbtab.datasets(number_exp).output_value{end}
     output_value = sbtab.datasets(number_exp).output_value;
     output = sbtab.datasets(number_exp).output;
     input_time = sbtab.datasets(number_exp).input_time;
@@ -50,15 +52,21 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
     if ~isempty(stg.maxstep)
         set(configsetObj{number_exp}.SolverOptions,...
-            'MaxStep', stg.maxstep);
+            'MaxStep', stg.maxstepeq);
     end
     
     model_exp = model_run{number_exp};
     
-    save("Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+    save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
+    
+%     Data(number_exp).Experiment.t
+%     Data(number_exp).Experiment.t(end)
+%         set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
+%          [1:Data(number_exp).Experiment.t(end)]);
+    
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
         Data(number_exp).Experiment.t);
     
@@ -152,7 +160,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
     model_exp = model_run{number_exp};
     
-    save("Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+    save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp')
 end
 end
