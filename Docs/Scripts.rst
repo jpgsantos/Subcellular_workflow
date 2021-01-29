@@ -3,7 +3,7 @@
 Scripts
 =======
 
-In this workflow we use three MATLAB scripts:
+In this workflow we use three MATLAB&trade; scripts:
 
 - Run_main - Runs the analysis predetermined in the settings file
 - Reproduce_analysis - Re-runs the analysis saved in a results file
@@ -11,10 +11,10 @@ In this workflow we use three MATLAB scripts:
 
 We have provided an example diagnostics run and an example global sensitivity analysis run, the results of which can be found on the following folders: 
 
-- Diagnostics - Matlab/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
-- Global Sensitivity analysis - Matlab/Model/D1_LTP_time_window/Results/Analysis_GSA_example
+- Diagnostics - MATLAB&trade;/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
+- Global Sensitivity analysis - MATLAB&trade;/Model/D1_LTP_time_window/Results/Analysis_GSA_example
 
-To run these scripts MATLAB should be opened with the folder called MATLAB as the main folder
+To run these scripts MATLAB&trade; should be opened with the folder called MATLAB&trade; as the main folder
 
 Run_main
 --------
@@ -22,18 +22,18 @@ Run_main
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../Matlab/Run_main.m
-        :language: matlab
+     .. literalinclude:: ../MATLAB&trade;/Run_main.m
+        :language: MATLAB&trade;
         :linenos:
 		
-This is the main script from the MATLAB portion of the workflow. 
+This is the main script from the MATLAB&trade; portion of the workflow. 
 Depending on the configurations on the :ref:`settings file<f_settings>` it can call functions to:
 
   * :ref:`Perform conversions of the SBtab:<functions_import>`
 
     * SBtab(.xlsx) to SBtab(.tsv)
-    * SBtab(.xlsx) to MATLAB SimBiology(.m, .sbproj)
-    * MATLAB SimBiology to SBML(.xml)
+    * SBtab(.xlsx) to MATLAB&trade; SimBiology(.m, .sbproj)
+    * MATLAB&trade; SimBiology to SBML(.xml)
 	
   * :ref:`Perform analysis on the model:<functions_analysis>`
   
@@ -51,8 +51,8 @@ Reproduce_analysis
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../Matlab/Reproduce_analysis.m
-        :language: matlab
+     .. literalinclude:: ../MATLAB&trade;/Reproduce_analysis.m
+        :language: MATLAB&trade;
         :linenos:
 
 This script can be used to re-do an analysis that has previously been run.
@@ -66,8 +66,8 @@ Reproduce_analysis_plots
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../Matlab/Reproduce_analysis_plots.m
-        :language: matlab
+     .. literalinclude:: ../MATLAB&trade;/Reproduce_analysis_plots.m
+        :language: MATLAB&trade;
         :linenos:
 
 Similar to the previous script but here only the plots are re-done.

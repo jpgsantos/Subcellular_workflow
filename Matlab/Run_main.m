@@ -18,8 +18,8 @@ addpath(genpath(pwd));
 % "simulation","model","diagnostics","plots","optimization".
 
 % [stg] = f_load_settings("TW","Model_D1_LTP_time_window","all");
-[stg] = f_load_settings("Akt","Model_Akt","all");
-% [stg] = f_load_settings("Findsim","Model_Findsim","all");
+% [stg] = f_load_settings("Akt","Model_Akt","all");
+[stg] = f_load_settings("Findsim","Model_Findsim","all");
 
 
 % Runs the import scripts if chosen in settings
