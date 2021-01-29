@@ -7,13 +7,13 @@ This workflow has been developed to tackle the challenge of building and analyzi
 
 At the root of our implementation is the SBtab format, a file that can store biochemical models and associated data in an easily readable and expandable way.
 
-We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB&trade;, Neuron, STEPS and Copasi.
+We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB U+2122, Neuron, STEPS and Copasi.
 
-Using MATLAB&trade; we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+Using MATLAB U+2122 we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
 We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016 [1]_.
 
-Code to run this model in MATLAB&trade;, Neuron, and Subcellular aplication(STEPS) can be found on the "MATLAB&trade;", "Neuron" and "Bionetgen and Steps folders" respectively.
+Code to run this model in MATLAB U+2122, Neuron, and Subcellular aplication(STEPS) can be found on the "MATLAB U+2122", "Neuron" and "Bionetgen and Steps folders" respectively.
 
 |
 
