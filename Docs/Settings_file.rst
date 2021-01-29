@@ -10,9 +10,9 @@ This are usually things that need to change during optimizations or model develo
   .. toggle-header::
       :header: **Code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab	 
+         :language: MATLAB&trade;&trade;	 
 	
 |
 	
@@ -22,9 +22,9 @@ Import
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Import
          :end-before: %% Analysis	  
 
@@ -60,9 +60,9 @@ Analysis
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Analysis
          :end-before: %% Simulation	
 
@@ -107,9 +107,9 @@ Simulation
   .. toggle-header::
       :header: **Example model code**
      
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Simulation
          :end-before: %% Model
 			 
@@ -151,7 +151,7 @@ Simulation
 
   .. _stg.maxstep:
 
-- **stg.maxstep** - (double) Max step size in the simulation (if empty MATLAB decides what's best)
+- **stg.maxstep** - (double) Max step size in the simulation (if empty MATLAB&trade;&trade; decides what's best)
 
 |
 
@@ -161,9 +161,9 @@ Model
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Model
          :end-before: %% Diagnostics 
 			 
@@ -215,9 +215,9 @@ Diagnostics
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Diagnostics
          :end-before: %% Plots
 
@@ -282,9 +282,9 @@ Plots
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Plots
          :end-before: %% Sensitivity analysis
 
@@ -304,9 +304,9 @@ Sensitivity Analysis (SA)
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Sensitivity analysis
          :end-before: %% Optimization 
 		 
@@ -403,9 +403,9 @@ Optimization
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../MATLAB&trade;&trade;/Model/D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
-         :language: matlab
+         :language: MATLAB&trade;&trade;
          :start-after: %% Optimization
 
   .. _stg.optt:
