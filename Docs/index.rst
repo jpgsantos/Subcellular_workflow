@@ -19,15 +19,15 @@ Code to run this model in MATLAB&trade;, Neuron, and Subcellular aplication(STEP
 
 Features:
 
-* Model simulation, using MATLAB&trade;, subcellular aplication(STEPS), or Neuron
-* Analysis of selected parameter sets, using MATLAB&trade;
-* Parameter optimization, using MATLAB&trade;
-* Global Sensitivity analysis, using MATLAB&trade;
+* Model simulation, using MATLAB U+2122, subcellular aplication(STEPS), or Neuron
+* Analysis of selected parameter sets, using MATLAB U+2122
+* Parameter optimization, using MATLAB U+2122
+* Global Sensitivity analysis, using MATLAB U+2122
 * Conversion tools:
 
-  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB&trade;
-  * SBtab(.xlsx) to MATLAB&trade; SimBiology(.m, .sbproj), using MATLAB&trade;
-  * MATLAB&trade; SimBiology to SBML(.xml), using MATLAB&trade;
+  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB U+2122
+  * SBtab(.xlsx) to MATLAB U+2122 SimBiology(.m, .sbproj), using MATLAB U+2122
+  * MATLAB U+2122 SimBiology to SBML(.xml), using MATLAB U+2122
   * SBtab(.tsv) to VFGEN(.vf), using R
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using R
@@ -43,7 +43,7 @@ Features:
    :maxdepth: 1
 
    SBtab 
-   MATLAB&trade;
+   MATLAB U+2122
    Neuron
    Sub_application
    Conversion_tools

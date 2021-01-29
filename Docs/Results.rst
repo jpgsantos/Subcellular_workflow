@@ -12,11 +12,11 @@ Scoring and saved simulation output
 
 Every time a simulation is run the simulated results are compared to the results provided and a score is calculated.
 Additionally the end point of the experimental output of all simulations is also stored.
-When performing the diagnostics function an MATLAB&trade; representation of the entire run is also saved.
+When performing the diagnostics function an MATLAB U+2122 representation of the entire run is also saved.
 
   .. _rst.simd:
 
-- **simd** - Simulation results (MATLAB&trade; representation)
+- **simd** - Simulation results (MATLAB U+2122 representation)
 
   .. _rst.st:
 
@@ -138,7 +138,7 @@ When running the diagnostics a struct gets created that stores all the :ref:`opu
 
   .. _rst.diag.simd:
 
-- **rst.diag.simd** - Simulation results (MATLAB&trade; representation)
+- **rst.diag.simd** - Simulation results (MATLAB U+2122 representation)
 
   .. _rst.diag.st:
 
