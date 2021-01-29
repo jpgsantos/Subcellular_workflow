@@ -43,7 +43,7 @@ Features:
    :maxdepth: 1
 
    SBtab 
-   MATLAB U+2122
+   MATLAB
    Neuron
    Sub_application
    Conversion_tools
