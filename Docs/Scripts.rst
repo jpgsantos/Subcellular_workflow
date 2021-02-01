@@ -22,7 +22,7 @@ Run_main
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../MATLAB/Run_main.m
+     .. literalinclude:: ../Matlab/Run_main.m
         :language: MATLAB
         :linenos:
 		
@@ -52,7 +52,7 @@ Reproduce_analysis
      :header: **Code**
 
      .. literalinclude:: ../MATLAB/Reproduce_analysis.m
-        :language: MATLAB
+        :language: matlab
         :linenos:
 
 This script can be used to re-do an analysis that has previously been run.
@@ -66,8 +66,8 @@ Reproduce_analysis_plots
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../MATLAB/Reproduce_analysis_plots.m
-        :language: MATLAB
+     .. literalinclude:: ../Matlab/Reproduce_analysis_plots.m
+        :language: matlab
         :linenos:
 
 Similar to the previous script but here only the plots are re-done.
