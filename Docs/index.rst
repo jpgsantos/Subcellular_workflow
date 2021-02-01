@@ -7,27 +7,27 @@ This workflow has been developed to tackle the challenge of building and analyzi
 
 At the root of our implementation is the SBtab format, a file that can store biochemical models and associated data in an easily readable and expandable way.
 
-We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB U+2122, Neuron, STEPS and Copasi.
+We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB\ |TM|, Neuron, STEPS and Copasi.
 
-Using MATLAB U+2122 we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+Using MATLAB\ |TM| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
 We demonstrate all these features using an example model, a modifieed version of the D1 MSN subcellular cascade model from Nair et al 2016 [1]_.
 
-Code to run this model in MATLAB U+2122, Neuron, and Subcellular aplication(STEPS) can be found on the "MATLAB U+2122", "Neuron" and "Bionetgen and Steps folders" respectively.
+Code to run this model in MATLAB\ |TM|, Neuron, and Subcellular aplication(STEPS) can be found on the "MATLAB\ |TM|", "Neuron" and "Bionetgen and Steps folders" respectively.
 
 |
 
 Features:
 
-* Model simulation, using MATLAB U+2122, subcellular aplication(STEPS), or Neuron
-* Analysis of selected parameter sets, using MATLAB U+2122
-* Parameter optimization, using MATLAB U+2122
-* Global Sensitivity analysis, using MATLAB U+2122
+* Model simulation, using MATLAB\ |TM|, subcellular aplication(STEPS), or Neuron
+* Analysis of selected parameter sets, using MATLAB\ |TM|
+* Parameter optimization, using MATLAB\ |TM|
+* Global Sensitivity analysis, using MATLAB\ |TM|
 * Conversion tools:
 
-  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB U+2122
-  * SBtab(.xlsx) to MATLAB U+2122 SimBiology(.m, .sbproj), using MATLAB U+2122
-  * MATLAB U+2122 SimBiology to SBML(.xml), using MATLAB U+2122
+  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB\ |TM|
+  * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj), using MATLAB\ |TM|
+  * MATLAB\ |TM| SimBiology to SBML(.xml), using MATLAB\ |TM|
   * SBtab(.tsv) to VFGEN(.vf), using R
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using R
@@ -43,7 +43,7 @@ Features:
    :maxdepth: 1
 
    SBtab 
-   MATLAB
+   Matlab
    Neuron
    Sub_application
    Conversion_tools
