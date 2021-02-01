@@ -10,7 +10,7 @@ This are usually things that need to change during optimizations or model develo
   .. toggle-header::
       :header: **Code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
 	
@@ -22,7 +22,7 @@ Import
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Import
@@ -60,7 +60,7 @@ Analysis
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Analysis
@@ -107,7 +107,7 @@ Simulation
   .. toggle-header::
       :header: **Example model code**
      
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Simulation
@@ -161,7 +161,7 @@ Model
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Model
@@ -215,7 +215,7 @@ Diagnostics
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Diagnostics
@@ -282,7 +282,7 @@ Plots
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Plots
@@ -304,7 +304,7 @@ Sensitivity Analysis (SA)
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Sensitivity analysis
@@ -403,7 +403,7 @@ Optimization
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../MATLAB/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
          :linenos:
          :language: MATLAB
          :start-after: %% Optimization

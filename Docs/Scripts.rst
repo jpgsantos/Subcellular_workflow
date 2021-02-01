@@ -23,7 +23,7 @@ Run_main
      :header: **Code**
 
      .. literalinclude:: ../Matlab/Run_main.m
-        :language: MATLAB
+        :language: matlab
         :linenos:
 		
 This is the main script from the MATLAB\ |TM| portion of the workflow. 
@@ -51,7 +51,7 @@ Reproduce_analysis
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../MATLAB/Reproduce_analysis.m
+     .. literalinclude:: ../Matlab/Reproduce_analysis.m
         :language: matlab
         :linenos:
 
