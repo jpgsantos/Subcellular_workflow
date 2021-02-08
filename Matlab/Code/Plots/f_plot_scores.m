@@ -31,7 +31,9 @@ else
     
     % Plot the log base 10 of the total scores of each parameter array to
     % test
-    scatter(stg.pat,log10([rst(stg.pat).st]),10,'filled')
+%     scatter(stg.pat,log10([rst(stg.pat).st]),10,'filled')
+    scatter(stg.pat,[rst(stg.pat).st],10,'filled')
+    
     
     %     scatter(stg.pat,[rst(stg.pat).st],10,'filled')
     title("Log 10 of total scores")
@@ -95,7 +97,8 @@ else
         for n = stg.exprun
             
             % Get the log base 10 of the score of each dataset
-            heatpoint{k} = [heatpoint{k},log10(rst(k).sd{n,1})];
+%             heatpoint{k} = [heatpoint{k},log10(rst(k).sd{n,1})];
+            heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
             
             %             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
         end

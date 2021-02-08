@@ -1,6 +1,4 @@
 function [stg,sb] = f_generate_sbtab_struct(stg)
-% Creates a struct based on the sbtab that is used elswhere in the code and
-% also adds the number of experiments and outputs to the settings variable.
 
 if isfile(stg.folder_main + "/Model/" + stg.folder_model +"/Data/" +...
         stg.sbtab_name + ".mat")

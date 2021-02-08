@@ -32,79 +32,82 @@ for n = 1:size(rt.par,1)
         rt.par(n) = 10.^(parameters(stg.partest(n,1)));
     end
     
-    % Check that there are thermodynamic constraints to implement
-    if ~isempty(stg.tci)
+    if isfield(stg,'tci')
         
-        % Choose the parameters that need to be calculated with other
-        % parameters due to thermodynamic constraints
-        if ismember(n,stg.tci)
+        % Check that there are thermodynamic constraints to implement
+        if ~isempty(stg.tci)
             
-            % Check that a parameter should be changed from default
-            if stg.partest(n) > 0
+            % Choose the parameters that need to be calculated with other
+            % parameters due to thermodynamic constraints
+            if ismember(n,stg.tci)
                 
-                % Iterate over the parameters that need to be mutiplied for
-                % calculating the parameter that depends on the
-                % thermodynamic constraints
-                for m = 1:size(stg.tcm,2)
+                % Check that a parameter should be changed from default
+                if stg.partest(n) > 0
                     
-                    % Check that the parameter that is going to be used to
-                    % calculate the parameter dependent on thermodynamic
-                    % constraintsis is not the default
-                    if stg.partest(stg.tcm(n,m),1) > 0
+                    % Iterate over the parameters that need to be mutiplied for
+                    % calculating the parameter that depends on the
+                    % thermodynamic constraints
+                    for m = 1:size(stg.tcm,2)
                         
-                        % Check if the parametrer needs to be tset to the
-                        % value relevant for Profile Likelihood
-                        if stg.partest(stg.tcm(n,m),1) ==...
-                                stg.PLind
-                            parameters(stg.partest(...
-                                stg.tcm(n,m),1))...
-                                = stg.PLval;
+                        % Check that the parameter that is going to be used to
+                        % calculate the parameter dependent on thermodynamic
+                        % constraintsis is not the default
+                        if stg.partest(stg.tcm(n,m),1) > 0
+                            
+                            % Check if the parametrer needs to be tset to the
+                            % value relevant for Profile Likelihood
+                            if stg.partest(stg.tcm(n,m),1) ==...
+                                    stg.PLind
+                                parameters(stg.partest(...
+                                    stg.tcm(n,m),1))...
+                                    = stg.PLval;
+                            end
+                            
+                            % Make the appropriate multiplications to get the
+                            % thermodinamicly constrained parameter
+                            rt.par(n) = rt.par(n).*(10.^...
+                                (parameters(stg.partest(...
+                                stg.tcm(n,m),1))));
+                        else
+                            
+                            % Make the appropriate multiplications to get the
+                            % thermodinamicly constrained parameter
+                            rt.par(n) = rt.par(n).*...
+                                (sbtab.defpar{stg.tcm(n,m),2});
                         end
-                        
-                        % Make the appropriate multiplications to get the
-                        % thermodinamicly constrained parameter
-                        rt.par(n) = rt.par(n).*(10.^...
-                            (parameters(stg.partest(...
-                            stg.tcm(n,m),1))));
-                    else
-                        
-                        % Make the appropriate multiplications to get the
-                        % thermodinamicly constrained parameter
-                        rt.par(n) = rt.par(n).*...
-                            (sbtab.defpar{stg.tcm(n,m),2});
                     end
-                end
-                
-                % Iterate over the parameters that need to be divided for
-                % calculating the parameter that depends on the
-                % thermodynamic constraints
-                for m = 1:size(stg.tcd,2)
                     
-                    % Check that the parameter that is going to be used to
-                    % calculate the parameter dependent on thermodynamic
-                    % constraintsis is not the default
-                    if stg.partest(stg.tcd(n,m),1) > 0
+                    % Iterate over the parameters that need to be divided for
+                    % calculating the parameter that depends on the
+                    % thermodynamic constraints
+                    for m = 1:size(stg.tcd,2)
                         
-                        % Check if the parametrer needs to be tset to the
-                        % value relevant for Profile Likelihood
-                        if stg.partest(stg.tcd(n,m),1) ==...
-                                stg.PLind
-                            parameters(stg.partest(...
-                                stg.tcd(n,m),1))...
-                                = stg.PLval;
+                        % Check that the parameter that is going to be used to
+                        % calculate the parameter dependent on thermodynamic
+                        % constraintsis is not the default
+                        if stg.partest(stg.tcd(n,m),1) > 0
+                            
+                            % Check if the parametrer needs to be tset to the
+                            % value relevant for Profile Likelihood
+                            if stg.partest(stg.tcd(n,m),1) ==...
+                                    stg.PLind
+                                parameters(stg.partest(...
+                                    stg.tcd(n,m),1))...
+                                    = stg.PLval;
+                            end
+                            
+                            % Make the appropriate divisions to get the
+                            % thermodinamicly constrained parameter
+                            rt.par(n) = rt.par(n)./(10.^...
+                                (parameters(stg.partest(...
+                                stg.tcd(n,m),1))));
+                        else
+                            
+                            % Make the appropriate divisions to get the
+                            % thermodinamicly constrained parameter
+                            rt.par(n) = rt.par(n)./...
+                                (sbtab.defpar{stg.tcd(n,m),2});
                         end
-                        
-                        % Make the appropriate divisions to get the
-                        % thermodinamicly constrained parameter
-                        rt.par(n) = rt.par(n)./(10.^...
-                            (parameters(stg.partest(...
-                            stg.tcd(n,m),1))));
-                    else
-                        
-                        % Make the appropriate divisions to get the
-                        % thermodinamicly constrained parameter
-                        rt.par(n) = rt.par(n)./...
-                            (sbtab.defpar{stg.tcd(n,m),2});
                     end
                 end
             end
@@ -144,6 +147,10 @@ for n = stg.exprun
             % after the first equilibration
             rt.ssa(:,n) =...
                 rt.ssa(:,stg.exprun(find(stg.exprun==n)-1));
+            if stg.simdetail
+                rt.ssa(:,n+2*stg.expn) =...
+                    rt.ssa(:,stg.exprun(find(stg.exprun==n)-1));
+            end
         else
             
             % Iterate over the numbre of species that need a starting value
@@ -171,12 +178,24 @@ for n = stg.exprun
                 else
                     rt.ssa(j,n) =...
                         rst.simd{n+stg.expn}.Data(end,j);
+                    if stg.simdetail
+                        rt.ssa(j,n+2*stg.expn) =...
+                            rst.simd{n+stg.expn}.Data(end,j);
+                    end
+                    
                 end
             end
         end
         
         % Simulate the model
         rst = f_sim(n,stg,rt,rst);
+        
+        try
+            if stg.simdetail
+                rst = f_sim(n+2*stg.expn,stg,rt,rst);
+            end
+        catch
+        end
         
         % Check If the times of the simultaion output and the simulation
         % data from SBTAB match, if they don't it means that the simulator

@@ -1,7 +1,7 @@
 function f_sbtab_to_model(stg,sb)
 % Saves the model in .mat, .sbproj and .xml format, while also creating a
 % file whith the data to run the model in all different experimental
-% settings defined in the SBtab.
+% settings defined in the sbtab
 
 
 modelobj = sbiomodel (stg.name);
@@ -168,6 +168,12 @@ for n = 1:size(sb.Experiments.ID,1)
         sbtab.datasets(n).max = [];
     end
     
+    if isfield(sb.Experiments,"Normalize")
+        sbtab.datasets(n).Normalize = sb.Experiments.Normalize{n};
+    else
+        sbtab.datasets(n).Normalize = [];
+    end
+
     if isfield(eval(("sb.E")+(n-1)),"Time")
         Data(n).Experiment.t = transpose(eval("[sb.E"+(n-1)+".Time{:}]"));
     end
@@ -202,6 +208,8 @@ for n = 1:size(sb.Experiments.ID,1)
                 string(sb.Output.Formula{m}),'eps','0.0001'))};
             sbtab.datasets(n).output_name{nOutput} = ...
                 sb.Output.Name(m);
+            sbtab.datasets(n).output_ID{nOutput} = ...
+                sb.Output.ID(m);
             sbtab.datasets(n).output_location{nOutput} = ...
                 sb.Output.Location(m);
         end

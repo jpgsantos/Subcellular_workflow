@@ -13,12 +13,17 @@ for n = stg.exprun
     
     % Iterate over the number of datasets per experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-        
+
         % Calculate score per dataset if there are no errors
         if rst.simd{n} ~= 0
             
-%             rst.x{n,1}(:,j) = rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j);
-            rst.xfinal{n,1}(j) = rst.simd{n}.Data(end,end-size(sbtab.datasets(n).output,2)+j);
+            data = Data(n).Experiment.x(:,j);
+            data_sd = Data(n).Experiment.x_SD(:,j);
+            number_points = size(Data(n).Experiment.x(:,j),1);
+            sim_results = f_normalize(rst,stg,n,j);
+            
+%             rst.x{n,1}(:,j) = sim_results;
+            rst.xfinal{n,1}(j) = sim_results(end);
             
             % Calculate score using formula that accounts for normalization
             % with the starting point of the result
@@ -35,7 +40,6 @@ for n = stg.exprun
 %                  ((Data(n).Experiment.x(:,j)-...
 %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
 %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2
-                
 
 %                  (1/(sqrt(2*pi)*(sum(Data(n).Experiment.x_SD(:,j))/...
 %                      (size(Data(n).Experiment.x(:,j),1)-2))))
@@ -63,9 +67,8 @@ for n = stg.exprun
 %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
 %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2));
                 
-                rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
-                    rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-                    (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2);
+                rst.sd{n,1}(j) = sum(((data-sim_results)./...
+                    (data_sd*sqrt(number_points))).^2);
                 
             else
             if sbtab.datasets(n).normstart == 1
@@ -77,10 +80,14 @@ for n = stg.exprun
                 
                 % Calulate score using normal scorring formula
             else
-                rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
-                    rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-                    (Data(n).Experiment.x_SD(:,j))).^2)/...
-                    (size(Data(n).Experiment.x(:,j),1)-2);
+
+                rst.sd{n,1}(j) = sum(((data-sim_results)./...
+                    (data_sd)).^2)/(number_points);
+                
+%                 rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
+%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+%                     (Data(n).Experiment.x_SD(:,j))).^2)/...
+%                     (size(Data(n).Experiment.x(:,j),1)-2);
             end
             end
             % If there are errors output a very high score value (10^10)
@@ -119,7 +126,7 @@ end
 if stg.useLog == 4
 %     sum(rst.se)
 %     exp(-1/2*sum(rst.se))
-rst.st = log10(sum(rst.se));
+rst.st = sum(rst.se);
 else
 % Calculate score per experiment
 rst.st = sum(rst.se);

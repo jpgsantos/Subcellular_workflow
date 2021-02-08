@@ -48,6 +48,8 @@ for n = stg.exprun
     legend boxoff
     clear labelfig2
     
+    ylim([0 inf])
+    
     % Add a title to each plot
     title("E"+(n-1))
     
