@@ -109,7 +109,7 @@ stg.simtime = "second";
 % True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = true;
+stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -265,6 +265,45 @@ stg.sasamplemode = 2;
 % sensitivity analysis
 % (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
+
+%% Profile Likelihood
+
+% Parameter(optimization array) that is being worked on in a specific
+% iteration of PL (if -1 no parameter is being worked in PL)
+% (Profile Likelihood Index)
+stg.PLind = -1;
+
+% Which parameters to do PL on, it should be all parameters but can also be
+% a subset for testing purposes
+% (Profile Likelihood parameters to Test)
+stg.pltest = (1:13);
+
+% How many points to do for each parameter in the PL
+% (Profile Likelihood Resolution)
+stg.plres = 20;
+
+% True or false to decide whether to do plots after calculating PL
+% (Profile Likelihood Plots)
+stg.plplot = true;
+
+% True or false to decide whether to run simulated annealing
+% (Profile Likelihood Simulated Annealing)
+stg.plsa = true;
+
+% Options for simulated annealing
+stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum)*1,'MaxTime',1,'ReannealInterval',40);
+
+% 0 or 1 to decide whether to run fmincon
+% (Profile Likelihood FMincon)
+stg.plfm = false;
+
+% Options for fmincon
+stg.plfmo = optimoptions('fmincon','Display','off',...
+    'Algorithm','interior-point',...
+    'MaxIterations',1,'OptimalityTolerance',0,...
+    'StepTolerance',1e-6,'FiniteDifferenceType','central');
 
 %% Optimization
 

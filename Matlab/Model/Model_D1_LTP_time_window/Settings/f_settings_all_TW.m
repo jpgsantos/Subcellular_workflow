@@ -40,7 +40,6 @@ stg.analysis = "diag";
 % (Experiments to run)
 stg.exprun = [1:10];
 
-
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
 % (Use logarithm)
@@ -70,6 +69,9 @@ stg.placsl = true;
 % True or false to decide whether to save results
 % (Save results)
 stg.save_results = true;
+
+% True or false to decide whether to run detailed simulation for plots
+stg.simdetail = true;
 
 %% Simulation
 
@@ -112,11 +114,15 @@ stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
-stg.maxstep = 1;
+stg.maxstep = 0.01;
 
 % Max step size in the equilibration (if empty matlab decides whats best)
 % (Maximum step)
 stg.maxstepeq = [];
+
+% Max step size in the detailed plots (if empty matlab decides whats best)
+% (Maximum step)
+stg.maxstepdetail = [1];
 
 %% Model
 
@@ -166,7 +172,7 @@ stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1
 % stg.pa(4,:) = [-7.20338699458001,-7.97887371785114,1.01000000000000,-6.03020948484545,-0.229483601794052,0.836382322445649];
 % stg.pa(5,:) = [-6.76251722269612,-4.07563169528588,1.01000000000000,-8.01000000000000,1.01000000000000,-7.72901478233823];
 
-% 
+
 % stg.pa(2,:) = [-6.73035061178964,-7.04380022646225,0.569005110183267,-6.19877949677366,0.996597348227969,-7.68326809496575];
 % stg.pa(1,:) = [-7.01852509901175,-7.75936616075045,0.343274398885203,-7.03109392578718,-7.84762750313721,-4.14926433212899];
 
@@ -232,6 +238,60 @@ stg.sasamplemode = 2;
 % sensitivity analysis
 % (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
+
+%% Profile Likelihood
+
+% % Array with the lower bound of all parameters
+% % (Lower bound)
+% stg.lb = stg.bestpa-0.1;
+% 
+% % Array with the upper bound of all parameters
+% % (Upper bound)
+% stg.ub = stg.bestpa+0.1;
+
+% Parameter(optimization array) that is being worked on in a specific
+% iteration of PL (if -1 no parameter is being worked in PL)
+% (Profile Likelihood Index)
+stg.PLind = -1;
+
+% Which parameters to do PL on, it should be all parameters but can also be
+% a subset for testing purposes
+% (Profile Likelihood parameters to Test)
+stg.pltest = (1:6);
+
+% How many points to do for each parameter in the PL
+% (Profile Likelihood Resolution)
+stg.plres = 900;
+
+% True or false to decide whether to do plots after calculating PL
+% (Profile Likelihood Plots)
+stg.plplot = true;
+
+% True or false to decide whether to run simulated annealing
+% (Profile Likelihood Simulated Annealing)
+stg.plsa = true;
+
+% Options for simulated annealing
+stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum-1)*1,'MaxTime',60,'ReannealInterval',40);
+
+
+% stg.plsao = optimoptions(@patternsearch,...
+%     'MaxTime',25,'UseParallel',false,...
+%     'UseCompletePoll',true,'UseCompleteSearch',true,...
+%     'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
+
+% True or false to decide whether to run fmincon
+% (Profile Likelihood FMincon)
+stg.plfm = false;
+
+% Options for fmincon
+stg.plfmo = optimoptions('fmincon','Display','off',...
+    'Algorithm','interior-point',...
+    'MaxIterations',20,'OptimalityTolerance',0,...
+    'StepTolerance',1e-6,'FiniteDifferenceType','central');
+
 
 %% Optimization
 

@@ -1,4 +1,4 @@
-!!SBtab	SBtabVersion='1.0' TableType='QuantityMatrix' TableName='E1I' 'TableTitle='' Document='Findsim'	
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='E1I' TableTitle='SBTAB_Findsim E1I' TableType = 'QuantityMatrix'	
 !ID	!Input_Time_S51	>S51
-E0IT0	0	0
-E0IT1	3600	1e-06
+E1IT0	0	0
+E1IT1	3600	1e-06

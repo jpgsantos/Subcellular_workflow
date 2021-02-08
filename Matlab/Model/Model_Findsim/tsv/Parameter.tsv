@@ -1,4 +1,4 @@
-!!SBtab	Document='Findsim' TableName='Parameter' TableType='Quantity' TableTitle='Findsim parameters'						
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Parameter' TableTitle='SBTAB_Findsim Parameter' TableType = 'Quantity'						
 !ID	!Name	!Unit	!Value:log2	!Value:linspace	!Value:log10	!Location	!Comment
 K0	kf_R1	liter/millimole/second		599.9982	2.7781	Cell	CaXPKC_cytosolic__PKC_Ca_1
 K1	kr_R1	1/second		0.5	-0.30103	Cell	CaXPKC_cytosolic__PKC_Ca_2

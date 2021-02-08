@@ -1,4 +1,4 @@
-!!SBtab	Document='Findsim' TableName='Reaction' TableType='Reaction' TableTitle='Findsim Reaction Fluxes' SBtabVersion='1.0'					
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Reaction' TableTitle='SBTAB_Findsim Reaction' TableType = 'Reaction'					
 !ID	!Name	!KineticLaw	!IsReversible	!Location	!KineticLawType	!ReactionFormula
 R0	ReactionFlux0	kf_R1 * Ca * PKC_cytosolic-kr_R1 * PKC_Ca	true	Cell	MassAction	Ca + PKC_cytosolic <=> PKC_Ca
 R1	ReactionFlux1	kf_R2 * DAG * PKC_Ca-kr_R2 * PKC_Ca_DAG	true	Cell	MassAction	DAG + PKC_Ca <=> PKC_Ca_DAG

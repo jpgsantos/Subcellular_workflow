@@ -1,4 +1,4 @@
-!!SBtab	Document='Findsim' TableName='Compound' TableType='Compound' TableTitle='Findsim Compound' SBtabVersion='1.0'								
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Compound' TableTitle='SBTAB_Findsim Compound' TableType = 'Compound'								
 !ID	!Name	!Unit	!InitialValue	!IsConstant	!Assignement	!Interpolation	!Type	!Location	!ReferenceDOI
 S0	PKC_Ca	millimole/litre	0	false	false	false	kinetic	Cell	
 S1	PKC_DAG_AA_p	millimole/litre	0	false	false	false	kinetic	Cell	

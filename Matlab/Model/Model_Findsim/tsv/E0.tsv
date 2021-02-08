@@ -1,4 +1,4 @@
-!!SBtab	SBtabVersion='1.0' TableType='QuantityMatrix' TableName='E0' 'TableTitle='' Document='Findsim'		
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='E0' TableTitle='SBTAB_Findsim E0' TableType = 'QuantityMatrix'		
 !ID	!Time	>Y0	SD_Y0
 E0T0	2100	0.02	0.06
 E0T1	2400	1	0.01
