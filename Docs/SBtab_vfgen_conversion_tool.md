@@ -18,12 +18,12 @@ If _libSBML_ is installed and R bindings available, an attempt will be
 made to produce an SBML file (see further below).
 
 The type of _systems biology_ models that we have in mind are
-autonomous ordinary differential equations (ODEs), while _neuron_
+autonomous ordinary differential equations (ODEs), while NEURON
 comprehensively models biochemistry and electrophysiology (action
 potentials etc.). These two different simulations have to be coupled
-(in neuron), so the produced `mod` file is really only an initial
+(in NEURON), so the produced `mod` file is really only an initial
 point; the user has to change the file and make it work inside of
-neuron. The user must also be aware of NEURONs units and make the
+NEURON. The user must also be aware of NEURONs units and make the
 necessary unit conversions.
 
 Here is an interactive example:
