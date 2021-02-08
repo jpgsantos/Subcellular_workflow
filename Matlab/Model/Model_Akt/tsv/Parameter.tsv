@@ -1,12 +1,12 @@
 !!SBtab	Document='MGluR' TableName='Parameter' TableType='Quantity' TableTitle='MGLuR parameters'						
 !ID	!Name	!Unit	!Value:log2	!Value:linspace	!Value:log10	!Location	!Comment
-K0	reaction_1_k1	1/(nanomolarity*second)		0.0067382	-2.1715	Cell	reaction_1_k1
+K0	reaction_1_k1	liter/(nanomole*second)		0.0067382	-2.1715	Cell	reaction_1_k1
 K1	reaction_1_k2	1/second		0.040749	-1.3899	Cell	reaction_1_k2
-K2	reaction_2_k1	1/(nanomolarity*second)		1.5543e-05	-4.8085	Cell	reaction_2_k1
+K2	reaction_2_k1	liter/(nanomole*second)		1.5543e-05	-4.8085	Cell	reaction_2_k1
 K3	reaction_2_k2	1/second		0.0051747	-2.2861	Cell	reaction_2_k2
 K4	reaction_3_k1	1/second		0.030568	-1.5147	Cell	reaction_3_k1
 K5	reaction_4_k1	1/second		0.099719	-1.0012	Cell	reaction_4_k1
-K6	reaction_5_k1	1/(nanomolarity*second)		2.1019e-06	-5.6774	Cell	reaction_5_k1
+K6	reaction_5_k1	liter/(nanomole*second)		2.1019e-06	-5.6774	Cell	reaction_5_k1
 K7	reaction_5_k2	1/second		5.1794e-15	-14.2857	Cell	reaction_5_k2
 K8	reaction_6_k1	1/second		0.001215	-2.9154	Cell	reaction_6_k1
 K9	reaction_7_k1	1/second		0.032796	-1.4842	Cell	reaction_7_k1

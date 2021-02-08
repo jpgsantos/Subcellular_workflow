@@ -47,7 +47,7 @@ stg.useLog = 4;
 
 % True or false to decide whether to use multicore everywhere it is available
 % (Optimization Multicore)
-stg.optmc = true;
+stg.optmc = false;
 
 % True or false to decide whether to save results
 % (Save results)

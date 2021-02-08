@@ -72,6 +72,9 @@ stg.placsl = true;
 % (Save results)
 stg.save_results = true;
 
+% True or false to decide whether to run detailed simulation for plots
+stg.simdetail = true;
+
 %% Simulation
 
 % Maximum time for each individual function to run in seconds
@@ -177,6 +180,8 @@ stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 , 8, 9, 10, 11, 12, 13, 13];
 %                        3  ,4  ,5];
 
 % (Parameter array to test)
+% stg.pat = [1:5];
+
 stg.pat = [1:5];
 
 % All the parameter arrays, in this case there is only one
