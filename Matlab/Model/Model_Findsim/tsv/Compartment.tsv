@@ -1,0 +1,3 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Compartment' TableTitle='SBTAB_Findsim Compound' TableType = 'Quantity'		
+!ID	!Name	!Unit	!Size
+Comp1	Cell	femtoliter	1
