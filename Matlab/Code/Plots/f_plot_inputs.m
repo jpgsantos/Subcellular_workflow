@@ -34,17 +34,21 @@ for n = stg.exprun
                 labelfig2(j) = rst(m).simd{1,n}.DataNames(str2double(...
                     strrep(sbtab.datasets(n).input(j),'S',''))+1);
                                   
+                ylabel(string(rst(m).simd{1,n}.DataInfo{...
+                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1,1}.Units))
+                
                 break
             end
         end
     end
     
     xlabel('seconds') 
-    ylabel('nanomole/liter') 
     % Add a legend to each plot
     legend(labelfig2)
     legend boxoff
     clear labelfig2
+    
+    ylim([0 inf])
     
     % Add a title to each plot
     title("E"+(n-1))

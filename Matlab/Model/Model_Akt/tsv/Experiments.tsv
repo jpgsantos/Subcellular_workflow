@@ -1,0 +1,20 @@
+!!SBtab	SBtabVersion='1.0' TableName='Experiments' TableTitle='Model Inputs and Measurement Mapping' TableType='QuantityMatrix' Document='MGluR'													
+!ID	!Name	!RelativeTo	!Type	>Output	!Event	>S0	>S3	>S5	>S9	>S10	!ReferenceDOI	!T0	!Likelihood	!Sim_Time
+E0	Experiment 1		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E1	Experiment 2		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E2	Experiment 3		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E3	Experiment 4		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E4	Experiment 5		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E5	Experiment 6		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E6	Experiment 7		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E7	Experiment 8		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E8	Experiment 9		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E9	Experiment 10		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E10	Experiment 11		Time Series	Y0,Y1,Y2	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E11	Experiment 12		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E12	Experiment 13		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E13	Experiment 14		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E14	Experiment 15		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E15	Experiment 16		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E16	Experiment 17		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000
+E17	Experiment 18		Time Series	Y0,Y1,Y3	EE0	68190.2	0.043309	3.5432	0	68190.2	10.1126/scisignal.2000810	-120	true	4000

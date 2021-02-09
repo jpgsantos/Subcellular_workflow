@@ -21,7 +21,9 @@ for n = 1:size(rst.opt,2)
         for a = 1:size(rst.opt(n).x,1)
             m = m+1;
             scatter(rst.opt(n).x(a,:),[1:stg.parnum]+(0.05*m)-(0.05*(n_opt_done+1)/2),25,'filled','MarkerFaceAlpha',0.75)
-            name{m} = char(string(rst.opt(n).name) + " ( Log10 of score = " + log10(rst.opt(n).fval(a)) + " )");
+            scatter(stg.bestpa,[1:stg.parnum],25,'filled','MarkerFaceAlpha',0.75)
+            
+            name{m} = char(string(rst.opt(n).name) + " ( Score = " + rst.opt(n).fval(a) + " )");
         end
     end
 end
@@ -32,7 +34,7 @@ for n = 2:stg.parnum
 end
 hold off
 
-legend([name(:)' 'Prior bounds'],'Fontweight','bold','location','best')
+legend([name(:)' 'Previous best pa' 'Prior bounds'],'Fontweight','bold','location','best')
 legend boxoff
 
 xlabel('Log10 of parameter value','Fontweight','bold')

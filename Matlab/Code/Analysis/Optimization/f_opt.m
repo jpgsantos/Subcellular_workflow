@@ -1,5 +1,4 @@
 function rst = f_opt(stg)
-
 % Call function to run fmincon optimization algorithm if chosen in settings
 if stg.fmincon
     rst(1) = f_opt_fmincon(stg);

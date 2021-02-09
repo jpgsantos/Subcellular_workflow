@@ -91,8 +91,13 @@ close(figHandles);
 eval("figure('WindowStyle', 'docked','Name','" + name +...
     "','NumberTitle', 'off');")
 
-eval("h = heatmap(" + helprer1 + ",parNames2," + helprer2 +...
-    ",'Colormap',jet);");
+heatmap_fixer = eval(helprer1);
+heatmap_fixer=heatmap_fixer(~cellfun('isempty',heatmap_fixer));
+
+heatmap_fixer2 = eval(helprer2);
+heatmap_fixer2 = heatmap_fixer2(:,all(~isnan(heatmap_fixer2)));
+
+h = heatmap(heatmap_fixer,parNames2,heatmap_fixer2,'Colormap',jet);
 
 eval(" h.Title = """ + title + """;")
 h.XLabel = 'Outputs';

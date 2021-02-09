@@ -8,6 +8,8 @@ rng(stg.rseed);
 
 % Get the optimization options from settings
 options = stg.sa_options;
+options.MaxTime = stg.optt;
+options.InitialTemperature = ones(1,stg.parnum)*2;
 
 % Display console messages if chosen in settings
 if stg.optcsl

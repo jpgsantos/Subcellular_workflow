@@ -1,58 +1,47 @@
-function [stg] = f_load_settings(model_name,folder_model,mode)
+function [stg] = f_load_settings()
 
-stg.folder_model = folder_model;
+persistent sbtab_date_last
 
-% Choose to load specific settings
-if contains(mode,"import")
-    stg = load_setting_chunk(model_name,"import",stg);
-end
-if contains(mode,"analysis")
-    stg = load_setting_chunk(model_name,"analysis",stg);
-end
-if contains(mode,"simulation")
-    stg = load_setting_chunk(model_name,"simulation",stg);
-end
-if contains(mode,"model")
-    stg = load_setting_chunk(model_name,"model",stg);
-end
-if contains(mode,"diagnostics")
-    stg = load_setting_chunk(model_name,"diagnostics",stg);
-end
-if contains(mode,"plots")
-    stg = load_setting_chunk(model_name,"plots",stg);
-end
-if contains(mode,"sensitivity_analysis")
-    stg = load_setting_chunk(model_name,"sensitivity_analysis",stg);
-end
-if contains(mode,"optimization")
-    stg = load_setting_chunk(model_name,"optimization",stg);
+[settings_file,folder_model_name,folder_model_dir,Analysis] = f_prompt();
+
+stg_add_default = eval("default_settings()");
+
+f = fieldnames(stg_add_default);
+for i = 1:length(f)
+    stg.(f{i}) = stg_add_default.(f{i});
 end
 
-% %  Load all settings
-if mode == "all"
-    stg = load_setting_chunk(model_name,"all",stg);
+[stg_add] = eval(settings_file + "()");
+
+f = fieldnames(stg_add);
+for i = 1:length(f)
+    stg.(f{i}) = stg_add.(f{i});
 end
+
+listing = dir(string(folder_model_dir+ "\"  + folder_model_name));
+
+for n = 1:size(listing,1)
+    if matches(stg.sbtab_excel_name,listing(n).name,"IgnoreCase",true)
+        sbtab_date = listing(n).datenum;
+    end
+end
+
+if sbtab_date ~= sbtab_date_last
+    disp("Excel sbtab file changed, clearing functions")
+    clear f_sim
+    clear f_score
+    clear f_prep_sim
+    clear f_normalize
+    clear f_build_model_exp
+    clear f_setup_input
+    clear f_get_outputs   
+end
+
+sbtab_date_last = sbtab_date;
 
 %  Get the working folder
+stg.folder_model = folder_model_name;
 stg.folder_main = pwd;
+stg.folder_main = strrep(stg.folder_main,"\","/");
+stg.analysis = Analysis;
 end
-
-function [stg] = load_setting_chunk(name,chunk,stg)
-
-settings_filename = "Model/" + stg.folder_model + "/Settings/f_settings_" +...
-    chunk + "_" + name + ".m";
-
-if isfile(settings_filename)
-    
-    [stg_add] = eval("f_settings_" + chunk + "_" + name + "()");
-    
-    f = fieldnames(stg_add);
-    for i = 1:length(f)
-        stg.(f{i}) = stg_add.(f{i});
-    end
-else
-    error("You are lacking the f_settings_" + chunk + "_" +...
-        name + ".m file")
-end
-end
-

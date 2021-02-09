@@ -1,6 +1,6 @@
-# Fix for Matlab SBML
+# Fix for MATLAB&trade; SBML
 
-MATLAB's simbiology toolbox generates sbml code that doesn't work very well and doesn't look very nice (and it cannot be imported into Copasi).
+MATLAB&trade;'s simbiology toolbox generates sbml code that doesn't work very well and doesn't look very nice (and it cannot be imported into Copasi).
 
 We heve provided a [folder (sbml/)](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/) that contains an `R` script that fixes most of the issues. The resulting `sbml` file can be imported into Copasi without warnings and runs there.
 

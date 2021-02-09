@@ -8,6 +8,7 @@ rng(stg.rseed);
 
 % Get the optimization options from settings
 options = stg.fm_options;
+options.UseParallel = stg.optmc;
 
 % Display console messages if chosen in settings
 if stg.optcsl
