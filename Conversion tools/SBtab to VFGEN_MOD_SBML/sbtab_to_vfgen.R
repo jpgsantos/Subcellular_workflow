@@ -171,20 +171,25 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
 }
 
 .GetConstants <- function(SBtab){
-    ID <- SBtab[["Constant"]][["!ID"]]
-    Name <- make.cnames(SBtab[["Constant"]][["!Name"]])
-    Value <- SBtab[["Constant"]][["!Value"]]
-    Constant <- data.frame(ID,Value,row.names=Name)
-    if ("!Unit" %in% names(SBtab[["Constant"]])){
-        Unit=SBtab[["Constant"]][["!Unit"]]
+    if ("Constant" %in% names(SBtab)){
+        ID <- SBtab[["Constant"]][["!ID"]]
+        Name <- make.cnames(SBtab[["Constant"]][["!Name"]])
+        Value <- SBtab[["Constant"]][["!Value"]]
+        Constant <- data.frame(ID,Value,row.names=Name)
+        if ("!Unit" %in% names(SBtab[["Constant"]])){
+            Unit=SBtab[["Constant"]][["!Unit"]]
+        } else {
+            Unit=NULL;
+        }
+        Constant <- data.frame(ID,Value,Unit,row.names=Name)
+        return(Constant)
     } else {
-        Unit=NULL;
+        message("There is no «Constant» Table in this model.")
+        return(NULL)
     }
-    Constant <- data.frame(ID,Value,Unit,row.names=Name)
-    return(Constant)
 }
 
-                                        # this will at first be for logical vectors, not general yet
+## this will at first be for logical vectors, not general yet
 .OptionalColumn <- function(SBtab,Name,mode="logical"){
     n <- length(SBtab[["!ID"]])
     if (Name %in% names(SBtab)){
@@ -221,16 +226,22 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
 }
 
 .GetExpressions <- function(SBtab){
-    ID <- SBtab[["Expression"]][["!ID"]]    
-    Name <- make.cnames(SBtab[["Expression"]][["!Name"]])
-    Formula <- SBtab[["Expression"]][["!Formula"]]
-    Unit <- SBtab[["Expression"]][["!Unit"]]
-    Expression <- data.frame(ID,Formula,Unit,row.names=Name)
-    return(Expression)
+    if ("Expression" %in% names(SBtab)){
+        ID <- SBtab[["Expression"]][["!ID"]]    
+        Name <- make.cnames(SBtab[["Expression"]][["!Name"]])
+        Formula <- SBtab[["Expression"]][["!Formula"]]
+        Unit <- SBtab[["Expression"]][["!Unit"]]
+        Expression <- data.frame(ID,Formula,Unit,row.names=Name)
+        return(Expression)
+    } else {
+        message("There is no «Expression» Table in this model.")
+        return(NULL)
+    }
 }
 
 .GetParameters <- function(SBtab){
     ID <- SBtab[["Parameter"]][["!ID"]]
+    nPar <- length(ID);
     if ("!Scale" %in% names(SBtab[["Parameter"]])){
         Scale <- SBtab[["Parameter"]][["!Scale"]]        
     }else{
@@ -286,22 +297,27 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
 
 
 .GetInputs <- function(SBtab){
-    if ("!ConservationLaw" %in% names(SBtab[["Input"]])){
-        Disregard <- .GetLogical(SBtab[["Input"]][["!ConservationLaw"]])
-        message("Some input parameters may be earlier detected Conservation Law constants: ")
-        print(Disregard)
-        message("---")
+    if ("Input" %in% names(SBtab)){
+        if ("!ConservationLaw" %in% names(SBtab[["Input"]])){
+            Disregard <- .GetLogical(SBtab[["Input"]][["!ConservationLaw"]])
+            message("Some input parameters may be earlier detected Conservation Law constants: ")
+            print(Disregard)
+            message("---")
+        } else {
+            n <- length(SBtab[["Input"]][["!ID"]])
+            Disregard <- vector(mode="logical",length=n)
+        }
+        ID <- SBtab[["Input"]][["!ID"]][!Disregard]
+        Name <- make.cnames(SBtab[["Input"]][["!Name"]][!Disregard])
+        DefaultValue <-  SBtab[["Input"]][["!DefaultValue"]][!Disregard]
+        Unit <-  SBtab[["Input"]][["!Unit"]][!Disregard]
+        
+        Input <- data.frame(ID,DefaultValue,Unit,row.names=Name)
+        return(Input)
     } else {
-        n <- length(SBtab[["Input"]][["!ID"]])
-        Disregard <- vector(mode="logical",length=n)
+        message("There is no «Input» Table in this model.")
+        return(NULL)
     }
-    ID <- SBtab[["Input"]][["!ID"]][!Disregard]
-    Name <- make.cnames(SBtab[["Input"]][["!Name"]][!Disregard])
-    DefaultValue <-  SBtab[["Input"]][["!DefaultValue"]][!Disregard]
-    Unit <-  SBtab[["Input"]][["!Unit"]][!Disregard]
-
-    Input <- data.frame(ID,DefaultValue,Unit,row.names=Name)
-    return(Input)
 }
 
 .GetDefaults <- function(SBtab){
@@ -312,7 +328,7 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
     } else {
         ID <- c("time","substance","volume","area","length")
         Name <- ID
-        Unit <- c("millisecond","millimole","liter","nanometer^22","nanometer")
+        Unit <- c("millisecond","millimole","liter","nanometer^2","nanometer")
     }
     Defaults <- data.frame(ID,Unit,row.names=Name)
     return(Defaults)
@@ -512,15 +528,16 @@ NeuronUnit<-function(unit){
 }
 
 OneOrMoreLines <- function(Prefix,Table,Suffix){
-    if (nrow(Table)>0)
+    if (!is.null(Table) && nrow(Table)>0){
         Names <- sprintf("%s %s %s",Prefix,paste0(row.names(Table),collapse=", "),Suffix)
-    else
+    }else{
         return(character())
-
-    if (nchar(Names)<76)
+    }
+    if (nchar(Names)<76){
         return(Names)
-    else
+    }else{
         return(sprintf("%s %s %s",Prefix,row.names(Table),Suffix))
+    }
 }
 
 .make.mod <- function(H,Constant,Parameter,Input,Expression,Reaction,Compound,Output,ODE,ConLaw){
@@ -740,7 +757,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                           "(l|L|liter|litre|g|gram|mole?|s|second|m|meter|metre|K|kelvin|cd|candela|A|ampere)",
                           "\\^?([-+]?[0-9]+)?$")
             ##print(pat)
-            r <- regexec(pattern=pat,text=u,perl=TRUE)
+            r <- regexec(pattern=pat,text=u)
 
             if (u == "1"){
                 .u.s <- 0
@@ -975,7 +992,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     }
 }
 
-.make.sbml <- function(H,Defaults,Constant,Parameter,Input,Expression,Reaction,Compound,Output,ODE,Comp){
+.make.sbml <- function(H,Defaults,Constant=NULL,Parameter,Input=NULL,Expression=NULL,Reaction,Compound,Output,ODE,Comp){
     Doc <- SBMLDocument(2,4); # (LEVEL,VERSION)
     sbml  <-  SBMLDocument_createModel(Doc);
     Model_setId(sbml,H);
@@ -998,13 +1015,18 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         Compartment_setUnits(comp,this.unit.id)
         Compartment_setVolume(comp,as.numeric(Comp$Size[i]))
     }
-    
-    .sbtab.constant.to.sbml(sbml,Constant)
+    if(!is.null(Constant)){
+        .sbtab.constant.to.sbml(sbml,Constant)
+    }
     .sbtab.compound.to.sbml(sbml,Compound,Comp$ID[1],"substance")
     .sbtab.parameter.to.sbml(sbml,Parameter)
-    .sbtab.parameter.to.sbml(sbml,Input)
+    if (!is.null(Input)){
+        .sbtab.parameter.to.sbml(sbml,Input)
+    }
     .sbtab.reaction.to.sbml(sbml,Reaction)
-    .sbtab.expression.to.sbml(sbml,Expression,Comp$ID[1],Compound)
+    if (!is.null(Expression)){
+        .sbtab.expression.to.sbml(sbml,Expression,Comp$ID[1],Compound)
+    }
     return(Doc)
 }
 
