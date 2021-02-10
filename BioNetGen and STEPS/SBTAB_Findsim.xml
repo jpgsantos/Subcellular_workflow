@@ -4,12 +4,7 @@
     <listOfUnitDefinitions>
       <unitDefinition id="time">
         <listOfUnits>
-          <unit kind="second" exponent="1" scale="-3" multiplier="1"/>
-        </listOfUnits>
-      </unitDefinition>
-      <unitDefinition id="substance">
-        <listOfUnits>
-          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
       <unitDefinition id="volume">
@@ -17,14 +12,19 @@
           <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
-      <unitDefinition id="area">
+      <unitDefinition id="substance">
         <listOfUnits>
-          <unit kind="metre" exponent="2" scale="-9" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
       <unitDefinition id="length">
         <listOfUnits>
-          <unit kind="metre" exponent="1" scale="-9" multiplier="1"/>
+          <unit kind="metre" exponent="1" scale="-6" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="area">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="-6" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
       <unitDefinition id="millimole_per_litre">
@@ -52,14 +52,14 @@
           <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
-      <unitDefinition id="femtoliter">
+      <unitDefinition id="liter">
         <listOfUnits>
-          <unit kind="litre" exponent="1" scale="-3" multiplier="1"/>
+          <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Comp1" name="Cell" size="1" units="femtoliter"/>
+      <compartment id="Comp1" name="Cell" size="1e-15" units="liter"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="PKC_Ca" name="PKC_Ca" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
@@ -73,7 +73,6 @@
       <species id="PKC_DAG" name="PKC_DAG" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PKC_DAG_AA" name="PKC_DAG_AA" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PKC_cytosolic" name="PKC_cytosolic" compartment="Comp1" initialConcentration="0.001" substanceUnits="substance"/>
-      <species id="PKC_active" name="PKC_active" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PLA2_cytosolic" name="PLA2_cytosolic" compartment="Comp1" initialConcentration="0.0004" substanceUnits="substance"/>
       <species id="PLA2_Ca_p" name="PLA2_Ca_p" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PIP2_PLA2_p" name="PIP2_PLA2_p" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>

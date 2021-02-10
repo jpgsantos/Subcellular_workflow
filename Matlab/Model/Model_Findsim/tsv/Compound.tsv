@@ -11,7 +11,7 @@ S7	PKC_Ca_DAG	millimole/litre	0	false	false	false	kinetic	Cell
 S8	PKC_DAG	millimole/litre	0	false	false	false	kinetic	Cell	
 S9	PKC_DAG_AA	millimole/litre	0	false	false	false	kinetic	Cell	
 S10	PKC_cytosolic	millimole/litre	0.001	false	false	false	kinetic	Cell	
-S11	PKC_active	millimole/litre	0	true	true	false	kinetic	Cell	
+%S11	PKC_active	millimole/litre	0	true	true	false	kinetic	Cell	
 S12	PLA2_cytosolic	millimole/litre	0.0004	false	false	false	kinetic	Cell	
 S13	PLA2_Ca_p	millimole/litre	0	false	false	false	kinetic	Cell	
 S14	PIP2_PLA2_p	millimole/litre	0	false	false	false	kinetic	Cell	
