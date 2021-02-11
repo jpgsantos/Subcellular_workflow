@@ -33,6 +33,12 @@
           <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
         </listOfUnits>
       </unitDefinition>
+      <unitDefinition id="millimolarity">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
+          <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
       <unitDefinition id="liter_per_millimole_second">
         <listOfUnits>
           <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
@@ -73,6 +79,7 @@
       <species id="PKC_DAG" name="PKC_DAG" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PKC_DAG_AA" name="PKC_DAG_AA" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PKC_cytosolic" name="PKC_cytosolic" compartment="Comp1" initialConcentration="0.001" substanceUnits="substance"/>
+      <species id="PKC_active" name="PKC_active_value" compartment="Comp1" initialConcentration="0" substanceUnits="substance" boundaryCondition="true"/>
       <species id="PLA2_cytosolic" name="PLA2_cytosolic" compartment="Comp1" initialConcentration="0.0004" substanceUnits="substance"/>
       <species id="PLA2_Ca_p" name="PLA2_Ca_p" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="PIP2_PLA2_p" name="PIP2_PLA2_p" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
@@ -163,7 +170,6 @@
       <species id="MAPKK_dephospho_ser_cplx" name="MAPKK_dephospho_ser_cplx" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="craf_p_p_dephospho_cplx" name="craf_p_p_dephospho_cplx" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
       <species id="deph_raf_ser259_cplx" name="deph_raf_ser259_cplx" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
-      <species id="PKC_active" name="PKC_active" compartment="Comp1" boundaryCondition="true"/>
     </listOfSpecies>
     <listOfParameters>
       <parameter id="kf_R1" name="kf_R1" value="599.929199155995" units="liter_per_millimole_second"/>
