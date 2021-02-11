@@ -1,7 +1,7 @@
 TITLE SBTAB_Findsim
 COMMENT
 	automatically generated from an SBtab file
-	date: Tue Feb  9 15:23:52 2021
+	date: Thu Feb 11 12:31:38 2021
 ENDCOMMENT
 NEURON {
 	SUFFIX SBTAB_Findsim : OR perhaps POINT_PROCESS ?
@@ -12,7 +12,14 @@ NEURON {
 	RANGE MAPK_p_p_cplx_out : output
 	RANGE MAPK_p_p_feedback_cplx_out : output
 	RANGE pERK1_2_ratio2 : output
-	RANGE PKC_active, PKC_active1, APC, Inositol, PC, PIP2, EGF, Ca : assigned
+	RANGE PKC_active_value : assigned
+	RANGE APC : assigned
+	RANGE Inositol : assigned
+	RANGE PC : assigned
+	RANGE PIP2 : assigned
+	RANGE EGF : assigned
+	RANGE Ca : assigned
+	RANGE PKC_active : assigned
 	RANGE PKC_Ca : compound
 	RANGE PKC_DAG_AA_p : compound
 	RANGE PKC_Ca_AA_p : compound
@@ -297,14 +304,14 @@ PARAMETER {
 }
 ASSIGNED {
 	time (millisecond) : alias for t
-	PKC_active : a pre-defined algebraic expression
-	PKC_active1 : a pre-defined algebraic expression
+	PKC_active_value : a pre-defined algebraic expression
 	APC : a pre-defined algebraic expression
 	Inositol : a pre-defined algebraic expression
 	PC : a pre-defined algebraic expression
 	PIP2 : a pre-defined algebraic expression
 	EGF : a pre-defined algebraic expression
 	Ca : a pre-defined algebraic expression
+	PKC_active : a pre-defined algebraic expression
 	ReactionFlux0 : a flux, for use in DERIVATIVE mechanism
 	ReactionFlux1 : a flux, for use in DERIVATIVE mechanism
 	ReactionFlux2 : a flux, for use in DERIVATIVE mechanism
@@ -459,14 +466,14 @@ PROCEDURE assign_calculated_values() {
 	PIP2_PLA2_p = PIP2_PLA2_p_ConservedConst - (kenz_cplx_1) : conservation law
 	PLA2_cytosolic = PLA2_cytosolic_ConservedConst - (PLA2_Ca_p+DAG_Ca_PLA2_p+PLA2_p_Ca+PLA2_p+kenz_cplx+kenz_cplx_3+kenz_cplx_4+MAPK_p_p_cplx) : conservation law
 	PKC_cytosolic = PKC_cytosolic_ConservedConst - (PKC_Ca+PKC_DAG_AA_p+PKC_Ca_AA_p+PKC_Ca_memb_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p+PKC_Ca_DAG+PKC_DAG+PKC_DAG_AA) : conservation law
-	PKC_active = PKC_DAG_AA_p+PKC_Ca_memb_p+PKC_Ca_AA_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p : assignment for expression Ex0
-	PKC_active1 = 0 : assignment for expression S11
+	PKC_active_value = PKC_DAG_AA_p+PKC_Ca_memb_p+PKC_Ca_AA_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p : assignment for expression Ex0
 	APC = 0.030001 : assignment for expression S17
 	Inositol = 0 : assignment for expression S22
 	PC = 0 : assignment for expression S26
 	PIP2 = 0.007 : assignment for expression S29
 	EGF = 0 : assignment for expression S51
 	Ca = 8e-05 : assignment for expression S69
+	PKC_active = PKC_active_value : assignment for expression S11
 	ReactionFlux0 = kf_R1 * Ca * PKC_cytosolic-kr_R1 * PKC_Ca : flux expression R0
 	ReactionFlux1 = kf_R2 * DAG * PKC_Ca-kr_R2 * PKC_Ca_DAG : flux expression R1
 	ReactionFlux2 = kf_R3 * PKC_Ca-kr_R3 * PKC_Ca_memb_p : flux expression R2
