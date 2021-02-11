@@ -1,4 +1,4 @@
 !!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Experiments' TableTitle='SBTAB_Findsim Experiments' TableType = 'QuantityMatrix'																															
 !ID	!Name	!RelativeTo	!Type	>Output	!Event	>S5	>S10	>S12	>S17	>S21	>S28	>S29	>S31	>S33	>S34	>S41	>S44	>S46	>S49	>S54	>S57	>S60	>S62	>S66	>S67	>S68	>S69	!ReferenceDOI	!T0	!Likelihood	!Sim_Time	!Normalize
-E0	Experiment 1		Time Series	Y0	EE0	2e-05	0.001	0.0004	0.030001	0.0008	0.00073	0.007	0.0002	0.00018001	0.00036	0.0001	0.0005	2e-05	0.00016666	0.00050001	0.001	0.0001	0.00082001	7.0002e-07	2e-05	0.00026001	8e-05			true	10000	Max_Y0
-E1	Experiment 2		Time Series	Y1	EE1	2e-05	0.001	0.0004	0.030001	0.0008	0.00073	0.007	0.0002	0.00018001	0.00036	0.0001	0.0005	2e-05	0.00016666	0.00050001	0.001	0.0001	0.00082001	7.0002e-07	2e-05	0.00026001	8e-05			true	40000	Time_E1T0_Y6
+E0	Experiment 1		Time Series	Y0	EE0	0.02	1	0.4	30.0008	0.8	0.73	7	0.2	0.18001	0.36	0.1	0.5	0.02	0.16666	0.50001	1	0.1	0.82001	0.00070002	0.02	0.26001	0.08			true	10000	Max_Y0
+E1	Experiment 2		Time Series	Y1	EE1	0.02	1	0.4	30.0008	0.8	0.73	7	0.2	0.18001	0.36	0.1	0.5	0.02	0.16666	0.50001	1	0.1	0.82001	0.00070002	0.02	0.26001	0.08			true	40000	Time_E1T0_Y6

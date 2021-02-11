@@ -1,3 +1,3 @@
 !!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Expression' TableTitle='SBTAB_Findsim Expression' TableType = 'Expression'			
 !ID	!Name	!Formula	!Unit	!Location
-Ex0	PKC_active	PKC_DAG_AA_p+PKC_Ca_memb_p+PKC_Ca_AA_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p	millimole/litre	Cell
+Ex0	PKC_active	PKC_DAG_AA_p+PKC_Ca_memb_p+PKC_Ca_AA_p+PKC_DAG_memb_p+PKC_basal_p+PKC_AA_p	micromole/litre	Cell

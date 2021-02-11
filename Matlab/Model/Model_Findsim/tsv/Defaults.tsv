@@ -2,6 +2,6 @@
 !ID	!Name	!Unit
 time	time	second
 volume	volume	liter
-substance	substance	mmol
+substance	substance	umol
 length	length	um
 area	area	um2
