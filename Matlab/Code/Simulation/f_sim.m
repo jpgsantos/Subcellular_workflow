@@ -16,7 +16,7 @@ if isempty(model_run)
     % Iterate over the experiments thar are being run
     for n = stg.exprun
         
-        
+        if stg.simdetail
         % Load the models for equilibrium
                 load("Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
                     "_" + n + ".mat",'model_exp','config_exp')
@@ -34,7 +34,7 @@ if isempty(model_run)
                         sbioaccelerate(model_run{n+2*stg.expn},config_run{n+2*stg.expn});
 %             sbioaccelerate(model_run{n+2*stg.expn});
         end
-        
+        end
         % Load the models for equilibrium
                     load("Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
                         "_" + n + ".mat",'model_exp','config_exp')
@@ -81,9 +81,7 @@ set(model_run{exp_n}.species(1:size(rt.ssa(:,exp_n),1)),{'InitialAmount'},num2ce
 % one for simultaions
 set(model_run{exp_n}.parameters(1:size(rt.par,1)),{'Value'},num2cell(rt.par))
 
-
-
-
+% model_run{exp_n}.parameters
 % config_run{exp_n}.AmountUnits = 'picomole';
 
 %simulate the model using matlab built in function

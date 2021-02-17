@@ -23,70 +23,66 @@ end
 if ~isempty(sbtab.datasets(exp_number).Normalize)
     if contains(sbtab.datasets(exp_number).Normalize,'Max')
         
-        for n = 1:size(sb.Compound.ID,1)
-            if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-                norm_factor = rst.simd{1,exp_number}.Data(:,n);
-            end
-        end
+        %         for n = 1:size(sb.Compound.ID,1)
+        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
+        %                 norm_factor
+        %             end
+        %         end
         
-        for n = 1:size(sbtab.datasets(exp_number).output,2)
-            if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{:}{:})
-                norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                    size(sbtab.datasets(exp_number).output,2)+n);
+        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
+            %                     m
+            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
+                size(sbtab.datasets(exp_number).output,2)+output_number);
+            
+            
+            sim_results = sim_results/max(norm_factor);
+            if stg.simdetail
+                sim_results_detailed = sim_results_detailed/max(norm_factor);
             end
-        end
-        
-        sim_results = sim_results/max(norm_factor);
-        if stg.simdetail
-            sim_results_detailed = sim_results_detailed/max(norm_factor);
         end
     end
     if contains(sbtab.datasets(exp_number).Normalize,'Min')
         
-        for n = 1:size(sb.Compound.ID,1)
-            if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-                norm_factor = rst.simd{1,exp_number}.Data(:,n);
-            end
-        end
+        %         for n = 1:size(sb.Compound.ID,1)
+        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
+        %             end
+        %         end
         
-        for n = 1:size(sbtab.datasets(exp_number).output,2)
-            if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{:}{:})
-                norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                    size(sbtab.datasets(exp_number).output,2)+n);
+        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
+            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
+                size(sbtab.datasets(exp_number).output,2)+output_number);
+            
+            
+            sim_results = sim_results/min(norm_factor);
+            if stg.simdetail
+                sim_results_detailed = sim_results_detailed/min(norm_factor);
             end
-        end
-        
-        sim_results = sim_results/min(norm_factor);
-        if stg.simdetail
-            sim_results_detailed = sim_results_detailed/min(norm_factor);
         end
     end
     
     if contains(sbtab.datasets(exp_number).Normalize,'Time')
         
-        for n = 1:size(sb.Compound.ID,1)
-            
-            if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-                norm_factor = rst.simd{1,exp_number}.Data(:,n);
-            end
-        end
+        %         for n = 1:size(sb.Compound.ID,1)
+        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
+        %             end
+        %         end
         
-        for n = 1:size(sbtab.datasets(exp_number).output,2)
-            if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{:}{:})
-                norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                    size(sbtab.datasets(exp_number).output,2)+n);
-            end
-        end
-        
-        for n = 1:size(Data(exp_number).Experiment.t,1)
-            if contains(sbtab.datasets(exp_number).Normalize,eval("sb.E"+(exp_number-1)+".ID(n)"))
-                sim_results = sim_results/norm_factor(n);
-                if stg.simdetail
-                    sim_results_detailed = sim_results_detailed/norm_factor(n);
+        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
+            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
+                size(sbtab.datasets(exp_number).output,2)+output_number);
+
+            for n = 1:size(Data(exp_number).Experiment.t,1)
+                if contains(sbtab.datasets(exp_number).Normalize,eval("sb.E"+(exp_number-1)+".ID(n)"))
+                    sim_results = sim_results/norm_factor(n);
+                    if stg.simdetail
+                        sim_results_detailed = sim_results_detailed/norm_factor(n);
+                    end
                 end
             end
         end
-        
     end
 end
 end

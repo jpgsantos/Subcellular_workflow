@@ -71,8 +71,9 @@ figure('WindowStyle', 'docked','Name','SA SI st', 'NumberTitle', 'off');
 for n = 1:size(parNames2,2)
 a{n} = char(parNames2{n});
 end
-a = categorical(a);
 
+ a = categorical(a,a);
+ 
 bar(a,[transpose(rst.SI.st(:,1:stg.parnum)),...
     transpose(rst.SIT.st(:,1:stg.parnum)),...
     transpose(rst.SIT.st(:,1:stg.parnum)-rst.SI.st(:,1:stg.parnum))])

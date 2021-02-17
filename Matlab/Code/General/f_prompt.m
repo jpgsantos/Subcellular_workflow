@@ -80,13 +80,7 @@ settings_file_date = listing2(settings_file_n).datenum;
 
 if settings_file_date ~= settings_file_date_last
     disp("Settings file changed, clearing functions")
-    clear f_sim
-    clear f_score
-    clear f_prep_sim
-    clear f_normalize
-    clear f_build_model_exp
-    clear f_setup_input
-    clear f_get_outputs
+    f_functions_to_clear()
 end
 
 settings_file_date_last = settings_file_date;
