@@ -8,7 +8,7 @@ function [stg] = f_settings_all_Findsim()
 
 % Name of the folder where everything related to the model is stored
 % (Folder Model)
-stg.folder_model = "Model_Findsim";
+stg.folder_model = "Model_Findsim_debug";
 
 % Name of the excel file with the sbtab
 % (SBtab excel name)
@@ -38,7 +38,7 @@ stg.analysis = "diag";
 
 % Experiments to run
 % stg.ms.exprun = [1,3,4];
-stg.exprun = [1,2];
+stg.exprun = [1];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)

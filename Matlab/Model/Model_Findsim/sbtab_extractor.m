@@ -1,7 +1,7 @@
 clc
 clear
 
-modelObj = sbmlimport('subs.xml');
+modelObj = sbmlimport('subset.xml');
 
 
 
