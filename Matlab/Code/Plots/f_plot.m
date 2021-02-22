@@ -34,10 +34,4 @@ end
 if isfield(rst,'SA')
     f_plot_SA_sensitivities(rst.SA,stg);
 end
-
-% Generate figure for Profile Likelihood Analysis
-if isfield(rst,'diag') || isfield(rst,'PL')
-    f_plot_PL(rst,stg)
-end
-
 end
