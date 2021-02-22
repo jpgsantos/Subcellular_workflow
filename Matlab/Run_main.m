@@ -31,7 +31,6 @@ if stg.analysis ~= "" && Analysis_n ~= 6
     if stg.save_results
         f_save_analysis(stg,sb,rst,date_stamp)
     end
-    % Plots the results of the analysis, this can be done independently after
 end
 
 % Plots the results of the analysis, this can be done independently after
