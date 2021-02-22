@@ -1,4 +1,4 @@
-function [settings_file,folder_model_name,folder_model_dir,Analysis] = f_prompt()
+function [settings_file,folder_model_name,folder_model_dir,Analysis,Analysis_n] = f_prompt()
 
 persistent folder_n_last
 persistent settings_file_n_last
@@ -40,6 +40,42 @@ disp("Using " + listing(folder_n).name + " folder")
 
 folder_model_name = listing(folder_n).name;
 folder_model_dir = string(listing(folder_n).folder);
+
+
+
+
+Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
+    "Profile Likelihood Analysis","",""];
+
+prompt = "\nWhat analysis should be performed?\n";
+prompt = prompt + "\n1: Diagnostics";
+prompt = prompt + "\n2: Optimization";
+prompt = prompt + "\n3: Sensitivity Analysis";
+prompt = prompt + "\n4: Profile Likelihood Analysis";
+prompt = prompt + "\n5: Reproduce a previous Analysis";
+prompt = prompt + "\n6: Reproduce the plots of a previous Analysis";
+
+if ~isempty(Analysis_n_last)
+    prompt = prompt + "\n\nPress enter to run "+ Analysis_options(Analysis_n_last);
+end
+
+prompt = prompt + "\n";
+
+Analysis_n = input(prompt);
+
+if isempty(Analysis_n)
+    Analysis_n = Analysis_n_last;
+else
+    Analysis_n_last = Analysis_n;
+end
+
+Analysis = Analysis_options(Analysis_n);
+
+disp("Running " + Analysis_options(Analysis_n))
+
+
+
+if Analysis_n <=4
 
 listing2 = dir(string(listing(folder_n).folder)+ "\"  + listing(folder_n).name + "\Settings");
 
@@ -85,29 +121,11 @@ end
 
 settings_file_date_last = settings_file_date;
 
-Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis","Profile Likelihood Analysis"];
-
-prompt = "\nWhat analysis should be performed?\n";
-prompt = prompt + "\n1: Diagnostics";
-prompt = prompt + "\n2: Optimization";
-prompt = prompt + "\n3: Sensitivity Analysis";
-prompt = prompt + "\n4: Profile Likelihood Analysis";
-
-if ~isempty(Analysis_n_last)
-    prompt = prompt + "\n\nPress enter to run "+ Analysis_options(Analysis_n_last);
+elseif Analysis_n == 5
+    
+elseif Analysis_n == 6
+    
+    
 end
 
-prompt = prompt + "\n";
-
-Analysis_n = input(prompt);
-
-if isempty(Analysis_n)
-    Analysis_n = Analysis_n_last;
-else
-    Analysis_n_last = Analysis_n;
-end
-
-Analysis = Analysis_options(Analysis_n);
-
-disp("Running " + Analysis_options(Analysis_n))
 end

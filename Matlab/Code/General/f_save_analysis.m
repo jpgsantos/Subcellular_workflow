@@ -2,24 +2,13 @@ function f_save_analysis(stg,sb,rst,date_stamp)
 
 mkdir("Model/" + stg.folder_model,"Results");
 
-Folder_name = "Analysis_";
-
-if contains(stg.analysis,"diag")
-    Folder_name = append(Folder_name,"diag_");
-end
-
-if contains(stg.analysis,"opt")
-    Folder_name = append(Folder_name,"opt_");
-end
-
-if contains(stg.analysis,"SA")
-    Folder_name = append(Folder_name,"SA_");
-end
-
-Folder_name = append(Folder_name,string(date_stamp));
+Folder_name = stg.analysis;
+Folder_name2 = string(date_stamp);
 
 mkdir("Model/" + stg.folder_model + "/Results",Folder_name);
-
+mkdir("Model/" + stg.folder_model + "/Results"+ "/" + Folder_name,Folder_name2);
+addpath("Model/" + stg.folder_model + "/Results"+ "/" + Folder_name+"/"+Folder_name2)
+    
 save ("Model/" +char(stg.folder_model + "/Results/" +...
-    Folder_name + "/Analysis.mat"),'stg','sb','rst');
+    Folder_name + "/" + Folder_name2 + "/Analysis.mat"),'stg','sb','rst');
 end

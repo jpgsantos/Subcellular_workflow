@@ -115,12 +115,12 @@ for n = 1:size(rt.par,1)
     end
 end
 
-%  Set the strat amount for the species in the model to 0
+%  Set the start amount for the species in the model to 0
 rt.ssa = zeros(size(sbtab.species,1),max(stg.exprun));
 
 % Initialize the results variable
 rst = [];
-
+rst.parameters = rt.par;
 % Iterate over all the experiments that are being run
 for n = stg.exprun
     
