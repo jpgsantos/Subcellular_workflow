@@ -13,7 +13,7 @@ date_stamp = string(year(datetime)) + "_" + ...
 addpath(genpath(pwd));
 
 % Code for choosing the model and loading the settings files
-[stg] = f_load_settings();
+[stg,rst,Analysis_n] = f_load_settings();
 
 % Runs the import scripts if chosen in settingsw
 if stg.import
@@ -25,21 +25,21 @@ else
 end
 
 % Runs the Analysis chosen in settings
-if stg.analysis ~= ""
+if stg.analysis ~= "" && Analysis_n ~= 6
     rst = f_analysis(stg,stg.analysis);
-    
     % Save Analysis results if chosen in settings
     if stg.save_results
         f_save_analysis(stg,sb,rst,date_stamp)
     end
-    
     % Plots the results of the analysis, this can be done independently after
-    % loading the results of a previously run analysis
-    if stg.plot
-        f_plot(rst,stg)
-        % Save plots results if chosen in settings
-        if stg.save_results
-%             f_save_plots(stg,date_stamp)
-        end
+end
+
+% Plots the results of the analysis, this can be done independently after
+% loading the results of a previously run analysis
+if stg.plot
+    f_plot(rst,stg)
+    % Save plots results if chosen in settings
+    if stg.save_results
+        f_save_plots(stg,date_stamp)
     end
 end
