@@ -1,4 +1,4 @@
-load("Reproduce paper figure 3/Analysis.mat")
+load("Reproduce paper figure 3/Analysis_new.mat")
 
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
@@ -45,7 +45,7 @@ nexttile(layout1);
 hold on
 
 for o = 1:size(sbtab.datasets(n).input,2)
-    
+
     p = 1;
     % Plot the inputs to each experiment
     plot(rst(p).simd{1,n}.Time,rst(p).simd{1,n}.Data(1:end,...

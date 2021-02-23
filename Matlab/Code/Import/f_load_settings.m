@@ -44,7 +44,6 @@ disp("Using " + listing(folder_n).name + " folder")
 folder_model_name = listing(folder_n).name;
 folder_model_dir = string(listing(folder_n).folder);
 
-
 Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
     "Profile Likelihood Analysis","",""];
 
@@ -73,8 +72,6 @@ end
 Analysis = Analysis_options(Analysis_n);
 
 disp("Running " + Analysis_options(Analysis_n))
-
-
 
 if Analysis_n <=4
     
