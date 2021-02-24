@@ -1,11 +1,16 @@
 function [stg,sb] = f_import(stg)
 
 % Create needed folders
-    mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data");
-    mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Formulas");
-    mkdir(stg.folder_main + "/Model/" + stg.folder_model,"tsv");
-    mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data/Exp");
+%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data");
+%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Formulas");
+%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"tsv");
+%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data/Exp");
 
+    mkdir(pwd + "/Model/" + stg.folder_model,"Data");
+    mkdir(pwd + "/Model/" + stg.folder_model,"Formulas");
+    mkdir(pwd + "/Model/" + stg.folder_model,"tsv");
+    mkdir(pwd + "/Model/" + stg.folder_model,"Data/Exp");
+    
 % Creates a .mat and a tsvs from the sbtab file
 disp("Reading SBtab Excel")
 f_excel_sbtab_importer(stg);

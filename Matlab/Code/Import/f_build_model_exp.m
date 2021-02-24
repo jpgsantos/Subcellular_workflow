@@ -11,9 +11,11 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
+%     load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
+    load(pwd + "/Model/" +stg.folder_model +"/Data/" + "data_" +...        
         stg.name + ".mat",'Data','sbtab')
-    load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
+%     load(stg.folder_main + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
+    load(pwd + "/Model/" +stg.folder_model +"/Data/" + "model_" +...        
         stg.name + ".mat",'modelobj');
 end
 
@@ -22,7 +24,7 @@ configsetObj = cell(size(sb.Experiments.ID,1),1);
 
 for number_exp = 1:size(sb.Experiments.ID,1)
     
-    Compounds = sbtab.species;
+%     Compounds = sbtab.species;
     maxi = sbtab.datasets(number_exp).max;
 %     output_value = sbtab.datasets(number_exp).output_value;
 % sbtab.datasets(number_exp).output_value{end}
@@ -58,7 +60,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+%     save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...        
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
@@ -158,7 +161,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};    
     
-    save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+%     save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...        
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
@@ -167,7 +171,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
+%     save(stg.folder_main + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...        
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
 end

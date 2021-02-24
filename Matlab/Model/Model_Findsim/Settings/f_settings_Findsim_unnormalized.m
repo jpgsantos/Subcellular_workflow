@@ -1,4 +1,4 @@
-function [stg] = f_settings_all_Findsim_optimized()
+function [stg] = f_settings_Findsim_unnormalized()
 
 %% Import
 
@@ -12,7 +12,7 @@ stg.folder_model = "Model_Findsim";
 
 % Name of the excel file with the sbtab
 % (SBtab excel name)
-stg.sbtab_excel_name = "SBTAB_Findsim_optimized.xlsx";
+stg.sbtab_excel_name = "SBTAB_Findsim_unnormalized.xlsx";
 
 % Name of the model
 % (Name)
@@ -127,16 +127,15 @@ stg.partest(:,1) = [zeros(1,34),1,2,3,4,5,zeros(1,54),6,7,8,zeros(1,3),9:29,zero
 
 % (Parameter array to test)
 
-stg.pat = [1:2];
+stg.pat = [1:1];
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-stg.pa(1,:) = original_parameter_set;
-stg.pa(2,:) = [1.96572016882948,0.696562506302059,-0.996040381141367,-3.11034092897009,-0.973844523519245,-0.668025949025669,2.59465388739465,0.821642334185851,0.184025833869534,-1.12642000773566,0.160827786219299,1.51031750477815,0.742351565443275,0.162924008347975,0.961312010386403,-0.248754892166113,0.410390386133758,1.91147862618757,-0.299582944179546,0.471435107855951,-1.02889736355468,-1.78044498165455,-2.60207784517252,-1.04051750850729,-0.117125379982777,-2.61666645250405,1.74485667438292,0.602240496586201,1.99920811055418];
+stg.pa(1,:) = [0.999968151	-0.301029996	0	-4	-1	0.264435738	1.602059991	1	1.183916142	-0.22184875	-0.823908741	1.183916142	-0.22184875	-0.823908741	0.948847023	0.079181246	-0.522878745	0.948847023	0.079181246	-0.522878745	-2.023562183	-1.096910013	-1.698970004	-0.728933683	-1.096910013	-1.698970004	1.66888375	1.602059991	1];
 
 % Best parameter array found so far for the model
 % (Best parameter array)
-stg.bestpa = [1.96572016882948,0.696562506302059,-0.996040381141367,-3.11034092897009,-0.973844523519245,-0.668025949025669,2.59465388739465,0.821642334185851,0.184025833869534,-1.12642000773566,0.160827786219299,1.51031750477815,0.742351565443275,0.162924008347975,0.961312010386403,-0.248754892166113,0.410390386133758,1.91147862618757,-0.299582944179546,0.471435107855951,-1.02889736355468,-1.78044498165455,-2.60207784517252,-1.04051750850729,-0.117125379982777,-2.61666645250405,1.74485667438292,0.602240496586201,1.99920811055418];
+stg.bestpa = stg.pa(1,:);
 
 %% Plots
 
@@ -153,7 +152,7 @@ stg.plotoln = true;
 
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 21600;
+stg.sansamples = 1000;
 
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT
@@ -206,7 +205,7 @@ stg.plfm = false;
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 60*30;
+stg.optt = 60*60;
 
 % Population size for the algorithms that use populations
 % (Population size)

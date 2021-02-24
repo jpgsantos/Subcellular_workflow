@@ -32,4 +32,12 @@ end
 if stg.sopt
     rst(6) = f_opt_sopt(stg);
 end
+
+% for n = 1:size(rst,2)
+%     if ~isempty(rst.opt(n).x)
+%         for a = 1:size(rst.opt(n).x,1)
+%             
+%             
+%     end
+% end
 end

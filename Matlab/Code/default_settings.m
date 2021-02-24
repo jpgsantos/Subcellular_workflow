@@ -185,7 +185,7 @@ stg.plplot = true;
 
 % True or false to decide whether to run simulated annealing
 % (Profile Likelihood Simulated Annealing)
-stg.plsa = true;
+stg.plsa = false;
 
 % Options for simulated annealing
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
@@ -273,19 +273,19 @@ stg.ga = false;
 
 % Options for Genetic algorithm
 % (Genetic algorithm options)
-stg.ga_options = optimoptions(@ga,'MaxGenerations',100,...
+stg.ga_options = optimoptions(@ga,'MaxGenerations',50,...
     'MaxTime',stg.optt,'UseParallel',stg.optmc,...
     'PopulationSize',stg.popsize,...
     'MutationFcn','mutationadaptfeasible');
 
 % True or false to decide whether to run Particle swarm
 % (Particle swarm)
-stg.pswarm = true;
+stg.pswarm = false;
 
 % Options for Particle swarm
 % (Particle swarm options)
 stg.pswarm_options = optimoptions('particleswarm',...
-    'MaxTime',stg.optt,'UseParallel',stg.optmc,...
+    'MaxTime',stg.optt,'UseParallel',stg.optmc,'MaxIterations',50,...
     'SwarmSize',stg.popsize);
 
 % True or false to decide whether to run Surrogate optimization

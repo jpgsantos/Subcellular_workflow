@@ -28,14 +28,6 @@ stg.sbtab_name = "sbtab_" + stg.name;
 
 %% Analysis
 
-% String with the analysis to be run, the options are "diag",
-% "opt", "SA"
-% and can be combined as for example "RS,diag", to not run any analysis set
-% stg.analysis to equal to ""
-% (Analysis)
-
-stg.analysis = "diag";
-
 % Experiments to run
 % stg.ms.exprun = [1,3,4];
 stg.exprun = [1,2];
@@ -160,7 +152,7 @@ stg.plotoln = true;
 
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 21600;
+stg.sansamples = 1000;
 
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT
@@ -213,7 +205,7 @@ stg.plfm = false;
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 60*30;
+stg.optt = 60*60;
 
 % Population size for the algorithms that use populations
 % (Population size)

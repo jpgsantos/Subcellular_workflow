@@ -44,6 +44,7 @@ disp("Using " + listing(folder_n).name + " folder")
 folder_model_name = listing(folder_n).name;
 folder_model_dir = string(listing(folder_n).folder);
 
+
 Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
     "Profile Likelihood Analysis","",""];
 
@@ -72,6 +73,8 @@ end
 Analysis = Analysis_options(Analysis_n);
 
 disp("Running " + Analysis_options(Analysis_n))
+
+
 
 if Analysis_n <=4
     
@@ -160,8 +163,8 @@ if Analysis_n <=4
     
     %  Get the working folder
     stg.folder_model = folder_model_name;
-    stg.folder_main = pwd;
-    stg.folder_main = strrep(stg.folder_main,"\","/");
+%     stg.folder_main = pwd;
+%     stg.folder_main = strrep(stg.folder_main,"\","/");
     stg.analysis = Analysis;
     
 else

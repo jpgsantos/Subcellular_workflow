@@ -27,10 +27,10 @@ end
 % Runs the Analysis chosen in settings
 if stg.analysis ~= "" && Analysis_n ~= 6
     rst = f_analysis(stg,stg.analysis);
-    % Save Analysis results if chosen in settings
-    if stg.save_results
-        f_save_analysis(stg,sb,rst,date_stamp)
-    end
+end
+% Save Analysis results if chosen in settings
+if stg.save_results
+    f_save_analysis(stg,sb,rst,date_stamp)
 end
 
 % Plots the results of the analysis, this can be done independently after
