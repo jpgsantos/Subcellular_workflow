@@ -29,9 +29,9 @@ Features:
 
 # Implemented models
 
-https://github.com/jpgsantos/Model_Nair_2016
-https://github.com/jpgsantos/Model_Fujita_2010
-https://github.com/jpgsantos/Model_Viswan_2018
+* https://github.com/jpgsantos/Model_Nair_2016
+* https://github.com/jpgsantos/Model_Fujita_2010
+* https://github.com/jpgsantos/Model_Viswan_2018
 
 # Documentation
 
