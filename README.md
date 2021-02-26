@@ -27,7 +27,11 @@ Features:
   * SBtab(.tsv) to Mod(.mod), using R
   * SBtab(.tsv) to SBML(.xml), using R
 
+# Implemented models
 
+https://github.com/jpgsantos/Model_Nair_2016
+https://github.com/jpgsantos/Model_Fujita_2010
+https://github.com/jpgsantos/Model_Viswan_2018
 
 # Documentation
 
