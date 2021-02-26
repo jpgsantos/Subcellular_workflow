@@ -1,4 +1,0 @@
-!!SBtab	SBtabVersion='1.0' Document='SBTAB_Findsim' TableName='Output' TableTitle='SBTAB_Findsim Output' TableType = 'Quantity'								
-!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!ProbDist	!LaTeX	!Location	!Formula
-Y0	pERK1_2_ratio1		SD_Y0	abs+rel random noise (std)	micromole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	(MAPK_p+MAPK_p_p)
-Y1	pERK1_2_ratio2		SD_Y1	abs+rel random noise (std)	micromole/litre	normal	\ce{[Total_{\text{C}}]}	Cell	(MAPK_p+MAPK_p_p)
