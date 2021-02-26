@@ -20,7 +20,7 @@ Features:
 * Global Sensitivity analysis, using MATLAB&trade;
 * Conversion tools:
 
-  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB&trade;&trade
+  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB&trade;
   * SBtab(.xlsx) to MATLAB&trade; SimBiology(.m, .sbproj), using MATLAB&trade;
   * MATLAB&trade; SimBiology to SBML(.xml), using MATLAB&trade;
   * SBtab(.tsv) to VFGEN(.vf), using R
