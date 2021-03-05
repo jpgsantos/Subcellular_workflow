@@ -3,11 +3,8 @@
 
 clear
 
-[stg] = f_load_settings_part1("TW","D1_LTP_time_window","all");
-
-proj = sbioloadproject("Model/" + stg.folder_model + "/Data/model_" +...
-    stg.name + ".sbproj");
-obj = proj.modelobj;
+load("model_Nair_2016_optimized.mat");
+obj = modelobj;
 
 %% Get steady state values after equilibrating for 100000 s
 

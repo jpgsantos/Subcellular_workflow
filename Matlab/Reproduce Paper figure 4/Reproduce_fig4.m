@@ -16,7 +16,7 @@ layout.OuterPosition = [0 0 6.85 3];
 
 nexttile(layout);
 
-bar(rst.SA.SI.se(:,1:4),'stacked')
+bar(rst.SA.SI.se(:,1:6),'stacked')
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 xlabel('Outputs')

@@ -7,20 +7,8 @@ rst = rst.diag;
 
 addpath(genpath(pwd));
 
-% Create needed folders
-mkdir("Model/" + stg.folder_model,"Data");
-mkdir("Model/" + stg.folder_model,"Formulas");
-mkdir("Model/" + stg.folder_model,"tsv");
-mkdir("Model/" + stg.folder_model,"Data/Exp");
-
-% Runs the import scripts if chosen in settings
-% f_import(stg,sb)
-
-addpath(genpath(pwd));
-
 % Import the data on the first run
-load("Model/" + stg.folder_model + "/Data/data_" + stg.name +...
-    ".mat",'Data','sbtab')
+load("data_Nair_2016_optimized.mat",'Data','sbtab')
 
 n = 6;
 
