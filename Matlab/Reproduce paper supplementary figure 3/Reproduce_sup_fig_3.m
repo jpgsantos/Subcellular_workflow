@@ -84,7 +84,6 @@ clear labelfig2
 ylim([0 0.001])
 xlim([0 40000])
 
-
 % xlim([3 8])
 
 % xticks([3,4,5,6,7,8])
@@ -166,6 +165,9 @@ end
     xlabel('time (s)','FontSize', 8,'Fontweight','bold')
     ylabel({strrep(string(sbtab.datasets(n).output_name{1,j}),'_',...
         '\_'),'mmol/l'},'FontSize', 8,'Fontweight','bold')
+    
+    legend(["Data","SEM","Original parameters","Optimized parameters"],'FontSize', 6.5,'Fontweight','bold')
+    legend boxoff
     
     % Choose number of decimal places for y axis
     ytickformat('%.2g')

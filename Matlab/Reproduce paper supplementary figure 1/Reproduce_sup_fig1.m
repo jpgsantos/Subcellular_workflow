@@ -76,6 +76,7 @@ for o = 1:size(sbtab.datasets(n).input,2)
         strrep(sbtab.datasets(n).input(o),'S',''))+1);
 end
 
+
 set(gca,'FontSize',8,'Fontweight','bold')
 xlabel('time (s)','FontSize', 8,'Fontweight','bold')
 ylabel('micromole/liter','FontSize', 8,'Fontweight','bold')
@@ -126,7 +127,6 @@ for m = 1:2
         errorbar(time,data,data_SD, 'vertical',	'k', 'LineStyle', 'none','LineWidth',1);
 %     end
 %     if m = 2
-        
 %     end
     
         time_detailed = rst(1).simd{1,m+2*stg.expn}.Time;
@@ -136,13 +136,10 @@ for m = 1:2
     % are given in the data provided in sbtab
     %     plot(rst(p).simd{1,p}.Time,Data(n).Experiment.x(:,j),'k',...
     %         'DisplayName','data','LineWidth',1.5)
-    size(time_detailed)
-    size(sim_results_detailed)
     plot(time_detailed,...
         sim_results_detailed,'b',...
         'DisplayName',string("Parameter set "+p),...
         'LineWidth',1)
-    
     
     time_detailed = rst(2).simd{1,m+2*stg.expn}.Time;
     [~,sim_results_detailed]= f_normalize(rst(2),stg,m,j);
@@ -158,6 +155,9 @@ for m = 1:2
     hold off
     
     set(gca,'FontSize',8,'Fontweight','bold')
+    
+    legend(["Data","SEM","Original parameters","Optimized parameters"],'FontSize', 6.5,'Fontweight','bold')
+    legend boxoff
     
     xlabel('time (s)','FontSize', 8,'Fontweight','bold')
     ylabel({strrep(string(sbtab.datasets(n).output_name{1,j}),'_',...

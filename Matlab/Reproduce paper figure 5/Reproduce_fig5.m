@@ -1,3 +1,4 @@
+clear
 load('Reproduce paper figure 5/inputs')
 load('Reproduce paper figure 5/copasi_data')
 load('Reproduce paper figure 5/new_data')
