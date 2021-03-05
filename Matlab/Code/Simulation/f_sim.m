@@ -84,8 +84,16 @@ set(model_run{exp_n}.parameters(1:size(rt.par,1)),{'Value'},num2cell(rt.par))
 % model_run{exp_n}.parameters
 % config_run{exp_n}.AmountUnits = 'picomole';
 
+% config_run{exp_n}.SolverOptions
+% config_run{exp_n}.SolverOptions.MaxStep
+
+% model_run{exp_n}.Compartments
+% model_run{exp_n}.Compartments.Value
 %simulate the model using matlab built in function
 rst.simd{exp_n} = sbiosimulate(model_run{exp_n},config_run{exp_n});
+
+
+
 % rst.simd{exp_n} = sbiosimulate(model_run{exp_n});
 % modelobj=model_run{exp_n};
 % modelobj

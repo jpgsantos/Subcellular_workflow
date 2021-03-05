@@ -30,12 +30,12 @@ for n = stg.exprun
         plot_n = plot_n + 1;
         
         hold on
-
+        
         % Iterate over the number of parameter arrays to test
         for m = stg.pat
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
-
+                
                 time = rst(m).simd{1,n}.Time;
                 data = Data(n).Experiment.x(:,j);
                 
@@ -54,59 +54,40 @@ for n = stg.exprun
         
         % Iterate over the number of parameter arrays to test
         for m = stg.pat
-
+            
             % Plot only if the simulation was successful
             if rst(m).simd{1,n} ~= 0
-               
+                
                 time = rst(m).simd{1,n}.Time;
                 [sim_results,~] = f_normalize(rst(m),stg,n,j);
                 if stg.simdetail
-                time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
-                [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j);
+                    time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
+                    [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j);
                 end
-
-
+                
                 % Plot the outputs to each dataset (new subplots) and
                 % parameter array to test that are simulated using
-                % Simbiology while also normalizating with the starting
-                % point of the result
-                if sbtab.datasets(n).normstart == 1
-                    plot(rst(m).simd{1,n}.Time,...
-                        rst(m).simd{1,n}.Data(1:end,...
-                        end-size(sbtab.datasets(n).output,2)+j)./...
-                        rst(m).simd{1,n}.Data(1,end-...
-                        size(sbtab.datasets(n).output,2)+j),'DisplayName',...
+                % Simbiology
+                if stg.simdetail
+                    plot(time_detailed,...
+                        sim_results_detailed,'DisplayName',...
                         string("Parameter set "+m),'LineWidth',1.5)
                 else
                     
-                    % Plot the outputs to each dataset (new subplots) and
-                    % parameter array to test that are simulated using
-                    % Simbiology
-                    
-                    if stg.simdetail
-                        plot(time_detailed,...
-                            sim_results_detailed,'DisplayName',...
-                            string("Parameter set "+m),'LineWidth',1.5)
-                    else
-%                         scatter(time,...
-%                             sim_results,'filled','DisplayName',...
-%                             string("Parameter set "+m))
-                        
-                        plot(time,...
-                            sim_results,'DisplayName',...
-                            string("Parameter set "+m),'LineWidth',1.5)
-                    end
+                    plot(time,...
+                        sim_results,'DisplayName',...
+                        string("Parameter set "+m),'LineWidth',1.5)
                 end
-                    
+                
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                        size(sbtab.datasets(n).output,2)+j,1}.Units))
+                    size(sbtab.datasets(n).output,2)+j,1}.Units))
             end
         end
         
         hold off
         
         xlabel('seconds')
-
+        
         if stg.simdetail
             ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf])
         else

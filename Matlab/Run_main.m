@@ -2,7 +2,6 @@
 
 clear
 clc
-% clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -13,15 +12,17 @@ date_stamp = string(year(datetime)) + "_" + ...
 addpath(genpath(pwd));
 
 % Code for choosing the model and loading the settings files
-[stg,rst,Analysis_n] = f_load_settings();
+[stg,rst,sb,Analysis_n] = f_load_settings();
 
-% Runs the import scripts if chosen in settingsw
+% Runs the import scripts if chosen in settings
 if stg.import
-    [stg,sb] = f_import(stg);
+    [stg,sb] = f_import(stg,sb);
 else
     % Creates a struct based on the sbtab that is used elswhere in the code and
     % also adds the number of experiments and outputs to the settings variable
-    [stg,sb] = f_generate_sbtab_struct(stg);
+    if isempty(sb)
+        [stg,sb] = f_generate_sbtab_struct(stg);
+    end
 end
 
 % Runs the Analysis chosen in settings

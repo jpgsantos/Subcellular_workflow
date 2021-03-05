@@ -1,4 +1,4 @@
-function [stg,rst,Analysis_n] = f_load_settings()
+function [stg,rst,sb,Analysis_n] = f_load_settings()
 
 persistent sbtab_date_last
 persistent folder_n_last
@@ -28,6 +28,7 @@ end
 if ~isempty(folder_n_last)
     prompt = prompt + "\n\nPress enter to use "+ listing(folder_n_last).name;
 end
+
 prompt = prompt + "\n";
 
 folder_n = input(prompt);
@@ -35,6 +36,10 @@ folder_n = input(prompt);
 if isempty(folder_n)
     folder_n = folder_n_last;
 else
+    if folder_n ~= folder_n_last
+        disp("Chosen model changed, clearing functions")
+        f_functions_to_clear()
+    end
     settings_file_n_last = [];
     folder_n_last = folder_n;
 end
@@ -43,7 +48,6 @@ disp("Using " + listing(folder_n).name + " folder")
 
 folder_model_name = listing(folder_n).name;
 folder_model_dir = string(listing(folder_n).folder);
-
 
 Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
     "Profile Likelihood Analysis","",""];
@@ -73,8 +77,6 @@ end
 Analysis = Analysis_options(Analysis_n);
 
 disp("Running " + Analysis_options(Analysis_n))
-
-
 
 if Analysis_n <=4
     
@@ -122,16 +124,6 @@ if Analysis_n <=4
     
     settings_file_date_last = settings_file_date;
     
-    
-    
-    
-    % end
-    
-    
-    % [settings_file,folder_model_name,folder_model_dir,Analysis,Analysis_n] = f_prompt();
-    
-    
-    % if Analysis_n <= 4
     stg_add_default = eval("default_settings()");
     
     f = fieldnames(stg_add_default);
@@ -161,12 +153,8 @@ if Analysis_n <=4
     
     sbtab_date_last = sbtab_date;
     
-    %  Get the working folder
-    stg.folder_model = folder_model_name;
-%     stg.folder_main = pwd;
-%     stg.folder_main = strrep(stg.folder_main,"\","/");
     stg.analysis = Analysis;
-    
+    sb = [];
 else
     listing3 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Results");
     
@@ -178,8 +166,6 @@ else
             listing3(n)= [];
         end
     end
-    
-%     listing3
     
     prompt = "What Analysis should be reproduced?\n";
     
@@ -214,20 +200,17 @@ else
     
     load(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name +...
         "/Results/"+ listing3(folder_n_2).name+ "/" +...
-        listing4(folder_n_3).name + "/Analysis.mat","stg")
-%     listing4
-   
+        listing4(folder_n_3).name + "/Analysis.mat","stg","sb")
     
     if Analysis_n == 5
     end
     if Analysis_n == 6
         stg.plot = true;
-%         stg.analysis = "";
-            load(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name +...
-        "/Results/"+ listing3(folder_n_2).name+ "/" +...
-        listing4(folder_n_3).name + "/Analysis.mat","rst")
+        load(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name +...
+            "/Results/"+ listing3(folder_n_2).name+ "/" +...
+            listing4(folder_n_3).name + "/Analysis.mat","rst")
     end
-    
 end
+stg.folder_model = folder_model_name;
 
 end

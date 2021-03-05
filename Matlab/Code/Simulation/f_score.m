@@ -94,7 +94,7 @@ for n = stg.exprun
         elseif rst.simd{n} == 0 || rst.sd{n,1}(j) == inf
             
             if stg.useLog == 4
-                rst.sd{n,1}(j) = 1000;
+                rst.sd{n,1}(j) = 10000;
                 rst.xfinal{n,1}(j) = 0;
             else
                 rst.sd{n,1}(j) = 10^10;

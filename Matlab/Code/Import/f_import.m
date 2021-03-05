@@ -1,16 +1,11 @@
-function [stg,sb] = f_import(stg)
+function [stg,sb] = f_import(stg,sb)
 
 % Create needed folders
-%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data");
-%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Formulas");
-%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"tsv");
-%     mkdir(stg.folder_main + "/Model/" + stg.folder_model,"Data/Exp");
+mkdir(pwd + "/Model/" + stg.folder_model,"Data");
+mkdir(pwd + "/Model/" + stg.folder_model,"Formulas");
+mkdir(pwd + "/Model/" + stg.folder_model,"tsv/" + stg.name + "/");
+mkdir(pwd + "/Model/" + stg.folder_model,"Data/Exp");
 
-    mkdir(pwd + "/Model/" + stg.folder_model,"Data");
-    mkdir(pwd + "/Model/" + stg.folder_model,"Formulas");
-    mkdir(pwd + "/Model/" + stg.folder_model,"tsv");
-    mkdir(pwd + "/Model/" + stg.folder_model,"Data/Exp");
-    
 % Creates a .mat and a tsvs from the sbtab file
 disp("Reading SBtab Excel")
 f_excel_sbtab_importer(stg);
@@ -19,7 +14,9 @@ addpath(genpath(pwd));
 
 % Creates a struct based on the sbtab that is used elswhere in the code and
 % also adds the number of experiments and outputs to the settings variable
-[stg,sb] = f_generate_sbtab_struct(stg);
+if isempty(sb)
+    [stg,sb] = f_generate_sbtab_struct(stg);
+end
 
 % % Create the model and input output structure from sbtab.mat
 disp("Creating the model, input and output")
@@ -29,7 +26,7 @@ disp("Creating the model, input and output")
 % settings defined in the sbtab
 f_sbtab_to_model(stg,sb)
 
-% Creates code that loads the inputs of each experiment into a .mat file, 
+% Creates code that loads the inputs of each experiment into a .mat file,
 % "Data_D1_LTP_time_window_input" in this case, and creates the code to
 % read this inputs at runtime when the experiments are being simulated, all
 % this generated code is stored on the formulas folder

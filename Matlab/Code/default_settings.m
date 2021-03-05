@@ -8,33 +8,25 @@ stg.import = true;
 
 % Name of the folder where everything related to the model is stored
 % (Folder Model)
-stg.folder_model = "Model_Findsim";
+stg.folder_model = "Model";
 
 % Name of the excel file with the sbtab
 % (SBtab excel name)
-stg.sbtab_excel_name = "SBTAB_Findsim.xlsx";
+stg.sbtab_excel_name = "SBTAB.xlsx";
 
 % Name of the model
 % (Name)
-stg.name = "Findsim";
+stg.name = "model_name";
 
 % Name of the default model compartment
 % (Compartment name)
-stg.cname = "Cell";
+stg.cname = "Compartment";
 
 % Name of the sbtab saved in .mat format
 % (SBtab name)
-stg.sbtab_name = "sbtab_" + stg.name;
+stg.sbtab_name = "SBtab_" + stg.name;
 
 %% Analysis
-
-% String with the analysis to be run, the options are "diag",
-% "opt", "SA"
-% and can be combined as for example "RS,diag", to not run any analysis set
-% stg.analysis to equal to ""
-% (Analysis)
-
-stg.analysis = "diag";
 
 % Experiments to run
 % stg.ms.exprun = [1,3,4];
@@ -77,7 +69,7 @@ stg.simdetail = true;
 
 % Maximum time for each individual function to run in seconds
 % (Maximum time)
-stg.maxt = 30;
+stg.maxt = 10;
 
 % Equilibration time
 % (Equilibration time)
@@ -273,7 +265,7 @@ stg.ga = false;
 
 % Options for Genetic algorithm
 % (Genetic algorithm options)
-stg.ga_options = optimoptions(@ga,'MaxGenerations',50,...
+stg.ga_options = optimoptions(@ga,'MaxGenerations',200,...
     'MaxTime',stg.optt,'UseParallel',stg.optmc,...
     'PopulationSize',stg.popsize,...
     'MutationFcn','mutationadaptfeasible');
@@ -285,7 +277,7 @@ stg.pswarm = false;
 % Options for Particle swarm
 % (Particle swarm options)
 stg.pswarm_options = optimoptions('particleswarm',...
-    'MaxTime',stg.optt,'UseParallel',stg.optmc,'MaxIterations',50,...
+    'MaxTime',stg.optt,'UseParallel',stg.optmc,'MaxIterations',200,...
     'SwarmSize',stg.popsize);
 
 % True or false to decide whether to run Surrogate optimization

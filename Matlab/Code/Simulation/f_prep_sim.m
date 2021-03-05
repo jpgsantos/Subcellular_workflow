@@ -182,7 +182,6 @@ for n = stg.exprun
                         rt.ssa(j,n+2*stg.expn) =...
                             rst.simd{n+stg.expn}.Data(end,j);
                     end
-                    
                 end
             end
         end
