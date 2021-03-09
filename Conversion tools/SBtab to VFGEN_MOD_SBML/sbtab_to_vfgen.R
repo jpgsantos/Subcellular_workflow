@@ -128,12 +128,19 @@ AppendAmounts <- function(S,Quantity,QuantityName,Separator){
     return(ConLaw)
 }
 
-PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
+PrintSteadyStateOutputs <- function(Compound,ODE,Reaction,document.name){
     ss <- Compound$SteadyState
+    RN <- row.names(Reaction)
+    N <- length(RN)
     if (any(ss)){
         CName <- row.names(Compound)[ss]
         CID <- Compound$ID[ss]
         ODE <- ODE[ss]
+        ## for working SBML, replace all flux names with the actual flux expressions:
+        for (j in 1:N){
+            ODE <- gsub(sprintf("\\<%s\\>",RN[j]),sprintf("(%s)",Reaction$Flux[j]),ODE)
+        }
+        ## ODE <- gsub("^[+]","",ODE)
         header <- character()
         header[1] <- sprintf("!!SBtabSBtabVersion='1.0'\tTableName='Output' TableTitle='These Outputs describe how well the SteadyState has been achieved' TableType='Quantity' Document='%s'",document.name)
         header[2] <- sprintf("!ID\t!Name\t!Comment\t!ErrorName\t!ErrorType\t!Unit\t!ProbDist\t!Formula")
@@ -162,11 +169,12 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
     Formula <- SBtab[["Reaction"]][["!ReactionFormula"]]
     Name <- make.cnames(SBtab[["Reaction"]][["!Name"]])
     Flux <- SBtab[["Reaction"]][["!KineticLaw"]]
+    IsReversible <- SBtab[["Reaction"]][["!IsReversible"]]
     ##kin <- strsplit(SBtab[["Reaction"]][["!KineticLaw"]],split="-")
     ##KinMat <- matrix(trimws(unlist(kin)),ncol=2,byrow=TRUE)
     ##Kinetic <- data.frame(forward=KinMat[,1],backward=KinMat[,2])
     ##Unit <- SBtab[["Reaction"]][["!Unit"]]
-    Reaction <- data.frame(ID,Formula,Flux,row.names=Name)
+    Reaction <- data.frame(ID,Formula,Flux,IsReversible,row.names=Name)
     return(Reaction)
 }
 
@@ -249,14 +257,17 @@ PrintSteadyStateOutputs <- function(Compound,ODE,document.name){
         Scale[] <- "log"
     }
     Name <- make.cnames(SBtab[["Parameter"]][["!Name"]])
-    if (length(grep("!DefaultValue",colnames(SBtab[["Parameter"]])))>0){
+    if ("!DefaultValue" %in% colnames(SBtab[["Parameter"]])){
         Value <- SBtab[["Parameter"]][["!DefaultValue"]]
-    } else if (length(grep("!Value",colnames(SBtab[["Parameter"]])))>0){
+    } else if ("!Value" %in% colnames(SBtab[["Parameter"]])){
         Value <- SBtab[["Parameter"]][["!Value"]]
-    } else if (length(grep("!Mean",colnames(SBtab[["Parameter"]])))>0){
+    } else if ("!Mean" %in% colnames(SBtab[["Parameter"]])){
         Value <- SBtab[["Parameter"]][["!Mean"]]
-    } else if (length(grep("!Median",colnames(SBtab[["Parameter"]])))>0){
+    } else if ("!Median" %in% colnames(SBtab[["Parameter"]])){
         Value <- SBtab[["Parameter"]][["!Median"]]
+    } else {
+        print(colnames(SBtab[["Parameter"]]))
+        stop("no usable Value column for Parameters found")
     }
 
     message("raw parameter values:")
@@ -593,6 +604,11 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     Mod[["CONSTANT"]] <- c("CONSTANT {",
                            sprintf(fmt$const,row.names(Constant),Constant$Value, NeuronUnit(Constant$Unit)),
                            "}")
+    l=grepl("/.*\\<second\\>",Parameter$Unit)
+    if (any(l)){
+        Parameter$Unit[l] <- gsub("\\<second\\>","millisecond",Parameter$Unit[l])
+        Parameter$Value[l] <- Parameter$Value[l]/1e3;
+    }
     Mod[["PARAMETER"]] <- c("PARAMETER {",                            
                             sprintf(fmt$par,row.names(Parameter),Parameter$Value, NeuronUnit(Parameter$Unit)),
                             sprintf(fmt$input,row.names(Input),Input$DefaultValue, NeuronUnit(Input$Unit)),
@@ -676,26 +692,28 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
 
 .unit.scale <- function(prefix){
     stopifnot(is.character(prefix) && length(prefix)==1)
-    if (grepl("G|giga",prefix)){
+    if (grepl("^G$|^giga$",prefix)){
         s <- 9
-    } else if (grepl("M|mega",prefix)){
+    } else if (grepl("^M$|^mega$",prefix)){
         s <- 6
-    } else if (grepl("k|kilo",prefix)){
+    } else if (grepl("^k$|^kilo$",prefix)){
         s <- 3
-    } else if (grepl("h|hecto",prefix)){
+    } else if (grepl("^h$|^hecto$",prefix)){
         s <- 2
-    } else if (grepl("d|deci",prefix)){
+    } else if (grepl("^d$|^deci$",prefix)){
         s <- -1
-    } else if (grepl("c|centi",prefix)){
+    } else if (grepl("^c$|^centi$",prefix)){
         s <- -2
-    } else if (grepl("m|milli",prefix)){
+    } else if (grepl("^m$|^milli$",prefix)){
         s <- -3
-    } else if (grepl("u|µ|micro",prefix)){
+    } else if (grepl("^u$|^µ$|^micro$",prefix)){
         s <- -6
-    } else if (grepl("n|nano",prefix)){
+    } else if (grepl("^n$|^nano$",prefix)){
         s <- -9
-    } else if (grepl("p|pico",prefix)){
+    } else if (grepl("^p$|^pico$",prefix)){
         s <- -12
+    } else if (grepl("^f$|^femto$",prefix)){
+        s <- -15
     } else {
         s <- 0
     }
@@ -743,6 +761,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     message(sprintf("---%11s---",unit.str))
     print(unit.str)
     a <- gsub("[()]","",unit.str)
+    a <- gsub("molarity","mol l^-1",a);
     if (grepl("/",unit.str)){
         a <- unlist(strsplit(a,split="/",fixed=TRUE))
         message(sprintf("«%s» is interpreted as:\n\tNumerator «%s»\n\tDenominator: «%s»\n",unit.str,a[1],a[2]))
@@ -757,7 +776,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                           "(l|L|liter|litre|g|gram|mole?|s|second|m|meter|metre|K|kelvin|cd|candela|A|ampere)",
                           "\\^?([-+]?[0-9]+)?$")
             ##print(pat)
-            r <- regexec(pattern=pat,text=u)
+            r <- regexec(pattern=pat,text=u) #,perl=TRUE)
 
             if (u == "1"){
                 .u.s <- 0
@@ -831,14 +850,11 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     num.parameters <- nrow(Parameter)
     Name <- row.names(Parameter)
 
-    if ("DefaultValue" %in% names(Parameter)){
-        Value <- as.numeric(Parameter$DefaultValue)
-    } else if ("Value" %in% names(Parameter)){
+    if ("Value" %in% names(Parameter)){
         Value <- as.numeric(Parameter$Value)
     } else {
         stop("Parameters have no Value column")
-    }
-    
+    }    
     for (i in 1:num.parameters){
         message(sprintf("adding SBtab parameter %i: «%s»",i,Name[i]))
         para <- Model_createParameter(sbml)
@@ -847,7 +863,7 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         
         this.unit.id <- all.uid[i]
         message(sprintf("unit of parameter %i (%s): «%s»",i,Name[i],this.unit.id))
-        Parameter_setUnits(para, this.unit.id)
+        Parameter_setUnits(para,this.unit.id)
         Parameter_setValue(para,Value[i])
     }
 }
@@ -867,7 +883,10 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         Species_setUnits(sp,SubstanceUnitID)
         Species_setInitialConcentration(sp, Compound$InitialValue[i])
         Ai <- Compound$Assignment[i]
-        if (!grepl("^(0|F(ALSE)?)?$",Ai)){
+        if (Compound$IsConstant[i]){
+            Species_setBoundaryCondition(sp,"true")
+            Species_setName(sp, Name[i])
+        } else if (!grepl("^(0|FALSE|NONE|NULL)?$",Ai)){
             Species_setBoundaryCondition(sp,"true")
             Species_setName(sp, Ai)
         } else {
@@ -894,10 +913,13 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     }
 }
 
-.sbtab.reaction.to.sbml <- function(sbml,Reaction){
+.sbtab.reaction.to.sbml <- function(sbml,Reaction,Compartment){
     num.reactions <- nrow(Reaction)
     Name <- row.names(Reaction)
-
+    OneCompartmentModel=FALSE;
+    if (is.na(Compartment) || length(Compartment$ID==1)){
+        OneCompartmentModel=TRUE;
+    }
     AB <- strsplit(Reaction$Formula,split="<=>")
     for (i in 1:num.reactions){
         message(sprintf("adding reaction %i: «%s»",i,Name[i]))
@@ -906,9 +928,16 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         Reaction_setId(reaction,Name[i]);
         Reaction_setName(reaction,Name[i]);
         Reaction_setReversible(reaction, Reaction$IsReversible[i]);
+        
         message(sprintf("converting flux to mathml: «%s»",Reaction$Flux[i]))
         kl <- Reaction_createKineticLaw(reaction);
-        astMath <- parseFormula(Reaction$Flux[i]); # or: readMathMLFromString(mathXMLString);
+        Flux <- Reaction$Flux[i]
+        if (OneCompartmentModel){
+            Flux <- sprintf("(%s)*%s",Flux,Compartment$ID[1]);
+            message("reaction rates in SBML need to have the unit «substance/time» rather than «concentration/time».\nSo conventional kinetics need to be multiplied by compartment volumes.");
+            message("Since this model has only one Compartment, all kinetics will be multiplied by its volume for the SBML model.");
+        }
+        astMath <- parseL3Formula(Flux); # or: readMathMLFromString(mathXMLString);
         KineticLaw_setMath(kl, astMath);
 
         A <- trimws(strsplit(AB[[i]][1],"+",fixed=TRUE)[[1]])
@@ -919,8 +948,9 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
         print(B)
         message("---")
         for (a in A){
-            r<-regexec(pattern="([0-9]*)\\s*(\\w+)",text=a)
+            r<-regexec(pattern="([0-9]*)\\s*[*]?\\s*(\\w+)",text=a)
             m <- unlist(regmatches(a,r))
+            print(m)
             RefName <- m[3]
             spr  <-  Reaction_createReactant(reaction)
             SimpleSpeciesReference_setSpecies(spr, RefName)
@@ -929,8 +959,9 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
             }
         }
         for (b in B){
-            r<-regexec(pattern="([0-9]*)\\s*(\\w+)",text=b)
+            r<-regexec(pattern="([0-9]*)\\s*[*]?\\s*(\\w+)",text=b)
             m <- unlist(regmatches(b,r))
+            print(m)
             RefName <- m[3]
             spr  <-  Reaction_createProduct(reaction)
             SimpleSpeciesReference_setSpecies(spr, RefName)
@@ -979,18 +1010,47 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
                 Species_setBoundaryCondition(sp, "true")
                 VarName <- ExpressionName[i]
             }
-            astMath <- parseFormula(F);
+            astMath <- parseL3Formula(F);
             ##print(F)
-            
+
             rule <- Model_createAssignmentRule(sbml)
             Rule_setVariable(rule,VarName)
             Rule_setMath(rule,astMath)
-            ## Rule_setName(rule,ExpressionName[i])
-            ## Rule_setId(rule,ExpressionName[i])
-            ##Rule_setFormula(rule, astMath)
         }
     }
 }
+
+.sbtab.output.to.sbml <- function(sbml,Output,CompName,OutputUnitID){
+    all.uid <- .unit.id.from.string(Output$Unit)
+    num.species <- nrow(Output)
+    Name <- row.names(Output)
+    for (i in 1:num.species){
+        message(sprintf("output %i:",i))
+        print(Name[i])
+        sp <- Model_createSpecies(sbml)
+        this.unit.id <- all.uid[i]
+        message(sprintf("unit of output %i (%s): «%s»",i,Name[i],this.unit.id))
+        Species_setId(sp, Name[i])
+        
+        Species_setCompartment(sp, CompName)
+        Species_setUnits(sp,OutputUnitID)
+        Species_setInitialConcentration(sp, 0.0)
+        Species_setBoundaryCondition(sp,"true")
+        Species_setName(sp, Name[i])
+##        SBase_appendAnnotation(sp,"<annotation>Output</annotation>")
+
+        F <- Output$Formula[i]
+        astMath <- parseL3Formula(F)
+        #print(astMath)
+        message(sprintf("output %i has formula:",i))
+        print(F)
+        message(formulaToString(astMath))
+        rule <- Model_createAssignmentRule(sbml)
+        Rule_setVariable(rule,Name[i])
+        Rule_setMath(rule,astMath)
+    }
+}
+
 
 .make.sbml <- function(H,Defaults,Constant=NULL,Parameter,Input=NULL,Expression=NULL,Reaction,Compound,Output,ODE,Comp){
     Doc <- SBMLDocument(2,4); # (LEVEL,VERSION)
@@ -1023,10 +1083,14 @@ OneOrMoreLines <- function(Prefix,Table,Suffix){
     if (!is.null(Input)){
         .sbtab.parameter.to.sbml(sbml,Input)
     }
-    .sbtab.reaction.to.sbml(sbml,Reaction)
+    .sbtab.reaction.to.sbml(sbml,Reaction,Comp)
     if (!is.null(Expression)){
         .sbtab.expression.to.sbml(sbml,Expression,Comp$ID[1],Compound)
     }
+    if (!is.null(Output)){
+        .sbtab.output.to.sbml(sbml,Output,Comp$ID[1],"substance")
+    }
+
     return(Doc)
 }
 
@@ -1191,7 +1255,7 @@ sbtab_to_vfgen <- function(SBtabDoc,cla=TRUE){
         }
         ##print(t(Laws))
     }    
-    PrintSteadyStateOutputs(Compound,ODE,document.name)
+    PrintSteadyStateOutputs(Compound,ODE,Reaction,document.name)
     H <- document.name
     H <- sub("-",'_',H)
     vfgen <- .make.vfgen(H,Constant,Parameter,Input,Expression,Reaction,Compound,Output,ODE,ConLaw)

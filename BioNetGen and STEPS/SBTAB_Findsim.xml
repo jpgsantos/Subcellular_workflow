@@ -59,7 +59,7 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Comp1" name="Cell" size="1e-15" units="liter"/>
+      <compartment id="Comp1" name="Cell" size="1e-15" units="litre"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="PKC_Ca" name="PKC_Ca" compartment="Comp1" initialConcentration="0" substanceUnits="substance"/>
