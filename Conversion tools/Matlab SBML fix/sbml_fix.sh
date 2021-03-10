@@ -1,9 +1,20 @@
 #!/bin/bash
 # (C) Andrei Kramer, andreikr@kth.se
 
-# DISCLAIMER: 
-# the author does not like or understand sbml
+# INTENDED PURPOSE:
+# MATLAB has a toolbox called simbiology.
+# simbiology creates sbml exports that look a bit weird
+# it creates very long ids instead of using the species names it has
+# this script replaces all ids with the names, everywhere
+# The script also fixes the time variable
 
+# DISCLAIMER: 
+# the author does not fully understand many details of sbml
+# he is trying his best
+
+# This script will become entirely unnecessary when simbiology is fixed.
+
+# NO WARRANTY of course
 
 FILE=${1}
 
@@ -36,14 +47,16 @@ for ((i=0;i<n;i++)); do
     fi
 done
 
-# part of the sbml insanity is this:
+# part of the sbml peculiarity is this:
 # 
 # according to the FAQ (http://sbml.org/Documents/FAQ#What_is_the_symbol_for_time_in_SBML.3F) 
-# _time_ is this in sbml:      
+# The _time_ variable is represented like this in sbml:      
 #      <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> 
 #           t 
 #      </csymbol> 
-# where t can be any string, so ...
+# where t can be any string, MATLAB's simbiology toolbox creates just this instead:
+# <ci> time </ci>
+
 sed -E -i -e 's|<ci>\s*time\s*</ci>|<csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">time</csymbol>|g' ${FILE}
 
 
