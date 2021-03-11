@@ -1,3 +1,4 @@
 
-NEURON/single_sec_cell.py
-Matlab/Model/Timing_Model/Data/spiketraindd_DA.m
+**/NEURON/single_sec_cell.py
+!**/Matlab/Model/Place models here.txt
+**/Matlab/Model/**
