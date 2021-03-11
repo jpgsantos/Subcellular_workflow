@@ -231,24 +231,24 @@ percentiles = [0.1,0.9]; % 10% - 90% confidence interval (CI)
 color = [0.8,0.8, 1.0]; 
 transparency = 0.5;
 patch_error_plot(tst2_ssa_',cst2_ssa_,percentiles,color,transparency)
-p1 = plot(tst2_ssa_, mean(cst2_ssa_,2), '-', 'LineWidth', 2,'Color',[0.4,0.4, 1.0]);
+p1 = plot(tst2_ssa_, mean(cst2_ssa_,2), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0]);
 
 % draw mean ERK1_2_ratio1 and CI 10-90% , Subcellular application STEPS
 % TetOpt solver,  'STEPS stochastic'
 color = [1.0,0.8, 0.8];
 patch_error_plot(tst2_steps_',cst2_steps_,percentiles,color,transparency)
 
-p2 = plot(tst2_steps_, mean(cst2_steps_,2), '-', 'LineWidth', 2,'Color',[1.0,0.4, 0.4]);
+p2 = plot(tst2_steps_, mean(cst2_steps_,2), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4]);
 
 % draw mean ERK1_2_ratio1, COPASI deterministic LSODA solver , 'COPASI deterministic'
-p3 = plot(t_copasi, x_copasi, '-', 'LineWidth', 2, 'Color',[0.4, 1, 0.4]);
+p3 = plot(t_copasi, x_copasi, '-', 'LineWidth', 1, 'Color',[0.4, 1, 0.4]);
 
 % draw mean ERK1_2_ratio1, BioNetGen deterministic ode solver , 'BioNetGen deterministic'
-p4 = plot(t_bng_ode, x_bng_ode,':', 'LineWidth', 5,'Color',[0.7, 0.7, 0.7]);
+p4 = plot(t_bng_ode, x_bng_ode,':', 'LineWidth', 3,'Color',[0.7, 0.7, 0.7]);
 
 % draw Mean+-SD ERK1_2_ratio1, experimental , 'Data'
 cf=0.2;
-p5 = errorbar(tst2_output, cst2_output_M*cf, cst2_output_SD*cf,'ok', 'LineWidth', 2,'MarkerSize',3);
+p5 = errorbar(tst2_output, cst2_output_M*cf, cst2_output_SD*cf,'ok', 'LineWidth', 1,'MarkerSize',3);
 
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)','FontSize',8,'Fontweight','bold');
