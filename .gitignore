@@ -2,3 +2,6 @@
 **/NEURON/single_sec_cell.py
 !**/Matlab/Model/Place models here.txt
 **/Matlab/Model/**
+*.pdf
+*.tiff
+*.png
