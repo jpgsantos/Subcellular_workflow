@@ -17,7 +17,6 @@ from datetime import date
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'Subcelular workflow'
@@ -26,7 +25,6 @@ author = 'João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrey Step
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -43,6 +41,11 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 today = date.today()
+today = today.strftime('%Y/%m/%d')
+
+rst_epilog = """
+.. |TM|    unicode:: U+2122 .. Trademark sign
+"""
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -62,7 +65,7 @@ html_css_files = [
 
 # matlab source code
 
-matlab_src_dir = os.path.abspath('C:/Users/Santos/Documents/Git/needsname')
+#matlab_src_dir = os.path.abspath('C:/Users/Santos/Documents/Git/needsname')
 #matlab_src_dir = os.path.abspath('..')
 
-primary_domain = 'mat'
+#primary_domain = 'mat'

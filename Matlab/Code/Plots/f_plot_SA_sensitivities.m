@@ -71,8 +71,9 @@ figure('WindowStyle', 'docked','Name','SA SI st', 'NumberTitle', 'off');
 for n = 1:size(parNames2,2)
 a{n} = char(parNames2{n});
 end
-a = categorical(a);
 
+ a = categorical(a,a);
+ 
 bar(a,[transpose(rst.SI.st(:,1:stg.parnum)),...
     transpose(rst.SIT.st(:,1:stg.parnum)),...
     transpose(rst.SIT.st(:,1:stg.parnum)-rst.SI.st(:,1:stg.parnum))])
@@ -91,8 +92,13 @@ close(figHandles);
 eval("figure('WindowStyle', 'docked','Name','" + name +...
     "','NumberTitle', 'off');")
 
-eval("h = heatmap(" + helprer1 + ",parNames2," + helprer2 +...
-    ",'Colormap',jet);");
+heatmap_fixer = eval(helprer1);
+heatmap_fixer=heatmap_fixer(~cellfun('isempty',heatmap_fixer));
+
+heatmap_fixer2 = eval(helprer2);
+heatmap_fixer2 = heatmap_fixer2(:,all(~isnan(heatmap_fixer2)));
+
+h = heatmap(heatmap_fixer,parNames2,heatmap_fixer2,'Colormap',jet);
 
 eval(" h.Title = """ + title + """;")
 h.XLabel = 'Outputs';

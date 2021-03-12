@@ -5,6 +5,9 @@ rng(stg.rseed);
 
 % Get the optimization options from settings
 options = stg.pswarm_options;
+options.MaxTime = stg.optt;
+options.UseParallel = stg.optmc;
+options.SwarmSize = stg.popsize;
 
 % Display console messages if chosen in settings
 if stg.optcsl

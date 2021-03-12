@@ -3,7 +3,7 @@
 Scripts
 =======
 
-In this workflow we use three MATLAB scripts:
+In this workflow we use three MATLAB\ |TM| scripts:
 
 - Run_main - Runs the analysis predetermined in the settings file
 - Reproduce_analysis - Re-runs the analysis saved in a results file
@@ -11,10 +11,10 @@ In this workflow we use three MATLAB scripts:
 
 We have provided an example diagnostics run and an example global sensitivity analysis run, the results of which can be found on the following folders: 
 
-- Diagnostics - Matlab/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
-- Global Sensitivity analysis - Matlab/Model/D1_LTP_time_window/Results/Analysis_GSA_example
+- Diagnostics - MATLAB/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
+- Global Sensitivity analysis - MATLAB/Model/D1_LTP_time_window/Results/Analysis_GSA_example
 
-To run these scripts MATLAB should be opened with the folder called MATLAB as the main folder
+To run these scripts MATLAB\ |TM| should be opened with the folder called MATLAB\ |TM| as the main folder
 
 Run_main
 --------
@@ -26,14 +26,14 @@ Run_main
         :language: matlab
         :linenos:
 		
-This is the main script from the MATLAB portion of the workflow. 
+This is the main script from the MATLAB\ |TM| portion of the workflow. 
 Depending on the configurations on the :ref:`settings file<f_settings>` it can call functions to:
 
   * :ref:`Perform conversions of the SBtab:<functions_import>`
 
     * SBtab(.xlsx) to SBtab(.tsv)
-    * SBtab(.xlsx) to MATLAB SimBiology(.m, .sbproj)
-    * MATLAB SimBiology to SBML(.xml)
+    * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj)
+    * MATLAB\ |TM| SimBiology to SBML(.xml)
 	
   * :ref:`Perform analysis on the model:<functions_analysis>`
   

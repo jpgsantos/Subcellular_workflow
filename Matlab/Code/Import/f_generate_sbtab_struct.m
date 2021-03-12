@@ -1,11 +1,9 @@
 function [stg,sb] = f_generate_sbtab_struct(stg)
-% Creates a struct based on the sbtab that is used elswhere in the code and
-% also adds the number of experiments and outputs to the settings variable.
 
-if isfile("Model/" + stg.folder_model +"/Data/" +...
+if isfile(pwd + "/Model/" + stg.folder_model +"/Data/" +...
         stg.sbtab_name + ".mat")
     
-    load("Model/" + stg.folder_model +"/Data/" +...
+    load(pwd + "/Model/" + stg.folder_model +"/Data/" +...
         stg.sbtab_name + ".mat",'sbtab_excel');
     
     sb = f_get_sbtab_fields(sbtab_excel);

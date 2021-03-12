@@ -8,6 +8,8 @@ rng(stg.rseed);
 
 % Get the optimization options from settings
 options = stg.psearch_options;
+options.MaxTime = stg.optt;
+options.UseParallel = stg.optmc;
 
 % Display console messages if chosen in settings
 if stg.optcsl

@@ -106,10 +106,10 @@
     return(sbml)
 }
 
-## reads an sbml fiel as exported from MATLABssimbiology toolbox and fixes themistakes therein:
-## replace "<ci> time </ci>" with "<csymbol> time </csymbol>"
+## reads an sbml file as exported from MATLAB's simbiology toolbox and fixes it:
+## replace "<ci> time </ci>" with "<csymbol ... > time </csymbol>"
 ## include default units, so that Copasi can use this file
-## replace super long hex id's with 
+## replace super long hash-based id's with names
 sbml_fix <- function(filename,substanceUnit=c('n','mol'),volumeUnit=c('liter'),areaUnit=c('u','m',2),lengthUnit=c("u","m"),timeUnit=c('m','s')){
     ##if (filename==NULL){
     ##    d <- dir(pattern=".*xml$")

@@ -5,10 +5,14 @@ if [[ `which ssconvert` ]]; then
 	Name=${1%.*}
 	Name=${Name##*/}
 	echo "Model name: «${Name}»"
-	LC_ALL="C" ssconvert -S --export-options="quoting-mode=never separator='	' locale=C" ${1} "${Name}_%s.txt"
-	for i in ${Name}_*.txt; do
-	    mv "${i}" "${i%%txt}tsv";
-	done    
+	LC_ALL="C" ssconvert -S \
+              --export-type=Gnumeric_stf:stf_assistant \
+	      --export-options="quoting-mode=never separator='	' locale=C" ${1} "%s.tsv"
+    else
+	echo "Usage: $0 spreadsheet_file.{gnumeric,ods,xlsx}"
+	echo "   Creates one tsv file for each sheet in the input file."
+	echo "   Cells must not contain line breaks."
+	echo "   Beware of locale and language issues, like numbers with commas and localized TRUE/FALSE"
     fi
 else
     echo "gnumeric's «ssconvert» not found"

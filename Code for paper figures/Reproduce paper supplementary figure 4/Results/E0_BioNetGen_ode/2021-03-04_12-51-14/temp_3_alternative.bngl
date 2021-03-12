@@ -1,0 +1,709 @@
+begin model
+begin parameters
+Na 1 #6.022e23 #6.022e23 #6.022e23 1
+v_Cell 1 #1.0e-15 #1.0e-15 #1.0e-15 1
+Na_x_v_Cell Na*v_Cell
+k2k_0_1xCell_1xCell_ 1e0*1/(Na_x_v_Cell) #1/1e-6*1/(Na_x_v_Cell)
+k2k_0_1xCell_xCell_2 1/1e0
+k2k_0_1xCell_ 1/1e0
+k2k_0_1xCell_2 1e-0*(Na_x_v_Cell) #1e-6*(Na_x_v_Cell)
+c2c_0_Cell 1e-0*(Na_x_v_Cell) #1e-6*(Na_x_v_Cell)
+#c2c_none 1e-6*(Na_x_v_Cell)
+
+#EGF_par 0.0 # concentration of EGF()@Cell in micromoles/liter
+kf_PKC_act 100*k2k_0_1xCell_
+kf_ERK1_2_ratio1 100*k2k_0_1xCell_
+
+kf_R85   14.0000000000001*k2k_0_1xCell_xCell_2 # kf_R85
+kr_R85   97.2214799999992*k2k_0_1xCell_2# kr_R85
+kf_R86   56.9999999999998*k2k_0_1xCell_xCell_2# kf_R86
+kr_R86   19.7915200000001*k2k_0_1xCell_2# kr_R86
+
+kr1p1    100
+kr1p2    100*k2k_0_1xCell_
+kr1      kr1p1*kr1p2
+
+kf2_R85  kr1/kr_R85
+kf1_R85  kf_R85*kf2_R85
+kf1a_R85  kf_R85*kr1p2
+kf1b_R85  kr1p1/kr_R85
+
+kf2_R86  kr1/kr_R86
+kf1_R86  kf_R86*kf2_R86
+kf1a_R86  kf_R86*kr1p2
+kf1b_R86  kr1p1/kr_R86
+
+
+kf_R1   0.599998200000001*k2k_0_1xCell_1xCell_# kf_R1
+kr_R1   0.5*k2k_0_1xCell_# kr_R1
+kf_R2   0.00799985000000007*k2k_0_1xCell_1xCell_# kf_R2
+kr_R2   8.6348*k2k_0_1xCell_# kr_R2
+kf_R3   1.2705*k2k_0_1xCell_# kf_R3
+kr_R3   3.5026*k2k_0_1xCell_# kr_R3
+kf_R4   1.0*k2k_0_1xCell_# kf_R4
+kr_R4   0.1*k2k_0_1xCell_# kr_R4
+kf_R5   0.00120000899999999*k2k_0_1xCell_1xCell_# kf_R5
+kr_R5   0.1*k2k_0_1xCell_# kr_R5
+kf_R6   2.0*k2k_0_1xCell_# kf_R6
+kr_R6   0.2*k2k_0_1xCell_# kr_R6
+kf_R7   1.0*k2k_0_1xCell_# kf_R7
+kr_R7   50.0000000000001*k2k_0_1xCell_# kr_R7
+kf_R8   0.000120000899999999*k2k_0_1xCell_1xCell_# kf_R8
+kr_R8   0.1*k2k_0_1xCell_# kr_R8
+kf_R9   0.000599998199999995*k2k_0_1xCell_1xCell_# kf_R9
+kr_R9   0.1*k2k_0_1xCell_# kr_R9
+kf_R10   0.0179998199999999*k2k_0_1xCell_1xCell_# kf_R10
+kr_R10   2.0*k2k_0_1xCell_# kr_R10
+kf_R11   0.9999971*k2k_0_1xCell_1xCell_# kf_R11
+kr_R11   0.1*k2k_0_1xCell_# kr_R11
+kf_R12   0.00299999099999998*k2k_0_1xCell_1xCell_# kf_R12
+kr_R12   4.0*k2k_0_1xCell_# kr_R12
+kf_R13   0.4*k2k_0_1xCell_# kf_R13
+kf_R14   5.999982*k2k_0_1xCell_1xCell_# kf_R14
+kr_R14   0.1*k2k_0_1xCell_# kr_R14
+kf_R15   0.17*k2k_0_1xCell_# kf_R15
+kf_R16   2.999991*k2k_0_1xCell_1xCell_# kf_R16
+kr_R16   1.0*k2k_0_1xCell_# kr_R16
+kf_R17   2.5*k2k_0_1xCell_# kf_R17
+kf_R18   0.15*k2k_0_1xCell_# kf_R18
+kf_R19   29.9999099999998*k2k_0_1xCell_1xCell_# kf_R19
+kr_R19   1.0*k2k_0_1xCell_# kr_R19
+kf_R20   92.4102550375869*k2k_0_1xCell_1xCell_# kf_R20
+kr_R20   4.97235933793897*k2k_0_1xCell_# kr_R20
+kf_R21   0.10091590490824*k2k_0_1xCell_# kf_R21
+kf_R22   0.000775637987817214*k2k_0_1xCell_# kf_R22
+kf_R23   0.10620757099439*k2k_0_1xCell_# kf_R23
+kf_R24   1.0*k2k_0_1xCell_# kf_R24
+kf_R25   4.2*k2k_0_1xCell_1xCell_# kf_R25
+kr_R25   0.25*k2k_0_1xCell_# kr_R25
+kf_R26   0.00199999999999999*k2k_0_1xCell_# kf_R26
+kr_R26   0.000330000000000002*k2k_0_1xCell_# kr_R26
+kf_R27   0.2*k2k_0_1xCell_# kf_R27
+kf_R28   0.4999796*k2k_0_1xCell_1xCell_# kf_R28
+kr_R28   0.1*k2k_0_1xCell_# kr_R28
+kf_R29   0.0250002399999999*k2k_0_1xCell_1xCell_# kf_R29
+kr_R29   0.0167999999999999*k2k_0_1xCell_# kr_R29
+kf_R30   0.001*k2k_0_1xCell_# kf_R30
+kf_R31   0.0250002399999999*k2k_0_1xCell_1xCell_# kf_R31
+kr_R31   0.0167999999999999*k2k_0_1xCell_# kr_R31
+kf_R32   0.9999971*k2k_0_1xCell_1xCell_# kf_R32
+kr_R32   1.0*k2k_0_1xCell_# kr_R32
+kf_R33   179.998199999999*k2k_0_1xCell_1xCell_# kf_R33
+kr_R33   10.0*k2k_0_1xCell_# kr_R33
+kf_R34   12.0000899999999*k2k_0_1xCell_1xCell_# kf_R34
+kr_R34   10.0*k2k_0_1xCell_# kr_R34
+kf_R35   0.0500000000000001*k2k_0_1xCell_# kf_R35
+kf_R36   0.0700000000000005*k2k_0_1xCell_# kf_R36
+kf_R37   0.9497839*k2k_0_1xCell_1xCell_# kf_R37
+kr_R37   15.9999999999998*k2k_0_1xCell_# kr_R37
+kf_R38   4.0*k2k_0_1xCell_# kf_R38
+kf_R39   5.65655999999999*k2k_0_1xCell_1xCell_# kf_R39
+kr_R39   15.9999999999998*k2k_0_1xCell_# kr_R39
+kf_R40   4.0*k2k_0_1xCell_# kf_R40
+kf_R41   5.65655999999999*k2k_0_1xCell_1xCell_# kf_R41
+kr_R41   15.9999999999998*k2k_0_1xCell_# kr_R41
+kf_R42   4.0*k2k_0_1xCell_# kf_R42
+kf_R43   1.272726*k2k_0_1xCell_1xCell_# kf_R43
+kr_R43   21.6*k2k_0_1xCell_# kr_R43
+kf_R44   5.40000000000001*k2k_0_1xCell_# kf_R44
+kf_R45   2.602017*k2k_0_1xCell_1xCell_# kf_R45
+kr_R45   44.1599999999998*k2k_0_1xCell_# kr_R45
+kf_R46   11.04*k2k_0_1xCell_# kf_R46
+kf_R47   8.48484000000001*k2k_0_1xCell_1xCell_# kf_R47
+kr_R47   144.0*k2k_0_1xCell_# kr_R47
+kf_R48   36.0000000000002*k2k_0_1xCell_# kf_R48
+kf_R49   14.1414*k2k_0_1xCell_1xCell_# kf_R49
+kr_R49   240.000000000002*k2k_0_1xCell_# kr_R49
+kf_R50   59.9999999999995*k2k_0_1xCell_# kf_R50
+kf_R51   28.2828*k2k_0_1xCell_1xCell_# kf_R51
+kr_R51   480.000000000003*k2k_0_1xCell_# kr_R51
+kf_R52   119.999999999999*k2k_0_1xCell_# kf_R52
+kf_R53   2.375755*k2k_0_1xCell_1xCell_# kf_R53
+kr_R53   39.9999999999998*k2k_0_1xCell_# kr_R53
+kf_R54   10.0*k2k_0_1xCell_# kf_R54
+kf_R55   45.2524800000005*k2k_0_1xCell_1xCell_# kf_R55
+kr_R55   192.0*k2k_0_1xCell_# kr_R55
+kf_R56   48.0000000000003*k2k_0_1xCell_# kf_R56
+kf_R57   3.676764*k2k_0_1xCell_1xCell_# kf_R57
+kr_R57   79.9999999999993*k2k_0_1xCell_# kr_R57
+kf_R58   19.9999999999999*k2k_0_1xCell_# kf_R58
+kf_R59   0.214770214543789*k2k_0_1xCell_1xCell_# kf_R59
+kr_R59   393.236559202509*k2k_0_1xCell_# kr_R59
+kf_R60   6.63196665860695*k2k_0_1xCell_# kf_R60
+kf_R61   18.3838200000002*k2k_0_1xCell_1xCell_# kf_R61
+kr_R61   39.9999999999998*k2k_0_1xCell_# kr_R61
+kf_R62   10.0*k2k_0_1xCell_# kf_R62
+kf_R63   1.52765692772327*k2k_0_1xCell_1xCell_# kf_R63
+kr_R63   0.07474462928951*k2k_0_1xCell_# kr_R63
+kf_R64   1.44819747595644*k2k_0_1xCell_# kf_R64
+kf_R65   32.383031685115*k2k_0_1xCell_1xCell_# kf_R65
+kr_R65   5.5252453206765*k2k_0_1xCell_# kr_R65
+kf_R66   1.45520443064125*k2k_0_1xCell_# kf_R66
+kf_R67   9.14770204233783*k2k_0_1xCell_1xCell_# kf_R67
+kr_R67   0.563955852356737*k2k_0_1xCell_# kr_R67
+kf_R68   2.57270734334975*k2k_0_1xCell_# kf_R68
+kf_R69   81.5602646242946*k2k_0_1xCell_1xCell_# kf_R69
+kr_R69   0.501668758161591*k2k_0_1xCell_# kr_R69
+kf_R70   2.96097750401735*k2k_0_1xCell_# kf_R70
+kf_R71   0.0935626763898432*k2k_0_1xCell_1xCell_# kf_R71
+kr_R71   0.0165788735204683*k2k_0_1xCell_# kr_R71
+kf_R72   0.00249989722712168*k2k_0_1xCell_# kf_R72
+kf_R73   0.0910924727752031*k2k_0_1xCell_1xCell_# kf_R73
+kr_R73   0.763615297482557*k2k_0_1xCell_# kr_R73
+kf_R74   0.0024173166728495*k2k_0_1xCell_# kf_R74
+kf_R75   55.5720828333877*k2k_0_1xCell_1xCell_# kf_R75
+kr_R75   4.00166286040964*k2k_0_1xCell_# kr_R75
+kf_R76   99.8178268537537*k2k_0_1xCell_# kf_R76
+kf_R77   1.866665*k2k_0_1xCell_1xCell_# kf_R77
+kr_R77   0.8*k2k_0_1xCell_# kr_R77
+kf_R78   0.2*k2k_0_1xCell_# kf_R78
+kf_R79   2.82828*k2k_0_1xCell_1xCell_# kf_R79
+kr_R79   0.8*k2k_0_1xCell_# kr_R79
+kf_R80   0.2*k2k_0_1xCell_# kf_R80
+kf_R81   1.131312*k2k_0_1xCell_1xCell_# kf_R81
+kr_R81   0.8*k2k_0_1xCell_# kr_R81
+kf_R82   0.2*k2k_0_1xCell_# kf_R82
+kf_R83   1.866665*k2k_0_1xCell_1xCell_# kf_R83
+kr_R83   0.8*k2k_0_1xCell_# kr_R83
+kf_R84   0.2*k2k_0_1xCell_# kf_R84
+#kf_R85   14.0000000000001*k2k_0_1xCell_xCell_2 # kf_R85
+#kr_R85   97.2214799999992*k2k_0_1xCell_2# kr_R85
+#kf_R86   56.9999999999998*k2k_0_1xCell_xCell_2# kf_R86
+#kr_R86   19.7915200000001*k2k_0_1xCell_2# kr_R86
+kf_R87   7.97311500000001*k2k_0_1xCell_1xCell_# kf_R87
+kr_R87   2.0*k2k_0_1xCell_# kr_R87
+kf_R88   0.5*k2k_0_1xCell_# kf_R88
+kf_R89   2.714777*k2k_0_1xCell_1xCell_# kf_R89
+kr_R89   15.9999999999998*k2k_0_1xCell_# kr_R89
+kf_R90   4.0*k2k_0_1xCell_# kf_R90
+kf_R91   2.714777*k2k_0_1xCell_1xCell_# kf_R91
+kr_R91   15.9999999999998*k2k_0_1xCell_# kr_R91
+kf_R92   4.0*k2k_0_1xCell_# kf_R92
+kf_R93   1.866665*k2k_0_1xCell_1xCell_# kf_R93
+kr_R93   25.0000000000001*k2k_0_1xCell_# kr_R93
+kf_R94   6.0*k2k_0_1xCell_# kf_R94
+kf_R95   1.866665*k2k_0_1xCell_1xCell_# kf_R95
+kr_R95   25.0000000000001*k2k_0_1xCell_# kr_R95
+kf_R96   6.0*k2k_0_1xCell_# kf_R96
+kf_R97   1.866665*k2k_0_1xCell_1xCell_# kf_R97
+kr_R97   25.0000000000001*k2k_0_1xCell_# kr_R97
+kf_R98   6.0*k2k_0_1xCell_# kf_R98
+kf_R99   1.866665*k2k_0_1xCell_1xCell_# kf_R99
+kr_R99   25.0000000000001*k2k_0_1xCell_# kr_R99
+kf_R100   6.0*k2k_0_1xCell_# kf_R100
+kf_R101   1.806462*k2k_0_1xCell_1xCell_# kf_R101
+kr_R101   24.0000000000002*k2k_0_1xCell_# kr_R101
+kf_R102   6.0*k2k_0_1xCell_# kf_R102
+
+end parameters
+begin compartments
+Cell   3   1.0
+end compartments
+begin molecule types
+PIP2_Ca_PLC_g()
+PIP2_Ca_PLC_g_p()
+ERK1_2_ratio1()
+
+PKC_Ca()    # PKC_Ca
+PKC_DAG_AA_p()    # PKC_DAG_AA_p
+PKC_Ca_AA_p()    # PKC_Ca_AA_p
+PKC_Ca_memb_p()    # PKC_Ca_memb_p
+PKC_DAG_memb_p()    # PKC_DAG_memb_p
+PKC_basal_p()    # PKC_basal_p
+PKC_AA_p()    # PKC_AA_p
+PKC_Ca_DAG()    # PKC_Ca_DAG
+PKC_DAG()    # PKC_DAG
+PKC_DAG_AA()    # PKC_DAG_AA
+PKC_cytosolic()    # PKC_cytosolic
+PLA2_cytosolic()    # PLA2_cytosolic
+PLA2_Ca_p()    # PLA2_Ca_p
+PIP2_PLA2_p()    # PIP2_PLA2_p
+PIP2_Ca_PLA2_p()    # PIP2_Ca_PLA2_p
+DAG_Ca_PLA2_p()    # DAG_Ca_PLA2_p
+APC()    # APC
+PLA2_p_Ca()    # PLA2_p_Ca
+PLA2_p()    # PLA2_p
+Arachidonic_Acid()    # Arachidonic_Acid
+PLC()    # PLC
+Inositol()    # Inositol
+PLC_Ca()    # PLC_Ca
+PLC_Ca_Gq()    # PLC_Ca_Gq
+PLC_Gq()    # PLC_Gq
+PC()    # PC
+DAG()    # DAG
+IP3()    # IP3
+PIP2()    # PIP2
+MAPK_p_p()    # MAPK_p_p
+craf_1()    # craf_1
+craf_1_p()    # craf_1_p
+MAPKK()    # MAPKK
+MAPK()    # MAPK
+craf_1_p_p()    # craf_1_p_p
+MAPK_p()    # MAPK_p
+MAPKK_p_p()    # MAPKK_p_p
+MAPKK_p()    # MAPKK_p
+Raf_p_GTP_Ras()    # Raf_p_GTP_Ras
+craf_1_p_ser259()    # craf_1_p_ser259
+inact_GEF()    # inact_GEF
+GEF_p()    # GEF_p
+GTP_Ras()    # GTP_Ras
+GDP_Ras()    # GDP_Ras
+GAP_p()    # GAP_p
+GAP()    # GAP
+inact_GEF_p()    # inact_GEF_p
+CaM_GEF()    # CaM_GEF
+EGFR()    # EGFR
+L_EGFR()    # L_EGFR
+EGF()    # EGF
+Internal_L_EGFR()    # Internal_L_EGFR
+SHC_p_Sos_Grb2()    # SHC_p_Sos_Grb2
+SHC()    # SHC
+SHC_p()    # SHC_p
+Sos_p_Grb2()    # Sos_p_Grb2
+Grb2()    # Grb2
+Sos_Grb2()    # Sos_Grb2
+Sos_p()    # Sos_p
+Sos()    # Sos
+SHC_p_Grb2_clx()    # SHC_p_Grb2_clx
+PLC_g()    # PLC_g
+PLC_g_p()    # PLC_g_p
+Ca_PLC_g()    # Ca_PLC_g
+Ca_PLC_g_p()    # Ca_PLC_g_p
+PLCg_basal()    # PLCg_basal
+MKP_1()    # MKP_1
+PPhosphatase2A()    # PPhosphatase2A
+Ca()    # Ca
+PKC_act_raf_cplx()    # PKC_act_raf_cplx
+PKC_inact_GAP_cplx()    # PKC_inact_GAP_cplx
+PKC_act_GEF_cplx()    # PKC_act_GEF_cplx
+kenz_cplx()    # kenz_cplx
+kenz_cplx_1()    # kenz_cplx_1
+kenz_cplx_2()    # kenz_cplx_2
+kenz_cplx_3()    # kenz_cplx_3
+kenz_cplx_4()    # kenz_cplx_4
+PLC_Ca_cplx()    # PLC_Ca_cplx
+PLCb_Ca_Gq_cplx()    # PLCb_Ca_Gq_cplx
+MAPK_p_p_cplx()    # MAPK_p_p_cplx
+MAPK_p_p_feedback_cplx()    # MAPK_p_p_feedback_cplx
+phosph_Sos_cplx()    # phosph_Sos_cplx
+MAPKKtyr_cplx()    # MAPKKtyr_cplx
+MAPKKthr_cplx()    # MAPKKthr_cplx
+Raf_p_GTP_Ras_1_cplx()    # Raf_p_GTP_Ras_1_cplx
+Raf_p_GTP_Ras_2_cplx()    # Raf_p_GTP_Ras_2_cplx
+basal_GEF_activity_cplx()    # basal_GEF_activity_cplx
+GEF_p_act_Ras_cplx()    # GEF_p_act_Ras_cplx
+GAP_inact_Ras_cplx()    # GAP_inact_Ras_cplx
+CaM_GEF_act_Ras_cplx()    # CaM_GEF_act_Ras_cplx
+Ca_PLC_g_phospho_cplx()    # Ca_PLC_g_phospho_cplx
+SHC_phospho_cplx()    # SHC_phospho_cplx
+Sos_Ras_GEF_cplx()    # Sos_Ras_GEF_cplx
+PLC_g_phospho_cplx()    # PLC_g_phospho_cplx
+MKP1_tyr_deph_cplx()    # MKP1_tyr_deph_cplx
+MKP1_thr_deph_cplx()    # MKP1_thr_deph_cplx
+craf_dephospho_cplx()    # craf_dephospho_cplx
+MAPKK_dephospho_cplx()    # MAPKK_dephospho_cplx
+MAPKK_dephospho_ser_cplx()    # MAPKK_dephospho_ser_cplx
+craf_p_p_dephospho_cplx()    # craf_p_p_dephospho_cplx
+deph_raf_ser259_cplx()    # deph_raf_ser259_cplx
+PKC_active()    # PKC_active
+end molecule types
+begin species
+PIP2_Ca_PLC_g()@Cell      0*c2c_0_Cell
+PIP2_Ca_PLC_g_p()@Cell    0*c2c_0_Cell
+ERK1_2_ratio1()@Cell      0*c2c_0_Cell
+
+PKC_Ca()@Cell               0*c2c_0_Cell # # # PKC_Ca, is_const False, is_boundary False
+PKC_DAG_AA_p()@Cell         0.0*c2c_0_Cell # # # # # PKC_DAG_AA_p, is_const False, is_boundary False
+PKC_Ca_AA_p()@Cell 		    0.0*c2c_0_Cell # # PKC_Ca_AA_p, is_const False, is_boundary False
+PKC_Ca_memb_p()@Cell 		0.0*c2c_0_Cell # # PKC_Ca_memb_p, is_const False, is_boundary False
+PKC_DAG_memb_p()@Cell 		0.0*c2c_0_Cell # # PKC_DAG_memb_p, is_const False, is_boundary False
+PKC_basal_p()@Cell 			0.0200000000000631*c2c_0_Cell # # PKC_basal_p, is_const False, is_boundary False
+PKC_AA_p()@Cell 			0.0*c2c_0_Cell # # PKC_AA_p, is_const False, is_boundary False
+PKC_Ca_DAG()@Cell 			0.0*c2c_0_Cell # # PKC_Ca_DAG, is_const False, is_boundary False
+PKC_DAG()@Cell 				0.0*c2c_0_Cell    # PKC_DAG, is_const False, is_boundary False
+PKC_DAG_AA()@Cell 			0.0*c2c_0_Cell    # PKC_DAG_AA, is_const False, is_boundary False
+PKC_cytosolic()@Cell 		1.0*c2c_0_Cell # # PKC_cytosolic, is_const False, is_boundary False
+PLA2_cytosolic()@Cell 		0.399999999999685*c2c_0_Cell # # PLA2_cytosolic, is_const False, is_boundary False
+PLA2_Ca_p()@Cell 			0.0*c2c_0_Cell # # PLA2_Ca_p, is_const False, is_boundary False
+PIP2_PLA2_p()@Cell 			0*c2c_0_Cell # # # # PIP2_PLA2_p, is_const False, is_boundary False
+PIP2_Ca_PLA2_p()@Cell 		0.0*c2c_0_Cell # # PIP2_Ca_PLA2_p, is_const False, is_boundary False
+DAG_Ca_PLA2_p()@Cell 		0.0*c2c_0_Cell # # DAG_Ca_PLA2_p, is_const False, is_boundary False
+$APC()@Cell 					30.0008*c2c_0_Cell # # # APC, is_const False, is_boundary False
+PLA2_p_Ca()@Cell 			0.0*c2c_0_Cell # # PLA2_p_Ca, is_const False, is_boundary False
+PLA2_p()@Cell 				0.0*c2c_0_Cell    # PLA2_p, is_const False, is_boundary False
+Arachidonic_Acid()@Cell 	0.0*c2c_0_Cell # # Arachidonic_Acid, is_const False, is_boundary False
+PLC()@Cell 					0.799999999999369*c2c_0_Cell # # PLC, is_const False, is_boundary False
+$Inositol()@Cell 			0.0*c2c_0_Cell # # Inositol, is_const False, is_boundary False
+PLC_Ca()@Cell 				0.0*c2c_0_Cell # # PLC_Ca, is_const False, is_boundary False
+PLC_Ca_Gq()@Cell 			0.0*c2c_0_Cell # # PLC_Ca_Gq, is_const False, is_boundary False
+PLC_Gq()@Cell 				0.0*c2c_0_Cell # # PLC_Gq, is_const False, is_boundary False
+$PC()@Cell 					0.0*c2c_0_Cell    # PC, is_const False, is_boundary False
+DAG()@Cell 					0.0*c2c_0_Cell    # DAG, is_const False, is_boundary False
+IP3()@Cell 					0.730003957260999*c2c_0_Cell # # IP3, is_const False, is_boundary False
+$PIP2()@Cell 				6.99999999999054*c2c_0_Cell    # PIP2, is_const False, is_boundary False
+MAPK_p_p()@Cell 			0.0*c2c_0_Cell # # # # MAPK_p_p, is_const False, is_boundary False
+craf_1()@Cell 				0.200000000000631*c2c_0_Cell # # craf_1, is_const False, is_boundary False
+craf_1_p()@Cell 			0.0*c2c_0_Cell # # craf_1_p, is_const False, is_boundary False
+MAPKK()@Cell				0.180007914523008*c2c_0_Cell # # MAPKK, is_const False, is_boundary False
+MAPK()@Cell 				0.360000000000505*c2c_0_Cell    # MAPK, is_const False, is_boundary False
+craf_1_p_p()@Cell 0.0*c2c_0_Cell # # craf_1_p_p, is_const False, is_boundary False
+MAPK_p()@Cell 0.0*c2c_0_Cell    # MAPK_p, is_const False, is_boundary False
+MAPKK_p_p()@Cell 0.0*c2c_0_Cell # # # MAPKK_p_p, is_const False, is_boundary False
+MAPKK_p()@Cell 0.0*c2c_0_Cell    # MAPKK_p, is_const False, is_boundary False
+Raf_p_GTP_Ras()@Cell 0.0*c2c_0_Cell # # # Raf_p_GTP_Ras, is_const False, is_boundary False
+craf_1_p_ser259()@Cell 0.0*c2c_0_Cell # # craf_1_p_ser259, is_const False, is_boundary False
+inact_GEF()@Cell 			0.1*c2c_0_Cell # # inact_GEF, is_const False, is_boundary False
+GEF_p()@Cell 0.0*c2c_0_Cell # # GEF_p, is_const False, is_boundary False
+GTP_Ras()@Cell 0.0*c2c_0_Cell    # GTP_Ras, is_const False, is_boundary False
+GDP_Ras()@Cell 				0.5*c2c_0_Cell # # GDP_Ras, is_const False, is_boundary False
+GAP_p()@Cell 0*c2c_0_Cell # # # GAP_p, is_const False, is_boundary False
+GAP()@Cell 					0.0200000000000631*c2c_0_Cell    # GAP, is_const False, is_boundary False
+inact_GEF_p()@Cell 0.0*c2c_0_Cell # # inact_GEF_p, is_const False, is_boundary False
+CaM_GEF()@Cell 0.0*c2c_0_Cell # # CaM_GEF, is_const False, is_boundary False
+EGFR()@Cell 				0.166664*c2c_0_Cell # # # EGFR, is_const False, is_boundary False
+L_EGFR()@Cell 0.0*c2c_0_Cell # # L_EGFR, is_const False, is_boundary False
+$EGF()@Cell 0.0*c2c_0_Cell    # EGF, is_const False, is_boundary False
+Internal_L_EGFR()@Cell 0.0*c2c_0_Cell # # Internal_L_EGFR, is_const False, is_boundary False
+SHC_p_Sos_Grb2()@Cell 0*c2c_0_Cell # # # # # # # SHC_p_Sos_Grb2, is_const False, is_boundary False
+SHC()@Cell 					0.500007914522756*c2c_0_Cell    # SHC, is_const False, is_boundary False
+SHC_p()@Cell 0.0*c2c_0_Cell    # SHC_p, is_const False, is_boundary False
+Sos_p_Grb2()@Cell 0.0*c2c_0_Cell # # # Sos_p_Grb2, is_const False, is_boundary False
+Grb2()@Cell 				1.0*c2c_0_Cell   # Grb2, is_const False, is_boundary False
+Sos_Grb2()@Cell 0.0*c2c_0_Cell    # Sos_Grb2, is_const False, is_boundary False
+Sos_p()@Cell 0.0*c2c_0_Cell    # Sos_p, is_const False, is_boundary False
+Sos()@Cell 					0.1*c2c_0_Cell    # Sos, is_const False, is_boundary False
+SHC_p_Grb2_clx()@Cell 0.0*c2c_0_Cell # # SHC_p_Grb2_clx, is_const False, is_boundary False
+PLC_g()@Cell 				0.820007914522503*c2c_0_Cell # # PLC_g, is_const False, is_boundary False
+PLC_g_p()@Cell 0.0*c2c_0_Cell # # PLC_g_p, is_const False, is_boundary False
+Ca_PLC_g()@Cell 0.0*c2c_0_Cell # # Ca_PLC_g, is_const False, is_boundary False
+Ca_PLC_g_p()@Cell 0.0*c2c_0_Cell # # Ca_PLC_g_p, is_const False, is_boundary False
+PLCg_basal()@Cell 			0.000700023743568898*c2c_0_Cell # # PLCg_basal, is_const False, is_boundary False
+MKP_1()@Cell 				0.0200000000000631*c2c_0_Cell # # MKP_1, is_const False, is_boundary False
+PPhosphatase2A()@Cell 		0.260007914522945*c2c_0_Cell # # PPhosphatase2A, is_const False, is_boundary False
+$Ca()@Cell 					0.0799999999999369*c2c_0_Cell    # Ca, is_const False, is_boundary False
+PKC_act_raf_cplx()@Cell 0.0*c2c_0_Cell # # PKC_act_raf_cplx, is_const False, is_boundary False
+PKC_inact_GAP_cplx()@Cell 0.0*c2c_0_Cell # # PKC_inact_GAP_cplx, is_const False, is_boundary False
+PKC_act_GEF_cplx()@Cell 0.0*c2c_0_Cell # # PKC_act_GEF_cplx, is_const False, is_boundary False
+kenz_cplx()@Cell 0.0*c2c_0_Cell # # kenz_cplx, is_const False, is_boundary False
+kenz_cplx_1()@Cell 0.0*c2c_0_Cell # # kenz_cplx_1, is_const False, is_boundary False
+kenz_cplx_2()@Cell 0.0*c2c_0_Cell # # kenz_cplx_2, is_const False, is_boundary False
+kenz_cplx_3()@Cell 0.0*c2c_0_Cell # # kenz_cplx_3, is_const False, is_boundary False
+kenz_cplx_4()@Cell 0.0*c2c_0_Cell # # kenz_cplx_4, is_const False, is_boundary False
+PLC_Ca_cplx()@Cell 0.0*c2c_0_Cell # # PLC_Ca_cplx, is_const False, is_boundary False
+PLCb_Ca_Gq_cplx()@Cell 0.0*c2c_0_Cell # # PLCb_Ca_Gq_cplx, is_const False, is_boundary False
+MAPK_p_p_cplx()@Cell 0.0*c2c_0_Cell # # MAPK_p_p_cplx, is_const False, is_boundary False
+MAPK_p_p_feedback_cplx()@Cell 0.0*c2c_0_Cell # # MAPK_p_p_feedback_cplx, is_const False, is_boundary False
+phosph_Sos_cplx()@Cell 0.0*c2c_0_Cell # # phosph_Sos_cplx, is_const False, is_boundary False
+MAPKKtyr_cplx()@Cell 0.0*c2c_0_Cell # # MAPKKtyr_cplx, is_const False, is_boundary False
+MAPKKthr_cplx()@Cell 0.0*c2c_0_Cell # # MAPKKthr_cplx, is_const False, is_boundary False
+Raf_p_GTP_Ras_1_cplx()@Cell 0.0*c2c_0_Cell # # Raf_p_GTP_Ras_1_cplx, is_const False, is_boundary False
+Raf_p_GTP_Ras_2_cplx()@Cell 0.0*c2c_0_Cell # # Raf_p_GTP_Ras_2_cplx, is_const False, is_boundary False
+basal_GEF_activity_cplx()@Cell 0.0*c2c_0_Cell # # basal_GEF_activity_cplx, is_const False, is_boundary False
+GEF_p_act_Ras_cplx()@Cell 0.0*c2c_0_Cell # # GEF_p_act_Ras_cplx, is_const False, is_boundary False
+GAP_inact_Ras_cplx()@Cell 0.0*c2c_0_Cell # # GAP_inact_Ras_cplx, is_const False, is_boundary False
+CaM_GEF_act_Ras_cplx()@Cell 0.0*c2c_0_Cell # # CaM_GEF_act_Ras_cplx, is_const False, is_boundary False
+Ca_PLC_g_phospho_cplx()@Cell 0.0*c2c_0_Cell # # # Ca_PLC_g_phospho_cplx, is_const False, is_boundary False
+SHC_phospho_cplx()@Cell 0.0*c2c_0_Cell # # SHC_phospho_cplx, is_const False, is_boundary False
+Sos_Ras_GEF_cplx()@Cell 0.0*c2c_0_Cell # # Sos_Ras_GEF_cplx, is_const False, is_boundary False
+PLC_g_phospho_cplx()@Cell 0.0*c2c_0_Cell    # PLC_g_phospho_cplx, is_const False, is_boundary False
+MKP1_tyr_deph_cplx()@Cell 0.0*c2c_0_Cell # # MKP1_tyr_deph_cplx, is_const False, is_boundary False
+MKP1_thr_deph_cplx()@Cell 0.0*c2c_0_Cell # # MKP1_thr_deph_cplx, is_const False, is_boundary False
+craf_dephospho_cplx()@Cell 0.0*c2c_0_Cell # # craf_dephospho_cplx, is_const False, is_boundary False
+MAPKK_dephospho_cplx()@Cell 0.0*c2c_0_Cell # # MAPKK_dephospho_cplx, is_const False, is_boundary False
+MAPKK_dephospho_ser_cplx()@Cell 0.0*c2c_0_Cell # # MAPKK_dephospho_ser_cplx, is_const False, is_boundary False
+craf_p_p_dephospho_cplx()@Cell 0.0*c2c_0_Cell # # craf_p_p_dephospho_cplx, is_const False, is_boundary False
+deph_raf_ser259_cplx()@Cell 0.0*c2c_0_Cell # # deph_raf_ser259_cplx, is_const False, is_boundary False
+PKC_active()@Cell 0.020*c2c_0_Cell # # PKC_active, is_const False, is_boundary True
+end species
+begin observables
+Molecules ERK1_2_ratio1 @Cell:ERK1_2_ratio1()
+Molecules PIP2_Ca_PLC_g @Cell:PIP2_Ca_PLC_g()
+Molecules PIP2_Ca_PLC_g_p @Cell:PIP2_Ca_PLC_g_p()
+
+Molecules PKC_Ca @Cell:PKC_Ca()    # PKC_Ca
+Molecules PKC_DAG_AA_p @Cell:PKC_DAG_AA_p()    # PKC_DAG_AA_p
+Molecules PKC_Ca_AA_p @Cell:PKC_Ca_AA_p()    # PKC_Ca_AA_p
+Molecules PKC_Ca_memb_p @Cell:PKC_Ca_memb_p()    # PKC_Ca_memb_p
+Molecules PKC_DAG_memb_p @Cell:PKC_DAG_memb_p()    # PKC_DAG_memb_p
+Molecules PKC_basal_p @Cell:PKC_basal_p()    # PKC_basal_p
+Molecules PKC_AA_p @Cell:PKC_AA_p()    # PKC_AA_p
+Molecules PKC_Ca_DAG @Cell:PKC_Ca_DAG()    # PKC_Ca_DAG
+Molecules PKC_DAG @Cell:PKC_DAG()    # PKC_DAG
+Molecules PKC_DAG_AA @Cell:PKC_DAG_AA()    # PKC_DAG_AA
+Molecules PKC_cytosolic @Cell:PKC_cytosolic()    # PKC_cytosolic
+Molecules PLA2_cytosolic @Cell:PLA2_cytosolic()    # PLA2_cytosolic
+Molecules PLA2_Ca_p @Cell:PLA2_Ca_p()    # PLA2_Ca_p
+Molecules PIP2_PLA2_p @Cell:PIP2_PLA2_p()    # PIP2_PLA2_p
+Molecules PIP2_Ca_PLA2_p @Cell:PIP2_Ca_PLA2_p()    # PIP2_Ca_PLA2_p
+Molecules DAG_Ca_PLA2_p @Cell:DAG_Ca_PLA2_p()    # DAG_Ca_PLA2_p
+Molecules APC @Cell:APC()    # APC
+Molecules PLA2_p_Ca @Cell:PLA2_p_Ca()    # PLA2_p_Ca
+Molecules PLA2_p @Cell:PLA2_p()    # PLA2_p
+Molecules Arachidonic_Acid @Cell:Arachidonic_Acid()    # Arachidonic_Acid
+Molecules PLC @Cell:PLC()    # PLC
+Molecules Inositol @Cell:Inositol()    # Inositol
+Molecules PLC_Ca @Cell:PLC_Ca()    # PLC_Ca
+Molecules PLC_Ca_Gq @Cell:PLC_Ca_Gq()    # PLC_Ca_Gq
+Molecules PLC_Gq @Cell:PLC_Gq()    # PLC_Gq
+Molecules PC @Cell:PC()    # PC
+Molecules DAG @Cell:DAG()    # DAG
+Molecules IP3 @Cell:IP3()    # IP3
+Molecules PIP2 @Cell:PIP2()    # PIP2
+Molecules MAPK_p_p @Cell:MAPK_p_p()    # MAPK_p_p
+Molecules craf_1 @Cell:craf_1()    # craf_1
+Molecules craf_1_p @Cell:craf_1_p()    # craf_1_p
+Molecules MAPKK @Cell:MAPKK()    # MAPKK
+Molecules MAPK @Cell:MAPK()    # MAPK
+Molecules craf_1_p_p @Cell:craf_1_p_p()    # craf_1_p_p
+Molecules MAPK_p @Cell:MAPK_p()    # MAPK_p
+Molecules MAPKK_p_p @Cell:MAPKK_p_p()    # MAPKK_p_p
+Molecules MAPKK_p @Cell:MAPKK_p()    # MAPKK_p
+Molecules Raf_p_GTP_Ras @Cell:Raf_p_GTP_Ras()    # Raf_p_GTP_Ras
+Molecules craf_1_p_ser259 @Cell:craf_1_p_ser259()    # craf_1_p_ser259
+Molecules inact_GEF @Cell:inact_GEF()    # inact_GEF
+Molecules GEF_p @Cell:GEF_p()    # GEF_p
+Molecules GTP_Ras @Cell:GTP_Ras()    # GTP_Ras
+Molecules GDP_Ras @Cell:GDP_Ras()    # GDP_Ras
+Molecules GAP_p @Cell:GAP_p()    # GAP_p
+Molecules GAP @Cell:GAP()    # GAP
+Molecules inact_GEF_p @Cell:inact_GEF_p()    # inact_GEF_p
+Molecules CaM_GEF @Cell:CaM_GEF()    # CaM_GEF
+Molecules EGFR @Cell:EGFR()    # EGFR
+Molecules L_EGFR @Cell:L_EGFR()    # L_EGFR
+Molecules EGF @Cell:EGF()    # EGF
+Molecules Internal_L_EGFR @Cell:Internal_L_EGFR()    # Internal_L_EGFR
+Molecules SHC_p_Sos_Grb2 @Cell:SHC_p_Sos_Grb2()    # SHC_p_Sos_Grb2
+Molecules SHC @Cell:SHC()    # SHC
+Molecules SHC_p @Cell:SHC_p()    # SHC_p
+Molecules Sos_p_Grb2 @Cell:Sos_p_Grb2()    # Sos_p_Grb2
+Molecules Grb2 @Cell:Grb2()    # Grb2
+Molecules Sos_Grb2 @Cell:Sos_Grb2()    # Sos_Grb2
+Molecules Sos_p @Cell:Sos_p()    # Sos_p
+Molecules Sos @Cell:Sos()    # Sos
+Molecules SHC_p_Grb2_clx @Cell:SHC_p_Grb2_clx()    # SHC_p_Grb2_clx
+Molecules PLC_g @Cell:PLC_g()    # PLC_g
+Molecules PLC_g_p @Cell:PLC_g_p()    # PLC_g_p
+Molecules Ca_PLC_g @Cell:Ca_PLC_g()    # Ca_PLC_g
+Molecules Ca_PLC_g_p @Cell:Ca_PLC_g_p()    # Ca_PLC_g_p
+Molecules PLCg_basal @Cell:PLCg_basal()    # PLCg_basal
+Molecules MKP_1 @Cell:MKP_1()    # MKP_1
+Molecules PPhosphatase2A @Cell:PPhosphatase2A()    # PPhosphatase2A
+Molecules Ca @Cell:Ca()    # Ca
+Molecules PKC_act_raf_cplx @Cell:PKC_act_raf_cplx()    # PKC_act_raf_cplx
+Molecules PKC_inact_GAP_cplx @Cell:PKC_inact_GAP_cplx()    # PKC_inact_GAP_cplx
+Molecules PKC_act_GEF_cplx @Cell:PKC_act_GEF_cplx()    # PKC_act_GEF_cplx
+Molecules kenz_cplx @Cell:kenz_cplx()    # kenz_cplx
+Molecules kenz_cplx_1 @Cell:kenz_cplx_1()    # kenz_cplx_1
+Molecules kenz_cplx_2 @Cell:kenz_cplx_2()    # kenz_cplx_2
+Molecules kenz_cplx_3 @Cell:kenz_cplx_3()    # kenz_cplx_3
+Molecules kenz_cplx_4 @Cell:kenz_cplx_4()    # kenz_cplx_4
+Molecules PLC_Ca_cplx @Cell:PLC_Ca_cplx()    # PLC_Ca_cplx
+Molecules PLCb_Ca_Gq_cplx @Cell:PLCb_Ca_Gq_cplx()    # PLCb_Ca_Gq_cplx
+Molecules MAPK_p_p_cplx @Cell:MAPK_p_p_cplx()    # MAPK_p_p_cplx
+Molecules MAPK_p_p_feedback_cplx @Cell:MAPK_p_p_feedback_cplx()    # MAPK_p_p_feedback_cplx
+Molecules phosph_Sos_cplx @Cell:phosph_Sos_cplx()    # phosph_Sos_cplx
+Molecules MAPKKtyr_cplx @Cell:MAPKKtyr_cplx()    # MAPKKtyr_cplx
+Molecules MAPKKthr_cplx @Cell:MAPKKthr_cplx()    # MAPKKthr_cplx
+Molecules Raf_p_GTP_Ras_1_cplx @Cell:Raf_p_GTP_Ras_1_cplx()    # Raf_p_GTP_Ras_1_cplx
+Molecules Raf_p_GTP_Ras_2_cplx @Cell:Raf_p_GTP_Ras_2_cplx()    # Raf_p_GTP_Ras_2_cplx
+Molecules basal_GEF_activity_cplx @Cell:basal_GEF_activity_cplx()    # basal_GEF_activity_cplx
+Molecules GEF_p_act_Ras_cplx @Cell:GEF_p_act_Ras_cplx()    # GEF_p_act_Ras_cplx
+Molecules GAP_inact_Ras_cplx @Cell:GAP_inact_Ras_cplx()    # GAP_inact_Ras_cplx
+Molecules CaM_GEF_act_Ras_cplx @Cell:CaM_GEF_act_Ras_cplx()    # CaM_GEF_act_Ras_cplx
+Molecules Ca_PLC_g_phospho_cplx @Cell:Ca_PLC_g_phospho_cplx()    # Ca_PLC_g_phospho_cplx
+Molecules SHC_phospho_cplx @Cell:SHC_phospho_cplx()    # SHC_phospho_cplx
+Molecules Sos_Ras_GEF_cplx @Cell:Sos_Ras_GEF_cplx()    # Sos_Ras_GEF_cplx
+Molecules PLC_g_phospho_cplx @Cell:PLC_g_phospho_cplx()    # PLC_g_phospho_cplx
+Molecules MKP1_tyr_deph_cplx @Cell:MKP1_tyr_deph_cplx()    # MKP1_tyr_deph_cplx
+Molecules MKP1_thr_deph_cplx @Cell:MKP1_thr_deph_cplx()    # MKP1_thr_deph_cplx
+Molecules craf_dephospho_cplx @Cell:craf_dephospho_cplx()    # craf_dephospho_cplx
+Molecules MAPKK_dephospho_cplx @Cell:MAPKK_dephospho_cplx()    # MAPKK_dephospho_cplx
+Molecules MAPKK_dephospho_ser_cplx @Cell:MAPKK_dephospho_ser_cplx()    # MAPKK_dephospho_ser_cplx
+Molecules craf_p_p_dephospho_cplx @Cell:craf_p_p_dephospho_cplx()    # craf_p_p_dephospho_cplx
+Molecules deph_raf_ser259_cplx @Cell:deph_raf_ser259_cplx()    # deph_raf_ser259_cplx
+Molecules PKC_active @Cell:PKC_active()    # PKC_active
+end observables
+begin functions
+#k_R86() = PIP2_o*Ca_PLC_g_p_o*kf_R86/(kr_R86+PIP2_o)
+#k_R85() = PIP2_o*Ca_PLC_g_o*kf_R85/(kr_R85+PIP2_o)
+k_R86() = kf_R86/(kr_R86+PIP2)
+k_R85() = kf_R85/(kr_R85+PIP2)
+end functions
+begin reaction rules
+MAPK_p_p()@Cell -> MAPK_p_p()@Cell + ERK1_2_ratio1()@Cell kf_ERK1_2_ratio1
+MAPK_p()@Cell   -> MAPK_p()@Cell   + ERK1_2_ratio1()@Cell kf_ERK1_2_ratio1
+ERK1_2_ratio1()@Cell -> 0 kf_ERK1_2_ratio1
+
+reaction0: Ca()@Cell + PKC_cytosolic()@Cell <-> PKC_Ca()@Cell kf_R1, kr_R1    # ReactionFlux0
+reaction1: DAG()@Cell + PKC_Ca()@Cell <-> PKC_Ca_DAG()@Cell kf_R2, kr_R2    # ReactionFlux1
+reaction2: PKC_Ca()@Cell <-> PKC_Ca_memb_p()@Cell kf_R3, kr_R3    # ReactionFlux2
+reaction3: PKC_Ca_DAG()@Cell <-> PKC_DAG_memb_p()@Cell kf_R4, kr_R4    # ReactionFlux3
+reaction4: Arachidonic_Acid()@Cell + PKC_Ca()@Cell <-> PKC_Ca_AA_p()@Cell kf_R5, kr_R5    # ReactionFlux4
+reaction5: PKC_DAG_AA()@Cell <-> PKC_DAG_AA_p()@Cell kf_R6, kr_R6    # ReactionFlux5
+reaction6: PKC_cytosolic()@Cell <-> PKC_basal_p()@Cell kf_R7, kr_R7    # ReactionFlux6
+reaction7: PKC_cytosolic()@Cell + Arachidonic_Acid()@Cell <-> PKC_AA_p()@Cell kf_R8, kr_R8    # ReactionFlux7
+reaction8: PKC_cytosolic()@Cell + DAG()@Cell <-> PKC_DAG()@Cell kf_R9, kr_R9    # ReactionFlux8
+reaction9: Arachidonic_Acid()@Cell + PKC_DAG()@Cell <-> PKC_DAG_AA()@Cell kf_R10, kr_R10    # ReactionFlux9
+reaction10: Ca()@Cell + PLA2_cytosolic()@Cell <-> PLA2_Ca_p()@Cell kf_R11, kr_R11    # ReactionFlux10
+reaction11: PLA2_Ca_p()@Cell + DAG()@Cell <-> DAG_Ca_PLA2_p()@Cell kf_R12, kr_R12    # ReactionFlux11
+reaction12: Arachidonic_Acid()@Cell -> APC()@Cell kf_R13    # ReactionFlux12
+reaction13: Ca()@Cell + PLA2_p()@Cell <-> PLA2_p_Ca()@Cell kf_R14, kr_R14    # ReactionFlux13
+reaction14: PLA2_p()@Cell -> PLA2_cytosolic()@Cell kf_R15    # ReactionFlux14
+reaction15: PLC()@Cell + Ca()@Cell <-> PLC_Ca()@Cell kf_R16, kr_R16    # ReactionFlux15
+reaction16: IP3()@Cell -> Inositol()@Cell kf_R17    # ReactionFlux16
+reaction17: DAG()@Cell -> PC()@Cell kf_R18    # ReactionFlux17
+reaction18: PLC_Gq()@Cell + Ca()@Cell <-> PLC_Ca_Gq()@Cell kf_R19, kr_R19    # ReactionFlux18
+reaction19: GTP_Ras()@Cell + craf_1_p()@Cell <-> Raf_p_GTP_Ras()@Cell kf_R20, kr_R20    # ReactionFlux19
+reaction20: GEF_p()@Cell -> inact_GEF()@Cell kf_R21    # ReactionFlux20
+reaction21: GTP_Ras()@Cell -> GDP_Ras()@Cell kf_R22    # ReactionFlux21
+reaction22: GAP_p()@Cell -> GAP()@Cell kf_R23    # ReactionFlux22
+reaction23: inact_GEF_p()@Cell -> inact_GEF()@Cell kf_R24    # ReactionFlux23
+
+# clamp EGF
+reaction24: EGFR()@Cell + EGF()@Cell <-> L_EGFR()@Cell kf_R25, kr_R25    # ReactionFlux24
+#reaction24a: EGFR()@Cell + EGF()@Cell -> L_EGFR()@Cell + EGF()@Cell kf_R25     # ReactionFlux24 clamp EGF()
+#reaction24b: L_EGFR()@Cell -> EGFR()@Cell   kr_R25    # ReactionFlux24 clamp EGF()
+
+reaction25: L_EGFR()@Cell <-> Internal_L_EGFR()@Cell kf_R26, kr_R26    # ReactionFlux25
+reaction26: SHC_p()@Cell -> SHC()@Cell kf_R27    # ReactionFlux26
+reaction27: Sos_Grb2()@Cell + SHC_p()@Cell <-> SHC_p_Sos_Grb2()@Cell kf_R28, kr_R28    # ReactionFlux27
+reaction28: Grb2()@Cell + Sos_p()@Cell <-> Sos_p_Grb2()@Cell kf_R29, kr_R29    # ReactionFlux28
+reaction29: Sos_p()@Cell -> Sos()@Cell kf_R30    # ReactionFlux29
+reaction30: Grb2()@Cell + Sos()@Cell <-> Sos_Grb2()@Cell kf_R31, kr_R31    # ReactionFlux30
+reaction31: Grb2()@Cell + SHC_p()@Cell <-> SHC_p_Grb2_clx()@Cell kf_R32, kr_R32    # ReactionFlux31
+reaction32: Ca()@Cell + PLC_g()@Cell <-> Ca_PLC_g()@Cell kf_R33, kr_R33    # ReactionFlux32
+reaction33: Ca()@Cell + PLC_g_p()@Cell <-> Ca_PLC_g_p()@Cell kf_R34, kr_R34    # ReactionFlux33
+reaction34: Ca_PLC_g_p()@Cell -> Ca_PLC_g()@Cell kf_R35    # ReactionFlux34
+reaction35: PLC_g_p()@Cell -> PLC_g()@Cell kf_R36    # ReactionFlux35
+
+# PKA_active dependent:
+reaction_a: PKC_Ca_memb_p()@Cell -> PKC_Ca_memb_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_b: PKC_DAG_memb_p()@Cell -> PKC_DAG_memb_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_c: PKC_Ca_AA_p()@Cell -> PKC_Ca_AA_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_d: PKC_DAG_AA_p()@Cell -> PKC_DAG_AA_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_e: PKC_basal_p()@Cell -> PKC_basal_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_f: PKC_AA_p()@Cell -> PKC_AA_p()@Cell + PKC_active()@Cell kf_PKC_act
+reaction_g: PKC_active()@Cell -> 0 kf_PKC_act
+
+#reaction36: craf_1()@Cell + PKC_active()@Cell <-> PKC_act_raf_cplx()@Cell kf_R37, kr_R37       #ReactionFlux36
+#reaction37: PKC_act_raf_cplx()@Cell -> craf_1_p()@Cell + PKC_active()@Cell kf_R38              #ReactionFlux37
+#reaction38: GAP()@Cell + PKC_active()@Cell <-> PKC_inact_GAP_cplx()@Cell kf_R39, kr_R39        #ReactionFlux38
+#reaction39: PKC_inact_GAP_cplx()@Cell -> GAP_p()@Cell + PKC_active()@Cell kf_R40               #ReactionFlux39
+#reaction40: inact_GEF()@Cell + PKC_active()@Cell <-> PKC_act_GEF_cplx()@Cell kf_R41, kr_R41    #ReactionFlux40
+#reaction41: PKC_act_GEF_cplx()@Cell -> GEF_p()@Cell + PKC_active()@Cell kf_R42                 #ReactionFlux41
+
+reaction36: craf_1()@Cell + PKC_active()@Cell -> PKC_act_raf_cplx()@Cell + PKC_active()@Cell kf_R37       #ReactionFlux36
+reaction36a: PKC_act_raf_cplx()@Cell -> craf_1()@Cell kr_R37
+reaction37: PKC_act_raf_cplx()@Cell -> craf_1_p()@Cell  kf_R38              #ReactionFlux37
+reaction38: GAP()@Cell + PKC_active()@Cell -> PKC_inact_GAP_cplx()@Cell + PKC_active()@Cell kf_R39        #ReactionFlux38
+reaction38a: PKC_inact_GAP_cplx()@Cell -> GAP()@Cell kr_R39
+reaction39: PKC_inact_GAP_cplx()@Cell -> GAP_p()@Cell  kf_R40               #ReactionFlux39
+reaction40: inact_GEF()@Cell + PKC_active()@Cell -> PKC_act_GEF_cplx()@Cell + PKC_active()@Cell kf_R41    #ReactionFlux40
+reaction40a: PKC_act_GEF_cplx()@Cell -> inact_GEF()@Cell kr_R41
+reaction41: PKC_act_GEF_cplx()@Cell -> GEF_p()@Cell  kf_R42                 #ReactionFlux41
+
+reaction42: PLA2_Ca_p()@Cell + APC()@Cell <-> kenz_cplx()@Cell kf_R43, kr_R43    # ReactionFlux42
+reaction43: kenz_cplx()@Cell -> PLA2_Ca_p()@Cell + Arachidonic_Acid()@Cell kf_R44    # ReactionFlux43
+reaction44: APC()@Cell + PIP2_PLA2_p()@Cell <-> kenz_cplx_1()@Cell kf_R45, kr_R45    # ReactionFlux44
+reaction45: kenz_cplx_1()@Cell -> PIP2_PLA2_p()@Cell + Arachidonic_Acid()@Cell kf_R46    # ReactionFlux45
+reaction46: APC()@Cell + PIP2_Ca_PLA2_p()@Cell <-> kenz_cplx_2()@Cell kf_R47, kr_R47    # ReactionFlux46
+reaction47: kenz_cplx_2()@Cell -> PIP2_Ca_PLA2_p()@Cell + Arachidonic_Acid()@Cell kf_R48    # ReactionFlux47
+reaction48: APC()@Cell + DAG_Ca_PLA2_p()@Cell <-> kenz_cplx_3()@Cell kf_R49, kr_R49    # ReactionFlux48
+reaction49: kenz_cplx_3()@Cell -> DAG_Ca_PLA2_p()@Cell + Arachidonic_Acid()@Cell kf_R50    # ReactionFlux49
+reaction50: APC()@Cell + PLA2_p_Ca()@Cell <-> kenz_cplx_4()@Cell kf_R51, kr_R51    # ReactionFlux50
+reaction51: kenz_cplx_4()@Cell -> PLA2_p_Ca()@Cell + Arachidonic_Acid()@Cell kf_R52    # ReactionFlux51
+reaction52: PIP2()@Cell + PLC_Ca()@Cell <-> PLC_Ca_cplx()@Cell kf_R53, kr_R53    # ReactionFlux52
+reaction53: PLC_Ca_cplx()@Cell -> PLC_Ca()@Cell + DAG()@Cell + IP3()@Cell kf_R54    # ReactionFlux53
+reaction54: PIP2()@Cell + PLC_Ca_Gq()@Cell <-> PLCb_Ca_Gq_cplx()@Cell kf_R55, kr_R55    # ReactionFlux54
+reaction55: PLCb_Ca_Gq_cplx()@Cell -> DAG()@Cell + PLC_Ca_Gq()@Cell + IP3()@Cell kf_R56    # ReactionFlux55
+reaction56: MAPK_p_p()@Cell + PLA2_cytosolic()@Cell <-> MAPK_p_p_cplx()@Cell kf_R57, kr_R57    # ReactionFlux56
+reaction57: MAPK_p_p_cplx()@Cell -> MAPK_p_p()@Cell + PLA2_p()@Cell kf_R58    # ReactionFlux57
+reaction58: MAPK_p_p()@Cell + craf_1_p()@Cell <-> MAPK_p_p_feedback_cplx()@Cell kf_R59, kr_R59    # ReactionFlux58
+reaction59: MAPK_p_p_feedback_cplx()@Cell -> MAPK_p_p()@Cell + craf_1_p_p()@Cell kf_R60    # ReactionFlux59
+reaction60: MAPK_p_p()@Cell + Sos()@Cell <-> phosph_Sos_cplx()@Cell kf_R61, kr_R61    # ReactionFlux60
+reaction61: phosph_Sos_cplx()@Cell -> MAPK_p_p()@Cell + Sos_p()@Cell kf_R62    # ReactionFlux61
+reaction62: MAPKK_p_p()@Cell + MAPK()@Cell <-> MAPKKtyr_cplx()@Cell kf_R63, kr_R63    # ReactionFlux62
+reaction63: MAPKKtyr_cplx()@Cell -> MAPKK_p_p()@Cell + MAPK_p()@Cell kf_R64    # ReactionFlux63
+reaction64: MAPKK_p_p()@Cell + MAPK_p()@Cell <-> MAPKKthr_cplx()@Cell kf_R65, kr_R65    # ReactionFlux64
+reaction65: MAPKKthr_cplx()@Cell -> MAPKK_p_p()@Cell + MAPK_p_p()@Cell kf_R66    # ReactionFlux65
+reaction66: MAPKK()@Cell + Raf_p_GTP_Ras()@Cell <-> Raf_p_GTP_Ras_1_cplx()@Cell kf_R67, kr_R67    # ReactionFlux66
+reaction67: Raf_p_GTP_Ras_1_cplx()@Cell -> MAPKK_p()@Cell + Raf_p_GTP_Ras()@Cell kf_R68    # ReactionFlux67
+reaction68: MAPKK_p()@Cell + Raf_p_GTP_Ras()@Cell <-> Raf_p_GTP_Ras_2_cplx()@Cell kf_R69, kr_R69    # ReactionFlux68
+reaction69: Raf_p_GTP_Ras_2_cplx()@Cell -> MAPKK_p_p()@Cell + Raf_p_GTP_Ras()@Cell kf_R70    # ReactionFlux69
+reaction70: inact_GEF()@Cell + GDP_Ras()@Cell <-> basal_GEF_activity_cplx()@Cell kf_R71, kr_R71    # ReactionFlux70
+reaction71: basal_GEF_activity_cplx()@Cell -> inact_GEF()@Cell + GTP_Ras()@Cell kf_R72    # ReactionFlux71
+reaction72: GEF_p()@Cell + GDP_Ras()@Cell <-> GEF_p_act_Ras_cplx()@Cell kf_R73, kr_R73    # ReactionFlux72
+reaction73: GEF_p_act_Ras_cplx()@Cell -> GEF_p()@Cell + GTP_Ras()@Cell kf_R74    # ReactionFlux73
+reaction74: GAP()@Cell + GTP_Ras()@Cell <-> GAP_inact_Ras_cplx()@Cell kf_R75, kr_R75    # ReactionFlux74
+reaction75: GAP_inact_Ras_cplx()@Cell -> GAP()@Cell + GDP_Ras()@Cell kf_R76    # ReactionFlux75
+reaction76: GDP_Ras()@Cell + CaM_GEF()@Cell <-> CaM_GEF_act_Ras_cplx()@Cell kf_R77, kr_R77    # ReactionFlux76
+reaction77: CaM_GEF_act_Ras_cplx()@Cell -> GTP_Ras()@Cell + CaM_GEF()@Cell kf_R78    # ReactionFlux77
+reaction78: L_EGFR()@Cell + Ca_PLC_g()@Cell <-> Ca_PLC_g_phospho_cplx()@Cell kf_R79, kr_R79    # ReactionFlux78
+reaction79: Ca_PLC_g_phospho_cplx()@Cell -> Ca_PLC_g_p()@Cell + L_EGFR()@Cell kf_R80    # ReactionFlux79
+reaction80: L_EGFR()@Cell + SHC()@Cell <-> SHC_phospho_cplx()@Cell kf_R81, kr_R81    # ReactionFlux80
+reaction81: SHC_phospho_cplx()@Cell -> L_EGFR()@Cell + SHC_p()@Cell kf_R82    # ReactionFlux81
+reaction82: SHC_p_Sos_Grb2()@Cell + GDP_Ras()@Cell <-> Sos_Ras_GEF_cplx()@Cell kf_R83, kr_R83    # ReactionFlux82
+reaction83: Sos_Ras_GEF_cplx()@Cell -> SHC_p_Sos_Grb2()@Cell + GTP_Ras()@Cell kf_R84    # ReactionFlux83
+
+# initial
+#reaction84: PIP2()@Cell + Ca_PLC_g()@Cell   -> DAG()@Cell + IP3()@Cell + Ca_PLC_g()@Cell k_R85()   # ReactionFlux84
+#reaction85: PIP2()@Cell + Ca_PLC_g_p()@Cell -> DAG()@Cell + IP3()@Cell + Ca_PLC_g_p()@Cell k_R86()     # ReactionFlux85
+
+# alternative 1
+reaction84a: Ca_PLC_g()@Cell -> PIP2_Ca_PLC_g()@Cell + Ca_PLC_g()@Cell   kf1a_R85 
+reaction84b: PIP2()@Cell + PIP2_Ca_PLC_g()@Cell -> PIP2()@Cell  kf2_R85 #kr1 
+reaction84c: PIP2_Ca_PLC_g()@Cell -> 0  kr1 #kf2_R85 
+reaction84d: PIP2()@Cell +PIP2_Ca_PLC_g()@Cell -> DAG()@Cell + IP3()@Cell +PIP2_Ca_PLC_g()@Cell  kf1b_R85
+
+reaction85a: Ca_PLC_g_p()@Cell -> PIP2_Ca_PLC_g_p()@Cell  + Ca_PLC_g_p()@Cell  kf1a_R86 
+reaction85b: PIP2()@Cell + PIP2_Ca_PLC_g_p()@Cell -> PIP2()@Cell  kf2_R86 #kr1 
+reaction85c: PIP2_Ca_PLC_g_p()@Cell -> 0  kr1 #kf2_R86
+reaction85d: PIP2()@Cell + PIP2_Ca_PLC_g_p()@Cell -> DAG()@Cell + IP3()@Cell + PIP2_Ca_PLC_g_p()@Cell  kf1b_R86 
+
+# alternative 2
+#reaction84a: PIP2()@Cell + Ca_PLC_g()@Cell -> PIP2_Ca_PLC_g()@Cell kf1_R85 #TotalRate #, kr_R85    # ReactionFlux84
+#reaction84b: PIP2()@Cell + PIP2_Ca_PLC_g()@Cell -> PIP2()@Cell + Ca_PLC_g()@Cell kr1 #TotalRate #, kr_R85    # ReactionFlux84
+#reaction84c: PIP2_Ca_PLC_g()@Cell -> DAG()@Cell + IP3()@Cell + Ca_PLC_g()@Cell kf2_R85 #TotalRate #, kr_R85    # ReactionFlux84
+
+#reaction85a: PIP2()@Cell + Ca_PLC_g_p()@Cell -> PIP2_Ca_PLC_g_p()@Cell kf1_R86 #TotalRate #, kr_R86    # ReactionFlux85
+#reaction85b: PIP2()@Cell + PIP2_Ca_PLC_g_p()@Cell -> PIP2()@Cell + Ca_PLC_g_p()@Cell kr1 #TotalRate #, kr_R86    # ReactionFlux85
+#reaction85c: PIP2_Ca_PLC_g_p()@Cell -> DAG()@Cell + IP3()@Cell + Ca_PLC_g_p()@Cell kf2_R86 #TotalRate #, kr_R86    # ReactionFlux85
+
+
+
+reaction86: PLCg_basal()@Cell + PLC_g()@Cell <-> PLC_g_phospho_cplx()@Cell kf_R87, kr_R87    # ReactionFlux86
+reaction87: PLC_g_phospho_cplx()@Cell -> PLCg_basal()@Cell + PLC_g_p()@Cell kf_R88    # ReactionFlux87
+reaction88: MKP_1()@Cell + MAPK_p()@Cell <-> MKP1_tyr_deph_cplx()@Cell kf_R89, kr_R89    # ReactionFlux88
+reaction89: MKP1_tyr_deph_cplx()@Cell -> MAPK()@Cell + MKP_1()@Cell kf_R90    # ReactionFlux89
+reaction90: MAPK_p_p()@Cell + MKP_1()@Cell <-> MKP1_thr_deph_cplx()@Cell kf_R91, kr_R91    # ReactionFlux90
+reaction91: MKP1_thr_deph_cplx()@Cell -> MKP_1()@Cell + MAPK_p()@Cell kf_R92    # ReactionFlux91
+reaction92: craf_1_p()@Cell + PPhosphatase2A()@Cell <-> craf_dephospho_cplx()@Cell kf_R93, kr_R93    # ReactionFlux92
+reaction93: craf_dephospho_cplx()@Cell -> craf_1()@Cell + PPhosphatase2A()@Cell kf_R94    # ReactionFlux93
+reaction94: MAPKK_p_p()@Cell + PPhosphatase2A()@Cell <-> MAPKK_dephospho_cplx()@Cell kf_R95, kr_R95    # ReactionFlux94
+reaction95: MAPKK_dephospho_cplx()@Cell -> MAPKK_p()@Cell + PPhosphatase2A()@Cell kf_R96    # ReactionFlux95
+reaction96: MAPKK_p()@Cell + PPhosphatase2A()@Cell <-> MAPKK_dephospho_ser_cplx()@Cell kf_R97, kr_R97    # ReactionFlux96
+reaction97: MAPKK_dephospho_ser_cplx()@Cell -> MAPKK()@Cell + PPhosphatase2A()@Cell kf_R98    # ReactionFlux97
+reaction98: craf_1_p_p()@Cell + PPhosphatase2A()@Cell <-> craf_p_p_dephospho_cplx()@Cell kf_R99, kr_R99    # ReactionFlux98
+reaction99: craf_p_p_dephospho_cplx()@Cell -> PPhosphatase2A()@Cell + craf_1_p()@Cell kf_R100    # ReactionFlux99
+reaction100: craf_1_p_ser259()@Cell + PPhosphatase2A()@Cell <-> deph_raf_ser259_cplx()@Cell kf_R101, kr_R101    # ReactionFlux100
+reaction101: deph_raf_ser259_cplx()@Cell -> craf_1()@Cell + PPhosphatase2A()@Cell kf_R102    # ReactionFlux101
+end reaction rules
+end model
+#generate_network({prefix=>"temp3"})
+#writeSBML({prefix=>"temp3"})
+
+#simulate({method=>"nf",t_start=>0,t_end=>1000,n_steps=>1000,equil=>2.0})
+
+#simulate({method=>"ode",t_start=>0,t_end=>2100,n_steps=>2100})
+simulate({method=>"ode",t_start=>0,t_end=>100,n_steps=>100})
+simulate({method=>"ode",t_end=>2100,n_steps=>2000, continue=>1})
+##setConcentration("EGF()@Cell",0.1)
+##setParameter("EGF_par",0.1)
+#setConcentration("EGF()@Cell",0.1*6.022e23*1.0e-15*1.0e-6)
+setConcentration("EGF()@Cell",0.1)
+#simulate({method=>"ode",t_start=>2100,t_end=>10000,n_steps=>7900, continue=>1})
+simulate({method=>"ode",t_end=>10100,n_steps=>8000, continue=>1})
+# 
+# 
+# simulate({method=>"ode",t_end=>50.0,n_steps=>5000,continue=>1})
+#simulate({method=>"ode",t_end=>50000.0,n_steps=>1000,continue=>1})

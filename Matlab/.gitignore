@@ -6,4 +6,5 @@
 !**/Results/Analysis_diagnostics_example/
 **/Formulas/*.m
 **/Data/Exp/*.mat
+*/Model
 *.xml

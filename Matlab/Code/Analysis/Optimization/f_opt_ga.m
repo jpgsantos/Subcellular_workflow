@@ -5,6 +5,9 @@ rng(stg.rseed);
 
 % Get the optimization options from settings
 options = stg.ga_options;
+options.MaxTime = stg.optt;
+options.UseParallel = stg.optmc;
+options.PopulationSize = stg.popsize;
 
 % Display console messages if chosen in settings
 if stg.optcsl
@@ -15,7 +18,7 @@ end
 if stg.optplots
     options.PlotFcn = {@gaplotbestf,...
         @gaplotexpectation,@gaplotrange,@gaplotscorediversity,...
-        @gaplotstopping,@gaplotgenealogy,@gaplotscores,@gaplotdistance,...
+        @gaplotstopping,@gaplotscores,@gaplotdistance,...
         @gaplotselection};
 end
 

@@ -1,8 +1,7 @@
 function f_sbtab_to_model(stg,sb)
 % Saves the model in .mat, .sbproj and .xml format, while also creating a
 % file whith the data to run the model in all different experimental
-% settings defined in the SBtab.
-
+% settings defined in the sbtab
 
 modelobj = sbiomodel (stg.name);
 compObj = [];
@@ -13,27 +12,13 @@ sbtab.species = cat(2,sb.Compound.Name,sb.Compound.InitialValue,...
 sbtab.defpar = cat(2,sb.Parameter.Comment,sb.Parameter.Value_linspace,...
     sb.Parameter.Unit);
 
-compartment_number = 0;
+for n = 1:size(sb.Compartment.ID,2)
+    compObj{n} = addcompartment(modelobj, sb.Compartment.Name{n});
+    set(compObj{n}, 'CapacityUnits', sb.Compartment.Unit{n});
+    set(compObj{n}, 'Value', sb.Compartment.Size{n});
+end
 
 for n = 1:size(sbtab.species,1)
-    
-    if isempty(compObj)
-        compartment_number = compartment_number+1;
-        compObj{compartment_number} = addcompartment(modelobj, sb.Compound.Location{1});
-        set(compObj{compartment_number}, 'CapacityUnits', 'liter');
-    end
-    
-    for m = 1:size(compObj,2)
-        if string(compObj{m}.Name) ~= string(sb.Compound.Location{n})
-            compartment_number = compartment_number+1;
-        else
-            compartment_number = size(compObj,2);
-        end
-    end
-    if compartment_number > size(compObj,2)
-        compObj{compartment_number} = addcompartment(modelobj, sb.Compound.Location{n});
-        set(compObj{compartment_number}, 'CapacityUnits', 'liter');
-    end
     
     for m = 1:size(compObj,2)
         if string(compObj{m}.Name) == string(sb.Compound.Location{n})
@@ -46,39 +31,25 @@ for n = 1:size(sbtab.species,1)
 end
 
 for n = 1:size(sbtab.defpar,1)
-    addparameter(modelobj,sb.Parameter.Comment{n},...
-        sb.Parameter.Value_linspace{n},'ValueUnits',sb.Parameter.Unit{n});
+    addparameter(modelobj,sb.Parameter.Name{n},...
+        sb.Parameter.Value_linspace{n},'ValueUnits',sb.Parameter.Unit{n},'Notes',sb.Parameter.Comment{n});
 end
 
-b = 0;
-for n = 1:size(sb.Parameter.Name,1)
+for n = 1:size(sb.Reaction.ID,1)
     
-    RE = char("(^|[^A-Za-z0-9_])" +...
-        sb.Parameter.Name(n) + "([^A-Za-z0-9_]|$)");
-    
-    a = find(not(cellfun(...
-        @isempty,regexp(sb.Reaction.KineticLaw,RE,'start'))));
-    
-    for j = 1:length(a)
-        m = a(j);
-        if m <= b
-            if size([parameter_name{m,:}],2) == 0
-                parameter_name{m,1} = sb.Parameter.Comment(n) ;
-            else
-                parameter_name{m,size([parameter_name{m,:}],2)+1} = sb.Parameter.Comment(n) ;
-            end
+    if ischar(sb.Reaction.IsReversible{n})
+        if contains(convertCharsToStrings(sb.Reaction.IsReversible{n}),"true")
+            reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
         else
-            parameter_name{m,1} = sb.Parameter.Comment(n) ;
+            reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' -> ');
         end
-    end
-    b = max(a);
-end
-
-for n = 1:size(parameter_name,1)
-    if size([parameter_name{n,:}],2) == 1
-        reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' -> ');
-    elseif size([parameter_name{n,:}],2) == 2
-        reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
+        
+    else
+        if sb.Reaction.IsReversible{n}
+            reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
+        else
+            reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' -> ');
+        end
     end
     
     reaction_name_compartment = reaction_name;
@@ -103,31 +74,30 @@ for n = 1:size(parameter_name,1)
     end
     
     reactionObj = addreaction(modelobj,reaction_name_compartment);
-    kineticlawObj = addkineticlaw(reactionObj, 'MassAction');
-    set(kineticlawObj,'ParameterVariableNames',[parameter_name{n,:}])
+    set(reactionObj,'ReactionRate',sb.Reaction.KineticLaw{n});
 end
 
 for n = 1:size(sb.Compound.ID,1)
     if ischar(sb.Compound.Assignement{n})
-        if ~contains(convertCharsToStrings(sb.Compound.Assignement{n}),"false")
+        if contains(convertCharsToStrings(sb.Compound.Assignement{n}),["true","True"])
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
-        if ~sb.Compound.Assignement{n} == 0
+        if sb.Compound.Assignement{n} == 1
             modelobj.species(n).BoundaryCondition = 1;
         end
     end
     if ischar(sb.Compound.Interpolation{n})
-        if ~contains(convertCharsToStrings(sb.Compound.Interpolation{n}),"false")
+        if contains(convertCharsToStrings(sb.Compound.Interpolation{n}),["true","True"])
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
-        if ~sb.Compound.Interpolation{n} == 0
+        if sb.Compound.Interpolation{n} == 1
             modelobj.species(n).BoundaryCondition = 1;
         end
     end
-    if ischar(sb.Compound.Assignement{n})
-        if contains(convertCharsToStrings(sb.Compound.IsConstant{n}),"true")
+    if ischar(sb.Compound.IsConstant{n})
+        if contains(convertCharsToStrings(sb.Compound.IsConstant{n}),["true","True"])
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
@@ -162,19 +132,13 @@ for n = 1:size(sb.Experiments.ID,1)
         end
     end
     
-    if isfield(sb.Experiments,"Normstart")
-        sbtab.datasets(n).normstart = sb.Experiments.Normstart{n};
+    if isfield(sb.Experiments,"Normalize")
+        sbtab.datasets(n).Normalize = sb.Experiments.Normalize{n};
     else
-        sbtab.datasets(n).normstart = [];
+        sbtab.datasets(n).Normalize = [];
     end
     
-    if isfield(eval(("sb.E")+(n-1)),"max")
-        sbtab.datasets(n).max = eval("sb.E"+(n-1)+".max");
-    else
-        sbtab.datasets(n).max = [];
-    end
-    
-    if isfield(eval(("sb.E")+(n-1)),"TimePoint")
+    if isfield(eval(("sb.E")+(n-1)),"Time")
         Data(n).Experiment.t = transpose(eval("[sb.E"+(n-1)+".Time{:}]"));
     end
     
@@ -199,7 +163,6 @@ for n = 1:size(sb.Experiments.ID,1)
                 (n-1) + ".Y" + (m-1) + "{:}]");
             Data(n).Experiment.x_SD(:,nOutput) = eval(("[sb.E") +...
                 (n-1) + ".SD_Y" + (m-1) + "{:}]");
-            %             sbtab.datasets(n).output{nOutput} = char("Y" + (m-1));
             sbtab.datasets(n).output{nOutput} = sb.Output.Name(m);
             sbtab.datasets(n).output_value{nOutput} = ...
                 {convertStringsToChars(...
@@ -208,6 +171,8 @@ for n = 1:size(sb.Experiments.ID,1)
                 string(sb.Output.Formula{m}),'eps','0.0001'))};
             sbtab.datasets(n).output_name{nOutput} = ...
                 sb.Output.Name(m);
+            sbtab.datasets(n).output_ID{nOutput} = ...
+                sb.Output.ID(m);
             sbtab.datasets(n).output_location{nOutput} = ...
                 sb.Output.Location(m);
         end
@@ -219,23 +184,26 @@ end
 
 if isfield(sb,"Expression")
     for m = 1:size(sb.Expression.ID,1)
-        try
+        if isfield(sb.Expression,'Formula')
             if isa(sb.Expression.Formula{m},'double')
                 addspecies (modelobj, char(sb.Expression.Name(m)),...
                     str2double(string(sb.Expression.Formula{m})),...
                     'InitialAmountUnits',sb.Expression.Unit{m});
             else
+            try
                 addspecies (modelobj, char(sb.Expression.Name(m)),0,...
                     'InitialAmountUnits',sb.Expression.Unit{m});
-                addrule(modelobj, char({convertStringsToChars(...
-                    string(sb.Expression.Location{m}) + "." +...
-                    string(sb.Expression.Name{m}) + " = " +...
-                    string(sb.Expression.Formula{m}))}),...
-                    'repeatedAssignment');
+            catch
             end
-        catch
+            addrule(modelobj, char({convertStringsToChars(...
+                string(sb.Expression.Location{m}) + "." +...
+                string(sb.Expression.Name{m}) + " = " +...
+                string(sb.Expression.Formula{m}))}),...
+                'repeatedAssignment');
+            end
+        else
             addparameter(modelobj,char(sb.Expression.Name(m)),...
-                str2double(string(sb.Expression.Formula{m})),...
+                str2double(string(sb.Expression.DefaultValue{m})),...
                 'ValueUnits',sb.Expression.Unit{m});
         end
     end
@@ -243,21 +211,24 @@ end
 
 if isfield(sb,"Input")
     for m = 1:size(sb.Input.ID,1)
-        try
+        if isfield(sb.Input,'Formula')
             if isa(sb.Input.Formula{m},'double')
                 addspecies (modelobj, char(sb.Input.Name(m)),...
                     str2double(string(sb.Input.DefaultValue{m})),...
                     'InitialAmountUnits',sb.Input.Unit{m});
             else
+            try
                 addspecies (modelobj, char(sb.Input.Name(m)),0,...
                     'InitialAmountUnits',sb.Input.Unit{m});
-                addrule(modelobj, char({convertStringsToChars(...
-                    string(sb.Input.Location{m}) + "." +...
-                    string(sb.Input.Name{m}) + " = " +...
-                    string(sb.Input.DefaultValue{m}))}),...
-                    'repeatedAssignment');
+            catch
             end
-        catch
+            addrule(modelobj, char({convertStringsToChars(...
+                string(sb.Input.Location{m}) + "." +...
+                string(sb.Input.Name{m}) + " = " +...
+                string(sb.Input.DefaultValue{m}))}),...
+                'repeatedAssignment');
+            end
+        else
             addparameter(modelobj,char(sb.Input.Name(m)),...
                 str2double(string(sb.Input.DefaultValue{m})),...
                 'ValueUnits',sb.Input.Unit{m});
@@ -273,14 +244,16 @@ if isfield(sb,"Constant")
     end
 end
 
-sbiosaveproject("Model/" + stg.folder_model + "/Data/model_" +...
+sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/model_" +...
     stg.name + ".sbproj",'modelobj')
-save("Model/" + stg.folder_model + "/Data/" + "model_" +...
+
+save(pwd + "/Model/" + stg.folder_model + "/Data/" + "model_" +...
     stg.name + ".mat",'modelobj')
-save("Model/" + stg.folder_model + "/Data/data_" +...
+save(pwd + "/Model/" + stg.folder_model + "/Data/data_" +...
     stg.name + ".mat",...
     'Data','sbtab','sb')
-sbmlexport(modelobj,"Model/" + stg.folder_model + "/Data/model_" +...
+
+sbmlexport(modelobj,pwd + "/Model/" + stg.folder_model + "/Data/model_" +...
     stg.name + ".xml")
 
 end
