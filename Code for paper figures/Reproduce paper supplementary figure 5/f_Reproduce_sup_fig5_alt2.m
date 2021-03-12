@@ -1,4 +1,7 @@
 function f_Reproduce_sup_fig5_alt2(folder)
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 load(folder + "E0_pERK_NEURON")
 load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab')
 load(folder + "Analysis.mat")

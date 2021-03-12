@@ -1,4 +1,7 @@
 function f_Reproduce_fig7_BCDE(folder)
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 load(folder + "auc")
 load(folder + "inputs")
 

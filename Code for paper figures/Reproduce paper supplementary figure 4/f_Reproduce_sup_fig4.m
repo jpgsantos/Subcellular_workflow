@@ -1,6 +1,7 @@
 function f_Reproduce_sup_fig_4(folder)
 work_folder = folder +"/Results";
 
+set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 %%  read SBtab data for experimental output for E0
 
@@ -216,12 +217,12 @@ close(figHandles);
 figure('WindowStyle', 'docked','Name','Paper supplementary figure 4','NumberTitle',...
     'off');
 
-layout = tiledlayout(1,1,'Padding','compact','TileSpacing','compact');
+layout = tiledlayout(2,2,'Padding','none','TileSpacing','compact');
 
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 3];
 
-nexttile(layout);
+nexttile(layout,[2 2]);
 % figure
 % subplot(1,2,1)
 hold on

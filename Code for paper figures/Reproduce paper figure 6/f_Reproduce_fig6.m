@@ -165,7 +165,7 @@ close(figHandles);
 figure('WindowStyle', 'docked','Name','Paper Figure 6','NumberTitle',...
     'off');
 
-layout = tiledlayout(1,2,'Padding','compact','TileSpacing','compact');
+layout = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
 
 nexttile(layout)
 % figure

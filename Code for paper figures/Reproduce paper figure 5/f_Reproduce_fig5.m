@@ -1,4 +1,7 @@
 function f_Reproduce_fig5(folder)
+set(0,'defaultTextFontName', 'Times New Roman')
+set(0,'defaultAxesFontName', 'Times New Roman')
+
 load(folder + "inputs")
 load(folder + "copasi_data")
 load(folder + "new_data")
