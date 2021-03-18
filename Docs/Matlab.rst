@@ -8,7 +8,7 @@ This documentation is divided in:
 
   - :ref:`Scripts<scripts>` - The scripts that we use, this should be read by anyone that is going to use the code;
   - :ref:`Functions<functions>` - All the custom functions we have built, this is directed to anyone that wants to develop or iterate on the code;
-  - :ref:`Settings file<stg>` - The master configuration file, where everything that can be changed by the user without changing any code is described;
+  - :ref:`Settings file<stg>` - The master configuration file, where we describe everything that can be changed by the user without changing any code;
   - :ref:`Results<rst>` - Explanation of all the files containing relevant results that are generated after running the built-in analysis of the code;
   - :ref:`Model files and folders<files>` - Description of all the files and folders that are generated when the model is "imported" from SBtab into relevant files, used by the rest of the MATLAB\ |TM| code.
 
