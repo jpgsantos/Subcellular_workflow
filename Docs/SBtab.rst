@@ -29,7 +29,7 @@ Compound
 
 .. _compound_initialvalue:
 
-- **!InitialValue** - should include the total amounts of the conserved species and have 0 for the rest of the reactants in nM. 
+- **!InitialValue** - should include the total amounts of the conserved species and have 0 for the rest of the reactants in nanomolar (nM). 
 
 .. _compound_isconstant:
 
@@ -55,7 +55,7 @@ Parameter
 
 .. _parameter_comment:
 
-- **!Comment** - refers to the name of parameter and has to start with either 'kf' for the forward reactions rates or 'kr' for the backward reactions rates. We advise to name the parameters after the corresponding reactions, e.g. 'kf_AXB__A_B' and 'kr_AXB__A_B' for the reaction 'A + B <= > A_B'.
+- **!Comment** - refers to the name of a parameter and has to start with either 'kf' for the forward reactions rates or 'kr' for the backward reactions rates. We advise to name the parameters after the corresponding reactions, e.g. 'kf_AXB__A_B' and 'kr_AXB__A_B' for the reaction 'A + B <= > A_B'.
 
 .. _parameter_value_lin:
 
