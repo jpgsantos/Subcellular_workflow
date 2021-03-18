@@ -3,8 +3,8 @@ NEURON
 
 Here we describe the usage of the MOD files for two of the provided examples (the third one does not use MOD files).
 
-1. Nair et al. 2016 (D1 MSN subcellular cascade)
-================================================
+Nair et al. 2016 (D1 MSN subcellular cascade)
+---------------------------------------------
 
 The model requires input in the form of dopamine and calcium. These need to be specified by the user:
 
@@ -26,8 +26,8 @@ When specifying the calcium input like this care needs to be taken to make sure 
 
 Ca = ca_nmdai * (1e6)
 
-2. Viswan et al. 2016 (EGF-stimulated MAPK cascade)
-===================================================
+Viswan et al. 2016 (EGF-stimulated MAPK cascade)
+------------------------------------------------
 
 In this model we only use EGF as an input (only this input is used in Figure 7 in Viswan et al. 2018 which we reproduce; otherwise the model may have various other inputs, see the original paper for details [2]).
 
@@ -37,9 +37,8 @@ In this model we only use EGF as an input (only this input is used in Figure 7 i
 
 2. The SBtab format of this model expresses the parameter values in seconds, whereas NEURON's default unit for time is milliseconds. The conversion script SBtab_to_vfgen provides automatic scaling of time units in SBtab to milliseconds. The concentration units are given in micromolar, and if some species needs to be coupled to a NEURON variable which is expressed in other units (such as NEURON's default millimolar units), the species or the NEURON variable need to be rescaled as in the example above.
 
-
 References
-==========
+----------
 
 [1] Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080.
 
