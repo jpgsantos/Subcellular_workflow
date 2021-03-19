@@ -6,8 +6,8 @@ Scripts
 In this workflow we use three MATLAB\ |TM| scripts:
 
 - Run_main - Runs the analysis predetermined in the settings file
-- Reproduce_analysis - Re-runs the analysis saved in a results file
-- Reproduce_analysis_plots - Re-runs the plots of an analysis saved in a results file
+- Reproduce_analysis - Reruns the analysis saved in a results file
+- Reproduce_analysis_plots - Reproduces the plots from the analysis saved in a results file
 
 We have provided an example diagnostics run and an example global sensitivity analysis run, the results of which can be found on the following folders: 
 
