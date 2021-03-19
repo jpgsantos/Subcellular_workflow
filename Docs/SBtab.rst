@@ -123,11 +123,11 @@ Corresponds to individual experiments and has to be followed by experiment index
 
 .. _e_time:
 
-- **!Time** - for time series data represents a list of all the time points for all the output data points.
+- **!Time** - for time series data, this should include a list of all the time points for all the time points during which the corresponding output data points were sampled.
 
 .. _e_y:
 
-- **`>Y**\ :sub:`i`\ - followed by an index refers to the species ID in the output table and should include the concentration data points.
+- **`>Y**\ :sub:`i`\ - followed by an index refers to the species ID in the output table and should include the sampled concentration data points.
 
 .. _e_sd_y:
 
@@ -140,8 +140,8 @@ E\ :sub:`i`\I
 
 .. _ei_imput_time:
 
-- **!Input\_Time\_S**\ :sub:`i`\ - for time series data represent a list of all the time points for the input data points. In case of events only the specific event time point can be written. Not that a column for 
+- **!Input\_Time\_S**\ :sub:`i`\ - for time series data, this should include a list of all the time points during which the corresponding input data points were sampled. In the case of events, only the specific event time point can be specified. 
 
 .. _ei_s:
 
-- **`>S**\ :sub:`i`\ - followed by an index refers to the input species ID in the Compound table. This column should represent the concentration data points.
+- **`>S**\ :sub:`i`\ - followed by an index refers to the input species ID in the Compound table. This column should represent the sampled concentration data points.
