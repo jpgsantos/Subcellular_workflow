@@ -11,26 +11,26 @@ We have also developed tools to convert the SBtab format into several formats th
 
 Using MATLAB\ |TM| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
-We demonstrate all these features using an three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016 [1]_.
+We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016 [1]_.
 
-Code to run this model in MATLAB\ |TM|, NEURON, and Subcellular aplication (STEPS) can be found on the "MATLAB\ |TM|", "NEURON" and "BioNetGen and STEPS folders" respectively.
+Code to run this model in MATLAB\ |TM|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB\ |TM|", "NEURON" and "BioNetGen and STEPS folders", respectively.
 
 |
 
 Features:
 
-* Model simulation, using MATLAB\ |TM|, subcellular aplication (STEPS), or NEURON
+* Model simulation using MATLAB\ |TM|, the Subcellular application (STEPS), or NEURON
 * Analysis of selected parameter sets, using MATLAB\ |TM|
-* Parameter optimization, using MATLAB\ |TM|
-* Global Sensitivity analysis, using MATLAB\ |TM|
+* Parameter optimization using MATLAB\ |TM|
+* Global Sensitivity Analysis using MATLAB\ |TM|
 * Conversion tools:
 
   * SBtab(.xlsx) to SBtab(.tsv), using MATLAB\ |TM|
-  * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj), using MATLAB\ |TM|
-  * MATLAB\ |TM| SimBiology to SBML(.xml), using MATLAB\ |TM|
-  * SBtab(.tsv) to VFGEN(.vf), using R
-  * SBtab(.tsv) to Mod(.mod), using R
-  * SBtab(.tsv) to SBML(.xml), using R
+  * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj) using MATLAB\ |TM|
+  * MATLAB\ |TM| SimBiology to SBML(.xml) using MATLAB\ |TM|
+  * SBtab(.tsv) to VFGEN(.vf) using R
+  * SBtab(.tsv) to MOD(.mod) using R
+  * SBtab(.tsv) to SBML(.xml) using R
 
 |
 
