@@ -172,12 +172,12 @@ for m = 1:2
     % Choose number of decimal places for y axis
     ytickformat('%.2g')
     if m == 1
-        ylabel("pERK1\_2\_ratio1",'FontSize', 8,'Fontweight','bold')
+        ylabel('MAPK_p + MAPK_p_p (\muM)','FontSize', 8,'Fontweight','bold')
         text(-500,1.65,'B','FontWeight','bold');
         
     else
         text(-2000,3.85,'D','FontWeight','bold');
-        ylabel("pERK1\_2\_ratio2",'FontSize', 8,'Fontweight','bold')
+        ylabel('MAPK_p + MAPK_p_p (\muM)','FontSize', 8,'Fontweight','bold')
         ylim([0 3.5])
     end
 end

@@ -174,7 +174,7 @@ set(gca,'FontSize',8,'Fontweight','bold')
 
 xlabel(ax1,'time (s) MATLAB','FontSize', 8,'Fontweight','bold')
 xlabel(ax2,'time (s) NEURON','FontSize', 8,'Fontweight','bold')
-ylabel(ax1,'pERK1\_2\_ratio1','FontSize', 8,'Fontweight','bold')
+ylabel(ax1,'micromole/liter','FontSize', 8,'Fontweight','bold')
 % plot([-4 4], [1 1], '--', 'LineWidth', 1,'Color', [0.5 0.5 0.5])
 % plot([0 0], [0 1.2], '-.',...
 %     'LineWidth', 1, 'Color', [0.5 0.5 0.5])
@@ -230,7 +230,7 @@ set(gca,'FontSize',8,'Fontweight','bold')
 
 xlabel(ax1,'time (s) MATLAB','FontSize', 8,'Fontweight','bold')
 xlabel(ax2,'time (s) NEURON','FontSize', 8,'Fontweight','bold')
-ylabel(ax1,'pERK1\_2\_ratio1','FontSize', 8,'Fontweight','bold')
+ylabel(ax1,'MAPK_p + MAPK_p_p (\muM)','FontSize', 8,'Fontweight','bold')
 % plot([-4 4], [1 1], '--', 'LineWidth', 1,'Color', [0.5 0.5 0.5])
 % plot([0 0], [0 1.2], '-.',...
 %     'LineWidth', 1, 'Color', [0.5 0.5 0.5])
