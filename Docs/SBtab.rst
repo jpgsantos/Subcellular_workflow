@@ -47,7 +47,7 @@ Compound
 
 .. _compound_unit:
 
-- **!Unit** - should be the same as the default unit used in MATLAB SimBiology, usually nanomole or nanomole/liter. 
+- **!Unit** - should be the same as the default unit used in MATLAB\ |Reg| SimBiology\ |TM|, usually nanomole or nanomole/liter. 
 
 .. _compound_initialvalue:
 

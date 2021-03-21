@@ -3,9 +3,9 @@
 Functions
 =========
 
-The MATLAB\ |TM| functions used in this workflow are divided acording to their role, we have:
+The MATLAB\ |Reg| functions used in this workflow are divided acording to their role, we have:
 
-  - :ref:`Functions to import the model to MATLAB\ |TM| and generate model specific files and functions<functions_import>`
+  - :ref:`Functions to import the model to MATLAB\ |Reg| and generate model specific files and functions<functions_import>`
   - :ref:`Functions relating to the simulation of the model,<functions_simulation>`  
   - :ref:`Functions for analysis that we can perform on the model,<functions_analysis>`  
   - :ref:`Functions to plot the result of the different analyses,<functions_plots>`  

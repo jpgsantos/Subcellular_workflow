@@ -3,18 +3,39 @@
 Scripts
 =======
 
-In this workflow we use three MATLAB\ |TM| scripts:
+In this workflow we use one main script that calls all the relevant functions top be used.
+To run this script MATLAB\ |Reg| should be opened with the folder called Matlab as the main folder.
+When running the script a user facing prompt should be generated that allows the user to choose;
 
-- Run_main - Runs the analysis predetermined in the settings file
-- Reproduce_analysis - Reruns the analysis saved in a results file
-- Reproduce_analysis_plots - Reproduces the plots from the analysis saved in a results file
+- The model to use (from all the models that are in the Matlab/model folder)
 
-We have provided an example diagnostics run and an example global sensitivity analysis run, the results of which can be found on the following folders: 
+- The settings file to use on the model
 
-- Diagnostics - MATLAB/Model/D1_LTP_time_window/Results/Analysis_diagnostics_example
-- Global Sensitivity analysis - MATLAB/Model/D1_LTP_time_window/Results/Analysis_GSA_example
+- The analysis to be performed, with the following options:
 
-To run these scripts MATLAB\ |TM| should be opened with the folder called MATLAB\ |TM| as the main folder
+  - Diagnostics
+  
+  - Parameter Estimation
+  
+  - Global Sensitivity Analysis
+  
+  - Repruduction of a previous Analysis
+  
+      This option can be used to re-do an analysis that has previously been performed.
+      This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
+      The user should specify the analysis file that they want to use, examples are provided in the each model repository.
+
+  - Reproduction of the plots of a previous analyis
+  
+      Similar to the previous option but here only the plots are re-done.
+
+
+Examples for each of the model run through our workflow can be find on 
+
+- `Fujita_2010 examples <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Results/Examples>`_
+- `Nair_2016 examples <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Results/Examples>`_
+- `Viswan_2018 examples <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/Results/Examples>`_
+
 
 Run_main
 --------
@@ -26,48 +47,23 @@ Run_main
         :language: matlab
         :linenos:
 		
-This is the main script from the MATLAB\ |TM| portion of the workflow. 
-Depending on the configurations on the :ref:`settings file<f_settings>` it can call functions to:
+This is the main script from the MATLAB\ |Reg| portion of the workflow. 
+Depending on the configurations on the :ref:`settings file<f_settings>` and choices on the user facing prompts it can call functions to:
 
   * :ref:`Perform conversions of the SBtab:<functions_import>`
 
-    * SBtab(.xlsx) to SBtab(.tsv)
-    * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj)
-    * MATLAB\ |TM| SimBiology to SBML(.xml)
+    * SBtab( .xlsx) to SBtab (.tsv)
+    * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |TM| (.m, .sbproj)
+    * MATLAB\ |Reg| SimBiology\ |TM| to SBML (.xml)
 	
   * :ref:`Perform analysis on the model:<functions_analysis>`
   
     * Diagnostics
-    * Parameter estimation
-    * Global sensitivity analysis
-  
+    * Parameter Estimation
+    * Global Sensitivity Analysis
+	
   * :ref:`Saving results from analysis<f_save_analysis>`
   * :ref:`Ploting relevant results<f_plot>`
   * :ref:`Saving plots<f_save_plots>`
-
-Reproduce_analysis
-------------------
-
- .. toggle-header::
-     :header: **Code**
-
-     .. literalinclude:: ../Matlab/Reproduce_analysis.m
-        :language: matlab
-        :linenos:
-
-This script can be used to re-do an analysis that has previously been run.
-This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
-The user should specify the analysis file that they want to use, two examples are provided in the code.
-
-
-Reproduce_analysis_plots
-------------------------
-
- .. toggle-header::
-     :header: **Code**
-
-     .. literalinclude:: ../Matlab/Reproduce_analysis_plots.m
-        :language: matlab
-        :linenos:
-
-Similar to the previous script but here only the plots are re-done.
+  
+  It can also reproduce a the calcualtions of a previous analysis or just its plots.

@@ -7,30 +7,30 @@ This workflow has been developed to tackle the challenge of building and analyzi
 
 At the root of our implementation is the SBtab format, a file that can store biochemical models and associated data in an easily readable and expandable way.
 
-We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB\ |TM|, NEURON, STEPS and COPASI.
+We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB\ |Reg|, NEURON, STEPS and COPASI.
 
-Using MATLAB\ |TM| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
 
 We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016 [1]_.
 
-Code to run this model in MATLAB\ |TM|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB\ |TM|", "NEURON" and "BioNetGen and STEPS folders", respectively.
+Code to run this model in MATLAB\ |Reg|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB\ |Reg|", "NEURON" and "BioNetGen and STEPS folders", respectively.
 
 |
 
 Features:
 
-* Model simulation using MATLAB\ |TM|, the Subcellular application (STEPS), or NEURON
-* Analysis of selected parameter sets, using MATLAB\ |TM|
-* Parameter optimization using MATLAB\ |TM|
-* Global Sensitivity Analysis using MATLAB\ |TM|
+* Model simulation using MATLAB\ |Reg|, the Subcellular application (STEPS), or NEURON
+* Analysis of selected parameter sets, using MATLAB\ |Reg|
+* Parameter optimization using MATLAB\ |Reg|
+* Global Sensitivity Analysis using MATLAB\ |Reg|
 * Conversion tools:
 
-  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB\ |TM|
-  * SBtab(.xlsx) to MATLAB\ |TM| SimBiology(.m, .sbproj) using MATLAB\ |TM|
-  * MATLAB\ |TM| SimBiology to SBML(.xml) using MATLAB\ |TM|
-  * SBtab(.tsv) to VFGEN(.vf) using R
-  * SBtab(.tsv) to MOD(.mod) using R
-  * SBtab(.tsv) to SBML(.xml) using R
+  * SBtab (.xlsx) to SBtab(.tsv), using MATLAB\ |Reg|
+  * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |TM| (.m, .sbproj) using MATLAB\ |Reg|
+  * MATLAB\ |Reg| SimBiology\ |TM| to SBML (.xml) using MATLAB\ |Reg|
+  * SBtab (.tsv) to VFGEN (.vf) using R
+  * SBtab (.tsv) to MOD (.mod) using R
+  * SBtab (.tsv) to SBML (.xml) using R
 
 |
 

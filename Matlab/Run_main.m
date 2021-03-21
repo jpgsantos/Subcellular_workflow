@@ -1,7 +1,4 @@
-% Script to import sbtab and run the analyis for the first time
-
-clear
-clc
+% Script to import sbtab and run the analyis
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...

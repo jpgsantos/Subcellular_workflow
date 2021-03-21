@@ -157,8 +157,8 @@ f_opt_fmincon/sa/psearch/ga/pswarm/sopt
              	    :linenos:
             	    :language: matlab			   
 
-These functions call built in MATLAB functions that perform parameter optimization . 
-For furher information relating to how these optimizers work please follow the links to the MATLAB documentation.
+These functions call built in MATLAB\ |Reg| functions that perform parameter optimization . 
+For furher information relating to how these optimizers work please follow the links to the MATLAB\ |Reg| documentation.
 Optimizers used:
 
  - f_opt_fmincon - `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_

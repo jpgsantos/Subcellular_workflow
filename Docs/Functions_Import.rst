@@ -45,7 +45,7 @@ f_import
 		:linenos:
 		:language: matlab
 
-Creates the necessary folders inside the model folder. Calls subfunctions that convert the SBtab from an Excel into MATLAB files useful for the workflow, TSVs and a SBML.
+Creates the necessary folders inside the model folder. Calls subfunctions that convert the SBtab from an Excel into MATLAB\ |Reg| files useful for the workflow, TSVs and a SBML.
 
 .. _f_excel_sbtab_importer:
 
@@ -76,7 +76,7 @@ f_generate_sbtab_struct
 		:linenos:
 		:language: matlab
 
-Loads the SBtab saved in the :ref:`MATLAB file<sbtab.mat>` and creates a MATLAB struct that can be more easily parsed.
+Loads the SBtab saved in the :ref:`MATLAB file<sbtab.mat>` and creates a MATLAB\ |Reg| struct that can be more easily parsed.
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs** - sb, :ref:`stg.expn<stg.expn>`, :ref:`stg.outn<stg.outn>`.
