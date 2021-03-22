@@ -63,7 +63,7 @@ Depending on the configurations on the :ref:`settings file<f_settings>` and choi
     * Global Sensitivity Analysis
 	
   * :ref:`Saving results from analysis<f_save_analysis>`
-  * :ref:`Ploting relevant results<f_plot>`
+  * :ref:`Plotting relevant results<f_plot>`
   * :ref:`Saving plots<f_save_plots>`
   
   It can also reproduce a the calculations of a previous analysis or just its plots.
