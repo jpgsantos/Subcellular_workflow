@@ -14,7 +14,7 @@ tsv
 tsv files generated from each SBtab sheet are available in the zipped file D1_LTP_time_window.tar.gz
 
 MATLAB\ |Reg|
-------------
+-------------
 
 The steady-state model in MATLAB\ |Reg| SimBiology\ |TM| format can be found in the MATLAB\ |Reg| folder. In addition, there are 
 input scripts (spike.m, spiketraindd_Ca.m, spiketraindd_DA.m) that generate the input curves used in model 

@@ -14,7 +14,7 @@ Additional information on how to use SBtab can be found in https://www.sbtab.net
 .. _compartment:
 
 Compartment
---------
+-----------
 
 .. _compartment_id:
 
@@ -146,7 +146,7 @@ Parameter
 .. _expression:
 
 Expression
------
+----------
 
 Species which are defined by expressions.
 
@@ -293,6 +293,7 @@ Corresponds to individual experiments and has to be followed by experiment index
 .. _ei_imput_time:
 
 - **!Input\_Time\_S**\ :sub:`i`\ - for time series data, this should include a list of all the time points during which the corresponding input data points were sampled. To produce simple step inputs, only the time points during which a change in concentration is happening can be included. To produce more complicated input curves, more time points are needed to represent the shape of the curve.
+
 .. _ei_s:
 
 - **`>S**\ :sub:`i`\ - followed by an index refers to the input species ID in the Compound table. This column should represent the sampled concentration data points corresponding to each time point.

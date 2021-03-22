@@ -1,7 +1,7 @@
 .. _functions_general:
 
-General
-=======
+General purpose
+===============
 
 .. _f_save_analysis:
 

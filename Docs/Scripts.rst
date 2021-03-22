@@ -3,13 +3,13 @@
 Scripts
 =======
 
-In this workflow we use one main script that calls all the relevant functions top be used.
-To run this script MATLAB\ |Reg| should be opened with the folder called Matlab as the main folder.
+In this workflow we use one main script that calls all the relevant functions to be used.
+To run this script MATLAB\ |Reg| should be opened with the folder "Matlab" from our repository as the main folder.
 When running the script a user facing prompt should be generated that allows the user to choose;
 
-- The model to use (from all the models that are in the Matlab/model folder)
+- The model to use (from all the models that are in the "Matlab/model" folder)
 
-- The settings file to use on the model
+- The settings file to use on the model (From the settings files present in "Matlab/model/settings")
 
 - The analysis to be performed, with the following options:
 
@@ -47,7 +47,7 @@ Run_main
         :language: matlab
         :linenos:
 		
-This is the main script from the MATLAB\ |Reg| portion of the workflow. 
+This is the main script from the MATLAB\ |Reg| portion of the workflow.
 Depending on the configurations on the :ref:`settings file<f_settings>` and choices on the user facing prompts it can call functions to:
 
   * :ref:`Perform conversions of the SBtab:<functions_import>`
@@ -66,4 +66,4 @@ Depending on the configurations on the :ref:`settings file<f_settings>` and choi
   * :ref:`Ploting relevant results<f_plot>`
   * :ref:`Saving plots<f_save_plots>`
   
-  It can also reproduce a the calcualtions of a previous analysis or just its plots.
+  It can also reproduce a the calculations of a previous analysis or just its plots.
