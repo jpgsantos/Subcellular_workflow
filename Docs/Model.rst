@@ -1,39 +1,24 @@
-D1 MSN subcellular cascade (Example model)
-==========================================
+Implemented models
+==================
 
-SBtab
------
+We have used multiple models to validate our software tools.
+Each model has its own repository. 
+In these repositories you can find;
 
-The model along with the simulated data (sheets E0-E8) used for optimization of the CaMKII autophosphorylation 
-module (reactions 128-135) is found in the SBtab format D1_LTP_time_window_SBtab.xlsx. Inputs to all datasets 
-are also represented in the sheet following each dataset (E0I-E8I).
+ - The model in different formats relevant for the various tools that we provide
+ - A settings file relevant to use the model with our MATLAB\ |Reg| tools
+ - Some examples of the output provided by our MATLAB\ |Reg| tools after running an Analysis
 
-tsv
----
+Links to the model repositories:
 
-tsv files generated from each SBtab sheet are available in the zipped file D1_LTP_time_window.tar.gz
+* https://github.com/jpgsantos/Model_Nair_2016
+* https://github.com/jpgsantos/Model_Fujita_2010
+* https://github.com/jpgsantos/Model_Viswan_2018
 
-MATLAB\ |Reg|
--------------
+.. toctree::
+   :hidden:
+   :maxdepth: 1
 
-The steady-state model in MATLAB\ |Reg| SimBiology\ |TM| format can be found in the MATLAB\ |Reg| folder. In addition, there are 
-input scripts (spike.m, spiketraindd_Ca.m, spiketraindd_DA.m) that generate the input curves used in model 
-simulations. These are used by the script Regenerate_figures.m that can be run directly and will produce two 
-figures from the original paper, validating the updated model.
-
-SBML
-----
-
-The model in SBML format is called D1_LTP_time_window_SBML.xml
-
-VFGEN/MOD
----------
-
-The folder "SBtab to VFGEN/MOD Conversion Tools" contains the main script sbtab_to_vfgen.R that converts the model
-in SBtab into a VFGEN (D1_LTP_time_window_VFgen.vf) and a MOD file (D1_LTP_time_window_MOD.mod) that can be run 
-in NEURON. Additional instruction can be found in the README.
-
-R
--
-
-The folder R contains the model in R format D1_LTP_time_window.R.
+   Fujita_2010
+   Nair_2016
+   Viswan_2018
