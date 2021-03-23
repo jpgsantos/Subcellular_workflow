@@ -31,6 +31,12 @@ Model from the FindSim framework by Viswan et al. 2018. The model represents an 
 
 .. raw:: html
 
+   <h2>Model Repository</h2>
+   
+`https://github.com/jpgsantos/Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
+
+.. raw:: html
+
    <h2>References</h2>
 
-[Viswan, N.A., HarshaRani, G.V., Stefan, M.I., Bhalla, U.S. (2018). FindSim: A framework for integrating neuronal data and signaling models. Frontiers in Neuroinformatics, 12, 38.](https://doi.org/10.3389/fninf.2018.00038)
+`Viswan, N.A., HarshaRani, G.V., Stefan, M.I., Bhalla, U.S. (2018). FindSim: A framework for integrating neuronal data and signaling models. Frontiers in Neuroinformatics, 12, 38. <https://doi.org/10.3389/fninf.2018.00038>`_

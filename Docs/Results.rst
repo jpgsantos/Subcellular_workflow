@@ -188,7 +188,7 @@ Optimization
 Sensitivity Analysis
 --------------------
 
-The calculations performed to obtain these sensitivities where performed according to the equations described in Halnes et al 2009 [1]_.
+The calculations performed to obtain these sensitivities where performed according to the equations described in Halnes et al 2009.
 
   .. _rst.SA.M1:
 
@@ -352,4 +352,4 @@ The calculations performed to obtain these sensitivities where performed accordi
 References
 ----------
   
-.. [1] Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.
+`Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491. <http://dx.doi.org/10.1007/s10827-009-0162-6>`_

@@ -5,3 +5,4 @@
 *.pdf
 *.tiff
 *.png
+!**/Docs/Images/**
