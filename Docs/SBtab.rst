@@ -59,7 +59,7 @@ Compound
 
 .. _compound_assignment:
 
-- **!Assignment** - assigns a binary value, either TRUE or FALSE
+- **!Assignment** - assigns a binary value, either TRUE or FALSE.
 
 .. _compound_interpolation:
 
@@ -67,7 +67,7 @@ Compound
 
 .. _compound_type:
 
-- **!Type** - type of the reaction
+- **!Type** - type of the reaction, e.g. "kinetic".
 
 .. _compound_location:
 
