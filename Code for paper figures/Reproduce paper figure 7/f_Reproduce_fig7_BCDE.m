@@ -50,8 +50,8 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65
 nexttile(layout);
 
 hold on
-p1 = plot (DA_start,response_integral/response_integral_0,'b', 'LineWidth',1)
-p2 = plot (new_data{3}(:,1), new_data{3}(:,2),'r--', 'LineWidth', 1)
+p1 = plot (DA_start,response_integral/response_integral_0,'b', 'LineWidth',1);
+p2 = plot (new_data{3}(:,1), new_data{3}(:,2),'r--', 'LineWidth', 1);
 set(gca,'FontSize',8,'Fontweight','bold')
 
 
