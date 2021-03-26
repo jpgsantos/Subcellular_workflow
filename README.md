@@ -56,5 +56,7 @@ Subcellular workflow MATLAB&reg; code and has been tested in 2020a (all packages
 # References
 
 (1) Lubitz, T., Hahn, J., Bergmann, F. T., Noor, E., Klipp, E., & Liebermeister, W. (2016). SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), 2559-2561.
+
 (2) Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
+
 (3) Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080. 
