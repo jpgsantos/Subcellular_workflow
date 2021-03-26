@@ -7,30 +7,31 @@ In this workflow we use one main script that calls all the relevant functions to
 To run this script MATLAB\ |Reg| should be opened with the folder "Matlab" from our repository as the main folder, and the script Run_main.m should be used.
 When running the Run_main.m a user facing prompt should be generated that allows the user to choose;
 
-A The model to use (from all the models that are in the "Matlab/model" folder). The first time you run a model you have to add the folder for a specific model from its home repository which can be found in the section "Implemented models" (e.g. copy the folder "Model_nair_2016" from its repository to "Matlab/model/" ).
+  - The model to use (from all the models that are in the "Matlab/model" folder). 
+	
+	The first time you run a model you have to add the folder for a specific model from its home repository which can be found in the section "Implemented models" (e.g. copy the folder "Model_nair_2016" from its repository to "Matlab/model/" ).
 
-B The analysis to be performed, with the following options:
+  - The analysis to be performed, with the following options:
 
-  - Diagnostics
+    1. Diagnostics
+  
+    2. Parameter Estimation
   
   
-  - Parameter Estimation
+    3. Global Sensitivity Analysis
   
   
-  - Global Sensitivity Analysis
+    4. Repruduction of a previous Analysis
   
+         This option can be used to re-do an analysis that has previously been performed.
+         This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
+         The user should specify the analysis file that they want to use, examples are provided in the each model repository.
   
-  - Repruduction of a previous Analysis
+    5. Reproduction of the plots of a previous analyis
   
-      This option can be used to re-do an analysis that has previously been performed.
-      This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
-      The user should specify the analysis file that they want to use, examples are provided in the each model repository.
-  
-  - Reproduction of the plots of a previous analyis
-  
-      Similar to the previous option but here only the plots are re-done.
+         Similar to the previous option but here only the plots are re-done.
       
- C The settings file to use on the model (From the settings files present in "Matlab/model/Model_name/settings")
+  - The settings file to use on the model (From the settings files present in "Matlab/model/Model_name/settings")
   
 Examples of the output recieved when the different models are run through the workflow can be find on 
 
