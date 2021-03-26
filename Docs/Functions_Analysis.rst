@@ -200,7 +200,7 @@ makeParSamplesFromRanges
  	   :linenos:
 	   :language: matlab
 
-Creates parameter sets with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
+Creates parameter samples with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
 
 - **Inputs**
 
@@ -244,8 +244,8 @@ calcSobolSaltelli
  	   :linenos:
 	   :language: matlab
 
-Takes the matrices :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>` and calculates Global sensitivity indexes.
-It calculates indexes according to some the :ref:`oputputs<rst_score>` of the :ref:`f_sim_score function<f_sim_score>`:
+Takes the matrices :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>` and calculates sensitivity indexes.
+It calculates indexes based on the following :ref:`oputputs<rst_score>` of the :ref:`f_sim_score function<f_sim_score>`:
 
   - :ref:`The scores of each experimental output<rst.sd>`
   - :ref:`The scores of each experiment<rst.se>`
@@ -255,7 +255,7 @@ It calculates indexes according to some the :ref:`oputputs<rst_score>` of the :r
 - **Inputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`, :ref:`stg.sasubmean<stg.sasubmean>`
 - **Outputs** - :ref:`SI<rst.SA.SI>`, :ref:`STI<rst.SA.STI>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_
+*Code modified from the Geir Halnes et al. 2009 paper.* [1]_
 
 References
 ----------
