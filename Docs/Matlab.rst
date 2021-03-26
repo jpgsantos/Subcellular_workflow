@@ -4,14 +4,12 @@ MATLAB\ |Reg| code
 The MATLAB\ |Reg| section of this workflow has been developed to facilitate model building and 
 rapid iteration between different versions of a model.
 In this workflow we use one main script that calls all the relevant functions to be used.
-To run this script MATLAB\ |Reg| should be opened with the folder "Matlab" from our repository as the main folder.
-When running the script a user facing prompt should be generated that allows the user to choose;
+To run this script MATLAB\ |Reg| should be opened with the folder "Matlab" from our repository as the main folder, and the script Run_main.m should be used.
+When running the Run_main.m a user facing prompt should be generated that allows the user to choose;
 
-- The model to use (from all the models that are in the "Matlab/model" folder)
+A The model to use (from all the models that are in the "Matlab/model" folder). The first time you run a model you have to add the folder for a specific model from its home repository which can be found in the section "Implemented models" (e.g. copy the folder "Model_nair_2016" from its repository to "Matlab/model/" ).
 
-- The settings file to use on the model (From the settings files present in "Matlab/model/Model_name/settings")
-
-- The analysis to be performed, with the following options:
+B The analysis to be performed, with the following options:
 
   - Diagnostics
   
@@ -31,8 +29,10 @@ When running the script a user facing prompt should be generated that allows the
   - Reproduction of the plots of a previous analyis
   
       Similar to the previous option but here only the plots are re-done.
+      
+ C The settings file to use on the model (From the settings files present in "Matlab/model/Model_name/settings")
   
-Examples for each of the model run through teh workflow can be find on 
+Examples of the output recieved when the different models are run through the workflow can be find on 
 
 - `Fujita_2010 examples <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Results/Examples>`_
 - `Nair_2016 examples <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Results/Examples>`_
