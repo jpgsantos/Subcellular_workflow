@@ -298,8 +298,8 @@ Plots
 
 |
 
-Sensitivity Analysis (SA)
--------------------------
+Global Sensitivity Analysis (GSA)
+---------------------------------
 
   .. toggle-header::
       :header: **Example model code**
@@ -312,17 +312,17 @@ Sensitivity Analysis (SA)
 		 
   .. _stg.sansamples:
 
-- **stg.sansamples** - (double) Number of samples to use in SA
+- **stg.sansamples** - (double) Number of samples to use in GSA (in total (2+npars)*sansamples simulations will be performed, where npars are the number of parameters).
 
   .. _stg.sasubmean:
 
-- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`
+- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`, see Halnes et al 2008.
 
   .. _stg.sasamplemode:
 
-- **stg.sasamplemode** - (double) Choose the way you want to obtain the samples of the parameters for performing the SA;
+- **stg.sasamplemode** - (double) Choose the way you want to obtain the samples of the parameters for performing the GSA;
 
- 0. Reciprocal distribution
+ 0. Reciprocal (log uniform) distribution
 
   :math:`X_{i} \sim Reciprocal(a_{i},b_{i})`
   
@@ -335,7 +335,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_1.png
 
- 1. Log normal distribution with μ as the best value for a parameter and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
+ 1. Log normal distribution with μ corresponding to the best value for a parameter, as recieved from the optimization, and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
