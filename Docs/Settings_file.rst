@@ -299,7 +299,7 @@ Plots
 |
 
 Global Sensitivity Analysis (GSA)
--------------------------
+---------------------------------
 
   .. toggle-header::
       :header: **Example model code**
