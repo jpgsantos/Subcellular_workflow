@@ -208,7 +208,7 @@ Creates parameter sets samples with :ref:`specific parameter distributions <stg.
   
 - **Outputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_ 
+*Code inspired by Geir Halnes et al. 2009 paper.*
 
 .. _makeOutputSample:
 
@@ -230,7 +230,7 @@ respectively.
 - **Inputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`, :ref:`stg.sansamples<stg.sansamples>`, :ref:`stg.parnum<stg.parnum>`,
 - **Outputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_
+*Code inspired by Geir Halnes et al. 2009 paper.*
 
 .. _calcSobolSaltelli:
 
@@ -255,9 +255,12 @@ It calculates indexes based on the following :ref:`oputputs<rst_score>` of the :
 - **Inputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`, :ref:`stg.sasubmean<stg.sasubmean>`
 - **Outputs** - :ref:`SI<rst.SA.SI>`, :ref:`STI<rst.SA.STI>`
 
-*Code modified from the Geir Halnes et al. 2009 paper.* [1]_
+*Code modified from the Geir Halnes et al. 2009 paper.*
 
 References
 ----------
   
-.. [1] Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.
+`Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). 
+Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
+<https://doi.org/10.1111/j.1471-4159.2009.06085.x>`_
+  

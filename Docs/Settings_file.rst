@@ -316,7 +316,7 @@ Global Sensitivity Analysis (GSA)
 
   .. _stg.sasubmean:
 
-- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`, see Halnes et al 2008.
+- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`, see Halnes et al 2009.
 
   .. _stg.sasamplemode:
 
@@ -498,3 +498,10 @@ Automatically generated at Import
   .. _stg.outn:
   
 - **stg.outn** - (double) Total number of experimental outputs specified in the SBtab
+
+References
+----------
+  
+`Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). 
+Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
+<https://doi.org/10.1111/j.1471-4159.2009.06085.x>`_
