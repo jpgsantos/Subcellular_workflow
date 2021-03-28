@@ -200,7 +200,7 @@ makeParSamplesFromRanges
  	   :linenos:
 	   :language: matlab
 
-Creates parameter samples with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
+Creates parameter sets samples with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
 
 - **Inputs**
 
