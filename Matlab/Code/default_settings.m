@@ -5,9 +5,6 @@ function [stg] = default_settings()
 % True or false to decide whether to run import functions (Import)
 stg.import = true;
 
-% Name of the folder where everything related to the model is stored
-% (Folder Model)
-stg.folder_model = "Model";
 
 % Name of the excel file with the sbtab (SBtab excel name)
 stg.sbtab_excel_name = "SBTAB.xlsx";
@@ -23,11 +20,11 @@ stg.sbtab_name = "SBtab_" + stg.name;
 
 %% Analysis
 
-% Experiments to run stg.ms.exprun = [1,3,4];
-stg.exprun = [1:2];
+% Experiments to run (example experiment 1 to 3 and experimet 6)
+stg.exprun = [1:3,6];
 
-% Choice between 0,1,2 and 3 to change either and how to apply log10 to the
-% scores (check documentation) (Use logarithm)
+% Choice between 0,1,2 and 3,4 to choose the scoring method (check
+% documentation) (Use logarithm)
 stg.useLog = 4;
 
 % True or false to decide whether to use multicore everywhere it is
@@ -44,10 +41,6 @@ stg.simcsl = false;
 % True or false to decide whether to display optimization results on
 % console (Optimization console)
 stg.optcsl = false;
-
-% True or false to decide whether to display PLA results on console (PLA
-% console)
-stg.placsl = true;
 
 % True or false to decide whether to save results (Save results)
 stg.save_results = true;
@@ -100,6 +93,41 @@ stg.maxstepeq = [2];
 % Max step size in the detailed plots (if empty matlab decides whats best)
 % (Maximum step)
 stg.maxstepdetail = [2];
+
+%% Model
+
+% Number of parameters to optimize (Parameter number)
+stg.parnum = 5;
+
+original_parameter_set = zeros(1,10);
+
+% Array with the lower bound of all parameters (Lower bound)
+stg.lb = original_parameter_set-5;
+
+% Array with the upper bound of all parameters (Upper bound)
+stg.ub = original_parameter_set+5;
+
+%% Diagnostics
+
+% Choice of what parameters in the array to test, the indices correspond to
+% the parameters in the model and the numbers correspond to the parameters
+% in the optimization array, usually not all parameters are optimized so
+% there needs to be a match between one and the other. (Parameters to test)
+% In this example there are ten parameters in this imaginary model and we
+% are only interested in parameter 2,4,8,9, and 10. Note that stg.parnum is
+% five because of this and not ten
+stg.partest(:,1) = [0,1,0,2,0,0,0,3,4,5];
+
+% (Parameter array to test)
+stg.pat = [1:2];
+
+% All the parameter arrays, in this case there is only one (parameters here
+% are in log10 space)(Parameter arrays)
+stg.pa(1,:) = [1,1,1,1,1];
+stg.pa(1,:) = [1,0,1,2,1];
+
+% Best parameter array found so far for the model (Best parameter array)
+stg.bestpa = stg.pa(1,:);
 
 %% Plots
 

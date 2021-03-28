@@ -196,7 +196,7 @@ makeParSamplesFromRanges
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/makeParSamplesFromRanges.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeParSamples.m
  	   :linenos:
 	   :language: matlab
 
@@ -218,7 +218,7 @@ makeOutputSample
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/makeOutputSample.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeOutputSample.m
  	   :linenos:
 	   :language: matlab
 
@@ -240,7 +240,7 @@ calcSobolSaltelli
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/calcSobolSaltelli.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_calcSobolSaltelli.m
  	   :linenos:
 	   :language: matlab
 
