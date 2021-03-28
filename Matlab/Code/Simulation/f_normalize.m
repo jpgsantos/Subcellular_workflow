@@ -23,7 +23,8 @@ if ~isempty(sbtab.datasets(exp_number).Normalize)
     if contains(sbtab.datasets(exp_number).Normalize,'Max')
         
         %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %             if
+        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
         %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
         %             end
         %         end
@@ -42,7 +43,8 @@ if ~isempty(sbtab.datasets(exp_number).Normalize)
     if contains(sbtab.datasets(exp_number).Normalize,'Min')
         
         %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %             if
+        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
         %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
         %             end
         %         end
@@ -62,7 +64,8 @@ if ~isempty(sbtab.datasets(exp_number).Normalize)
     if contains(sbtab.datasets(exp_number).Normalize,'Time')
         
         %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
+        %             if
+        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
         %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
         %             end
         %         end

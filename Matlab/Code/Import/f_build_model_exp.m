@@ -3,13 +3,13 @@ function f_build_model_exp(stg,sb)
 %species and parameters needed depending on the inputs and outputs
 %specified on the sbtab, one for the equilibrium simulation run and one for
 %the proper run
-    
-    %Find correct path for loading depending on the platform
-    load(pwd + "/Model/" +stg.folder_model +"/Data/" + "data_" +...        
-        stg.name + ".mat",'Data','sbtab')
 
-    load(pwd + "/Model/" +stg.folder_model +"/Data/" + "model_" +...        
-        stg.name + ".mat",'modelobj');
+%Find correct path for loading depending on the platform
+load(pwd + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
+    stg.name + ".mat",'Data','sbtab')
+
+load(pwd + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
+    stg.name + ".mat",'modelobj');
 
 
 model_run = cell(size(sb.Experiments.ID,1),1);
@@ -41,18 +41,18 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
     set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     
-%     if ~isempty(stg.maxstepeq)
-        set(configsetObj{number_exp}.SolverOptions,...
-            'MaxStep', stg.maxstepeq);
-%     end
+    %     if ~isempty(stg.maxstepeq)
+    set(configsetObj{number_exp}.SolverOptions,...
+        'MaxStep', stg.maxstepeq);
+    %     end
     
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...        
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...        
+    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
         stg.name + "_" + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
@@ -60,12 +60,12 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
         Data(number_exp).Experiment.t);
     
-%     if ~isempty(stg.maxstep)
-        set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstep);
-%     else
-%         set(configsetObj{number_exp}.SolverOptions, 'MaxStep', []);
-%     end
- 
+    %     if ~isempty(stg.maxstep)
+    set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstep);
+    %     else
+    %         set(configsetObj{number_exp}.SolverOptions, 'MaxStep', []);
+    %     end
+    
     for n = 1:size(output,2)
         
         m = 0;
@@ -75,15 +75,15 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 m = 1;
             end
         end
-
-            if m == 0
-                addspecies (model_run{number_exp}.Compartments(1),...
-                    char(output{1,n}),0,...
-                    'InitialAmountUnits',sb.Output.Unit{n});
-            end
-            
-            addrule(model_run{number_exp}, char(output_value{1,n}),...
-                'repeatedAssignment');
+        
+        if m == 0
+            addspecies (model_run{number_exp}.Compartments(1),...
+                char(output{1,n}),0,...
+                'InitialAmountUnits',sb.Output.Unit{n});
+        end
+        
+        addrule(model_run{number_exp}, char(output_value{1,n}),...
+            'repeatedAssignment');
     end
     
     for j = 1:size(input_species,2)
@@ -119,23 +119,23 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 number_exp + "_" + name + "(time)"), 'repeatedAssignment');
         end
     end
-        
-    model_exp = model_run{number_exp};
-    config_exp = configsetObj{number_exp};    
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...        
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
-    
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...        
-        stg.name + "_" + number_exp + ".sbproj",'model_exp')
-
-    set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
-    set(configsetObj{number_exp}.SolverOptions,'MaxStep', stg.maxstepdetail);
-        
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...        
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    
+    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+        stg.name + "_" + number_exp + ".sbproj",'model_exp')
+    
+    set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
+    set(configsetObj{number_exp}.SolverOptions,'MaxStep', stg.maxstepdetail);
+    
+    model_exp = model_run{number_exp};
+    config_exp = configsetObj{number_exp};
+    
+    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
 end

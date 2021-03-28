@@ -76,51 +76,51 @@ disp("Running " + Analysis_options(Analysis_n))
 
 
 if Analysis_n <=4
-
-listing2 = dir(string(listing(folder_n).folder)+ "\"  + listing(folder_n).name + "\Settings");
-
-for n = size(listing2,1):-1:1
-    if matches(listing2(n).name,char("."))
-        listing2(n)= [];
+    
+    listing2 = dir(string(listing(folder_n).folder)+ "\"  + listing(folder_n).name + "\Settings");
+    
+    for n = size(listing2,1):-1:1
+        if matches(listing2(n).name,char("."))
+            listing2(n)= [];
+        end
+        if matches(listing2(n).name,char(".."))
+            listing2(n)= [];
+        end
     end
-    if matches(listing2(n).name,char(".."))
-        listing2(n)= [];
+    
+    prompt = "\nWhat file should be used as settings?\n";
+    
+    for n = 1:size(listing2,1)
+        prompt = prompt + "\n" + n + ": " + listing2(n).name;
     end
-end
-
-prompt = "\nWhat file should be used as settings?\n";
-
-for n = 1:size(listing2,1)
-    prompt = prompt + "\n" + n + ": " + listing2(n).name;
-end
-
-if ~isempty(settings_file_n_last)
-    prompt = prompt + "\n\nPress enter to use "+ listing2(settings_file_n_last).name;
-end
-
-prompt = prompt + "\n";
-
-settings_file_n = input(prompt);
-
-if isempty(settings_file_n)
-    settings_file_n = settings_file_n_last;
-else
-    settings_file_n_last = settings_file_n;
-end
-
-disp("Using " + listing2(settings_file_n).name + " file")
-
-settings_file = strrep(listing2(settings_file_n).name,".m","");
-
-settings_file_date = listing2(settings_file_n).datenum;
-
-if settings_file_date ~= settings_file_date_last
-    disp("Settings file changed, clearing functions")
-    f_functions_to_clear()
-end
-
-settings_file_date_last = settings_file_date;
-
+    
+    if ~isempty(settings_file_n_last)
+        prompt = prompt + "\n\nPress enter to use "+ listing2(settings_file_n_last).name;
+    end
+    
+    prompt = prompt + "\n";
+    
+    settings_file_n = input(prompt);
+    
+    if isempty(settings_file_n)
+        settings_file_n = settings_file_n_last;
+    else
+        settings_file_n_last = settings_file_n;
+    end
+    
+    disp("Using " + listing2(settings_file_n).name + " file")
+    
+    settings_file = strrep(listing2(settings_file_n).name,".m","");
+    
+    settings_file_date = listing2(settings_file_n).datenum;
+    
+    if settings_file_date ~= settings_file_date_last
+        disp("Settings file changed, clearing functions")
+        f_functions_to_clear()
+    end
+    
+    settings_file_date_last = settings_file_date;
+    
 elseif Analysis_n == 5
     
 elseif Analysis_n == 6

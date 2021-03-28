@@ -15,8 +15,9 @@ addpath(genpath(pwd));
 if stg.import
     [stg,sb] = f_import(stg,sb);
 else
-    % Creates a struct based on the sbtab that is used elswhere in the code and
-    % also adds the number of experiments and outputs to the settings variable
+    % Creates a struct based on the sbtab that is used elswhere in the code
+    % and also adds the number of experiments and outputs to the settings
+    % variable
     if isempty(sb)
         [stg,sb] = f_generate_sbtab_struct(stg);
     end

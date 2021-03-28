@@ -31,7 +31,7 @@ if stg.mst
             stg.lb,stg.ub,options);
     end
     
-% Optimize the model
+    % Optimize the model
 else
     [x(1,:),fval(1),exitflag(1),output(1)] =...
         simulannealbnd(@(x)f_sim_score(x,stg),startpoint(1,:),...

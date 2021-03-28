@@ -6,7 +6,7 @@ disp("Plotting ...")
 % Import the data on the first run
 load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 
-% Generate figure with Scores 
+% Generate figure with Scores
 if isfield(rst,'diag')
     f_plot_scores(rst.diag,stg,sbtab)
 end
@@ -16,7 +16,7 @@ if isfield(rst,'diag')
     f_plot_inputs(rst.diag,stg,sbtab)
 end
 
-% Generate figure with Outputs 
+% Generate figure with Outputs
 if isfield(rst,'diag')
     f_plot_outputs(rst.diag,stg,sbtab,Data)
 end

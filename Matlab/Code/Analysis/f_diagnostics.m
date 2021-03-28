@@ -9,7 +9,7 @@ if stg.optmc
         [~,rst(n),~] = f_sim_score(stg.pa(n,:),stg);
     end
     
-% Run the model and obtain scores for fitness single Core
+    % Run the model and obtain scores for fitness single Core
 else
     disp("Running the model and obtaining Scores (Singlecore)")
     

@@ -13,7 +13,7 @@ for n = stg.exprun
     
     % Iterate over the number of datasets per experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-
+        
         % Calculate score per dataset if there are no errors
         if rst.simd{n} ~= 0
             
@@ -22,73 +22,74 @@ for n = stg.exprun
             number_points = size(Data(n).Experiment.x(:,j),1);
             sim_results = f_normalize(rst,stg,n,j);
             
-%             rst.x{n,1}(:,j) = sim_results;
+            %             rst.x{n,1}(:,j) = sim_results;
             rst.xfinal{n,1}(j) = sim_results(end);
             
             % Calculate score using formula that accounts for normalization
             % with the starting point of the result
             if stg.useLog == 4
                 
-%                 Data(n).Experiment.x_SD(:,j)
-
-%                 rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
-%                      (Data(n).Experiment.x_SD(:,j))
-%                  
-%                  prod(rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
-%                      (Data(n).Experiment.x_SD(:,j)))
-%                  
-%                  ((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2
-
-%                  (1/(sqrt(2*pi)*(sum(Data(n).Experiment.x_SD(:,j))/...
-%                      (size(Data(n).Experiment.x(:,j),1)-2))))
-%                  
-%                  (exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)))
-                 
-                 
-%                 sqrt(size(Data(n).Experiment.x(:,j),1)-2)
-
-%                 (1/(sqrt(2*pi)*...
-%                     prod(Data(n).Experiment.x_SD(:,j))))
-% %                 
-%                 -1/2*sum(((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)
-% 
-%                 exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2))
-%                 
-%                 rst.sd{n,1}(j) = (1/sqrt(2*pi))*...
-%                     exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2));
+                %                 Data(n).Experiment.x_SD(:,j)
+                
+                %                 rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
+                %                      (Data(n).Experiment.x_SD(:,j))
+                %
+                %                  prod(rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
+                %                      (Data(n).Experiment.x_SD(:,j)))
+                %
+                %                  ((Data(n).Experiment.x(:,j)-...
+                %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2
+                
+                %                  (1/(sqrt(2*pi)*(sum(Data(n).Experiment.x_SD(:,j))/...
+                %                      (size(Data(n).Experiment.x(:,j),1)-2))))
+                %
+                %                  (exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+                %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)))
+                
+                
+                %                 sqrt(size(Data(n).Experiment.x(:,j),1)-2)
+                
+                %                 (1/(sqrt(2*pi)*...
+                %                     prod(Data(n).Experiment.x_SD(:,j))))
+                % %
+                %                 -1/2*sum(((Data(n).Experiment.x(:,j)-...
+                %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2)
+                %
+                %                 exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+                %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2))
+                %
+                %                 rst.sd{n,1}(j) = (1/sqrt(2*pi))*...
+                %                     exp(-1/2*sum(((Data(n).Experiment.x(:,j)-...
+                %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                %                     (Data(n).Experiment.x_SD(:,j)*sqrt(size(Data(n).Experiment.x(:,j),1)-2))).^2));
                 
                 rst.sd{n,1}(j) = sum(((data-sim_results)./...
                     (data_sd*sqrt(number_points))).^2);
                 
             else
-            if sbtab.datasets(n).normstart == 1
-                rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
-                    (rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
-                    rst.simd{n}.Data(1,end-size(sbtab.datasets(n).output,2)+j)))./...
-                    (Data(n).Experiment.x_SD(:,j))).^2)/...
-                    (size(Data(n).Experiment.x(:,j),1)-2);
-                
-                % Calulate score using normal scorring formula
-            else
-
-                rst.sd{n,1}(j) = sum(((data-sim_results)./...
-                    (data_sd)).^2)/(number_points);
-                
-%                 rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
-%                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
-%                     (Data(n).Experiment.x_SD(:,j))).^2)/...
-%                     (size(Data(n).Experiment.x(:,j),1)-2);
-            end
+                if sbtab.datasets(n).normstart == 1
+                    rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
+                        (rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
+                        rst.simd{n}.Data(1,end-size(sbtab.datasets(n).output,2)+j)))./...
+                        (Data(n).Experiment.x_SD(:,j))).^2)/...
+                        (size(Data(n).Experiment.x(:,j),1)-2);
+                    
+                    % Calulate score using normal scorring formula
+                else
+                    
+                    rst.sd{n,1}(j) = sum(((data-sim_results)./...
+                        (data_sd)).^2)/(number_points);
+                    
+                    %                 rst.sd{n,1}(j) =
+                    %                 sum(((Data(n).Experiment.x(:,j)-...
+                    %                     rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j))./...
+                    %                     (Data(n).Experiment.x_SD(:,j))).^2)/...
+                    %                     (size(Data(n).Experiment.x(:,j),1)-2);
+                end
             end
             % If there are errors output a very high score value (10^10)
         elseif rst.simd{n} == 0 || rst.sd{n,1}(j) == inf
@@ -107,14 +108,13 @@ for n = stg.exprun
             rst.sd{n,1}(j) = max(0,log10(rst.sd{n,1}(j)));
         end
     end
-%     rst.sd{n,1}
-%     prod(rst.sd{n,1})
-
+    %     rst.sd{n,1} prod(rst.sd{n,1})
+    
     if stg.useLog == 4
-         rst.se(n,1) = sum(rst.sd{n,1});
+        rst.se(n,1) = sum(rst.sd{n,1});
     else
-    % Calculate score per experiment
-    rst.se(n,1) = sum(rst.sd{n,1});
+        % Calculate score per experiment
+        rst.se(n,1) = sum(rst.sd{n,1});
     end
     
     % Calculate the log10 of experiment score if option selected
@@ -124,12 +124,11 @@ for n = stg.exprun
 end
 
 if stg.useLog == 4
-%     sum(rst.se)
-%     exp(-1/2*sum(rst.se))
-rst.st = sum(rst.se);
+    %     sum(rst.se) exp(-1/2*sum(rst.se))
+    rst.st = sum(rst.se);
 else
-% Calculate score per experiment
-rst.st = sum(rst.se);
+    % Calculate score per experiment
+    rst.st = sum(rst.se);
 end
 
 % Calculate the log10 of total score if option selected
