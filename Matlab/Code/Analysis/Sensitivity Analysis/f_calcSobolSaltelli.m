@@ -1,5 +1,6 @@
 function rst = f_calcSobolSaltelli(rst,stg)
-%Code modified from Geir Halnes et al. (Halnes, Geir, et al. J. comp. neuroscience 27.3 (2009): 471.)
+%Code modified from Geir Halnes et al. (Halnes, Geir, et al. J. comp.
+%neuroscience 27.3 (2009): 471.)
 
 rst = calcSS(rst,stg,"sd");
 rst = calcSS(rst,stg,"se");
