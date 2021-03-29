@@ -24,7 +24,7 @@ else
 end
 
 % Runs the Analysis chosen in settings
-if stg.analysis ~= "" && Analysis_n ~= 6
+if stg.analysis ~= "" && Analysis_n ~= 5
     rst = f_analysis(stg,stg.analysis);
 end
 % Save Analysis results if chosen in settings

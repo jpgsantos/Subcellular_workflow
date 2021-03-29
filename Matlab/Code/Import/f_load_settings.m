@@ -50,15 +50,14 @@ folder_model_name = listing(folder_n).name;
 folder_model_dir = string(listing(folder_n).folder);
 
 Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
-    "Profile Likelihood Analysis","",""];
+    "",""];
 
 prompt = "\nWhat analysis should be performed?\n";
 prompt = prompt + "\n1: Diagnostics";
 prompt = prompt + "\n2: Optimization";
 prompt = prompt + "\n3: Sensitivity Analysis";
-prompt = prompt + "\n4: Profile Likelihood Analysis";
-prompt = prompt + "\n5: Reproduce a previous Analysis";
-prompt = prompt + "\n6: Reproduce the plots of a previous Analysis";
+prompt = prompt + "\n4: Reproduce a previous Analysis";
+prompt = prompt + "\n5: Reproduce the plots of a previous Analysis";
 
 if ~isempty(Analysis_n_last)
     prompt = prompt + "\n\nPress enter to run "+ Analysis_options(Analysis_n_last);
@@ -78,7 +77,7 @@ Analysis = Analysis_options(Analysis_n);
 
 disp("Running " + Analysis_options(Analysis_n))
 
-if Analysis_n <=4
+if Analysis_n <=3
     
     listing2 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Settings");
     
@@ -202,9 +201,9 @@ else
         "/Results/"+ listing3(folder_n_2).name+ "/" +...
         listing4(folder_n_3).name + "/Analysis.mat","stg","sb")
     
-    if Analysis_n == 5
+    if Analysis_n == 4
     end
-    if Analysis_n == 6
+    if Analysis_n == 5
         stg.plot = true;
         load(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name +...
             "/Results/"+ listing3(folder_n_2).name+ "/" +...

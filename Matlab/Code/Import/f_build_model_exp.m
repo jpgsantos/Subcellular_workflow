@@ -40,11 +40,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         'AbsoluteTolerance', stg.abstol);
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
     set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
-    
-    %     if ~isempty(stg.maxstepeq)
     set(configsetObj{number_exp}.SolverOptions,...
         'MaxStep', stg.maxstepeq);
-    %     end
     
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
@@ -60,11 +57,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
         Data(number_exp).Experiment.t);
     
-    %     if ~isempty(stg.maxstep)
     set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstep);
-    %     else
-    %         set(configsetObj{number_exp}.SolverOptions, 'MaxStep', []);
-    %     end
     
     for n = 1:size(output,2)
         

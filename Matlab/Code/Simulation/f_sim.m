@@ -20,10 +20,7 @@ if isempty(model_run)
             % Load the models for equilibrium
             load("Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
                 "_" + n + ".mat",'model_exp','config_exp')
-            %         load("Model/" +stg.folder_model +
-            %         "/Data/exp/Model_diag_" + stg.name +...
-            %             "_" + n + ".mat",'model_exp')
-            
+
             % Place the loaded models in the correct place in the array,
             % models for equilibrium are set to be on the second half of
             % the array
@@ -35,7 +32,6 @@ if isempty(model_run)
             % settings
             if stg.sbioacc
                 sbioaccelerate(model_run{n+2*stg.expn},config_run{n+2*stg.expn});
-                %             sbioaccelerate(model_run{n+2*stg.expn});
             end
         end
         % Load the models for equilibrium
@@ -54,15 +50,11 @@ if isempty(model_run)
         % matlab built in function if the option is selected in settings
         if stg.sbioacc
             sbioaccelerate(model_run{n+stg.expn},config_run{n+stg.expn});
-            %             sbioaccelerate(model_run{n+stg.expn});
         end
         
         % Load the models for main run
         load("Model/" +stg.folder_model + "/Data/exp/Model_" + stg.name +...
             "_" + n + ".mat",'model_exp','config_exp')
-        %         load("Model/" +stg.folder_model + "/Data/exp/Model_diag_"
-        %         + stg.name +...
-        %             "_" + n + ".mat",'model_exp')
         
         % Place the loaded models in the correct place in the array, models
         % for main run are set to be on the first half of the array
@@ -73,7 +65,6 @@ if isempty(model_run)
         % matlab built in function if the option is selected in settings
         if stg.sbioacc
             sbioaccelerate(model_run{n},config_run{n});
-            %             sbioaccelerate(model_run{n});
         end
     end
 end
@@ -86,19 +77,6 @@ set(model_run{exp_n}.species(1:size(rt.ssa(:,exp_n),1)),{'InitialAmount'},num2ce
 % for simultaions
 set(model_run{exp_n}.parameters(1:size(rt.par,1)),{'Value'},num2cell(rt.par))
 
-% model_run{exp_n}.parameters config_run{exp_n}.AmountUnits = 'picomole';
-
-% config_run{exp_n}.SolverOptions config_run{exp_n}.SolverOptions.MaxStep
-
-% model_run{exp_n}.Compartments model_run{exp_n}.Compartments.Value
 %simulate the model using matlab built in function
 rst.simd{exp_n} = sbiosimulate(model_run{exp_n},config_run{exp_n});
-
-
-
-% rst.simd{exp_n} = sbiosimulate(model_run{exp_n});
-% modelobj=model_run{exp_n}; modelobj
-%
-% sbiosaveproject("test.sbproj",'modelobj')
-
 end

@@ -46,9 +46,6 @@ for n = stg.exprun
                     'DisplayName','data')
                 
                 errorbar(time,data,data_SD, 'vertical',	'k', 'LineStyle', 'none','LineWidth',1);
-                
-                %                 plot(rst(m).simd{1,n}.Time,Data(n).Experiment.x(:,j),'k',...
-                %                     'DisplayName','data','LineWidth',2)
                 break
             end
         end
