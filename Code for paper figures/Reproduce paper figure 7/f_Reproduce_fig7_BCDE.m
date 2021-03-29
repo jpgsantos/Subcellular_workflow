@@ -78,7 +78,6 @@ hold on
 plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
 plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
 plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
-% title('Spine')
 set(gca,'FontSize',8,'Fontweight','bold')
 xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
 ylabel('Vspine (mV)','FontSize', 8,'Fontweight','bold')
@@ -109,9 +108,7 @@ leg.ItemTokenSize = [20,18];
 legend boxoff
 text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65/5,'E','fontsize',10,'FontWeight','bold');
 
-%Saves the graphs if running matlab 2020a or later
-% if f_check_minimum_version(9,8)
-    
+%Saves the graphs 
     exportgraphics(layout,...
         folder + "Figure 7_BCDE.png",...
         'Resolution',600)
@@ -123,5 +120,4 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65
     exportgraphics(layout,...
         folder + "Figure 7_BCDE.pdf",...
         'ContentType','vector')  
-% end
 end
