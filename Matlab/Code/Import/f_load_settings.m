@@ -8,7 +8,7 @@ persistent Analysis_n_last
 
 rst = [];
 
-listing = dir('model');
+listing = dir('Model');
 
 for n = size(listing,1):-1:1
     if matches(listing(n).name,char("."))
