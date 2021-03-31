@@ -50,7 +50,8 @@ Implemented models
 * https://github.com/jpgsantos/Model_Fujita_2010
 * https://github.com/jpgsantos/Model_Viswan_2018
 
- Compatibility
+Compatibility
+-------------
 
 Subcellular workflow MATLAB\ |Reg| code is compatible with MATLAB\ |Reg| 2020a or above running on Microsoft Windows, macOS and Linux.
 
