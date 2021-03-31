@@ -21,8 +21,8 @@ Depending on the configurations on the :ref:`settings file<f_settings>` and choi
   * :ref:`Perform conversions of the SBtab:<functions_import>`
 
     * SBtab( .xlsx) to SBtab (.tsv)
-    * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |TM| (.m, .sbproj)
-    * MATLAB\ |Reg| SimBiology\ |TM| to SBML (.xml)
+    * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |Reg| (.m, .sbproj)
+    * MATLAB\ |Reg| SimBiology\ |Reg| to SBML (.xml)
 	
   * :ref:`Perform analysis on the model:<functions_analysis>`
   

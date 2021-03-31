@@ -5,15 +5,15 @@ Welcome to the Subcelular workflow documentation! (Under construction - last upd
 
 This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
 
-At the root of our implementation is the SBtab format, a file that can store biochemical models and associated data in an easily readable and expandable way.
+At the root of our implementation is the SBtab format (Lubitz et al. 2016), a file that can store biochemical models and associated data in an easily readable and expandable way.
 
 We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB\ |Reg|, NEURON, STEPS and COPASI.
 
-Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.
+Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.The global sensitivity analysis algorithm is modified from Halnes et al 2008.
 
 We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016.
 
-Code to run this model in MATLAB\ |Reg|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB\ |Reg|", "NEURON" and "BioNetGen and STEPS folders", respectively.
+Code to run this model in MATLAB\ |Reg|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB", "NEURON" and "BioNetGen and STEPS folders", respectively.
 
 |
 
@@ -26,17 +26,43 @@ Features:
 * Conversion tools:
 
   * SBtab (.xlsx) to SBtab(.tsv), using MATLAB\ |Reg|
-  * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |TM| (.m, .sbproj) using MATLAB\ |Reg|
-  * MATLAB\ |Reg| SimBiology\ |TM| to SBML (.xml) using MATLAB\ |Reg|
-  * SBtab (.tsv) to VFGEN (.vf) using R
-  * SBtab (.tsv) to MOD (.mod) using R
-  * SBtab (.tsv) to SBML (.xml) using R
+  * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |Reg| (.m, .sbproj), using MATLAB\ |Reg|
+  * MATLAB\ |Reg| SimBiology\ |Reg| to SBML (.xml), using MATLAB\ |Reg|
+  * SBtab (.tsv) to VFGEN (.vf), using R
+  * SBtab (.tsv) to MOD (.mod), using R
+  * SBtab (.tsv) to SBML (.xml), using R
 
 |
 
 .. image:: ../Docs/Images/Figure_1.png
 
 |
+
+Sections of the workflow in external repositories
+-------------------------------------------------
+
+Conversion tools: https://github.com/a-kramer/SBtabVFGEN
+
+Implemented models
+------------------
+
+* https://github.com/jpgsantos/Model_Nair_2016
+* https://github.com/jpgsantos/Model_Fujita_2010
+* https://github.com/jpgsantos/Model_Viswan_2018
+
+ Compatibility
+
+Subcellular workflow MATLAB\ |Reg| code is compatible with MATLAB\ |Reg| 2020a or above running on Microsoft Windows, macOS and Linux.
+
+Matlab\ |Reg| packages needed:
+
+  * Optimization Toolbox\ |TM|
+  * Statistics and Machine Learning Toolbox\ |TM|
+  * Fuzzy Logic Toolbox\ |TM|
+  * Financial Toolbox\ |TM|
+  * Global Optimization Toolbox
+  * SimBiology\ |Reg|
+  * Parallel Computing Toolbox\ |TM|
 
 .. toctree::
    :hidden:
@@ -51,6 +77,13 @@ Features:
 
 References
 ----------
+
+`Lubitz, T., Hahn, J., Bergmann, F. T., Noor, E., Klipp, E., & Liebermeister, W. (2016). SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), 2559-2561.
+<https://doi.org/10.1093/bioinformatics/btw179>`_
+
+
+`Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
+<https://doi.org/10.1111/j.1471-4159.2009.06085.x>`_
 
 `Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium 
 and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080. doi: 10.1371/journal.pcbi.1005080. <https://doi.org/10.1371/journal.pcbi.1005080>`_

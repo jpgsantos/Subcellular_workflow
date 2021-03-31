@@ -44,7 +44,7 @@ Model
 Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<stg.name>`.sbproj
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This file contains the model derived from the SBtab in .sbproj (MATLAB\ |Reg| SimBiology\ |TM|) format.
+This file contains the model derived from the SBtab in .sbproj (MATLAB\ |Reg| SimBiology\ |Reg|) format.
 It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _model.mat:

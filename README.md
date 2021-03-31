@@ -7,27 +7,35 @@ This workflow has been developed to tackle the challenge of building and analyzi
 
 At the root of our implementation is the SBtab format<sup>1</sup>, a file format that can store biochemical models and associated data in an easily readable and expandable way.
 
-We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB&reg;, NEURON, STEPS and Copasi.
+We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB&reg;, NEURON, STEPS and COPASI.
 
 Using MATLAB&reg; we have developed custom scripts for parameter estimation, global sensitivitiy analysis, and diagnostics tools that can be used for model development. The global sensitivity analysis algorithm is modified from Halnes et al 2008<sup>2</sup>.
 
-We demonstrate all these features using an example model, a modified version of the D1 MSN subcellular cascade model from Nair et al 2016<sup>3</sup>.
-Code to run this model in MATLAB&reg;, NEURON, and Subcellular application(STEPS) can be found on the "MATLAB&reg;", "NEURON" and "BioNetGen and STEPS folders" respectively.
+
+We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016<sup>3</sup>.
+
+Code to run this model in MATLAB&reg;, NEURON, and Subcellular application (STEPS) can be found on the "MATLAB", "NEURON" and "BioNetGen and STEPS folders" respectively.
 
 Features:
 
-* Model simulation, using MATLAB&reg;, subcellular application(STEPS), or NEURON
+* Model simulation, using MATLAB&reg;,  the Subcellular application (STEPS), or NEURON
 * Analysis of selected parameter sets, using MATLAB&reg;
 * Parameter optimization, using MATLAB&reg;
 * Global Sensitivity analysis, using MATLAB&reg;
 * Conversion tools:
 
-  * SBtab(.xlsx) to SBtab(.tsv), using MATLAB&reg;
-  * SBtab(.xlsx) to MATLAB&reg; SimBiology&trade;(.m, .sbproj), using MATLAB&reg;
-  * MATLAB&reg; SimBiology&trade; to SBML(.xml), using MATLAB&reg;
-  * SBtab(.tsv) to VFGEN(.vf), using R
-  * SBtab(.tsv) to Mod(.mod), using R
-  * SBtab(.tsv) to SBML(.xml), using R
+  * SBtab (.xlsx) to SBtab (.tsv), using MATLAB&reg;
+  * SBtab (.xlsx) to MATLAB&reg; SimBiology&reg; (.m, .sbproj), using MATLAB&reg;
+  * MATLAB&reg; SimBiology&reg; to SBML (.xml), using MATLAB&reg;
+  * SBtab (.tsv) to VFGEN (.vf), using R
+  * SBtab (.tsv) to Mod (.mod), using R
+  * SBtab (.tsv) to SBML (.xml), using R
+  
+# Sections of the workflow in external repositories
+
+Conversion tools
+
+* https://github.com/a-kramer/SBtabVFGEN
 
 # Implemented models
 
@@ -51,7 +59,17 @@ Get your console in the Doc folder and run `sphinx-build . "documentation folder
 
 # Compatibility
 
-Subcellular workflow MATLAB&reg; code and has been tested in 2020a (all packages installed) running on Microsoft Windows, macOS and Linux.
+Subcellular workflow MATLAB&reg; code is compatible with MATLAB&reg; 2020a or above running on Microsoft Windows, macOS and Linux.
+
+Matlab&reg; packages needed:
+
+  * Optimization Toolbox&trade;
+  * Statistics and Machine Learning Toolbox&trade;
+  * Fuzzy Logic Toolbox&trade;
+  * Financial Toolbox&trade;
+  * Global Optimization Toolbox
+  * SimBiology&reg;
+  * Parallel Computing Toolbox&trade;
 
 # References
 

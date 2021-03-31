@@ -1,6 +1,6 @@
 # Fix for MATLAB&trade; SBML
 
-MATLAB&trade;'s simbiology toolbox generates sbml code that doesn't work very well and doesn't look very nice (and it cannot be imported into Copasi).
+MATLAB&reg;'s Aimbiology&reg; toolbox generates sbml code that doesn't work very well and doesn't look very nice (and it cannot be imported into Copasi).
 
 We heve provided a [folder (sbml/)](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/) that contains an `R` script that fixes most of the issues. The resulting `sbml` file can be imported into Copasi without warnings and runs there.
 
@@ -61,7 +61,7 @@ This will use the default units from the table above. This file is only there fo
 
 ## Real Shell Script
 
-The shell script [sbml_fix.sh](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/sbml_fix.sh) is similar to the R script but does not add the default units. It only fixes the really long `id`s that simbiology generates.
+The shell script [sbml_fix.sh](https://github.com/jpgsantos/Subcellular_workflow/blob/master/sbml/sbml_fix.sh) is similar to the R script but does not add the default units. It only fixes the really long `id`s that Simbiology&reg; generates.
 warning: it fixes everything _in place_. So, if this script stops working correctly at some point, it may destroy the file in question.
 
 But, this file is difficult to use for windows users, that's why the `R` script exists.
