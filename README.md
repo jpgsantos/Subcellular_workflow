@@ -24,7 +24,7 @@ Features:
 * Global Sensitivity analysis, using MATLAB&reg;
 * Conversion tools:
 
-  * SBtab (.xlsx) to SBtab (.tsv), using MATLAB&reg;
+  * SBtab (.xlsx,.xls) to SBtab (.tsv), using MATLAB&reg;
   * SBtab (.xlsx) to MATLAB&reg; SimBiology&reg; (.m, .sbproj), using MATLAB&reg;
   * MATLAB&reg; SimBiology&reg; to SBML (.xml), using MATLAB&reg;
   * SBtab (.tsv) to VFGEN (.vf), using R
@@ -36,6 +36,7 @@ Features:
 Conversion tools
 
 * https://github.com/a-kramer/SBtabVFGEN
+* https://github.com/a-kramer/simbiology-sbml-fix
 
 # Implemented models
 

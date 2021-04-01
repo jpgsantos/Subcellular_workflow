@@ -25,7 +25,7 @@ Features:
 * Global Sensitivity Analysis using MATLAB\ |Reg|
 * Conversion tools:
 
-  * SBtab (.xlsx) to SBtab(.tsv), using MATLAB\ |Reg|
+  * SBtab (.xlsx,.xls) to SBtab(.tsv), using MATLAB\ |Reg|
   * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |Reg| (.m, .sbproj), using MATLAB\ |Reg|
   * MATLAB\ |Reg| SimBiology\ |Reg| to SBML (.xml), using MATLAB\ |Reg|
   * SBtab (.tsv) to VFGEN (.vf), using R
@@ -41,7 +41,10 @@ Features:
 Sections of the workflow in external repositories
 -------------------------------------------------
 
-Conversion tools: https://github.com/a-kramer/SBtabVFGEN
+Conversion tools: 
+
+* https://github.com/a-kramer/SBtabVFGEN
+* https://github.com/a-kramer/simbiology-sbml-fix
 
 Implemented models
 ------------------
@@ -69,7 +72,7 @@ Matlab\ |Reg| packages needed:
    :hidden:
    :maxdepth: 1
 
-   SBtab 
+   SBtab
    Matlab
    Neuron
    Sub_application
