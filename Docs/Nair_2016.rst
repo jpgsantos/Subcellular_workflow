@@ -39,11 +39,11 @@ Reactions in PSD:
 
    <h2>References</h2>
 
-`Li, L., Stefan, M.I.,. Le Novere, N. (2012). Calcium input frequency, duration and amplitude differentially modulate the relative activation of
-calcineurin and CaMKII. PLoS One, 7:e43810. <https://doi.org/10.1371/journal.pone.0043810>`_
+`Li, L., Stefan, M.I. and Le Novère, N., 2012. Calcium input frequency, duration and amplitude differentially modulate the relative activation of calcineurin and CaMKII. PloS one, 7(9), p.e43810.
+<https://doi.org/10.1371/journal.pone.0043810>`_
 
-`Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium 
-and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080. doi: 10.1371/journal.pcbi.1005080. <https://doi.org/10.1371/journal.pcbi.1005080>`_
+`Nair, A.G., Bhalla, U.S. and Hellgren Kotaleski, J., 2016. Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal calcium and dopamine integration. PLoS computational biology, 12(9), p.e1005080.
+<https://doi.org/10.1371/journal.pcbi.1005080>`_
 
-`Pepke, S., Kinzer-Ursem, T., Mihalas, S., Kennedy, M.B. (2010). A dynamic model of interactions of Ca2+, calmodulin, and catalytic subunits
-of Ca2+/calmodulin-dependent protein kinase II. PLoS Computational Biology, 12;6(2):e1000675. <https://dx.doi.org/10.1371%2Fjournal.pcbi.1000675>`_
+`Pepke, S., Kinzer-Ursem, T., Mihalas, S. and Kennedy, M.B., 2010. A dynamic model of interactions of Ca 2+, calmodulin, and catalytic subunits of Ca 2+/calmodulin-dependent protein kinase II. PLoS Comput Biol, 6(2), p.e1000675.
+<https://dx.doi.org/10.1371%2Fjournal.pcbi.1000675>`_
