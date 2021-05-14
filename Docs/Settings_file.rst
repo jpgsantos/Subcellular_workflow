@@ -502,6 +502,5 @@ Automatically generated at Import
 References
 ----------
   
-`Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). 
-Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
-<https://doi.org/10.1111/j.1471-4159.2009.06085.x>`_
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_

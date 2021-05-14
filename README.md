@@ -3,16 +3,16 @@
 Subcellular workflow
 ====================
 
-This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
+This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.<sup>1</sup>
 
-At the root of our implementation is the SBtab format<sup>1</sup>, a file format that can store biochemical models and associated data in an easily readable and expandable way.
+At the root of our implementation is the SBtab format<sup>2</sup>, a file format that can store biochemical models and associated data in an easily readable and expandable way.
 
 We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB&reg;, NEURON, STEPS and COPASI.
 
-Using MATLAB&reg; we have developed custom scripts for parameter estimation, global sensitivitiy analysis, and diagnostics tools that can be used for model development. The global sensitivity analysis algorithm is modified from Halnes et al 2008<sup>2</sup>.
+Using MATLAB&reg; we have developed custom scripts for parameter estimation, global sensitivitiy analysis, and diagnostics tools that can be used for model development. The global sensitivity analysis algorithm is modified from Halnes et al 2009<sup>3</sup>.
 
 
-We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016<sup>3</sup>.
+We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016<sup>4</sup>.
 
 Code to run this model in MATLAB&reg;, NEURON, and Subcellular application (STEPS) can be found on the "MATLAB", "NEURON" and "BioNetGen and STEPS folders" respectively.
 
@@ -52,6 +52,7 @@ If you want to build the documentation offline use [sphinx](https://www.sphinx-d
 
 After installing sphinx, install the following extra extensions to sphinx;
 
+* [sphinx_rtd_theme](https://pypi.org/project/sphinx-rtd-theme/)
 * [recommonmark](https://recommonmark.readthedocs.io/)
 * [sphinxcontrib-contentui](https://sphinxcontrib-contentui.readthedocs.io/en/latest/installation.html)
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
@@ -74,8 +75,10 @@ Matlab&reg; packages needed:
 
 # References
 
-(1) Lubitz, T., Hahn, J., Bergmann, F. T., Noor, E., Klipp, E., & Liebermeister, W. (2016). SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), 2559-2561.
+(1) Santos, J.P., Pajo, K., Trpevski, D., Stepaniuk, A., Eriksson, O., Nair, A.G., Keller, D., Kotaleski, J.H. and Kramer, A., 2020. A Modular Workflow for Model Building, Analysis, and Parameter Estimation in Systems Biology and Neuroscience. bioRxiv.
 
-(2) Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
+(2) Lubitz, T., Hahn, J., Bergmann, F.T., Noor, E., Klipp, E. and Liebermeister, W., 2016. SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), pp.2559-2561.
 
-(3) Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080. 
+(3) Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+
+(4) Nair, A.G., Bhalla, U.S. and Hellgren Kotaleski, J., 2016. Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal calcium and dopamine integration. PLoS computational biology, 12(9), p.e1005080.

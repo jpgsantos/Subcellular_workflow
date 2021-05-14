@@ -1,5 +1,5 @@
 # to build documentation locally
-sphinx==3.5.2
+sphinx==4.0.1
 sphinx_rtd_theme
 -e git://github.com/ulrobix/sphinxcontrib-contentui.git#egg=sphinxcontrib-contentui
 -e git://github.com/sphinx-contrib/matlabdomain.git#egg=sphinxcontrib-matlabdomain

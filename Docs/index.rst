@@ -3,7 +3,7 @@ Welcome to the Subcelular workflow documentation! (Under construction - last upd
 
 |
 
-This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.
+This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software. (Santos et al. 2020) (Preprint)
 
 At the root of our implementation is the SBtab format (Lubitz et al. 2016), a file that can store biochemical models and associated data in an easily readable and expandable way.
 
@@ -82,12 +82,14 @@ Matlab\ |Reg| packages needed:
 References
 ----------
 
-`Lubitz, T., Hahn, J., Bergmann, F. T., Noor, E., Klipp, E., & Liebermeister, W. (2016). SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), 2559-2561.
+`Santos, J.P., Pajo, K., Trpevski, D., Stepaniuk, A., Eriksson, O., Nair, A.G., Keller, D., Kotaleski, J.H. and Kramer, A., 2020. A Modular Workflow for Model Building, Analysis, and Parameter Estimation in Systems Biology and Neuroscience. bioRxiv.
+<https://doi.org/10.1101/2020.11.17.385203>`_
+
+`Lubitz, T., Hahn, J., Bergmann, F.T., Noor, E., Klipp, E. and Liebermeister, W., 2016. SBtab: a flexible table format for data exchange in systems biology. Bioinformatics, 32(16), pp.2559-2561.
 <https://doi.org/10.1093/bioinformatics/btw179>`_
 
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_
 
-`Halnes, G., Ulfhielm, E., Kotaleski, J. H., & Rospars, J. P. (2008). Modeling of the receptor, G-protein and effector reactions in vertebrate olfactory receptor neurons. BMC Neuroscience, 9(1), 1-1.
-<https://doi.org/10.1111/j.1471-4159.2009.06085.x>`_
-
-`Nair, A.G., Bhalla, U.S., Kotaleski J.H. (2016). Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal Calcium 
-and Dopamine integration. PLoS Computational Biology, 1;12(9):e1005080. doi: 10.1371/journal.pcbi.1005080. <https://doi.org/10.1371/journal.pcbi.1005080>`_
+`Nair, A.G., Bhalla, U.S. and Hellgren Kotaleski, J., 2016. Role of DARPP-32 and ARPP-21 in the emergence of temporal constraints on striatal calcium and dopamine integration. PLoS computational biology, 12(9), p.e1005080.
+<https://doi.org/10.1371/journal.pcbi.1005080>`_

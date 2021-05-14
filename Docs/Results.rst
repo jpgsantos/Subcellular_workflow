@@ -352,4 +352,5 @@ The calculations performed to obtain these sensitivities where performed accordi
 References
 ----------
   
-`Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491. <http://dx.doi.org/10.1007/s10827-009-0162-6>`_
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_
