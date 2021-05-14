@@ -1,4 +1,4 @@
-[![View Subcellular_workflow on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/89293-subcellular_workflow) [![Documentation Status](https://readthedocs.org/projects/subcellular-workflow/badge/?version=doc_update)](https://subcellular-workflow.readthedocs.io/en/doc_update/?badge=doc_update)
+[![View Subcellular_workflow on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/89293-subcellular_workflow) [![Documentation Status](https://readthedocs.org/projects/subcellular-workflow/badge/?version=latest)](https://subcellular-workflow.readthedocs.io/en/latest/?badge=latest)
 
 Subcellular workflow
 ====================
