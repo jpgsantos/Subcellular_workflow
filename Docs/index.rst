@@ -9,7 +9,7 @@ At the root of our implementation is the SBtab format (Lubitz et al. 2016), a fi
 
 We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB\ |Reg|, NEURON, STEPS and COPASI.
 
-Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.The global sensitivity analysis algorithm is modified from Halnes et al 2008.
+Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, global sensitivities analysis, and diagnostics tools that can be used for model development.The global sensitivity analysis algorithm is modified from Halnes et al 2009.
 
 We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016.
 
