@@ -6,9 +6,6 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 
 rst = rst.diag;
 
-addpath(genpath(pwd));
-
-% Import the data on the first run
 load(folder + "data_Nair_2016_optimized.mat",'Data','sbtab')
 
 n = 6;
@@ -19,10 +16,8 @@ figure('WindowStyle', 'docked','Name', 'Paper Figure 3',...
     'NumberTitle', 'off');
 layout = tiledlayout(1,5,'Padding','none','TileSpacing','compact');
 
-
-    layout.Units = 'inches';
-    layout.OuterPosition = [0 0 6.85 4];
-
+layout.Units = 'inches';
+layout.OuterPosition = [0 0 6.85 4];
 
 % Figure 3A
 layout1 = tiledlayout(layout,3,1,'TileSpacing','compact');
@@ -34,9 +29,9 @@ nexttile(layout1);
 hold on
 
 for o = 1:size(sbtab.datasets(n).input,2)
-
+    
     p = 1;
-    % Plot the inputs to each experiment
+    % Plot the inputs
     plot(rst(p).simd{1,n}.Time,rst(p).simd{1,n}.Data(1:end,...
         str2double(strrep(sbtab.datasets(n).input(o),'S','')...
         )+1),'LineWidth',1)
@@ -79,14 +74,9 @@ for j = 1:size(sbtab.datasets(n).output,2)
     m = 1;
     hold on
     
-    % Plot the outputs to each dataset (new subplots) as they
-    % are given in the data provided in sbtab
     plot(rst(m).simd{1,n}.Time,Data(n).Experiment.x(:,j),'k',...
         'DisplayName','data','LineWidth',1.5)
     
-    % Plot the outputs to each dataset (new subplots) and
-    % parameter array to test that are simulated using
-    % Simbiology
     plot(rst(m).simd{1,n}.Time,...
         rst(m).simd{1,n}.Data(1:end,end-...
         size(sbtab.datasets(n).output,2)+j),'r',...
@@ -159,17 +149,16 @@ ylabel("pSubstrate area",'FontSize',8);
 text(-4.5,4.6,'D','FontWeight','bold');
 hold off
 
-%Saves the graphs if running matlab 2020a or later
-   
-    exportgraphics(layout,...
-        folder + "Figure 3.png",...
-        'Resolution',600)
-    
-    exportgraphics(layout,...
-        folder + "Figure 3.tiff",...
-        'Resolution',600)
-    
-    exportgraphics(layout,...
-        folder + "Figure 3.pdf",...
-        'ContentType','vector')
+%Saves the graphs
+exportgraphics(layout,...
+    folder + "Figure 3.png",...
+    'Resolution',600)
+
+exportgraphics(layout,...
+    folder + "Figure 3.tiff",...
+    'Resolution',600)
+
+exportgraphics(layout,...
+    folder + "Figure 3.pdf",...
+    'ContentType','vector')
 end

@@ -16,7 +16,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\sbtab\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the SBtab in .xlsx format. 
-It needs to be provided for the MATLAB part of the workflow to work.
+It needs to be provided for the MATLAB\ |Reg| part of the workflow to work.
 
   .. _sbtab.mat:
 
@@ -24,7 +24,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\sbtab\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the SBtab in .mat format.
-It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
+It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _sbtab.tsv:
 
@@ -32,7 +32,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\tsv
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This folder contains the SBtab in .tsv format.
-It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
+It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
 |
 
@@ -44,8 +44,8 @@ Model
 Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<stg.name>`.sbproj
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This file contains the model derived from the SBtab in .sbproj (MATLAB SimBiology) format.
-It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
+This file contains the model derived from the SBtab in .sbproj (MATLAB\ |Reg| SimBiology\ |Reg|) format.
+It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _model.mat:
 
@@ -53,7 +53,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the model derived from the SBtab in .mat format.
-It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
+It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
   .. _model.xml:
 
@@ -61,7 +61,7 @@ Model\\ :ref:`model_folder_name<stg.folder_model>`\\Data\\model\_\ :ref:`name<st
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This file contains the model derived from the SBtab in .xml (SBML) format.
-It is generated after the run of the MATLAB part of the workflow if :ref:`import<stg.import>` is chosen in settings.
+It is generated after the run of the MATLAB\ |Reg| part of the workflow if :ref:`import<stg.import>` is chosen in settings.
 
 |
 

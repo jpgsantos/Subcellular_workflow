@@ -1,7 +1,4 @@
-% Script to import sbtab and run the analyis for the first time
-
-clear
-clc
+% Script to import sbtab and run the analyis
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -18,15 +15,16 @@ addpath(genpath(pwd));
 if stg.import
     [stg,sb] = f_import(stg,sb);
 else
-    % Creates a struct based on the sbtab that is used elswhere in the code and
-    % also adds the number of experiments and outputs to the settings variable
+    % Creates a struct based on the sbtab that is used elswhere in the code
+    % and also adds the number of experiments and outputs to the settings
+    % variable
     if isempty(sb)
         [stg,sb] = f_generate_sbtab_struct(stg);
     end
 end
 
 % Runs the Analysis chosen in settings
-if stg.analysis ~= "" && Analysis_n ~= 6
+if stg.analysis ~= "" && Analysis_n ~= 5
     rst = f_analysis(stg,stg.analysis);
 end
 % Save Analysis results if chosen in settings

@@ -2,6 +2,7 @@ function f_Reproduce_fig7_BCDE(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
+load(folder + "new_data",'new_data')
 load(folder + "auc")
 load(folder + "inputs")
 
@@ -49,9 +50,11 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65
 nexttile(layout);
 
 hold on
-plot (DA_start,response_integral/response_integral_0,'Color',[1 0 0], 'LineWidth',1)
-
+p1 = plot (DA_start,response_integral/response_integral_0,'b', 'LineWidth',1);
+p2 = plot (new_data{3}(:,1), new_data{3}(:,2),'r--', 'LineWidth', 1);
 set(gca,'FontSize',8,'Fontweight','bold')
+
+
 
 xlabel('\Deltat (s)','FontSize', 8,'Fontweight','bold')
 ylabel('pSubstrate area','FontSize', 8,'Fontweight','bold')
@@ -61,7 +64,9 @@ plot([0 0], [0 5], '-.',...
 hold off
 ylim ([0 5])
 yticks([0,1,3,5])
-
+leg = legend([p1,p2],{'NEURON','MATLAB'},'FontSize', 6.5,'Fontweight','bold','Location','northwest');
+leg.ItemTokenSize = [15,18];
+legend boxoff
 text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65/5,'C','fontsize',10,'FontWeight','bold');
 
 load(folder + "spine")
@@ -73,7 +78,6 @@ hold on
 plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
 plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
 plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
-% title('Spine')
 set(gca,'FontSize',8,'Fontweight','bold')
 xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
 ylabel('Vspine (mV)','FontSize', 8,'Fontweight','bold')
@@ -104,9 +108,7 @@ leg.ItemTokenSize = [20,18];
 legend boxoff
 text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65/5,'E','fontsize',10,'FontWeight','bold');
 
-%Saves the graphs if running matlab 2020a or later
-% if f_check_minimum_version(9,8)
-    
+%Saves the graphs 
     exportgraphics(layout,...
         folder + "Figure 7_BCDE.png",...
         'Resolution',600)
@@ -118,5 +120,4 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,max(ylim)+(max(ylim)-min(ylim))*0.65
     exportgraphics(layout,...
         folder + "Figure 7_BCDE.pdf",...
         'ContentType','vector')  
-% end
 end

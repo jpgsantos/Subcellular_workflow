@@ -10,9 +10,9 @@ This are usually things that need to change during optimizations or model develo
   .. toggle-header::
       :header: **Code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
-         :language: MATLAB
+         :language: matlab
 	
 |
 	
@@ -22,7 +22,7 @@ Import
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Import
@@ -60,7 +60,7 @@ Analysis
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Analysis
@@ -107,7 +107,7 @@ Simulation
   .. toggle-header::
       :header: **Example model code**
      
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Simulation
@@ -161,7 +161,7 @@ Model
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Model
@@ -215,7 +215,7 @@ Diagnostics
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Diagnostics
@@ -282,7 +282,7 @@ Plots
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Plots
@@ -298,13 +298,13 @@ Plots
 
 |
 
-Sensitivity Analysis (SA)
--------------------------
+Global Sensitivity Analysis (GSA)
+---------------------------------
 
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Sensitivity analysis
@@ -312,17 +312,17 @@ Sensitivity Analysis (SA)
 		 
   .. _stg.sansamples:
 
-- **stg.sansamples** - (double) Number of samples to use in SA
+- **stg.sansamples** - (double) Number of samples to use in GSA (in total (2+npars)*sansamples simulations will be performed, where npars are the number of parameters).
 
   .. _stg.sasubmean:
 
-- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`
+- **stg.sasubmean** - (logical) Decide whether to subtract mean before calculating :ref:`SI<rst.SA.SI>` and :ref:`STI<rst.SA.STI>`, see Halnes et al 2009.
 
   .. _stg.sasamplemode:
 
-- **stg.sasamplemode** - (double) Choose the way you want to obtain the samples of the parameters for performing the SA;
+- **stg.sasamplemode** - (double) Choose the way you want to obtain the samples of the parameters for performing the GSA;
 
- 0. Reciprocal distribution
+ 0. Reciprocal (log uniform) distribution
 
   :math:`X_{i} \sim Reciprocal(a_{i},b_{i})`
   
@@ -335,7 +335,7 @@ Sensitivity Analysis (SA)
  
  	.. image:: ../Docs/Images/SA_Dist_1.png
 
- 1. Log normal distribution with μ as the best value for a parameter and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
+ 1. Log normal distribution with μ corresponding to the best value for a parameter, as recieved from the optimization, and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -403,7 +403,7 @@ Optimization
   .. toggle-header::
       :header: **Example model code**
   
-      .. literalinclude:: ../Matlab/Model/Model_D1_LTP_time_window/Settings/f_settings_all_TW.m
+      .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Optimization
@@ -498,3 +498,9 @@ Automatically generated at Import
   .. _stg.outn:
   
 - **stg.outn** - (double) Total number of experimental outputs specified in the SBtab
+
+References
+----------
+  
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_

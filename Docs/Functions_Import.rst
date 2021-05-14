@@ -15,23 +15,10 @@ f_load_settings
 		:linenos:
 		:language: matlab
 		
-Loads the :ref:`settings file<stg>`. It supports a :ref:`settings file<stg>` divided in different
-parts for increased readability but the default is a single file.
+It prompts the user to choose the model to run, the settings file to use, and the Analysis to perform.
 
-The settings file should be saved with a name in the format "f_settings\_«mode_»_«model_name_».m" in the folder "Matlab/Model/:ref:`«model folder name»<stg.folder_model>`/Settings".
+- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, :ref:`sb<sb>`,Analysis_n
 
-- **Inputs**
-
-  .. _model_name:
-
-  - model_name - (string) Last part of the saved settings file should be a recognizable name.
-  - folder_model - (string) Name of the folder where everything related to the model is stored.
-  
-  .. _mode:
-  
-  - mode - (string) mode can be either "all" or any combination of "import", "analysis", "simulation", "model", "diagnostics", "plots", "optimization".
-
-- **Outputs** - :ref:`stg<stg>`
 
 .. _f_import:
 
@@ -45,7 +32,7 @@ f_import
 		:linenos:
 		:language: matlab
 
-Creates the necessary folders inside the model folder. Calls subfunctions that convert the SBtab from an Excel into MATLAB files useful for the workflow, TSVs and a SBML.
+Creates the necessary folders inside the model folder. Calls subfunctions that convert the SBtab from an Excel into MATLAB\ |Reg| files useful for the workflow, TSVs and a SBML.
 
 .. _f_excel_sbtab_importer:
 
@@ -59,10 +46,13 @@ f_excel_sbtab_importer
 		:linenos:
 		:language: matlab
 
-Loads the information in the SBtab and creates a :ref:`MATLAB file<sbtab.mat>` and :ref:`TSVs<sbtab.tsv>` corresponding to all the SBtab tabs.
+Loads the information in the SBtab and creates a :ref:`. mat file<sbtab.mat>` that contains the sbtab and :ref:`TSVs<sbtab.tsv>` corresponding to all the SBtab tabs.
 
 - **Inputs** - :ref:`stg<stg>`
-- **Saves** - :ref:`.mat file containing the SBtab<sbtab.mat>` and :ref:`TSVs containing the SBtab<sbtab.tsv>`
+- **Saves**
+
+  - :ref:`.mat file containing the SBtab<sbtab.mat>` in the "Model/Data" folder
+  - :ref:`TSVs containing the SBtab<sbtab.tsv>` in the "Model/tsv" folder
 
 .. _f_generate_sbtab_struct:
 
@@ -76,12 +66,10 @@ f_generate_sbtab_struct
 		:linenos:
 		:language: matlab
 
-Loads the SBtab saved in the :ref:`MATLAB file<sbtab.mat>` and creates a MATLAB struct that can be more easily parsed.
+Loads the SBtab saved in the :ref:`.mat file<sbtab.mat>` and creates a MATLAB\ |Reg| struct that can be more easily parsed.
 
 - **Inputs** - :ref:`stg<stg>`
 - **Outputs** - sb, :ref:`stg.expn<stg.expn>`, :ref:`stg.outn<stg.outn>`.
-
-
 
 .. _f_sbtab_to_model:
 
@@ -115,7 +103,7 @@ f_setup_input
 
 Creates code that loads the inputs of each experiment into a :ref:`.mat file<input.mat>` and
 the code to read these inputs at runtime when the experiments are being simulated. All
-this generated code is stored on the "Matlab/Model/:ref:`«model folder name»<stg.folder_model>`/Formulas" folder.
+this generated code is stored on the "Model/:ref:`«model folder name»<stg.folder_model>`/Formulas" folder.
 
 - **Inputs** - :ref:`stg<stg>`
 - **Saves** - :ref:`model-specific functions<files_functions>`

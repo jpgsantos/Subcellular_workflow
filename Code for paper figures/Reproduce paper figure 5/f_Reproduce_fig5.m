@@ -88,9 +88,7 @@ ylabel("pSubstrate area",'FontSize',8);
 text(-4.5,3.42,'C','fontsize',10,'FontWeight','bold');
 hold off
 
-%Saves the graphs if running matlab 2020a or later
-% if f_check_minimum_version(9,8)
-    
+%Saves the graphs    
     exportgraphics(layout,...
         folder + "Figure 5.png",...
         'Resolution',600)
@@ -102,5 +100,4 @@ hold off
     exportgraphics(layout,...
         folder + "Figure 5.pdf",...
         'ContentType','vector')
-% end
 end

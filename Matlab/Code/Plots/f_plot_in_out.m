@@ -46,9 +46,6 @@ for n = stg.exprun
                     'DisplayName','data')
                 
                 errorbar(time,data,data_SD, 'vertical',	'k', 'LineStyle', 'none','LineWidth',1);
-                
-                %                 plot(rst(m).simd{1,n}.Time,Data(n).Experiment.x(:,j),'k',...
-                %                     'DisplayName','data','LineWidth',2)
                 break
             end
         end
@@ -67,20 +64,20 @@ for n = stg.exprun
                     [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j);
                 end
                 
-                    % Plot the outputs to each dataset (new subplots) and
-                    % parameter array to test that are simulated using
-                    % Simbiology
-                    if stg.simdetail
-                        plot(time_detailed,...
-                            sim_results_detailed,'DisplayName',...
-                            string("Parameter set "+m),'LineWidth',1.5)
-                    else
-                        plot(time,...
-                            sim_results,...
-                            'DisplayName',string("Parameter set "+m),...
-                            'LineWidth',1.5)
-                    end
-                    
+                % Plot the outputs to each dataset (new subplots) and
+                % parameter array to test that are simulated using
+                % Simbiology
+                if stg.simdetail
+                    plot(time_detailed,...
+                        sim_results_detailed,'DisplayName',...
+                        string("Parameter set "+m),'LineWidth',1.5)
+                else
+                    plot(time,...
+                        sim_results,...
+                        'DisplayName',string("Parameter set "+m),...
+                        'LineWidth',1.5)
+                end
+                
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units),...
                     'FontSize', 12,'Fontweight','bold')
@@ -144,7 +141,8 @@ end
                         str2double(strrep(sbtab.datasets(n).input(o),'S','')...
                         )+1),'LineWidth',1.5)
                     
-                    % Get the correct label for each input of the experiment
+                    % Get the correct label for each input of the
+                    % experiment
                     labelfig2(o) = rst(p).simd{1,n}.DataNames(str2double(...
                         strrep(sbtab.datasets(n).input(o),'S',''))+1);
                     

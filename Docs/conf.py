@@ -45,6 +45,7 @@ today = today.strftime('%Y/%m/%d')
 
 rst_epilog = """
 .. |TM|    unicode:: U+2122 .. Trademark sign
+.. |Reg|   unicode:: U+00AE .. Registered sign
 """
 
 # -- Options for HTML output -------------------------------------------------

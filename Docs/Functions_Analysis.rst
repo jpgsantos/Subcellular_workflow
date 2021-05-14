@@ -157,8 +157,8 @@ f_opt_fmincon/sa/psearch/ga/pswarm/sopt
              	    :linenos:
             	    :language: matlab			   
 
-These functions call built in MATLAB functions that perform parameter optimization . 
-For furher information relating to how these optimizers work please follow the links to the MATLAB documentation.
+These functions call built in MATLAB\ |Reg| functions that perform parameter optimization . 
+For furher information relating to how these optimizers work please follow the links to the MATLAB\ |Reg| documentation.
 Optimizers used:
 
  - f_opt_fmincon - `fmincon <https://www.mathworks.com/help/optim/ug/fmincon.html>`_
@@ -196,11 +196,11 @@ makeParSamplesFromRanges
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/makeParSamplesFromRanges.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeParSamples.m
  	   :linenos:
 	   :language: matlab
 
-Creates parameter sets with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
+Creates parameter sets samples with :ref:`specific parameter distributions <stg.sasamplemode>` that are used to perform the global sensitivity analysis.
 
 - **Inputs**
 
@@ -208,7 +208,7 @@ Creates parameter sets with :ref:`specific parameter distributions <stg.sasample
   
 - **Outputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_ 
+*Code inspired by Geir Halnes et al. 2009 paper.*
 
 .. _makeOutputSample:
 
@@ -218,7 +218,7 @@ makeOutputSample
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/makeOutputSample.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeOutputSample.m
  	   :linenos:
 	   :language: matlab
 
@@ -230,7 +230,7 @@ respectively.
 - **Inputs** - :ref:`M1<rst.SA.M1>`, :ref:`M2<rst.SA.M2>`, :ref:`N<rst.SA.N>`, :ref:`stg.sansamples<stg.sansamples>`, :ref:`stg.parnum<stg.parnum>`,
 - **Outputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_
+*Code inspired by Geir Halnes et al. 2009 paper.*
 
 .. _calcSobolSaltelli:
 
@@ -240,12 +240,12 @@ calcSobolSaltelli
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/calcSobolSaltelli.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_calcSobolSaltelli.m
  	   :linenos:
 	   :language: matlab
 
-Takes the matrices :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>` and calculates Global sensitivity indexes.
-It calculates indexes according to some the :ref:`oputputs<rst_score>` of the :ref:`f_sim_score function<f_sim_score>`:
+Takes the matrices :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, and :ref:`fN<rst.SA.fN>` and calculates sensitivity indexes.
+It calculates indexes based on the following :ref:`oputputs<rst_score>` of the :ref:`f_sim_score function<f_sim_score>`:
 
   - :ref:`The scores of each experimental output<rst.sd>`
   - :ref:`The scores of each experiment<rst.se>`
@@ -255,9 +255,10 @@ It calculates indexes according to some the :ref:`oputputs<rst_score>` of the :r
 - **Inputs** - :ref:`fM1<rst.SA.fM1>`, :ref:`fM2<rst.SA.fM2>`, :ref:`fN<rst.SA.fN>`, :ref:`stg.sasubmean<stg.sasubmean>`
 - **Outputs** - :ref:`SI<rst.SA.SI>`, :ref:`STI<rst.SA.STI>`
 
-*Code inspired by Geir Halnes et al. 2009 paper.* [1]_
+*Code modified from the Geir Halnes et al. 2009 paper.*
 
 References
 ----------
-  
-.. [1] Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.
+
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_

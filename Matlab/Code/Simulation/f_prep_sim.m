@@ -16,8 +16,8 @@ end
 % default ones as definded in the SBTAB
 rt.par(:,1) = [sbtab.defpar{:,2}];
 
-% Check if the parametrer needs to be set to the value relevant for
-% Profile Likelihood
+% Check if the parametrer needs to be set to the value relevant for Profile
+% Likelihood
 if isfield(stg,"PLind") && isfield(stg,"PLval")
     parameters = [parameters(1:stg.PLind-1) stg.PLval parameters(stg.PLind:end)];
 end
@@ -44,18 +44,18 @@ for n = 1:size(rt.par,1)
                 % Check that a parameter should be changed from default
                 if stg.partest(n) > 0
                     
-                    % Iterate over the parameters that need to be mutiplied for
-                    % calculating the parameter that depends on the
+                    % Iterate over the parameters that need to be mutiplied
+                    % for calculating the parameter that depends on the
                     % thermodynamic constraints
                     for m = 1:size(stg.tcm,2)
                         
-                        % Check that the parameter that is going to be used to
-                        % calculate the parameter dependent on thermodynamic
-                        % constraintsis is not the default
+                        % Check that the parameter that is going to be used
+                        % to calculate the parameter dependent on
+                        % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcm(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to the
-                            % value relevant for Profile Likelihood
+                            % Check if the parametrer needs to be tset to
+                            % the value relevant for Profile Likelihood
                             if stg.partest(stg.tcm(n,m),1) ==...
                                     stg.PLind
                                 parameters(stg.partest(...
@@ -63,32 +63,32 @@ for n = 1:size(rt.par,1)
                                     = stg.PLval;
                             end
                             
-                            % Make the appropriate multiplications to get the
-                            % thermodinamicly constrained parameter
+                            % Make the appropriate multiplications to get
+                            % the thermodinamicly constrained parameter
                             rt.par(n) = rt.par(n).*(10.^...
                                 (parameters(stg.partest(...
                                 stg.tcm(n,m),1))));
                         else
                             
-                            % Make the appropriate multiplications to get the
-                            % thermodinamicly constrained parameter
+                            % Make the appropriate multiplications to get
+                            % the thermodinamicly constrained parameter
                             rt.par(n) = rt.par(n).*...
                                 (sbtab.defpar{stg.tcm(n,m),2});
                         end
                     end
                     
-                    % Iterate over the parameters that need to be divided for
-                    % calculating the parameter that depends on the
+                    % Iterate over the parameters that need to be divided
+                    % for calculating the parameter that depends on the
                     % thermodynamic constraints
                     for m = 1:size(stg.tcd,2)
                         
-                        % Check that the parameter that is going to be used to
-                        % calculate the parameter dependent on thermodynamic
-                        % constraintsis is not the default
+                        % Check that the parameter that is going to be used
+                        % to calculate the parameter dependent on
+                        % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcd(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to the
-                            % value relevant for Profile Likelihood
+                            % Check if the parametrer needs to be tset to
+                            % the value relevant for Profile Likelihood
                             if stg.partest(stg.tcd(n,m),1) ==...
                                     stg.PLind
                                 parameters(stg.partest(...
@@ -135,8 +135,8 @@ for n = stg.exprun
         end
         
         % Check that this is not the first time the experiments are being
-        % run and that the start values for the species are different
-        % from the previous experiment
+        % run and that the start values for the species are different from
+        % the previous experiment
         if n ~= stg.exprun(1) && ...
                 min([sbtab.datasets(n).start_amount{:,2}] ==...
                 [sbtab.datasets(max(1,stg.exprun(...
@@ -199,8 +199,7 @@ for n = stg.exprun
         % Check If the times of the simultaion output and the simulation
         % data from SBTAB match, if they don't it means that the simulator
         % didn't had enough time to run the model (happens in some
-        % unfavorable configurations of parameters, controlled by
-        % stg.maxt
+        % unfavorable configurations of parameters, controlled by stg.maxt
         if size(Data(n).Experiment.t,1) ~=...
                 size(rst.simd{n}.Data(:,end),1)
             
@@ -211,9 +210,9 @@ for n = stg.exprun
         end
     catch
         
-        % Set the simulation output to be 0, this is a non function
-        % value that the score function expects in simulations that did
-        % not worked properly
+        % Set the simulation output to be 0, this is a non function value
+        % that the score function expects in simulations that did not
+        % worked properly
         rst.simd{n} = 0;
     end
 end

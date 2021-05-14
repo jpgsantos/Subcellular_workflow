@@ -1,8 +1,8 @@
 function rst = f_SA(stg)
 
-rst = makeParSamplesFromRanges(stg);
+rst = f_makeParSamples(stg);
 
-rst = makeOutputSample(rst,stg);
+rst = f_makeOutputSample(rst,stg);
 
-rst = calcSobolSaltelli(rst,stg);
+rst = f_calcSobolSaltelli(rst,stg);
 end

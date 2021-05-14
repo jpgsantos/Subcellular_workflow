@@ -6,13 +6,9 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 
 rst = rst.diag;
 
-% addpath(genpath(pwd));
-
-% Import the data on the first run
 load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab')
 
 n = 1;
-
 
 figHandles = findobj('type', 'figure', 'name', 'Paper supplementary figure 1');
 close(figHandles);
@@ -20,16 +16,16 @@ figure('WindowStyle', 'docked','Name', 'Paper supplementary figure 1',...
     'NumberTitle', 'off');
 layout = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
 
-% if f_check_minimum_version(9,8)
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 4];
-% end
 
-% supplementary figure 1A
+
+% supplementary figure 1A and C
 layout1 = tiledlayout(layout,2,1,'TileSpacing','compact');
 layout1.Layout.Tile = 1;
 layout1.Layout.TileSpan = [1,1];
 
+% supplementary figure 1A
 nexttile(layout1);
 
 hold on
@@ -38,7 +34,7 @@ for o = 1:size(sbtab.datasets(n).input,2)
     
     p = 1;
     m = 5;
-    % Plot the inputs to each experiment
+    % Plot the inputs
     plot(rst(p).simd{1,m}.Time,rst(p).simd{1,m}.Data(1:end,...
         str2double(strrep(sbtab.datasets(n).input(o),'S','')...
         )+1),'LineWidth',1)
@@ -59,6 +55,7 @@ xlim([0 10000])
 
 text(-500,0.11,'A','FontWeight','bold');
 
+% supplementary figure 1C
 nexttile(layout1);
 
 hold on
@@ -67,7 +64,7 @@ for o = 1:size(sbtab.datasets(n).input,2)
     
     p = 1;
     m = 6;
-    % Plot the inputs to each experiment
+    % Plot the inputs
     plot(rst(p).simd{1,m}.Time,rst(p).simd{1,m}.Data(1:end,...
         str2double(strrep(sbtab.datasets(n).input(o),'S','')...
         )+1),'LineWidth',1)
@@ -88,17 +85,9 @@ clear labelfig2
 ylim([0 0.001])
 xlim([0 40000])
 
-
-% xlim([3 8])
-
-% xticks([3,4,5,6,7,8])
-% xticklabels({0,4,5,6,7,20})
-% yticks([0,1000,3000,5000])
-
 text(7.45,50,'//','fontsize',12);
 text(3.45,50,'//','fontsize',12);
 
-% text(0,0.115,'A','FontWeight','bold');
 text(-2000,0.0011,'C','FontWeight','bold');
 hold off
 
@@ -112,31 +101,18 @@ for m = 1:2
     j = 1;
     p = 1;
     hold on
-    %     if m = 1
-    %     if rst(1).simd{1,m} ~= 0
     
     time = rst(1).simd{1,m}.Time;
     data = Data(m).Experiment.x(:,j);
     
     data_SD = Data(m).Experiment.x_SD(:,j);
     
-    % Plot the outputs to each dataset (new subplots) as they
-    % are given in the data provided in sbtab
-%     scatter(time,data,'filled','k',...
-%         'DisplayName','data')
-    
     errorbar(time,data,data_SD,'ok','LineWidth',1,'MarkerSize',3,'MarkerFaceColor','k');
-    %     end
-    %     if m = 2
-    %     end
     
     time_detailed = rst(1).simd{1,m+2*stg.expn}.Time;
     [~,sim_results_detailed]= f_normalize(rst(1),stg,m,j,folder);
     
-    % Plot the outputs to each dataset (new subplots) as they
-    % are given in the data provided in sbtab
-    %     plot(rst(p).simd{1,p}.Time,Data(n).Experiment.x(:,j),'k',...
-    %         'DisplayName','data','LineWidth',1.5)
+    
     plot(time_detailed,...
         sim_results_detailed,'b',...
         'DisplayName',string("Parameter set "+p),...
@@ -145,9 +121,6 @@ for m = 1:2
     time_detailed = rst(2).simd{1,m+2*stg.expn}.Time;
     [~,sim_results_detailed]= f_normalize(rst(2),stg,m,j,folder);
     
-    % Plot the outputs to each dataset (new subplots) and
-    % parameter array to test that are simulated using
-    % Simbiology
     plot(time_detailed,...
         sim_results_detailed,'r',...
         'DisplayName',string("Parameter set "+p),...
@@ -165,19 +138,16 @@ for m = 1:2
     % Choose number of decimal places for y axis
     ytickformat('%.2g')
     if m == 1
-        ylabel("pERK1\_2\_ratio1",'FontSize', 8,'Fontweight','bold')
+        ylabel('MAPK_p + MAPK_p_p (\muM)','FontSize', 8,'Fontweight','bold')
         text(-500,1.65,'B','FontWeight','bold');
     else
-        ylabel("pERK1\_2\_ratio2",'FontSize', 8,'Fontweight','bold')
+        ylabel('MAPK_p + MAPK_p_p (\muM)','FontSize', 8,'Fontweight','bold')
         text(-2000,3.85,'D','FontWeight','bold');
         ylim([0 3.5])
     end
 end
 
-
-%Saves the graphs if running matlab 2020a or later
-% if f_check_minimum_version(9,8)
-
+%Saves the graphs
 exportgraphics(layout,...
     folder + "supplementary figure 1.png",...
     'Resolution',600)
@@ -189,20 +159,11 @@ exportgraphics(layout,...
 exportgraphics(layout,...
     folder + "supplementary figure 1.pdf",...
     'ContentType','vector')
-% end
 end
 
 function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number,folder)
 
-% load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
-
-% persistent sbtab
-% persistent Data
-% persistent sb
-
-% if isempty(Data)
 load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab','sb')
-% end
 
 sim_results = rst.simd{1,exp_number}.Data(:,end-...
     size(sbtab.datasets(exp_number).output,2)+output_number);
@@ -215,41 +176,29 @@ else
 end
 
 if ~isempty(sbtab.datasets(exp_number).Normalize)
+    
     if contains(sbtab.datasets(exp_number).Normalize,'Max')
         
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %                 norm_factor
-        %             end
-        %         end
-        
         if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
-            %                     m
+            
             norm_factor = rst.simd{1,exp_number}.Data(:,end-...
                 size(sbtab.datasets(exp_number).output,2)+output_number);
-            
-            
+
             sim_results = sim_results/max(norm_factor);
+            
             if stg.simdetail
                 sim_results_detailed = sim_results_detailed/max(norm_factor);
             end
         end
     end
+    
     if contains(sbtab.datasets(exp_number).Normalize,'Min')
-        
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %             end
-        %         end
         
         if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
             norm_factor = rst.simd{1,exp_number}.Data(:,end-...
                 size(sbtab.datasets(exp_number).output,2)+output_number);
-            
-            
             sim_results = sim_results/min(norm_factor);
+            
             if stg.simdetail
                 sim_results_detailed = sim_results_detailed/min(norm_factor);
             end
@@ -258,19 +207,15 @@ if ~isempty(sbtab.datasets(exp_number).Normalize)
     
     if contains(sbtab.datasets(exp_number).Normalize,'Time')
         
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %             end
-        %         end
-        
         if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
             norm_factor = rst.simd{1,exp_number}.Data(:,end-...
                 size(sbtab.datasets(exp_number).output,2)+output_number);
             
             for n = 1:size(Data(exp_number).Experiment.t,1)
+                
                 if contains(sbtab.datasets(exp_number).Normalize,eval("sb.E"+(exp_number-1)+".ID(n)"))
                     sim_results = sim_results/norm_factor(n);
+                    
                     if stg.simdetail
                         sim_results_detailed = sim_results_detailed/norm_factor(n);
                     end

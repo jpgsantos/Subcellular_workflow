@@ -12,11 +12,11 @@ Scoring and saved simulation output
 
 Every time a simulation is run the simulated results are compared to the results provided and a score is calculated.
 Additionally the end point of the experimental output of all simulations is also stored.
-When performing the diagnostics function an MATLAB\ |TM| representation of the entire run is also saved.
+When performing the diagnostics function an MATLAB\ |Reg| representation of the entire run is also saved.
 
   .. _rst.simd:
 
-- **simd** - Simulation results (MATLAB\ |TM| representation)
+- **simd** - Simulation results (MATLAB\ |Reg| representation)
 
   .. _rst.st:
 
@@ -138,7 +138,7 @@ When running the diagnostics a struct gets created that stores all the :ref:`opu
 
   .. _rst.diag.simd:
 
-- **rst.diag.simd** - Simulation results (MATLAB\ |TM| representation)
+- **rst.diag.simd** - Simulation results (MATLAB\ |Reg| representation)
 
   .. _rst.diag.st:
 
@@ -188,7 +188,7 @@ Optimization
 Sensitivity Analysis
 --------------------
 
-The calculations performed to obtain these sensitivities where performed according to the equations described in Halnes et al 2009 [1]_.
+The calculations performed to obtain these sensitivities where performed according to the equations described in Halnes et al 2009.
 
   .. _rst.SA.M1:
 
@@ -352,4 +352,5 @@ The calculations performed to obtain these sensitivities where performed accordi
 References
 ----------
   
-.. [1] Halnes, G., Ulfhielm, E., Eklöf Ljunggren, E., Hellgren Kotaleski, J., Rospars, J.P. (2009). Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), 471–491.
+`Halnes, G., Ulfhielm, E., Ljunggren, E.E., Kotaleski, J.H. and Rospars, J.P., 2009. Modelling and sensitivity analysis of the reactions involving receptor, G-protein and effector in vertebrate olfactory receptor neurons. Journal of Computational Neuroscience, 27(3), p.471.
+<https://doi.org/10.1007/s10827-009-0162-6>`_

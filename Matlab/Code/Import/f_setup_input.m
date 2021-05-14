@@ -1,7 +1,7 @@
 function f_setup_input(stg)
 % Creates code that loads the inputs of each experiment into a .mat file,
 % and creates the code to read this inputs at runtime when the experiments
-% are being simulated, all this generated code is stored on the formulas 
+% are being simulated, all this generated code is stored on the formulas
 % folder
 
 %Find correct path for loading depending on the platform

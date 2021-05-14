@@ -1,5 +1,5 @@
 function f_plot_scores(rst,stg,sbtab)
-% Generates a figure with Scores 
+% Generates a figure with Scores
 
 % Inform the user that fig1 is being ploted
 disp("Plotting Scores")
@@ -30,12 +30,8 @@ if stg.useLog ~= 0
 else
     
     % Plot the log base 10 of the total scores of each parameter array to
-    % test
-%     scatter(stg.pat,log10([rst(stg.pat).st]),10,'filled')
     scatter(stg.pat,[rst(stg.pat).st],10,'filled')
-    
-    
-    %     scatter(stg.pat,[rst(stg.pat).st],10,'filled')
+
     title("Log 10 of total scores")
 end
 
@@ -97,10 +93,7 @@ else
         for n = stg.exprun
             
             % Get the log base 10 of the score of each dataset
-%             heatpoint{k} = [heatpoint{k},log10(rst(k).sd{n,1})];
             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
-            
-            %             heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
         end
         
         % Combine heatpoints in order to correctly display heatmap

@@ -1,36 +1,25 @@
-function rst=makeParSamplesFromRanges(stg)
-% Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J. comp. neuroscience 27.3 (2009): 471.)
-%
-%Input from stg:
-%
-% stg.sansamples -> number of samples
-% stg.parnum -> number of parameters on wich to run SA
-% stg.ub -> upper bound for all relevant parameters
-% stg.lb -> lower bound for all relevant parameters
-%
-%Output:
-% M1 and M2 matrices with (Nsamples X Npars) random numbers with
-%within the ranges set for each parameter.
-% N matris of size  (Nsamples X Npars x Npars) with columns exchanged
-%between M1 and M2 (see publication).
-%i.e. in total 2*Nsamples + Nsamples*Npars samples.
-        
+function rst= f_makeParSamples(stg)
+% Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J.
+% comp. neuroscience 27.3 (2009): 471.)
+
 % MAKE SAMPLE MATRICES
 M1 = zeros(stg.sansamples, stg.parnum); % Pre-allocate memory for data
 M2 = zeros(stg.sansamples, stg.parnum);
 N = zeros(stg.sansamples, stg.parnum, stg.parnum);
 rng(stg.rseed)
 
-% Create a distribution for each parameter acording to settings
+% Create a distribution for each parameter acording to settings(Note that
+% the sampling is being performed in log space as the parameters and its
+% bounds are in log space)
 for i=1:stg.parnum
-    % Flat distribution truncated at the parameter bounds
+    % Uniform distribution truncated at the parameter bounds
     if stg.sasamplemode == 0
         M1(:,i) = stg.lb(i) +...
             (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
         M2(:,i) = stg.lb(i) +...
             (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
-    % Normal distribution with mu as the best value for a parameter and
-    % sigma as stg.sasamplesigma truncated at the parameter bounds
+        % Normal distribution with mu as the best value for a parameter and
+        % sigma as stg.sasamplesigma truncated at the parameter bounds
     elseif stg.sasamplemode == 1
         pd(i) = makedist('Normal','mu',stg.bestpa(i),...
             'sigma',stg.sasamplesigma);
@@ -39,7 +28,7 @@ for i=1:stg.parnum
         r2{i} = random(t(i),stg.sansamples,1);
         M1(:,i) = r{i};
         M2(:,i) = r2{i};
-    % Same as 1 without truncation
+        % Same as 1 without truncation
     elseif stg.sasamplemode == 2
         pd(i) = makedist('Normal','mu',stg.bestpa(i),...
             'sigma',stg.sasamplesigma);
@@ -47,8 +36,8 @@ for i=1:stg.parnum
         r2{i} = random(pd(i),stg.sansamples,1);
         M1(:,i) = r{i};
         M2(:,i) = r2{i};
-    % Normal distribution centered at the mean of the parameter bounds and
-    % sigma as stg.sasamplesigma truncated at the parameter bounds
+        % Normal distribution centered at the mean of the parameter bounds
+        % and sigma as stg.sasamplesigma truncated at the parameter bounds
     elseif stg.sasamplemode == 3
         pd(i) = makedist('Normal','mu',...
             stg.lb(i) + (stg.ub(i)-stg.lb(i))/2,'sigma',stg.sasamplesigma);
@@ -57,7 +46,7 @@ for i=1:stg.parnum
         r2{i} = random(t(i),stg.sansamples,1);
         M1(:,i) = r{i};
         M2(:,i) = r2{i};
-    % Same as 3 without truncation.
+        % Same as 3 without truncation.
     elseif stg.sasamplemode == 4
         pd(i) = makedist('Normal','mu',...
             stg.lb(i) + (stg.ub(i)-stg.lb(i))/2,'sigma',stg.sasamplesigma);

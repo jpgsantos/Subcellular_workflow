@@ -13,7 +13,7 @@ if stg.osm == 1
     % Get a group of ramdom starting points inside the bounds
     spop = lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
     
-% Optimization Start method 2
+    % Optimization Start method 2
 elseif stg.osm == 2
     
     % Get a random starting point or group of starting points, if using
