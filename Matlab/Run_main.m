@@ -8,7 +8,7 @@ date_stamp = string(year(datetime)) + "_" + ...
 
 
 script_folder = convertCharsToStrings(fileparts(mfilename('fullpath')))+"/";
-addpath(genpath(pwd));
+addpath(genpath(script_folder));
 
 % Code for choosing the model and loading the settings files
 [stg,rst,sb,Analysis_n] = f_load_settings(script_folder);
@@ -40,6 +40,6 @@ if stg.plot
     f_plot(rst,stg,script_folder)
     % Save plots results if chosen in settings
     if stg.save_results
-        f_save_plots(stg,date_stamp)
+        f_save_plots(stg,date_stamp,script_folder)
     end
 end

@@ -10,7 +10,7 @@ mkdir(script_folder + "/Model/" + stg.folder_model,"Data/Exp");
 disp("Reading SBtab Excel")
 f_excel_sbtab_importer(stg,script_folder);
 
-addpath(genpath(pwd));
+addpath(genpath(script_folder));
 
 % Creates a struct based on the sbtab that is used elswhere in the code and
 % also adds the number of experiments and outputs to the settings variable
