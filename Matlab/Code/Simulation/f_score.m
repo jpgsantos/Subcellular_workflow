@@ -1,11 +1,11 @@
-function rst = f_score(rst,stg)
+function rst = f_score(rst,stg,script_folder)
 
 persistent sbtab
 persistent Data
 
 % Import the data on the first run
 if isempty(Data)
-    load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
+    load(script_folder + "Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 end
 
 % Iterate over the number of experiments
