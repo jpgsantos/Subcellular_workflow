@@ -1,4 +1,4 @@
-function [stg,rst,sb,Analysis_n] = f_load_settings()
+function [stg,rst,sb,Analysis_n] = f_load_settings(script_folder)
 
 persistent sbtab_date_last
 persistent folder_n_last
@@ -7,14 +7,16 @@ persistent settings_file_date_last
 persistent Analysis_n_last
 
 rst = [];
-
-listing = dir('Model');
+listing = dir(script_folder + 'Model');
 
 for n = size(listing,1):-1:1
     if matches(listing(n).name,char("."))
         listing(n)= [];
     end
     if matches(listing(n).name,char(".."))
+        listing(n)= [];
+    end
+    if matches(listing(n).name,char("Place models here.txt"))
         listing(n)= [];
     end
 end

@@ -1,4 +1,4 @@
-function rst = f_diagnostics(stg)
+function rst = f_diagnostics(stg,script_folder)
 
 % Run the model and obtain scores for fitness Multi Core
 if stg.optmc
@@ -6,7 +6,7 @@ if stg.optmc
     
     % Iterate over the parameter arrays to be tested
     parfor n = stg.pat
-        [~,rst(n),~] = f_sim_score(stg.pa(n,:),stg);
+        [~,rst(n),~] = f_sim_score(stg.pa(n,:),stg,script_folder);
     end
     
     % Run the model and obtain scores for fitness single Core
@@ -15,7 +15,7 @@ else
     
     % Iterate over the parameter arrays to be tested
     for n = stg.pat
-        [~,rst(n),~] = f_sim_score(stg.pa(n,:),stg);
+        [~,rst(n),~] = f_sim_score(stg.pa(n,:),stg,script_folder);
     end
 end
 end

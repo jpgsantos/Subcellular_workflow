@@ -1,4 +1,4 @@
-function rst = f_prep_sim(parameters,stg)
+function rst = f_prep_sim(parameters,stg,script_folder)
 
 % Save variables that need to be mantained over multiple function calls
 % persistent modelobj
@@ -9,7 +9,7 @@ persistent Data
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
+    load(script_folder + "Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
 end
 
 % Set the parameters that are going to be used for the simulation to the
@@ -126,7 +126,7 @@ for n = stg.exprun
     
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-    try
+%     try
         
         % If the correct setting is chosen display messages to console
         if stg.simcsl
@@ -165,7 +165,7 @@ for n = stg.exprun
             end
             
             % Equilibrate the model
-            rst = f_sim(n+stg.expn,stg,rt,rst);
+            rst = f_sim(n+stg.expn,stg,rt,rst,script_folder);
             
             for j = 1:size(sbtab.species,1)
                 
@@ -187,11 +187,11 @@ for n = stg.exprun
         end
         
         % Simulate the model
-        rst = f_sim(n,stg,rt,rst);
+        rst = f_sim(n,stg,rt,rst,script_folder);
         
         try
             if stg.simdetail
-                rst = f_sim(n+2*stg.expn,stg,rt,rst);
+                rst = f_sim(n+2*stg.expn,stg,rt,rst,script_folder);
             end
         catch
         end
@@ -208,12 +208,12 @@ for n = stg.exprun
             % not worked properly
             rst.simd{n} = 0;
         end
-    catch
+%     catch
         
         % Set the simulation output to be 0, this is a non function value
         % that the score function expects in simulations that did not
         % worked properly
-        rst.simd{n} = 0;
-    end
+%         rst.simd{n} = 0;
+%     end
 end
 end

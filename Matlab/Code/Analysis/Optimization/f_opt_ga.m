@@ -1,4 +1,4 @@
-function rst = f_opt_ga(stg)
+function rst = f_opt_ga(stg,script_folder)
 
 % Set the randomm seed for reproducibility
 rng(stg.rseed);
@@ -30,13 +30,13 @@ options.InitialPopulationMatrix = startpop;
 if stg.mst
     parfor n = 1:stg.msts
         disp(string(n))
-        [x(n,:),fval(n)] = ga(@(x)f_sim_score(x,stg),stg.parnum,...
+        [x(n,:),fval(n)] = ga(@(x)f_sim_score(x,stg,script_folder),stg.parnum,...
             [],[],[],[],stg.lb,stg.ub,[],options);
     end
     
     % Optimize the model
 else
-    [x(1,:),fval(1)] = ga(@(x)f_sim_score(x,stg),stg.parnum,...
+    [x(1,:),fval(1)] = ga(@(x)f_sim_score(x,stg,script_folder),stg.parnum,...
         [],[],[],[],stg.lb,stg.ub,[],options);
 end
 

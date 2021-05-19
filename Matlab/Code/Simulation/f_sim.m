@@ -1,4 +1,4 @@
-function rst = f_sim(exp_n,stg,rt,rst)
+function rst = f_sim(exp_n,stg,rt,rst,script_folder)
 
 % Save variables that need to be mantained over multiple function calls
 persistent model_run
@@ -18,7 +18,7 @@ if isempty(model_run)
         
         if stg.simdetail
             % Load the models for equilibrium
-            load("Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
+            load(script_folder + "Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
                 "_" + n + ".mat",'model_exp','config_exp')
 
             % Place the loaded models in the correct place in the array,
@@ -35,12 +35,9 @@ if isempty(model_run)
             end
         end
         % Load the models for equilibrium
-        load("Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
+        load(script_folder + "Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
             "_" + n + ".mat",'model_exp','config_exp')
-        %         load("Model/" +stg.folder_model + "/Data/exp/Model_diag_"
-        %         + stg.name +...
-        %             "_" + n + ".mat",'model_exp')
-        
+
         % Place the loaded models in the correct place in the array, models
         % for equilibrium are set to be on the second half of the array
         model_run{n+stg.expn} = model_exp;
@@ -53,7 +50,7 @@ if isempty(model_run)
         end
         
         % Load the models for main run
-        load("Model/" +stg.folder_model + "/Data/exp/Model_" + stg.name +...
+        load(script_folder + "Model/" +stg.folder_model + "/Data/exp/Model_" + stg.name +...
             "_" + n + ".mat",'model_exp','config_exp')
         
         % Place the loaded models in the correct place in the array, models

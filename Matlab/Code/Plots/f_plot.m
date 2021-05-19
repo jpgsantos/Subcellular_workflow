@@ -1,10 +1,10 @@
-function f_plot(rst,stg)
+function f_plot(rst,stg,script_folder)
 
 % Inform the user that the plots are being done
 disp("Plotting ...")
 
 % Import the data on the first run
-load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
+load(script_folder + "Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
 
 % Generate figure with Scores
 if isfield(rst,'diag')

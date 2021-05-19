@@ -1,14 +1,14 @@
-function f_build_model_exp(stg,sb)
+function f_build_model_exp(stg,sb,script_folder)
 %Creates two .mat files for each experiment, with all the added rules,
 %species and parameters needed depending on the inputs and outputs
 %specified on the sbtab, one for the equilibrium simulation run and one for
 %the proper run
 
 %Find correct path for loading depending on the platform
-load(pwd + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
+load(script_folder + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
     stg.name + ".mat",'Data','sbtab')
 
-load(pwd + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
+load(script_folder + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
     stg.name + ".mat",'modelobj');
 
 
@@ -46,10 +46,10 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
+    sbiosaveproject(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
         stg.name + "_" + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
@@ -116,10 +116,10 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
+    sbiosaveproject(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
         stg.name + "_" + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
@@ -128,7 +128,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
+    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
         stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
     
 end
