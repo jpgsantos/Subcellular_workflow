@@ -1,8 +1,8 @@
-function f_Reproduce_new_data_fig3_C_D(folder)
+function f_Reproduce_new_data_fig3_CD(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
-load(folder + "model_Nair_2016_optimized.mat");
+load(folder + "model_Nair_2016_optimized_fig3.mat");
 obj = modelobj;
 
 %% Get steady state values after equilibrating for 100000 s
@@ -11,10 +11,10 @@ cnfst = getconfigset(obj);
 cnfst.SolverType = 'ode15s';
 cnfst.StopTime = 50000;
 cnfst.TimeUnits = 'second';
-cnfst.SolverOptions.AbsoluteTolerance = 1e-9;
-cnfst.SolverOptions.RelativeTolerance = 1e-6;
+cnfst.SolverOptions.AbsoluteTolerance = 1e-7;
+cnfst.SolverOptions.RelativeTolerance = 1e-4;
 cnfst.CompileOptions.UnitConversion = 1;
-cnfst.SolverOptions.AbsoluteToleranceScaling = 0;
+cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 % set(obj.rules(2), 'Active', 0); % Uncomment if Ca input is incorporated
 % set(obj.rules(3), 'Active', 0); % Uncomment if DA input is incorporated
