@@ -1,10 +1,8 @@
-function f_Reproduce_fig4(folder)
+function f_Reproduce_plot_fig4(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
-load(folder + "SA_results.mat")
-
-rst.SA = job86_output{1,1};
+load(folder + "SA_results_test.mat",'rst')
 
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
