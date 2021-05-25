@@ -32,11 +32,11 @@ stg.exprun = [1:10];
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
 % (Use logarithm)
-stg.useLog = 4;
+stg.useLog = 0;
 
 % True or false to decide whether to use multicore everywhere it is available
 % (Optimization Multicore)
-stg.optmc = true;
+stg.optmc = false;
 
 % Choice of ramdom seed
 % (Ramdom seed)
@@ -66,7 +66,7 @@ stg.simdetail = false;
 
 % Maximum time for each individual function to run in seconds
 % (Maximum time)
-stg.maxt = 2;
+stg.maxt = 5;
 
 % Equilibration time
 % (Equilibration time)
@@ -90,7 +90,7 @@ stg.reltol = 1.0E-4;
 
 % Value of Absolute tolerance
 % (Absolute tolerance)
-stg.abstol = 1.0E-7;%% This value is low due to the size of the 
+stg.abstol = 1.0E-2;%% This value is low due to the size of the 
 % compartment, use a compartment of 1 liter and increadse this to 1.0E-4
 % to improve run speed
 
@@ -102,6 +102,8 @@ stg.simtime = "second";
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
 stg.sbioacc = true;
+
+stg.abstolstepsize_eq = 0.01;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -145,6 +147,7 @@ stg.pat = [1:1];
 % (Parameter arrays)
 
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
+% stg.pa(2,:) = [-6.551532095	-1.702640692	-2.335079764	-6.029650717	-2.184835444	1.090514988];
 
 
 % Best parameter array found so far for the model

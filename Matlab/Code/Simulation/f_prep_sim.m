@@ -171,6 +171,15 @@ for n = stg.exprun
                 
                 % Set the starting amount for species that after
                 % equilibrium have very low values to zero
+                
+%                 rst
+%                 rst.simd{n+stg.expn}
+%                 
+%                 j
+%                 rst.simd{n+stg.expn}.Data()
+%                 rst.simd{n+stg.expn}.DataNames()
+%                 rst.simd{n+stg.expn}.Data(end,j)
+                
                 if rst.simd{n+stg.expn}.Data(end,j) < 1.0e-15
                     rt.ssa(j,n) = 0;
                     
