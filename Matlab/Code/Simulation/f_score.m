@@ -62,13 +62,13 @@ for n = stg.exprun
             % If there are errors output a very high score value (10^10)
         elseif rst.simd{n} == 0 || rst.sd{n,1}(j) == inf
             
-            if stg.useLog == 4
-                rst.sd{n,1}(j) = 10000;
+%             if stg.useLog == 4
+%                 rst.sd{n,1}(j) = 10000;
+%                 rst.xfinal{n,1}(j) = 0;
+%             else
+                rst.sd{n,1}(j) = stg.errorscore;
                 rst.xfinal{n,1}(j) = 0;
-            else
-                rst.sd{n,1}(j) = 10^5;
-                rst.xfinal{n,1}(j) = 0;
-            end
+%             end
         end
         
         % Calculate the log10 of dataset score if option selected

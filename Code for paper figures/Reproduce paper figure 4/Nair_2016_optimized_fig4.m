@@ -90,7 +90,7 @@ stg.reltol = 1.0E-4;
 
 % Value of Absolute tolerance
 % (Absolute tolerance)
-stg.abstol = 1.0E-2;%% This value is low due to the size of the 
+stg.abstol = 1.0E-7;%% This value is low due to the size of the 
 % compartment, use a compartment of 1 liter and increadse this to 1.0E-4
 % to improve run speed
 
@@ -116,6 +116,9 @@ stg.maxstepeq = [];
 % Max step size in the detailed plots (if empty matlab decides whats best)
 % (Maximum step)
 stg.maxstepdetail = [1];
+
+stg.errorscore = 10^5;
+
 
 %% Model
 

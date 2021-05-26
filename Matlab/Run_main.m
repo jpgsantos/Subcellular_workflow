@@ -8,6 +8,7 @@ date_stamp = string(year(datetime)) + "_" + ...
 
 
 script_folder = convertCharsToStrings(fileparts(mfilename('fullpath')))+"/";
+script_folder = strrep(script_folder,"\","/");
 addpath(genpath(script_folder));
 
 % Code for choosing the model and loading the settings files
