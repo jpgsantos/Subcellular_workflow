@@ -1,0 +1,683 @@
+# Created by BioNetGen 2.3.1
+begin parameters
+    1 Na                        6.022e23  # Constant
+    2 v_Cell                    1.0e-15  # Constant
+    3 Na_x_v_Cell               Na*v_Cell  # ConstantExpression
+    4 k2k_0_1xCell_1xCell_      (1e6*1)/Na_x_v_Cell  # ConstantExpression
+    5 k2k_0_1xCell_xCell_2      1/1e0  # Constant
+    6 k2k_0_1xCell_             1/1e0  # Constant
+    7 k2k_0_1xCell_2            1e-6*Na_x_v_Cell  # ConstantExpression
+    8 c2c_0_Cell                1e-6*Na_x_v_Cell  # ConstantExpression
+    9 kf_PKC_act                100*k2k_0_1xCell_  # ConstantExpression
+   10 kf_ERK1_2_ratio1          100*k2k_0_1xCell_  # ConstantExpression
+   11 kf_R85                    14.0000000000001*k2k_0_1xCell_xCell_2  # ConstantExpression
+   12 kr_R85                    97.2214799999992*k2k_0_1xCell_2  # ConstantExpression
+   13 kf_R86                    56.9999999999998*k2k_0_1xCell_xCell_2  # ConstantExpression
+   14 kr_R86                    19.7915200000001*k2k_0_1xCell_2  # ConstantExpression
+   15 kr1p1                     50  # Constant
+   16 kr1p2                     100*k2k_0_1xCell_  # ConstantExpression
+   17 kr1                       kr1p1*kr1p2  # ConstantExpression
+   18 kf2_R85                   kr1/kr_R85  # ConstantExpression
+   19 kf1_R85                   kf_R85*kf2_R85  # ConstantExpression
+   20 kf1a_R85                  kf_R85*kr1p2  # ConstantExpression
+   21 kf1b_R85                  kr1p1/kr_R85  # ConstantExpression
+   22 kf2_R86                   kr1/kr_R86  # ConstantExpression
+   23 kf1_R86                   kf_R86*kf2_R86  # ConstantExpression
+   24 kf1a_R86                  kf_R86*kr1p2  # ConstantExpression
+   25 kf1b_R86                  kr1p1/kr_R86  # ConstantExpression
+   26 kf_R1                     0.599998200000001*k2k_0_1xCell_1xCell_  # ConstantExpression
+   27 kr_R1                     0.5*k2k_0_1xCell_  # ConstantExpression
+   28 kf_R2                     0.00799985000000007*k2k_0_1xCell_1xCell_  # ConstantExpression
+   29 kr_R2                     8.6348*k2k_0_1xCell_  # ConstantExpression
+   30 kf_R3                     1.2705*k2k_0_1xCell_  # ConstantExpression
+   31 kr_R3                     3.5026*k2k_0_1xCell_  # ConstantExpression
+   32 kf_R4                     1.0*k2k_0_1xCell_  # ConstantExpression
+   33 kr_R4                     0.1*k2k_0_1xCell_  # ConstantExpression
+   34 kf_R5                     0.00120000899999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   35 kr_R5                     0.1*k2k_0_1xCell_  # ConstantExpression
+   36 kf_R6                     2.0*k2k_0_1xCell_  # ConstantExpression
+   37 kr_R6                     0.2*k2k_0_1xCell_  # ConstantExpression
+   38 kf_R7                     1.0*k2k_0_1xCell_  # ConstantExpression
+   39 kr_R7                     50.0000000000001*k2k_0_1xCell_  # ConstantExpression
+   40 kf_R8                     0.000120000899999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   41 kr_R8                     0.1*k2k_0_1xCell_  # ConstantExpression
+   42 kf_R9                     0.000599998199999995*k2k_0_1xCell_1xCell_  # ConstantExpression
+   43 kr_R9                     0.1*k2k_0_1xCell_  # ConstantExpression
+   44 kf_R10                    0.0179998199999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   45 kr_R10                    2.0*k2k_0_1xCell_  # ConstantExpression
+   46 kf_R11                    0.9999971*k2k_0_1xCell_1xCell_  # ConstantExpression
+   47 kr_R11                    0.1*k2k_0_1xCell_  # ConstantExpression
+   48 kf_R12                    0.00299999099999998*k2k_0_1xCell_1xCell_  # ConstantExpression
+   49 kr_R12                    4.0*k2k_0_1xCell_  # ConstantExpression
+   50 kf_R13                    0.4*k2k_0_1xCell_  # ConstantExpression
+   51 kf_R14                    5.999982*k2k_0_1xCell_1xCell_  # ConstantExpression
+   52 kr_R14                    0.1*k2k_0_1xCell_  # ConstantExpression
+   53 kf_R15                    0.17*k2k_0_1xCell_  # ConstantExpression
+   54 kf_R16                    2.999991*k2k_0_1xCell_1xCell_  # ConstantExpression
+   55 kr_R16                    1.0*k2k_0_1xCell_  # ConstantExpression
+   56 kf_R17                    2.5*k2k_0_1xCell_  # ConstantExpression
+   57 kf_R18                    0.15*k2k_0_1xCell_  # ConstantExpression
+   58 kf_R19                    29.9999099999998*k2k_0_1xCell_1xCell_  # ConstantExpression
+   59 kr_R19                    1.0*k2k_0_1xCell_  # ConstantExpression
+   60 kf_R20                    92.4102550375869*k2k_0_1xCell_1xCell_  # ConstantExpression
+   61 kr_R20                    4.97235933793897*k2k_0_1xCell_  # ConstantExpression
+   62 kf_R21                    0.10091590490824*k2k_0_1xCell_  # ConstantExpression
+   63 kf_R22                    0.000775637987817214*k2k_0_1xCell_  # ConstantExpression
+   64 kf_R23                    0.10620757099439*k2k_0_1xCell_  # ConstantExpression
+   65 kf_R24                    1.0*k2k_0_1xCell_  # ConstantExpression
+   66 kf_R25                    4.2*k2k_0_1xCell_1xCell_  # ConstantExpression
+   67 kr_R25                    0.25*k2k_0_1xCell_  # ConstantExpression
+   68 kf_R26                    0.00199999999999999*k2k_0_1xCell_  # ConstantExpression
+   69 kr_R26                    0.000330000000000002*k2k_0_1xCell_  # ConstantExpression
+   70 kf_R27                    0.2*k2k_0_1xCell_  # ConstantExpression
+   71 kf_R28                    0.4999796*k2k_0_1xCell_1xCell_  # ConstantExpression
+   72 kr_R28                    0.1*k2k_0_1xCell_  # ConstantExpression
+   73 kf_R29                    0.0250002399999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   74 kr_R29                    0.0167999999999999*k2k_0_1xCell_  # ConstantExpression
+   75 kf_R30                    0.001*k2k_0_1xCell_  # ConstantExpression
+   76 kf_R31                    0.0250002399999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   77 kr_R31                    0.0167999999999999*k2k_0_1xCell_  # ConstantExpression
+   78 kf_R32                    0.9999971*k2k_0_1xCell_1xCell_  # ConstantExpression
+   79 kr_R32                    1.0*k2k_0_1xCell_  # ConstantExpression
+   80 kf_R33                    179.998199999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   81 kr_R33                    10.0*k2k_0_1xCell_  # ConstantExpression
+   82 kf_R34                    12.0000899999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   83 kr_R34                    10.0*k2k_0_1xCell_  # ConstantExpression
+   84 kf_R35                    0.0500000000000001*k2k_0_1xCell_  # ConstantExpression
+   85 kf_R36                    0.0700000000000005*k2k_0_1xCell_  # ConstantExpression
+   86 kf_R37                    0.9497839*k2k_0_1xCell_1xCell_  # ConstantExpression
+   87 kr_R37                    15.9999999999998*k2k_0_1xCell_  # ConstantExpression
+   88 kf_R38                    4.0*k2k_0_1xCell_  # ConstantExpression
+   89 kf_R39                    5.65655999999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   90 kr_R39                    15.9999999999998*k2k_0_1xCell_  # ConstantExpression
+   91 kf_R40                    4.0*k2k_0_1xCell_  # ConstantExpression
+   92 kf_R41                    5.65655999999999*k2k_0_1xCell_1xCell_  # ConstantExpression
+   93 kr_R41                    15.9999999999998*k2k_0_1xCell_  # ConstantExpression
+   94 kf_R42                    4.0*k2k_0_1xCell_  # ConstantExpression
+   95 kf_R43                    1.272726*k2k_0_1xCell_1xCell_  # ConstantExpression
+   96 kr_R43                    21.6*k2k_0_1xCell_  # ConstantExpression
+   97 kf_R44                    5.40000000000001*k2k_0_1xCell_  # ConstantExpression
+   98 kf_R45                    2.602017*k2k_0_1xCell_1xCell_  # ConstantExpression
+   99 kr_R45                    44.1599999999998*k2k_0_1xCell_  # ConstantExpression
+  100 kf_R46                    11.04*k2k_0_1xCell_  # ConstantExpression
+  101 kf_R47                    8.48484000000001*k2k_0_1xCell_1xCell_  # ConstantExpression
+  102 kr_R47                    144.0*k2k_0_1xCell_  # ConstantExpression
+  103 kf_R48                    36.0000000000002*k2k_0_1xCell_  # ConstantExpression
+  104 kf_R49                    14.1414*k2k_0_1xCell_1xCell_  # ConstantExpression
+  105 kr_R49                    240.000000000002*k2k_0_1xCell_  # ConstantExpression
+  106 kf_R50                    59.9999999999995*k2k_0_1xCell_  # ConstantExpression
+  107 kf_R51                    28.2828*k2k_0_1xCell_1xCell_  # ConstantExpression
+  108 kr_R51                    480.000000000003*k2k_0_1xCell_  # ConstantExpression
+  109 kf_R52                    119.999999999999*k2k_0_1xCell_  # ConstantExpression
+  110 kf_R53                    2.375755*k2k_0_1xCell_1xCell_  # ConstantExpression
+  111 kr_R53                    39.9999999999998*k2k_0_1xCell_  # ConstantExpression
+  112 kf_R54                    10.0*k2k_0_1xCell_  # ConstantExpression
+  113 kf_R55                    45.2524800000005*k2k_0_1xCell_1xCell_  # ConstantExpression
+  114 kr_R55                    192.0*k2k_0_1xCell_  # ConstantExpression
+  115 kf_R56                    48.0000000000003*k2k_0_1xCell_  # ConstantExpression
+  116 kf_R57                    3.676764*k2k_0_1xCell_1xCell_  # ConstantExpression
+  117 kr_R57                    79.9999999999993*k2k_0_1xCell_  # ConstantExpression
+  118 kf_R58                    19.9999999999999*k2k_0_1xCell_  # ConstantExpression
+  119 kf_R59                    0.214770214543789*k2k_0_1xCell_1xCell_  # ConstantExpression
+  120 kr_R59                    393.236559202509*k2k_0_1xCell_  # ConstantExpression
+  121 kf_R60                    6.63196665860695*k2k_0_1xCell_  # ConstantExpression
+  122 kf_R61                    18.3838200000002*k2k_0_1xCell_1xCell_  # ConstantExpression
+  123 kr_R61                    39.9999999999998*k2k_0_1xCell_  # ConstantExpression
+  124 kf_R62                    10.0*k2k_0_1xCell_  # ConstantExpression
+  125 kf_R63                    1.52765692772327*k2k_0_1xCell_1xCell_  # ConstantExpression
+  126 kr_R63                    0.07474462928951*k2k_0_1xCell_  # ConstantExpression
+  127 kf_R64                    1.44819747595644*k2k_0_1xCell_  # ConstantExpression
+  128 kf_R65                    32.383031685115*k2k_0_1xCell_1xCell_  # ConstantExpression
+  129 kr_R65                    5.5252453206765*k2k_0_1xCell_  # ConstantExpression
+  130 kf_R66                    1.45520443064125*k2k_0_1xCell_  # ConstantExpression
+  131 kf_R67                    9.14770204233783*k2k_0_1xCell_1xCell_  # ConstantExpression
+  132 kr_R67                    0.563955852356737*k2k_0_1xCell_  # ConstantExpression
+  133 kf_R68                    2.57270734334975*k2k_0_1xCell_  # ConstantExpression
+  134 kf_R69                    81.5602646242946*k2k_0_1xCell_1xCell_  # ConstantExpression
+  135 kr_R69                    0.501668758161591*k2k_0_1xCell_  # ConstantExpression
+  136 kf_R70                    2.96097750401735*k2k_0_1xCell_  # ConstantExpression
+  137 kf_R71                    0.0935626763898432*k2k_0_1xCell_1xCell_  # ConstantExpression
+  138 kr_R71                    0.0165788735204683*k2k_0_1xCell_  # ConstantExpression
+  139 kf_R72                    0.00249989722712168*k2k_0_1xCell_  # ConstantExpression
+  140 kf_R73                    0.0910924727752031*k2k_0_1xCell_1xCell_  # ConstantExpression
+  141 kr_R73                    0.763615297482557*k2k_0_1xCell_  # ConstantExpression
+  142 kf_R74                    0.0024173166728495*k2k_0_1xCell_  # ConstantExpression
+  143 kf_R75                    55.5720828333877*k2k_0_1xCell_1xCell_  # ConstantExpression
+  144 kr_R75                    4.00166286040964*k2k_0_1xCell_  # ConstantExpression
+  145 kf_R76                    99.8178268537537*k2k_0_1xCell_  # ConstantExpression
+  146 kf_R77                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  147 kr_R77                    0.8*k2k_0_1xCell_  # ConstantExpression
+  148 kf_R78                    0.2*k2k_0_1xCell_  # ConstantExpression
+  149 kf_R79                    2.82828*k2k_0_1xCell_1xCell_  # ConstantExpression
+  150 kr_R79                    0.8*k2k_0_1xCell_  # ConstantExpression
+  151 kf_R80                    0.2*k2k_0_1xCell_  # ConstantExpression
+  152 kf_R81                    1.131312*k2k_0_1xCell_1xCell_  # ConstantExpression
+  153 kr_R81                    0.8*k2k_0_1xCell_  # ConstantExpression
+  154 kf_R82                    0.2*k2k_0_1xCell_  # ConstantExpression
+  155 kf_R83                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  156 kr_R83                    0.8*k2k_0_1xCell_  # ConstantExpression
+  157 kf_R84                    0.2*k2k_0_1xCell_  # ConstantExpression
+  158 kf_R87                    7.97311500000001*k2k_0_1xCell_1xCell_  # ConstantExpression
+  159 kr_R87                    2.0*k2k_0_1xCell_  # ConstantExpression
+  160 kf_R88                    0.5*k2k_0_1xCell_  # ConstantExpression
+  161 kf_R89                    2.714777*k2k_0_1xCell_1xCell_  # ConstantExpression
+  162 kr_R89                    15.9999999999998*k2k_0_1xCell_  # ConstantExpression
+  163 kf_R90                    4.0*k2k_0_1xCell_  # ConstantExpression
+  164 kf_R91                    2.714777*k2k_0_1xCell_1xCell_  # ConstantExpression
+  165 kr_R91                    15.9999999999998*k2k_0_1xCell_  # ConstantExpression
+  166 kf_R92                    4.0*k2k_0_1xCell_  # ConstantExpression
+  167 kf_R93                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  168 kr_R93                    25.0000000000001*k2k_0_1xCell_  # ConstantExpression
+  169 kf_R94                    6.0*k2k_0_1xCell_  # ConstantExpression
+  170 kf_R95                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  171 kr_R95                    25.0000000000001*k2k_0_1xCell_  # ConstantExpression
+  172 kf_R96                    6.0*k2k_0_1xCell_  # ConstantExpression
+  173 kf_R97                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  174 kr_R97                    25.0000000000001*k2k_0_1xCell_  # ConstantExpression
+  175 kf_R98                    6.0*k2k_0_1xCell_  # ConstantExpression
+  176 kf_R99                    1.866665*k2k_0_1xCell_1xCell_  # ConstantExpression
+  177 kr_R99                    25.0000000000001*k2k_0_1xCell_  # ConstantExpression
+  178 kf_R100                   6.0*k2k_0_1xCell_  # ConstantExpression
+  179 kf_R101                   1.806462*k2k_0_1xCell_1xCell_  # ConstantExpression
+  180 kr_R101                   24.0000000000002*k2k_0_1xCell_  # ConstantExpression
+  181 kf_R102                   6.0*k2k_0_1xCell_  # ConstantExpression
+  182 _InitialConc1             0*c2c_0_Cell  # ConstantExpression
+  183 _InitialConc2             0*c2c_0_Cell  # ConstantExpression
+  184 _InitialConc3             0*c2c_0_Cell  # ConstantExpression
+  185 _InitialConc4             0*c2c_0_Cell  # ConstantExpression
+  186 _InitialConc5             0.0*c2c_0_Cell  # ConstantExpression
+  187 _InitialConc6             0.0*c2c_0_Cell  # ConstantExpression
+  188 _InitialConc7             0.0*c2c_0_Cell  # ConstantExpression
+  189 _InitialConc8             0.0*c2c_0_Cell  # ConstantExpression
+  190 _InitialConc9             0.0200000000000631*c2c_0_Cell  # ConstantExpression
+  191 _InitialConc10            0.0*c2c_0_Cell  # ConstantExpression
+  192 _InitialConc11            0.0*c2c_0_Cell  # ConstantExpression
+  193 _InitialConc12            0.0*c2c_0_Cell  # ConstantExpression
+  194 _InitialConc13            0.0*c2c_0_Cell  # ConstantExpression
+  195 _InitialConc14            1.0*c2c_0_Cell  # ConstantExpression
+  196 _InitialConc15            0.399999999999685*c2c_0_Cell  # ConstantExpression
+  197 _InitialConc16            0.0*c2c_0_Cell  # ConstantExpression
+  198 _InitialConc17            0*c2c_0_Cell  # ConstantExpression
+  199 _InitialConc18            0.0*c2c_0_Cell  # ConstantExpression
+  200 _InitialConc19            0.0*c2c_0_Cell  # ConstantExpression
+  201 _InitialConc20            30.0008*c2c_0_Cell  # ConstantExpression
+  202 _InitialConc21            0.0*c2c_0_Cell  # ConstantExpression
+  203 _InitialConc22            0.0*c2c_0_Cell  # ConstantExpression
+  204 _InitialConc23            0.0*c2c_0_Cell  # ConstantExpression
+  205 _InitialConc24            0.799999999999369*c2c_0_Cell  # ConstantExpression
+  206 _InitialConc25            0.0*c2c_0_Cell  # ConstantExpression
+  207 _InitialConc26            0.0*c2c_0_Cell  # ConstantExpression
+  208 _InitialConc27            0.0*c2c_0_Cell  # ConstantExpression
+  209 _InitialConc28            0.0*c2c_0_Cell  # ConstantExpression
+  210 _InitialConc29            0.0*c2c_0_Cell  # ConstantExpression
+  211 _InitialConc30            0.0*c2c_0_Cell  # ConstantExpression
+  212 _InitialConc31            0.730003957260999*c2c_0_Cell  # ConstantExpression
+  213 _InitialConc32            6.99999999999054*c2c_0_Cell  # ConstantExpression
+  214 _InitialConc33            0.0*c2c_0_Cell  # ConstantExpression
+  215 _InitialConc34            0.200000000000631*c2c_0_Cell  # ConstantExpression
+  216 _InitialConc35            0.0*c2c_0_Cell  # ConstantExpression
+  217 _InitialConc36            0.180007914523008*c2c_0_Cell  # ConstantExpression
+  218 _InitialConc37            0.360000000000505*c2c_0_Cell  # ConstantExpression
+  219 _InitialConc38            0.0*c2c_0_Cell  # ConstantExpression
+  220 _InitialConc39            0.0*c2c_0_Cell  # ConstantExpression
+  221 _InitialConc40            0.0*c2c_0_Cell  # ConstantExpression
+  222 _InitialConc41            0.0*c2c_0_Cell  # ConstantExpression
+  223 _InitialConc42            0.0*c2c_0_Cell  # ConstantExpression
+  224 _InitialConc43            0.0*c2c_0_Cell  # ConstantExpression
+  225 _InitialConc44            0.1*c2c_0_Cell  # ConstantExpression
+  226 _InitialConc45            0.0*c2c_0_Cell  # ConstantExpression
+  227 _InitialConc46            0.0*c2c_0_Cell  # ConstantExpression
+  228 _InitialConc47            0.5*c2c_0_Cell  # ConstantExpression
+  229 _InitialConc48            0*c2c_0_Cell  # ConstantExpression
+  230 _InitialConc49            0.0200000000000631*c2c_0_Cell  # ConstantExpression
+  231 _InitialConc50            0.0*c2c_0_Cell  # ConstantExpression
+  232 _InitialConc51            0.0*c2c_0_Cell  # ConstantExpression
+  233 _InitialConc52            0.166664*c2c_0_Cell  # ConstantExpression
+  234 _InitialConc53            0.0*c2c_0_Cell  # ConstantExpression
+  235 _InitialConc54            0.0*c2c_0_Cell  # ConstantExpression
+  236 _InitialConc55            0.0*c2c_0_Cell  # ConstantExpression
+  237 _InitialConc56            0*c2c_0_Cell  # ConstantExpression
+  238 _InitialConc57            0.500007914522756*c2c_0_Cell  # ConstantExpression
+  239 _InitialConc58            0.0*c2c_0_Cell  # ConstantExpression
+  240 _InitialConc59            0.0*c2c_0_Cell  # ConstantExpression
+  241 _InitialConc60            1.0*c2c_0_Cell  # ConstantExpression
+  242 _InitialConc61            0.0*c2c_0_Cell  # ConstantExpression
+  243 _InitialConc62            0.0*c2c_0_Cell  # ConstantExpression
+  244 _InitialConc63            0.1*c2c_0_Cell  # ConstantExpression
+  245 _InitialConc64            0.0*c2c_0_Cell  # ConstantExpression
+  246 _InitialConc65            0.820007914522503*c2c_0_Cell  # ConstantExpression
+  247 _InitialConc66            0.0*c2c_0_Cell  # ConstantExpression
+  248 _InitialConc67            0.0*c2c_0_Cell  # ConstantExpression
+  249 _InitialConc68            0.0*c2c_0_Cell  # ConstantExpression
+  250 _InitialConc69            0.000700023743568898*c2c_0_Cell  # ConstantExpression
+  251 _InitialConc70            0.0200000000000631*c2c_0_Cell  # ConstantExpression
+  252 _InitialConc71            0.260007914522945*c2c_0_Cell  # ConstantExpression
+  253 _InitialConc72            0.0799999999999369*c2c_0_Cell  # ConstantExpression
+  254 _InitialConc73            0.0*c2c_0_Cell  # ConstantExpression
+  255 _InitialConc74            0.0*c2c_0_Cell  # ConstantExpression
+  256 _InitialConc75            0.0*c2c_0_Cell  # ConstantExpression
+  257 _InitialConc76            0.0*c2c_0_Cell  # ConstantExpression
+  258 _InitialConc77            0.0*c2c_0_Cell  # ConstantExpression
+  259 _InitialConc78            0.0*c2c_0_Cell  # ConstantExpression
+  260 _InitialConc79            0.0*c2c_0_Cell  # ConstantExpression
+  261 _InitialConc80            0.0*c2c_0_Cell  # ConstantExpression
+  262 _InitialConc81            0.0*c2c_0_Cell  # ConstantExpression
+  263 _InitialConc82            0.0*c2c_0_Cell  # ConstantExpression
+  264 _InitialConc83            0.0*c2c_0_Cell  # ConstantExpression
+  265 _InitialConc84            0.0*c2c_0_Cell  # ConstantExpression
+  266 _InitialConc85            0.0*c2c_0_Cell  # ConstantExpression
+  267 _InitialConc86            0.0*c2c_0_Cell  # ConstantExpression
+  268 _InitialConc87            0.0*c2c_0_Cell  # ConstantExpression
+  269 _InitialConc88            0.0*c2c_0_Cell  # ConstantExpression
+  270 _InitialConc89            0.0*c2c_0_Cell  # ConstantExpression
+  271 _InitialConc90            0.0*c2c_0_Cell  # ConstantExpression
+  272 _InitialConc91            0.0*c2c_0_Cell  # ConstantExpression
+  273 _InitialConc92            0.0*c2c_0_Cell  # ConstantExpression
+  274 _InitialConc93            0.0*c2c_0_Cell  # ConstantExpression
+  275 _InitialConc94            0.0*c2c_0_Cell  # ConstantExpression
+  276 _InitialConc95            0.0*c2c_0_Cell  # ConstantExpression
+  277 _InitialConc96            0.0*c2c_0_Cell  # ConstantExpression
+  278 _InitialConc97            0.0*c2c_0_Cell  # ConstantExpression
+  279 _InitialConc98            0.0*c2c_0_Cell  # ConstantExpression
+  280 _InitialConc99            0.0*c2c_0_Cell  # ConstantExpression
+  281 _InitialConc100           0.0*c2c_0_Cell  # ConstantExpression
+  282 _InitialConc101           0.0*c2c_0_Cell  # ConstantExpression
+  283 _InitialConc102           0.0*c2c_0_Cell  # ConstantExpression
+  284 _InitialConc103           0.0*c2c_0_Cell  # ConstantExpression
+  285 _InitialConc104           0.0*c2c_0_Cell  # ConstantExpression
+  286 _InitialConc105           0.020*c2c_0_Cell  # ConstantExpression
+end parameters
+begin functions
+    1 k_R86() kf_R86/(kr_R86+PIP2)
+    2 k_R85() kf_R85/(kr_R85+PIP2)
+end functions
+begin species
+    1 @Cell::PIP2_Ca_PLC_g() 1.010000000000e+02
+    2 @Cell::PIP2_Ca_PLC_g_p() 0.000000000000e+00
+    3 @Cell::ERK1_2_ratio1() 3.000000000000e+00
+    4 @Cell::PKC_Ca() 5.200000000000e+01
+    5 @Cell::PKC_DAG_AA_p() 6.000000000000e+00
+    6 @Cell::PKC_Ca_AA_p() 3.000000000000e+00
+    7 @Cell::PKC_Ca_memb_p() 1.400000000000e+01
+    8 @Cell::PKC_DAG_memb_p() 5.000000000000e+00
+    9 @Cell::PKC_basal_p() 1.700000000000e+01
+   10 @Cell::PKC_AA_p() 4.000000000000e+00
+   11 @Cell::PKC_Ca_DAG() 0.000000000000e+00
+   12 @Cell::PKC_DAG() 1.700000000000e+01
+   13 @Cell::PKC_DAG_AA() 1.000000000000e+00
+   14 @Cell::PKC_cytosolic() 4.950000000000e+02
+   15 @Cell::PLA2_cytosolic() 8.700000000000e+01
+   16 @Cell::PLA2_Ca_p() 5.600000000000e+01
+   17 @Cell::PIP2_PLA2_p() 0.000000000000e+00
+   18 @Cell::PIP2_Ca_PLA2_p() 0.000000000000e+00
+   19 @Cell::DAG_Ca_PLA2_p() 0.000000000000e+00
+   20 @Cell::$APC() 1.806600000000e+04
+   21 @Cell::PLA2_p_Ca() 0.000000000000e+00
+   22 @Cell::PLA2_p() 0.000000000000e+00
+   23 @Cell::Arachidonic_Acid() 1.311000000000e+03
+   24 @Cell::PLC() 3.740000000000e+02
+   25 @Cell::$Inositol() 0.000000000000e+00
+   26 @Cell::PLC_Ca() 8.800000000000e+01
+   27 @Cell::PLC_Ca_Gq() 0.000000000000e+00
+   28 @Cell::PLC_Gq() 0.000000000000e+00
+   29 @Cell::$PC() 0.000000000000e+00
+   30 @Cell::DAG() 3.812000000000e+03
+   31 @Cell::IP3() 2.200000000000e+02
+   32 @Cell::$PIP2() 4.215000000000e+03
+   33 @Cell::MAPK_p_p() 0.000000000000e+00
+   34 @Cell::craf_1() 1.060000000000e+02
+   35 @Cell::craf_1_p() 1.200000000000e+01
+   36 @Cell::MAPKK() 1.080000000000e+02
+   37 @Cell::MAPK() 2.130000000000e+02
+   38 @Cell::craf_1_p_p() 0.000000000000e+00
+   39 @Cell::MAPK_p() 3.000000000000e+00
+   40 @Cell::MAPKK_p_p() 0.000000000000e+00
+   41 @Cell::MAPKK_p() 0.000000000000e+00
+   42 @Cell::Raf_p_GTP_Ras() 1.000000000000e+00
+   43 @Cell::craf_1_p_ser259() 0.000000000000e+00
+   44 @Cell::inact_GEF() 1.700000000000e+01
+   45 @Cell::GEF_p() 1.500000000000e+01
+   46 @Cell::GTP_Ras() 0.000000000000e+00
+   47 @Cell::GDP_Ras() 2.720000000000e+02
+   48 @Cell::GAP_p() 5.000000000000e+00
+   49 @Cell::GAP() 7.000000000000e+00
+   50 @Cell::inact_GEF_p() 0.000000000000e+00
+   51 @Cell::CaM_GEF() 0.000000000000e+00
+   52 @Cell::EGFR() 1.000000000000e+02
+   53 @Cell::L_EGFR() 0.000000000000e+00
+   54 @Cell::$EGF() 60.22
+   55 @Cell::Internal_L_EGFR() 0.000000000000e+00
+   56 @Cell::SHC_p_Sos_Grb2() 0.000000000000e+00
+   57 @Cell::SHC() 3.010000000000e+02
+   58 @Cell::SHC_p() 0.000000000000e+00
+   59 @Cell::Sos_p_Grb2() 2.400000000000e+01
+   60 @Cell::Grb2() 5.700000000000e+02
+   61 @Cell::Sos_Grb2() 8.000000000000e+00
+   62 @Cell::Sos_p() 2.300000000000e+01
+   63 @Cell::Sos() 5.000000000000e+00
+   64 @Cell::SHC_p_Grb2_clx() 0.000000000000e+00
+   65 @Cell::PLC_g() 1.920000000000e+02
+   66 @Cell::PLC_g_p() 0.000000000000e+00
+   67 @Cell::Ca_PLC_g() 3.020000000000e+02
+   68 @Cell::Ca_PLC_g_p() 0.000000000000e+00
+   69 @Cell::PLCg_basal() 0.000000000000e+00
+   70 @Cell::MKP_1() 1.100000000000e+01
+   71 @Cell::PPhosphatase2A() 1.570000000000e+02
+   72 @Cell::$Ca() 4.800000000000e+01
+   73 @Cell::PKC_act_raf_cplx() 1.000000000000e+00
+   74 @Cell::PKC_inact_GAP_cplx() 0.000000000000e+00
+   75 @Cell::PKC_act_GEF_cplx() 0.000000000000e+00
+   76 @Cell::kenz_cplx() 9.700000000000e+01
+   77 @Cell::kenz_cplx_1() 0.000000000000e+00
+   78 @Cell::kenz_cplx_2() 0.000000000000e+00
+   79 @Cell::kenz_cplx_3() 1.000000000000e+00
+   80 @Cell::kenz_cplx_4() 0.000000000000e+00
+   81 @Cell::PLC_Ca_cplx() 2.000000000000e+01
+   82 @Cell::PLCb_Ca_Gq_cplx() 0.000000000000e+00
+   83 @Cell::MAPK_p_p_cplx() 0.000000000000e+00
+   84 @Cell::MAPK_p_p_feedback_cplx() 0.000000000000e+00
+   85 @Cell::phosph_Sos_cplx() 0.000000000000e+00
+   86 @Cell::MAPKKtyr_cplx() 0.000000000000e+00
+   87 @Cell::MAPKKthr_cplx() 0.000000000000e+00
+   88 @Cell::Raf_p_GTP_Ras_1_cplx() 0.000000000000e+00
+   89 @Cell::Raf_p_GTP_Ras_2_cplx() 0.000000000000e+00
+   90 @Cell::basal_GEF_activity_cplx() 2.500000000000e+01
+   91 @Cell::GEF_p_act_Ras_cplx() 3.000000000000e+00
+   92 @Cell::GAP_inact_Ras_cplx() 0.000000000000e+00
+   93 @Cell::CaM_GEF_act_Ras_cplx() 0.000000000000e+00
+   94 @Cell::Ca_PLC_g_phospho_cplx() 0.000000000000e+00
+   95 @Cell::SHC_phospho_cplx() 0.000000000000e+00
+   96 @Cell::Sos_Ras_GEF_cplx() 0.000000000000e+00
+   97 @Cell::PLC_g_phospho_cplx() 0.000000000000e+00
+   98 @Cell::MKP1_tyr_deph_cplx() 1.000000000000e+00
+   99 @Cell::MKP1_thr_deph_cplx() 0.000000000000e+00
+  100 @Cell::craf_dephospho_cplx() 0.000000000000e+00
+  101 @Cell::MAPKK_dephospho_cplx() 0.000000000000e+00
+  102 @Cell::MAPKK_dephospho_ser_cplx() 0.000000000000e+00
+  103 @Cell::craf_p_p_dephospho_cplx() 0.000000000000e+00
+  104 @Cell::deph_raf_ser259_cplx() 0.000000000000e+00
+  105 @Cell::PKC_active() 5.300000000000e+01
+end species
+begin reactions
+    1 33 3,33 kf_ERK1_2_ratio1 #_R1
+    2 39 3,39 kf_ERK1_2_ratio1 #_R2
+    3 3 0 kf_ERK1_2_ratio1 #_R3
+    4 14,72 4 1*kf_R1 #reaction0 unit_conversion=1/1.0
+    5 4 14,72 kr_R1 #_reverse_reaction0
+    6 4,30 11 1*kf_R2 #reaction1 unit_conversion=1/1.0
+    7 11 4,30 kr_R2 #_reverse_reaction1
+    8 4 7 kf_R3 #reaction2
+    9 7 4 kr_R3 #_reverse_reaction2
+   10 11 8 kf_R4 #reaction3
+   11 8 11 kr_R4 #_reverse_reaction3
+   12 4,23 6 1*kf_R5 #reaction4 unit_conversion=1/1.0
+   13 6 4,23 kr_R5 #_reverse_reaction4
+   14 13 5 kf_R6 #reaction5
+   15 5 13 kr_R6 #_reverse_reaction5
+   16 14 9 kf_R7 #reaction6
+   17 9 14 kr_R7 #_reverse_reaction6
+   18 14,23 10 1*kf_R8 #reaction7 unit_conversion=1/1.0
+   19 10 14,23 kr_R8 #_reverse_reaction7
+   20 14,30 12 1*kf_R9 #reaction8 unit_conversion=1/1.0
+   21 12 14,30 kr_R9 #_reverse_reaction8
+   22 12,23 13 1*kf_R10 #reaction9 unit_conversion=1/1.0
+   23 13 12,23 kr_R10 #_reverse_reaction9
+   24 15,72 16 1*kf_R11 #reaction10 unit_conversion=1/1.0
+   25 16 15,72 kr_R11 #_reverse_reaction10
+   26 16,30 19 1*kf_R12 #reaction11 unit_conversion=1/1.0
+   27 19 16,30 kr_R12 #_reverse_reaction11
+   28 23 20 kf_R13 #reaction12
+   29 22,72 21 1*kf_R14 #reaction13 unit_conversion=1/1.0
+   30 21 22,72 kr_R14 #_reverse_reaction13
+   31 22 15 kf_R15 #reaction14
+   32 24,72 26 1*kf_R16 #reaction15 unit_conversion=1/1.0
+   33 26 24,72 kr_R16 #_reverse_reaction15
+   34 31 25 kf_R17 #reaction16
+   35 30 29 kf_R18 #reaction17
+   36 28,72 27 1*kf_R19 #reaction18 unit_conversion=1/1.0
+   37 27 28,72 kr_R19 #_reverse_reaction18
+   38 35,46 42 1*kf_R20 #reaction19 unit_conversion=1/1.0
+   39 42 35,46 kr_R20 #_reverse_reaction19
+   40 45 44 kf_R21 #reaction20
+   41 46 47 kf_R22 #reaction21
+   42 48 49 kf_R23 #reaction22
+   43 50 44 kf_R24 #reaction23
+   44 52,54 53 1*kf_R25 #reaction24 unit_conversion=1/1.0
+   45 53 52,54 kr_R25 #_reverse_reaction24
+   46 53 55 kf_R26 #reaction25
+   47 55 53 kr_R26 #_reverse_reaction25
+   48 58 57 kf_R27 #reaction26
+   49 58,61 56 1*kf_R28 #reaction27 unit_conversion=1/1.0
+   50 56 58,61 kr_R28 #_reverse_reaction27
+   51 60,62 59 1*kf_R29 #reaction28 unit_conversion=1/1.0
+   52 59 60,62 kr_R29 #_reverse_reaction28
+   53 62 63 kf_R30 #reaction29
+   54 60,63 61 1*kf_R31 #reaction30 unit_conversion=1/1.0
+   55 61 60,63 kr_R31 #_reverse_reaction30
+   56 58,60 64 1*kf_R32 #reaction31 unit_conversion=1/1.0
+   57 64 58,60 kr_R32 #_reverse_reaction31
+   58 65,72 67 1*kf_R33 #reaction32 unit_conversion=1/1.0
+   59 67 65,72 kr_R33 #_reverse_reaction32
+   60 66,72 68 1*kf_R34 #reaction33 unit_conversion=1/1.0
+   61 68 66,72 kr_R34 #_reverse_reaction33
+   62 68 67 kf_R35 #reaction34
+   63 66 65 kf_R36 #reaction35
+   64 7 7,105 kf_PKC_act #reaction_a
+   65 8 8,105 kf_PKC_act #reaction_b
+   66 6 6,105 kf_PKC_act #reaction_c
+   67 5 5,105 kf_PKC_act #reaction_d
+   68 9 9,105 kf_PKC_act #reaction_e
+   69 10 10,105 kf_PKC_act #reaction_f
+   70 105 0 kf_PKC_act #reaction_g
+   71 34,105 73,105 1*kf_R37 #reaction36 unit_conversion=1/1.0
+   72 73 34 kr_R37 #reaction36a
+   73 73 35 kf_R38 #reaction37
+   74 49,105 74,105 1*kf_R39 #reaction38 unit_conversion=1/1.0
+   75 74 49 kr_R39 #reaction38a
+   76 74 48 kf_R40 #reaction39
+   77 44,105 75,105 1*kf_R41 #reaction40 unit_conversion=1/1.0
+   78 75 44 kr_R41 #reaction40a
+   79 75 45 kf_R42 #reaction41
+   80 16,20 76 1*kf_R43 #reaction42 unit_conversion=1/1.0
+   81 76 16,20 kr_R43 #_reverse_reaction42
+   82 76 16,23 kf_R44 #reaction43
+   83 17,20 77 1*kf_R45 #reaction44 unit_conversion=1/1.0
+   84 77 17,20 kr_R45 #_reverse_reaction44
+   85 77 17,23 kf_R46 #reaction45
+   86 18,20 78 1*kf_R47 #reaction46 unit_conversion=1/1.0
+   87 78 18,20 kr_R47 #_reverse_reaction46
+   88 78 18,23 kf_R48 #reaction47
+   89 19,20 79 1*kf_R49 #reaction48 unit_conversion=1/1.0
+   90 79 19,20 kr_R49 #_reverse_reaction48
+   91 79 19,23 kf_R50 #reaction49
+   92 20,21 80 1*kf_R51 #reaction50 unit_conversion=1/1.0
+   93 80 20,21 kr_R51 #_reverse_reaction50
+   94 80 21,23 kf_R52 #reaction51
+   95 26,32 81 1*kf_R53 #reaction52 unit_conversion=1/1.0
+   96 81 26,32 kr_R53 #_reverse_reaction52
+   97 81 26,30,31 kf_R54 #reaction53
+   98 27,32 82 1*kf_R55 #reaction54 unit_conversion=1/1.0
+   99 82 27,32 kr_R55 #_reverse_reaction54
+  100 82 27,30,31 kf_R56 #reaction55
+  101 15,33 83 1*kf_R57 #reaction56 unit_conversion=1/1.0
+  102 83 15,33 kr_R57 #_reverse_reaction56
+  103 83 22,33 kf_R58 #reaction57
+  104 33,35 84 1*kf_R59 #reaction58 unit_conversion=1/1.0
+  105 84 33,35 kr_R59 #_reverse_reaction58
+  106 84 33,38 kf_R60 #reaction59
+  107 33,63 85 1*kf_R61 #reaction60 unit_conversion=1/1.0
+  108 85 33,63 kr_R61 #_reverse_reaction60
+  109 85 33,62 kf_R62 #reaction61
+  110 37,40 86 1*kf_R63 #reaction62 unit_conversion=1/1.0
+  111 86 37,40 kr_R63 #_reverse_reaction62
+  112 86 39,40 kf_R64 #reaction63
+  113 39,40 87 1*kf_R65 #reaction64 unit_conversion=1/1.0
+  114 87 39,40 kr_R65 #_reverse_reaction64
+  115 87 33,40 kf_R66 #reaction65
+  116 36,42 88 1*kf_R67 #reaction66 unit_conversion=1/1.0
+  117 88 36,42 kr_R67 #_reverse_reaction66
+  118 88 41,42 kf_R68 #reaction67
+  119 41,42 89 1*kf_R69 #reaction68 unit_conversion=1/1.0
+  120 89 41,42 kr_R69 #_reverse_reaction68
+  121 89 40,42 kf_R70 #reaction69
+  122 44,47 90 1*kf_R71 #reaction70 unit_conversion=1/1.0
+  123 90 44,47 kr_R71 #_reverse_reaction70
+  124 90 44,46 kf_R72 #reaction71
+  125 45,47 91 1*kf_R73 #reaction72 unit_conversion=1/1.0
+  126 91 45,47 kr_R73 #_reverse_reaction72
+  127 91 45,46 kf_R74 #reaction73
+  128 46,49 92 1*kf_R75 #reaction74 unit_conversion=1/1.0
+  129 92 46,49 kr_R75 #_reverse_reaction74
+  130 92 47,49 kf_R76 #reaction75
+  131 47,51 93 1*kf_R77 #reaction76 unit_conversion=1/1.0
+  132 93 47,51 kr_R77 #_reverse_reaction76
+  133 93 46,51 kf_R78 #reaction77
+  134 53,67 94 1*kf_R79 #reaction78 unit_conversion=1/1.0
+  135 94 53,67 kr_R79 #_reverse_reaction78
+  136 94 53,68 kf_R80 #reaction79
+  137 53,57 95 1*kf_R81 #reaction80 unit_conversion=1/1.0
+  138 95 53,57 kr_R81 #_reverse_reaction80
+  139 95 53,58 kf_R82 #reaction81
+  140 47,56 96 1*kf_R83 #reaction82 unit_conversion=1/1.0
+  141 96 47,56 kr_R83 #_reverse_reaction82
+  142 96 46,56 kf_R84 #reaction83
+  143 67 1,67 kf1a_R85 #reaction84a
+  144 1,32 32 1*kf2_R85 #reaction84b unit_conversion=1/1.0
+  145 1 0 kr1 #reaction84c
+  146 1,32 1,30,31 1*kf1b_R85 #reaction84d unit_conversion=1/1.0
+  147 68 2,68 kf1a_R86 #reaction85a
+  148 2,32 32 1*kf2_R86 #reaction85b unit_conversion=1/1.0
+  149 2 0 kr1 #reaction85c
+  150 2,32 2,30,31 1*kf1b_R86 #reaction85d unit_conversion=1/1.0
+  151 65,69 97 1*kf_R87 #reaction86 unit_conversion=1/1.0
+  152 97 65,69 kr_R87 #_reverse_reaction86
+  153 97 66,69 kf_R88 #reaction87
+  154 39,70 98 1*kf_R89 #reaction88 unit_conversion=1/1.0
+  155 98 39,70 kr_R89 #_reverse_reaction88
+  156 98 37,70 kf_R90 #reaction89
+  157 33,70 99 1*kf_R91 #reaction90 unit_conversion=1/1.0
+  158 99 33,70 kr_R91 #_reverse_reaction90
+  159 99 39,70 kf_R92 #reaction91
+  160 35,71 100 1*kf_R93 #reaction92 unit_conversion=1/1.0
+  161 100 35,71 kr_R93 #_reverse_reaction92
+  162 100 34,71 kf_R94 #reaction93
+  163 40,71 101 1*kf_R95 #reaction94 unit_conversion=1/1.0
+  164 101 40,71 kr_R95 #_reverse_reaction94
+  165 101 41,71 kf_R96 #reaction95
+  166 41,71 102 1*kf_R97 #reaction96 unit_conversion=1/1.0
+  167 102 41,71 kr_R97 #_reverse_reaction96
+  168 102 36,71 kf_R98 #reaction97
+  169 38,71 103 1*kf_R99 #reaction98 unit_conversion=1/1.0
+  170 103 38,71 kr_R99 #_reverse_reaction98
+  171 103 35,71 kf_R100 #reaction99
+  172 43,71 104 1*kf_R101 #reaction100 unit_conversion=1/1.0
+  173 104 43,71 kr_R101 #_reverse_reaction100
+  174 104 34,71 kf_R102 #reaction101
+end reactions
+begin groups
+    1 ERK1_2_ratio1        3
+    2 PIP2_Ca_PLC_g        1
+    3 PIP2_Ca_PLC_g_p      2
+    4 PKC_Ca               4
+    5 PKC_DAG_AA_p         5
+    6 PKC_Ca_AA_p          6
+    7 PKC_Ca_memb_p        7
+    8 PKC_DAG_memb_p       8
+    9 PKC_basal_p          9
+   10 PKC_AA_p             10
+   11 PKC_Ca_DAG           11
+   12 PKC_DAG              12
+   13 PKC_DAG_AA           13
+   14 PKC_cytosolic        14
+   15 PLA2_cytosolic       15
+   16 PLA2_Ca_p            16
+   17 PIP2_PLA2_p          17
+   18 PIP2_Ca_PLA2_p       18
+   19 DAG_Ca_PLA2_p        19
+   20 APC                  20
+   21 PLA2_p_Ca            21
+   22 PLA2_p               22
+   23 Arachidonic_Acid     23
+   24 PLC                  24
+   25 Inositol             25
+   26 PLC_Ca               26
+   27 PLC_Ca_Gq            27
+   28 PLC_Gq               28
+   29 PC                   29
+   30 DAG                  30
+   31 IP3                  31
+   32 PIP2                 32
+   33 MAPK_p_p             33
+   34 craf_1               34
+   35 craf_1_p             35
+   36 MAPKK                36
+   37 MAPK                 37
+   38 craf_1_p_p           38
+   39 MAPK_p               39
+   40 MAPKK_p_p            40
+   41 MAPKK_p              41
+   42 Raf_p_GTP_Ras        42
+   43 craf_1_p_ser259      43
+   44 inact_GEF            44
+   45 GEF_p                45
+   46 GTP_Ras              46
+   47 GDP_Ras              47
+   48 GAP_p                48
+   49 GAP                  49
+   50 inact_GEF_p          50
+   51 CaM_GEF              51
+   52 EGFR                 52
+   53 L_EGFR               53
+   54 EGF                  54
+   55 Internal_L_EGFR      55
+   56 SHC_p_Sos_Grb2       56
+   57 SHC                  57
+   58 SHC_p                58
+   59 Sos_p_Grb2           59
+   60 Grb2                 60
+   61 Sos_Grb2             61
+   62 Sos_p                62
+   63 Sos                  63
+   64 SHC_p_Grb2_clx       64
+   65 PLC_g                65
+   66 PLC_g_p              66
+   67 Ca_PLC_g             67
+   68 Ca_PLC_g_p           68
+   69 PLCg_basal           69
+   70 MKP_1                70
+   71 PPhosphatase2A       71
+   72 Ca                   72
+   73 PKC_act_raf_cplx     73
+   74 PKC_inact_GAP_cplx   74
+   75 PKC_act_GEF_cplx     75
+   76 kenz_cplx            76
+   77 kenz_cplx_1          77
+   78 kenz_cplx_2          78
+   79 kenz_cplx_3          79
+   80 kenz_cplx_4          80
+   81 PLC_Ca_cplx          81
+   82 PLCb_Ca_Gq_cplx      82
+   83 MAPK_p_p_cplx        83
+   84 MAPK_p_p_feedback_cplx 84
+   85 phosph_Sos_cplx      85
+   86 MAPKKtyr_cplx        86
+   87 MAPKKthr_cplx        87
+   88 Raf_p_GTP_Ras_1_cplx 88
+   89 Raf_p_GTP_Ras_2_cplx 89
+   90 basal_GEF_activity_cplx 90
+   91 GEF_p_act_Ras_cplx   91
+   92 GAP_inact_Ras_cplx   92
+   93 CaM_GEF_act_Ras_cplx 93
+   94 Ca_PLC_g_phospho_cplx 94
+   95 SHC_phospho_cplx     95
+   96 Sos_Ras_GEF_cplx     96
+   97 PLC_g_phospho_cplx   97
+   98 MKP1_tyr_deph_cplx   98
+   99 MKP1_thr_deph_cplx   99
+  100 craf_dephospho_cplx  100
+  101 MAPKK_dephospho_cplx 101
+  102 MAPKK_dephospho_ser_cplx 102
+  103 craf_p_p_dephospho_cplx 103
+  104 deph_raf_ser259_cplx 104
+  105 PKC_active           105
+end groups
