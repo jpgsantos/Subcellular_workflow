@@ -1,8 +1,8 @@
-function f_Reproduce_fig7_BCDE(folder)
+function f_Reproduce_plot_fig7_BCDE(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
-load(folder + "new_data",'new_data')
+load(folder + "new_data_test",'new_data')
 load(folder + "auc")
 load(folder + "inputs")
 
