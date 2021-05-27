@@ -43,11 +43,6 @@ copyfile("../Subcellular_workflow/Code for paper figures/Reproduce paper figure 
 
 Run_main
 %% 
-% Note: There are plots usually generated when running this script but they 
-% are not displayed when running a live script, if you want to take a look at 
-% these outputs please run the "Run_main.m" script located in the Matlab folder 
-% directly.
-% 
 % 
 % Save the needed files for the plots or copy them from the model folder
 % Run time ~= 1.5 seconds

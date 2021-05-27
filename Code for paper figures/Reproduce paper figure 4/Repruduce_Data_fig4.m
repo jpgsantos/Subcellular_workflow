@@ -19,7 +19,7 @@
 % 
 %% For Figure 4 A and B
 % Run sensitivity analysis on the model with optimized parameters
-% Run time ~= ??? (user input is needed and might afect this time)
+% Run time ~= 4 hours (user input is needed and might afect this time)
 % 
 % 
 % 
@@ -44,15 +44,10 @@ copyfile("../Subcellular_workflow/Code for paper figures/Reproduce paper figure 
 
 Run_main
 %% 
-% Note: There are plots usually generated when running this script but they 
-% are not displayed when running a live script, if you want to take a look at 
-% these outputs please run the "Run_main.m" script located in the Matlab folder 
-% directly.
-% 
-% The live script is not as performant as native scripts so consider running 
-% the Run_main script in the command line for increased performance.
+% Note: The live script is not as performant as native scripts so consider running 
+% the non-live script provided for increased performance
 % 
 % 
 % Save the needed files for the plots
 
-save ("../Subcellular_workflow/Code for paper figures/Reproduce paper figure 4/SA_results_test.mat",'rst')
+save ("../Subcellular_workflow/Code for paper figures/Reproduce paper figure 4/SA_results.mat",'rst')

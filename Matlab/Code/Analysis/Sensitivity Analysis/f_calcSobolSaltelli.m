@@ -1,8 +1,6 @@
 function rst = f_calcSobolSaltelli(rst,stg)
 %Code modified from Geir Halnes et al. (Halnes, Geir, et al. J. comp.
 %neuroscience 27.3 (2009): 471.)
-rst = rst.SA;
-
 rst = remove_sim_error(rst,stg);
 
 rst = calcSS(rst,stg,"sd");
@@ -53,7 +51,7 @@ for n = 1:size(rst.fM1.sd,1)
     if max(rst.fM2.sd(n,:)) == stg.errorscore
         error = [error,n];
     end
-    for m = 1:6
+    for m = 1:stg.parnum
         if max(rst.fN.sd(n,:,m)) == stg.errorscore
             error_helper = 1;
         end

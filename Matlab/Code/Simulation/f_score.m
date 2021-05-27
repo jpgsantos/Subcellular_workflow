@@ -26,49 +26,18 @@ for n = stg.exprun
             % Calculate score using formula that accounts for normalization
             % with the starting point of the result
             if stg.useLog == 4
-%                 "test4"
                 rst.sd{n,1}(j) = sum(((data-sim_results)./...
                     (data_sd*sqrt(number_points))).^2);
-                
-
             else
-%                 if sbtab.datasets(n).normstart == 1
-%                     rst.sd{n,1}(j) = sum(((Data(n).Experiment.x(:,j)-...
-%                         (rst.simd{n}.Data(:,end-size(sbtab.datasets(n).output,2)+j)./...
-%                         rst.simd{n}.Data(1,end-size(sbtab.datasets(n).output,2)+j)))./...
-%                         (Data(n).Experiment.x_SD(:,j))).^2)/...
-%                         (size(Data(n).Experiment.x(:,j),1)-2);
-%                     
-%                     % Calculate score using normal scorring formula
-%                 else
-%                 "test0"
                     rst.sd{n,1}(j) = sum(((data-sim_results)./...
                         (data_sd)).^2)/(number_points);
-%                 end
             end
-%                 if n == 1
-%                     
-%                     sum(((data-sim_results)./...
-%                     (data_sd*sqrt(number_points))).^2)
-%                 
-%                     sum(((data-sim_results)./...
-%                         (data_sd)).^2)/(number_points)
-%                     
-%                     number_points
-%                     
-%                         rst.sd{n,1}(:)
-%                 end
             
             % If there are errors output a very high score value (10^10)
         elseif rst.simd{n} == 0 || rst.sd{n,1}(j) == inf
             
-%             if stg.useLog == 4
-%                 rst.sd{n,1}(j) = 10000;
-%                 rst.xfinal{n,1}(j) = 0;
-%             else
                 rst.sd{n,1}(j) = stg.errorscore;
                 rst.xfinal{n,1}(j) = 0;
-%             end
         end
         
         % Calculate the log10 of dataset score if option selected

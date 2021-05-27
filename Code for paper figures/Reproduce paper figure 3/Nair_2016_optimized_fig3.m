@@ -82,9 +82,7 @@ stg.reltol = 1.0E-4;
 
 % Value of Absolute tolerance
 % (Absolute tolerance)
-stg.abstol = 1.0E-7;%% This value is low due to the size of the 
-% compartment, use a compartment of 1 liter and increadse this to 1.0E-4
-% to improve run speed
+stg.abstol = 1.0E-4;
 
 % Time units for simulation
 % (Simulation time)
@@ -94,6 +92,9 @@ stg.simtime = "second";
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
 stg.sbioacc = false;
+
+% (Absolute tolerance step size for equilibration)
+stg.abstolstepsize_eq = 0.01;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -106,6 +107,11 @@ stg.maxstepeq = [];
 % Max step size in the detailed plots (if empty matlab decides whats best)
 % (Maximum step)
 stg.maxstepdetail = [1];
+
+% Default score when there is a simulation error, this is needed to keep
+% the optimizations working.
+% (error score)
+stg.errorscore = 10^5;
 
 %% Model
 
@@ -147,7 +153,7 @@ stg.bestpa = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1]
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = true;
+stg.plot = false;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m
