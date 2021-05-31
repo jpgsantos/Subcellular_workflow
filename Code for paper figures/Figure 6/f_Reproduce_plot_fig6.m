@@ -1,4 +1,4 @@
-function f_Reproduce_fig6(folder)
+function f_Reproduce_plot_fig6(folder)
 
 work_folder =  folder + "results/";
 

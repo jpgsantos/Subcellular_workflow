@@ -20,7 +20,7 @@
 % Run the script with Subcellular_workflow as your main matlab folder
 % 
 % 
-%% For Figure 3 A and B
+%% Figure 3 A and B
 % Run the model with optimized parameters
 % Run time ~= 40 seconds first time and 25 seconds subsequent runs (user input 
 % is needed and might afect this time)

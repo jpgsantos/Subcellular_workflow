@@ -17,7 +17,7 @@
 % Run the script with Subcellular_workflow as your main Matlab folder
 % 
 % 
-%% For Figure 4 A and B
+%% Figure 4 A and B
 % Run sensitivity analysis on the model with optimized parameters
 % Run time ~= 4 hours (user input is needed and might afect this time)
 % 
