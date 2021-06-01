@@ -1,19 +1,23 @@
 %% Running this script will generate figures 1C and 2C from Nair et al 2016 
 %% using the updated model with new parameters governing CaMKII autophosphorylation
-
+folder
 proj = sbioloadproject(folder + "model_Nair_2018.sbproj");
 obj = proj.m1; %modelobj;
+obj.parameters
 
+load(folder + "model_Nair_2016_optimized_fig6.mat");
+obj = modelobj;
+obj.parameters
 %% Get steady state values after equilibrating for 100000 s
 
 cnfst = getconfigset(obj);
 cnfst.SolverType = 'ode15s';
-cnfst.StopTime = 100000;
+cnfst.StopTime = 50000;
 cnfst.TimeUnits = 'second';
-cnfst.SolverOptions.AbsoluteTolerance = 1e-9;
-cnfst.SolverOptions.RelativeTolerance = 1e-6;
+cnfst.SolverOptions.AbsoluteTolerance = 1e-7;
+cnfst.SolverOptions.RelativeTolerance = 1e-4;
 cnfst.CompileOptions.UnitConversion = 1;
-cnfst.SolverOptions.AbsoluteToleranceScaling = 0;
+cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 % set(obj.rules(2), 'Active', 0); % Uncomment if Ca input is incorporated
 % set(obj.rules(3), 'Active', 0); % Uncomment if DA input is incorporated
@@ -64,6 +68,7 @@ effector = {'Spine.pSubstrate'};
 DA = [-4:1:4];
 
 CaStart = obj.parameters(232).Value;
+obj.parameters(232).Value
 cnfst.StopTime = 30;
 cnfst.SolverOptions.MaxStep = 0.01;
 cnfst.SolverOptions.OutputTimes = 0:0.01:30;

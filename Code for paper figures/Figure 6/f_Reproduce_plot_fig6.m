@@ -8,7 +8,25 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 %%  read simbiology version
 
 Regenerate_figures
+load("new_data_fig6.mat")
 
+% x_noDA = new_data{1}(:,2);
+% t_noDA = new_data{1}(:,1);
+% t_DA = new_data{2}(:,1);
+% x_DA = new_data{2}(:,2);
+
+
+
+% )  ;
+%   ;
+%   ;
+%   ;
+% new_data{3}(:,1) = DA;
+% new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
+
+
+
+% obj = newdata.obj ;
 
 %% read steps
 
@@ -189,7 +207,10 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(new_data{1}(:,2)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
+
+max(x_noDA(:,1))
+max(new_data{1}(:,2))
 
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
 %plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
@@ -212,11 +233,9 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(x_noDA(:,1)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(new_data{1}(:,2)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
 
-
-
-plot(t_noDA, x_noDA(:,1)/max(x_noDA(:,1)), '-','Color',[0,0, 0.5], 'LineWidth', 1)
+plot(new_data{1}(:,1), new_data{1}(:,2)/max(new_data{1}(:,2)), '-','Color',[0,0, 0.5], 'LineWidth', 1)
 
 ii = 1;
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
@@ -240,11 +259,11 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
+plot(tst2-tst2(1), mean(cst2,2)/max(new_data{1}(:,2)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
 
 
-
-plot(t_DA, x_DA(:,ii)/max(x_noDA(:,1)),'Color',[0.5,0, 0], 'LineWidth', 1)
+% plot(new_data{2}(:,1), x_DA(:,ii)/max(new_data{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
+plot(new_data{2}(:,1), new_data{2}(:,2)/max(new_data{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
 
 
 ntrain=40;
@@ -261,7 +280,7 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(x_noDA(:,1)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
+plot(tst2-tst2(1), mean(cst2,2)/max(new_data{1}(:,2)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
 text(-2.5,5.25,'A','FontWeight','bold')
 
 
@@ -304,17 +323,17 @@ gg1 = reshape(gg',[],ntrain3)';
 activationAreaWithMultipleDA_steps = reshape(gg1,ntrain2*ntrain3,[]);
 activationAreaWithMultipleDA_steps = activationAreaWithMultipleDA_steps(:,[1,3:end])*9824/6792.5;
 
-%DA1 = [-4:0.2:4];
-DA1 = [-4:1:4];
-activationAreaWithMultipleDA = zeros(1,length(DA1));
-for n = 1:length(DA1)
-    obj.parameters(228).Value = CaStart + DA1(n);
-    [t,x,~] = sbiosimulate(obj);
-    activationAreaWithMultipleDA(n) = sum(x(:,1)) - x(1,1) * length(x(:,1));
-    %jj=(n-1)*ntrain2+(1:ntrain2);
-    %activationAreaWithMultipleDA_steps(n,1:end) = sum(cst2(:,jj)) - mean(mean(cst2(1:20,:)))*fconc * length(cst2(:,1));
-    clear t x names
-end
+% %DA1 = [-4:0.2:4];
+% DA1 = [-4:1:4];
+% activationAreaWithMultipleDA = zeros(1,length(DA1));
+% for n = 1:length(DA1)
+%     obj.parameters(228).Value = CaStart + DA1(n);
+%     [t,x,~] = sbiosimulate(obj);
+%     activationAreaWithMultipleDA(n) = sum(x(:,1)) - x(1,1) * length(x(:,1));
+%     %jj=(n-1)*ntrain2+(1:ntrain2);
+%     %activationAreaWithMultipleDA_steps(n,1:end) = sum(cst2(:,jj)) - mean(mean(cst2(1:20,:)))*fconc * length(cst2(:,1));
+%     clear t x names
+% end
 
 nexttile(layout)
 % subplot(1,2,2)
@@ -324,19 +343,17 @@ hold on
 % boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','MedianStyle','target','BoxStyle','filled','OutlierSize',2,'Symbol','ro');
 
 
-% scatter(DA1, activationAreaWithMultipleDA/activationArea,'filled','MarkerFaceColor', [0 0 0])
+% scatter(new_data{3}(:,1), new_data{3}(:,2),'filled','MarkerFaceColor', [0 0 0])
 
-plot(DA1, activationAreaWithMultipleDA/activationArea,'Color', [0 0 0], 'LineWidth', 1)
-plot(DA1, activationAreaWithMultipleDA/activationArea,'r', 'LineWidth', 1)
-plot(DA1, activationAreaWithMultipleDA/activationArea,'Color', [0 0 0], 'LineWidth', 1)
-
-
+plot(new_data{3}(:,1), new_data{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
+plot(new_data{3}(:,1), new_data{3}(:,2),'r', 'LineWidth', 1)
+plot(new_data{3}(:,1), new_data{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
 
 % plot(DA, median(activationAreaWithMultipleDA_steps)/activationArea_steps, 'LineWidth', 2)
 
 plot([-5 5], [1 1], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
 
-boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','OutlierSize',2,'Symbol','ro');
+boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',new_data{3}(:,1),'Labels',new_data{3}(:,1),'Colors','r','OutlierSize',2,'Symbol','ro');
 
 % plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',8, 'FontWeight', 'bold')
@@ -349,7 +366,6 @@ text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25
 
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 3];
-
 
 exportgraphics(layout,...
      folder + "Figure 6.png",...

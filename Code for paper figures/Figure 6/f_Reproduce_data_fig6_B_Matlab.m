@@ -33,14 +33,30 @@ end
 
 %% Add parameters used by the Calcium input
 
-ruleobj=addrule(obj, 'Spine.Ca = Ca_input_fig5(time)');
+addparameter(obj, 'nCa_peaksn', 10);
+addparameter(obj, 'nCa_peakfirst', 4);
+addparameter(obj, 'nCa_minpeaklngth', 0.01);
+addparameter(obj, 'nCa_minburstinter', 5);
+addparameter(obj, 'nCa_k2', 9.3);
+addparameter(obj, 'nCa_k1', 39.4);
+addparameter(obj, 'nCa_frequency', 10);
+addparameter(obj, 'nCa_burstn', 1.0);
+addparameter(obj, 'nCa_burstfreq', 0.03);
+addparameter(obj, 'nCa_ampmax_noMg', 1200);
+addparameter(obj, 'nCa_ampbasal', 60);
+set(obj.parameters(end-10:end), 'ValueUnits', 'dimensionless');
+
+ruleobj=addrule(obj, 'Spine.Ca = spiketraindd_Ca(time,nCa_peakfirst,nCa_frequency,nCa_peaksn,nCa_ampbasal,nCa_ampmax_noMg,nCa_k1,nCa_k2,nCa_minpeaklngth,[],nCa_burstfreq,nCa_burstn,nCa_minburstinter,1)');
 set(ruleobj,'RuleType','RepeatedAssignment');
+set(obj.rules(2), 'Name', '0 Ca spikes with 3 AP');
 
 % Assign DA_expression to dopamine
 ruleobj=addrule(obj, 'Spine.DA = Spine.DA_expression');
 set(ruleobj,'RuleType','RepeatedAssignment');
 
 %% Run simulations
+
+effector = {'Spine.pSubstrate'};
 
 DA = [-4:1:4];
 CaStart = 4;
@@ -82,12 +98,21 @@ parfor n = 1:length(DA)
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end
 
+% new_data{1}(:,1) = t_noDA;
+% new_data{1}(:,2) = x_noDA;
+% new_data{2}(:,1) = t_DA;
+% new_data{2}(:,2) = x_DA;
+% new_data{3}(:,1) = DA;
+% new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
+
+
 new_data{1}(:,1) = t_noDA;
 new_data{1}(:,2) = x_noDA;
 new_data{2}(:,1) = t_DA;
 new_data{2}(:,2) = x_DA;
 new_data{3}(:,1) = DA;
 new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
+% obj = obj;
 
-save(folder + "new_data.mat",'new_data')
+save(folder + "new_data_fig6.mat",'new_data','obj')
 end
