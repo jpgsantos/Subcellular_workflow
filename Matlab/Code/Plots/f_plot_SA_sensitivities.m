@@ -82,6 +82,65 @@ ylabel('Sensitivity');
 title('Sensitivities of total score of all experiments');
 legend({'SI','SIT','SIT-SI'});
 legend boxoff
+
+
+
+% rst.SiQ.st(:,1:stg.parnum)
+figHandles = findobj('type', 'figure', 'name', 'SA Si st boxplots');
+close(figHandles);
+figure('WindowStyle', 'docked','Name','SA Si st boxplots', 'NumberTitle', 'off');
+
+% for n = 1:size(parNames2,2)
+% a{n} = char(parNames2{n});
+% end
+% 
+%  a = categorical(a,a);
+
+T = [];
+
+for n = 1:size(a,2)
+    for m = 1:size(rst.SiQ.st(:,n),1)
+ T = [T;table(rst.SiQ.st(m,n),a(n),"Si")];
+    end
+end
+for n = 1:size(a,2)
+    for m = 1:size(rst.SiTQ.st(:,n),1)
+ T = [T;table(rst.SiTQ.st(m,n),a(n),"SiT")];
+    end
+end
+for n = 1:size(a,2)
+    for m = 1:size(rst.SiTQ.st(:,n),1)
+ T = [T;table(rst.SiTQ.st(m,n)-rst.SiQ.st(m,n),a(n),"SiT-Si")];
+    end
+end
+
+%
+%  T2 = table(rst.SiQ.st(2,1:stg.parnum),a,"Si")
+%  T3 = [T;T2]
+%  T
+%  rst.SiQ.st(:,1:stg.parnum)
+
+%  rst.SiQ.st(1,1:stg.parnum)';
+% boxchart(a,rst.SiQ.st(1,1:stg.parnum)')
+% boxchart(a,rst.SiQ.st(:,1:stg.parnum))
+% subplot(2,2,1)
+boxchart(T.Var2,T.Var1,'GroupByColor',T.Var3,'MarkerStyle','.')
+legend({'Si','SiT',"SiT-Si"},'Location','best');
+legend boxoff
+% subplot(2,2,2)
+% boxchart(rst.SiQ.st(:,1:stg.parnum),'MarkerStyle','none')
+% legend({'Si'},'Location','best');
+% legend boxoff
+% subplot(2,2,3)
+% boxchart(rst.SiTQ.st(:,1:stg.parnum),'MarkerStyle','none')
+% legend({'SiT'},'Location','best');
+% legend boxoff
+% subplot(2,2,4)
+% boxchart(rst.SiTQ.st(:,1:stg.parnum)-rst.SiQ.st(:,1:stg.parnum),'MarkerStyle','none')
+% legend({"SiT-Si"},'Location','best');
+% legend boxoff
+% boxchart(rst.SiTQ.st(:,1:stg.parnum))
+
 end
 
 function f_generate_plot(rst,stg,outputNames,parNames2,name,title,...
