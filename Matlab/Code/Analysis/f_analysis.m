@@ -7,6 +7,6 @@ if contains(analysis,"Optimization")
     rst.opt = f_opt(stg,script_folder);
 end
 if contains(analysis,"Sensitivity Analysis")
-    rst.SA = f_SA(stg,script_folder);
+    rst.gsa = f_gsa(stg,script_folder);
 end
 end

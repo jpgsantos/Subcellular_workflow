@@ -31,7 +31,7 @@ if isfield(rst,'opt')
 end
 
 % Generate figures for Sensitivity Analysis
-if isfield(rst,'SA')
-    f_plot_SA_sensitivities(rst.SA,stg);
+if isfield(rst,'gsa')
+    f_plot_gsa_sensitivities(rst.gsa,stg);
 end
 end
