@@ -1,12 +1,12 @@
-function f_Reproduce_sup_fig1(folder)
-load(folder + "Analysis.mat")
+function f_Reproduce_plot_sup_fig1(folder)
+load(folder + "Analysis_sup_fig1.mat")
 
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
 rst = rst.diag;
 
-load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab')
+load(folder + "data_Viswan_2018_optimized_sup_fig1.mat",'Data','sbtab')
 
 n = 1;
 

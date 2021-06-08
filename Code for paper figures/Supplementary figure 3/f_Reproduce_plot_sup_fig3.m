@@ -1,6 +1,6 @@
-function f_Reproduce_sup_fig_3(folder)
+function f_Reproduce_plot_sup_fig3(folder)
 load(folder + "Copasi_simulation_results.mat")
-load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab')
+load(folder + "data_Viswan_2018_optimized_sup_fig3.mat",'Data','sbtab')
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
