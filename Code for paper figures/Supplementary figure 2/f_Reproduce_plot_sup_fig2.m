@@ -2,15 +2,18 @@ function f_Reproduce_plot_sup_fig2(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
+% load(folder + "GSA_SiQ_sup_fig2.mat")
+% load(folder + "GSA_SiTQ_sup_fig2.mat")
 load(folder + "GSA_SiQ.mat")
 load(folder + "GSA_SiTQ.mat")
+
 load(folder + "Analysis_without_rst.mat")
 
-figHandles = findobj('type', 'figure', 'name', 'Paper supplementary Figure 2 Si and SiT');
+figHandles = findobj('type', 'figure', 'name', 'Paper supplementary Figure 2');
 close(figHandles);
-figure('WindowStyle', 'docked','Name','Paper supplementary Figure 2 Si and SiT','NumberTitle',...
+figure('WindowStyle', 'docked','Name','Paper supplementary Figure 2','NumberTitle',...
     'off');
-layout = tiledlayout(2,1,'Padding','none','TileSpacing','none');
+layout = tiledlayout(2,1,'Padding','none','TileSpacing','tight');
 
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 7];
@@ -34,7 +37,7 @@ for n = 1:size(parNames2,2)
 end
 
 % Supplementary figure 2A and B
-layout2 = tiledlayout(layout,16,1,'TileSpacing','none');
+layout2 = tiledlayout(layout,16,1,'TileSpacing','tight');
 layout2.Layout.Tile = 1;
 layout2.Layout.TileSpan = [1 1];
 
@@ -145,15 +148,15 @@ set(gca,'FontSize',8, 'FontWeight', 'bold')
 
 
 exportgraphics(layout,...
-    folder + "Supplementary figure 2 Si and SiT.png",...
+    folder + "Supplementary figure 2.png",...
     'Resolution',600)
 
 exportgraphics(layout,...
-    folder + "Supplementary figure 2 Si and SiT.tiff",...
+    folder + "Supplementary figure 2.tiff",...
     'Resolution',600)
 
 exportgraphics(layout,...
-    folder + "Supplementary figure 2 Si and SiT.pdf",...
+    folder + "Supplementary figure 2.pdf",...
     'ContentType','vector')
 
 end
