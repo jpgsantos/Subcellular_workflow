@@ -1,4 +1,4 @@
-function f_Reproduce_sup_fig_4(folder)
+function f_Reproduce_plot_sup_fig4(folder)
 work_folder = folder +"/Results";
 
 set(0,'defaultTextFontName', 'Times New Roman')

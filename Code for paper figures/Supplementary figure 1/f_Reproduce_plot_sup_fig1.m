@@ -163,7 +163,7 @@ end
 
 function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number,folder)
 
-load(folder + "data_Viswan_2018_optimized.mat",'Data','sbtab','sb')
+load(folder + "data_Viswan_2018_optimized_sup_fig1.mat",'Data','sbtab','sb')
 
 sim_results = rst.simd{1,exp_number}.Data(:,end-...
     size(sbtab.datasets(exp_number).output,2)+output_number);

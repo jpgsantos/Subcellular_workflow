@@ -1,4 +1,4 @@
-function f_Reproduce_sup_fig2(folder)
+function f_Reproduce_plot_sup_fig2(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
