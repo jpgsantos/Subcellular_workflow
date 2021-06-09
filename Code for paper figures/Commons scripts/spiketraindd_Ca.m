@@ -4,7 +4,7 @@ function thisAmp = spiketraindd_Ca(t, tStart, frequency, maxSpikeNum, ...
                             burstFrequency, maxBurstNum, burstMinInter,...
                             regorand)
 % Script provided by Anu G. Nair to reproduce the calcium spike present in
-% is 2016 paper (https://doi.org/10.1371/journal.pcbi.1005080)
+% his 2016 paper (https://doi.org/10.1371/journal.pcbi.1005080)
 
     t = t * 1000;
     cv = 0.1;
