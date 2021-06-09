@@ -2,7 +2,7 @@ function f_Reproduce_data_fig3_CD(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
-load(folder + "model_Nair_2016_optimized_fig3.mat");
+load(folder + "model_Nair_2016_optimized_fig3.mat",'modelobj');
 obj = modelobj;
 
 %% Get steady state values after equilibrating for 50000 s
@@ -56,9 +56,7 @@ set(ruleobj,'RuleType','RepeatedAssignment');
 
 %% Run simulations
 
-effector = {'Spine.pSubstrate'};
-
-DA = [-4:0.2:4];
+DA = -4:0.2:4;
 CaStart = 4;
 cnfst.StopTime = 30;
 cnfst.SolverOptions.MaxStep = 0.01;
@@ -98,12 +96,13 @@ parfor n = 1:length(DA)
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end
 
-new_data{1}(:,1) = t_noDA;
-new_data{1}(:,2) = x_noDA;
-new_data{2}(:,1) = t_DA;
-new_data{2}(:,2) = x_DA;
-new_data{3}(:,1) = DA;
-new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
+Nair_2016_optimized_Matlab_data_fig3{1}(:,1) = t_noDA;
+Nair_2016_optimized_Matlab_data_fig3{1}(:,2) = x_noDA;
+Nair_2016_optimized_Matlab_data_fig3{2}(:,1) = t_DA;
+Nair_2016_optimized_Matlab_data_fig3{2}(:,2) = x_DA;
+Nair_2016_optimized_Matlab_data_fig3{3}(:,1) = DA;
+Nair_2016_optimized_Matlab_data_fig3{3}(:,2) = activationAreaWithMultipleDA/activationArea;
 
-save(folder + "new_data.mat",'new_data')
+save(folder + "Nair_2016_optimized_Matlab_data_fig3.mat",...
+    'Nair_2016_optimized_Matlab_data_fig3')
 end

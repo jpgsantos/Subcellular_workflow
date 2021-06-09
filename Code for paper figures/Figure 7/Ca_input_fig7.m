@@ -4,7 +4,7 @@ persistent CaT
 persistent Cah1
 persistent Cah2
 if isempty(CaX)
-    Data = coder.load('../Subcellular_workflow/Code for paper figures/Figure 7/inputs.mat','Ca','t');
+    Data = coder.load('../Subcellular_workflow/Code for paper figures/Figure 7/Ca_dopamine_spike_train.mat','Ca','t');
     CaX = Data.Ca;
     CaT = Data.t;
     Cah1 = 1;

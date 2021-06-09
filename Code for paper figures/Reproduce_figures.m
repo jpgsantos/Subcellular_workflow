@@ -16,9 +16,9 @@ f_Reproduce_plot_fig4(script_folder + "Figure 4/")
 % %Run time ~= 7 seconds
 
 f_Reproduce_plot_fig5(script_folder + "Figure 5/")
-% %Run time ~= 10 seconds
+% % %Run time ~= 10 seconds
 
-% f_Reproduce_plot_fig6(script_folder + "Figure 6/")
+f_Reproduce_plot_fig6(script_folder + "Figure 6/")
 %Run time ~= 34 seconds
 
 f_Reproduce_plot_fig7_BCDE(script_folder + "Figure 7/")

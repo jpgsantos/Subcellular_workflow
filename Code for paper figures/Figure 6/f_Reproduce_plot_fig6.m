@@ -7,26 +7,9 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 
 %%  read simbiology version
 
-Regenerate_figures
-load("new_data_fig6.mat")
-
-% x_noDA = new_data{1}(:,2);
-% t_noDA = new_data{1}(:,1);
-% t_DA = new_data{2}(:,1);
-% x_DA = new_data{2}(:,2);
-
-
-
-% )  ;
-%   ;
-%   ;
-%   ;
-% new_data{3}(:,1) = DA;
-% new_data{3}(:,2) = activationAreaWithMultipleDA/activationArea;
-
-
-
-% obj = newdata.obj ;
+% Regenerate_figures
+load("Nair_2016_optimized_Matlab_data_fig6.mat",...
+    'Nair_2016_optimized_Matlab_data_fig6','obj')
 
 %% read steps
 
@@ -45,8 +28,6 @@ Tst=readtable(results_file_name);
 results_file_name=work_folder + "model_D1_LTP_time_window_alternative_1_alternative_4__sim8__2020-05-28T00_41_56.325Z.csv";
 Tstn=readtable(results_file_name);
 % cd(d0)
-
-
 
 %% read steps DT dependence
 
@@ -207,10 +188,10 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(new_data{1}(:,2)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)),[0.1,0.9],[1.0,0.8, 0.8],0.5)
 
-max(x_noDA(:,1))
-max(new_data{1}(:,2))
+% % % % % max(x_noDA(:,1))
+% % % % % max(new_data{1}(:,2))
 
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
 %plot(Tstn{nonzn,'Time'}-100, cstn(nonzn,1)/max(x_noDA(:,1)), 'LineWidth', 1,'Color',[0.7,0.7, 0.7])
@@ -233,9 +214,9 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-patch_error_plot(tst2'-tst2(1),cst2/max(new_data{1}(:,2)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
+patch_error_plot(tst2'-tst2(1),cst2/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)),[0.1,0.9],[0.8,0.8, 1.0],0.5)
 
-plot(new_data{1}(:,1), new_data{1}(:,2)/max(new_data{1}(:,2)), '-','Color',[0,0, 0.5], 'LineWidth', 1)
+plot(Nair_2016_optimized_Matlab_data_fig6{1}(:,1), Nair_2016_optimized_Matlab_data_fig6{1}(:,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)), '-','Color',[0,0, 0.5], 'LineWidth', 1)
 
 ii = 1;
 %nonzn=Tstn{:,'Obs_CaMKII'}>0;
@@ -259,11 +240,11 @@ cstn_v2 = [cstn_v2; zeros(DT*ntrain-size(cstn_v2,1), size(cstn_v2,2))];
 cst2 = reshape(cstn_v2(1:DT*ntrain,ii),DT,[]);
 cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(new_data{1}(:,2)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
+plot(tst2-tst2(1), mean(cst2,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
 
 
 % plot(new_data{2}(:,1), x_DA(:,ii)/max(new_data{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
-plot(new_data{2}(:,1), new_data{2}(:,2)/max(new_data{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
+plot(Nair_2016_optimized_Matlab_data_fig6{2}(:,1), Nair_2016_optimized_Matlab_data_fig6{2}(:,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
 
 
 ntrain=40;
@@ -280,7 +261,7 @@ end
 cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
-plot(tst2-tst2(1), mean(cst2,2)/max(new_data{1}(:,2)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
+plot(tst2-tst2(1), mean(cst2,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
 text(-2.5,5.25,'A','FontWeight','bold')
 
 
@@ -345,15 +326,15 @@ hold on
 
 % scatter(new_data{3}(:,1), new_data{3}(:,2),'filled','MarkerFaceColor', [0 0 0])
 
-plot(new_data{3}(:,1), new_data{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
-plot(new_data{3}(:,1), new_data{3}(:,2),'r', 'LineWidth', 1)
-plot(new_data{3}(:,1), new_data{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
+plot(Nair_2016_optimized_Matlab_data_fig6{3}(:,1), Nair_2016_optimized_Matlab_data_fig6{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
+plot(Nair_2016_optimized_Matlab_data_fig6{3}(:,1), Nair_2016_optimized_Matlab_data_fig6{3}(:,2),'r', 'LineWidth', 1)
+plot(Nair_2016_optimized_Matlab_data_fig6{3}(:,1), Nair_2016_optimized_Matlab_data_fig6{3}(:,2),'Color', [0 0 0], 'LineWidth', 1)
 
 % plot(DA, median(activationAreaWithMultipleDA_steps)/activationArea_steps, 'LineWidth', 2)
 
 plot([-5 5], [1 1], '-.', 'LineWidth', 1, 'Color', [0.5 0.5 0.5])
 
-boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',new_data{3}(:,1),'Labels',new_data{3}(:,1),'Colors','r','OutlierSize',2,'Symbol','ro');
+boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',Nair_2016_optimized_Matlab_data_fig6{3}(:,1),'Labels',Nair_2016_optimized_Matlab_data_fig6{3}(:,1),'Colors','r','OutlierSize',2,'Symbol','ro');
 
 % plot([0 0], [0 max(activationAreaWithMultipleDA/activationArea)], '-.', 'LineWidth', 2, 'Color', [0.5 0.5 0.5])
 set(gca,'FontSize',8, 'FontWeight', 'bold')
