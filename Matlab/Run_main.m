@@ -6,7 +6,6 @@ date_stamp = string(year(datetime)) + "_" + ...
     + "__" + string(hour(datetime)) + "_" + string(minute(datetime))...
     + "_" + string(round(second(datetime)));
 
-
 script_folder = convertCharsToStrings(fileparts(mfilename('fullpath')))+"/";
 script_folder = strrep(script_folder,"\","/");
 addpath(genpath(script_folder));

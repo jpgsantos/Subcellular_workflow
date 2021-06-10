@@ -109,11 +109,11 @@ Same as previously but tailor made for the equilibration step of the simulation.
 
   .. _files_functions:
 
-Functions
----------
+Input_Functions
+---------------
 
-Model\\ :ref:`model_folder_name<stg.folder_model>`\\Formulas\\ :ref:`name<stg.name>`\_input_i\_\ :ref:`input_name<input_name>`.m
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Model\\ :ref:`model_folder_name<stg.folder_model>`\\Formulas\\ :ref:`name<stg.name>`\_input_i"input_name".m
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 These functions interpolate the input that is supposed to be given to the model at run time.
 

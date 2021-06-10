@@ -109,7 +109,7 @@ Plots diagnosis that are important to understand if everything is working as it 
    .. toggle-header::
        :header: **Code figures SA**
  	  
-       .. literalinclude:: ../Matlab/Code/Plots/f_plot_SA_sensitivities.m
+       .. literalinclude:: ../Matlab/Code/Plots/f_plot_gsa_sensitivities.m
           :linenos:
           :language: matlab		 		  
 	  

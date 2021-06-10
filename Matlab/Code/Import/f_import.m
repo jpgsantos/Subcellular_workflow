@@ -2,7 +2,7 @@ function [stg,sb] = f_import(stg,sb,script_folder)
 
 % Create needed folders
 mkdir(script_folder + "/Model/" + stg.folder_model,"Data");
-mkdir(script_folder + "/Model/" + stg.folder_model,"Formulas");
+mkdir(script_folder + "/Model/" + stg.folder_model,"Input_functions");
 mkdir(script_folder + "/Model/" + stg.folder_model,"tsv/" + stg.name + "/");
 mkdir(script_folder + "/Model/" + stg.folder_model,"Data/Exp");
 
