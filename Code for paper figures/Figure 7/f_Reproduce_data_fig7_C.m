@@ -9,13 +9,14 @@ obj = modelobj;
 
 cnfst = getconfigset(obj);
 cnfst.SolverType = 'ode15s';
-cnfst.StopTime = 50000;
+cnfst.StopTime = 2000;
 cnfst.TimeUnits = 'second';
-cnfst.SolverOptions.AbsoluteTolerance = 1e-7;
+cnfst.SolverOptions.AbsoluteTolerance = 1e-4;
 cnfst.SolverOptions.RelativeTolerance = 1e-4;
 cnfst.CompileOptions.UnitConversion = 1;
 cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
+cnfst.SolverOptions.AbsoluteToleranceStepSize = 0.01;
 
 [t,species,~] = sbiosimulate(obj);
 
@@ -42,11 +43,11 @@ set(ruleobj,'RuleType','RepeatedAssignment');
 
 %% Run simulations
 
-DA = -4:0.2:4;
+DA = -4:0.25:4;
 CaStart = 4;
 cnfst.StopTime = 20;
-cnfst.SolverOptions.MaxStep = 0.001;
-cnfst.SolverOptions.OutputTimes = 0:0.001:20;
+cnfst.SolverOptions.MaxStep = 0.0001;
+cnfst.SolverOptions.OutputTimes = 0:0.0001:20;
 cnfst.RuntimeOptions.StatesToLog = {'pSubstrate'};
 set(obj.rules(2), 'Active', 1);
 set(obj.rules(3), 'Active', 0);
@@ -66,18 +67,19 @@ objm{n} = copyobj(obj);
 objm{n}.parameters(228).Value = CaStart + DA(n); % par 228 = DA_start
 objm_cnfst{n} = getconfigset(objm{n});
 objm_cnfst{n}.StopTime = 20;
-objm_cnfst{n}.SolverOptions.MaxStep = 0.001;
-objm_cnfst{n}.SolverOptions.OutputTimes = 0:0.001:20;
+objm_cnfst{n}.SolverOptions.MaxStep = 0.0001;
+objm_cnfst{n}.SolverOptions.OutputTimes = 0:0.0001:20;
 objm_cnfst{n}.RuntimeOptions.StatesToLog = {'pSubstrate'};
 objm_cnfst{n}.SolverType = 'ode15s';
 objm_cnfst{n}.TimeUnits = 'second';
-objm_cnfst{n}.SolverOptions.AbsoluteTolerance = 1e-7;
+objm_cnfst{n}.SolverOptions.AbsoluteTolerance = 1e-4;
 objm_cnfst{n}.SolverOptions.RelativeTolerance = 1e-4;
 objm_cnfst{n}.CompileOptions.UnitConversion = 1;
 objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
+    n
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end
@@ -88,6 +90,8 @@ Nair_2016_optimized_Matlab_data_fig7{2}(:,1) = t_DA;
 Nair_2016_optimized_Matlab_data_fig7{2}(:,2) = x_DA;
 Nair_2016_optimized_Matlab_data_fig7{3}(:,1) = DA;
 Nair_2016_optimized_Matlab_data_fig7{3}(:,2) = activationAreaWithMultipleDA/activationArea;
+Nair_2016_optimized_Matlab_data_fig7{3}(:,3) = activationAreaWithMultipleDA;
+Nair_2016_optimized_Matlab_data_fig7{3}(:,4) = activationArea;
 
 save(folder + "Nair_2016_optimized_Matlab_data_fig7.mat",...
     'Nair_2016_optimized_Matlab_data_fig7')
