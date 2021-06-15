@@ -1,7 +1,7 @@
 Welcome to the Subcelular workflow documentation! (Under construction - last updated |today|)
 =============================================================================================
 
-test bullet points 1
+test bullet points 2
 
 |
 
