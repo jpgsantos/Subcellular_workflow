@@ -1,6 +1,8 @@
 Welcome to the Subcelular workflow documentation! (Under construction - last updated |today|)
 =============================================================================================
 
+test bullet points 1
+
 |
 
 This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software. (Santos et al. 2020) (Preprint)
