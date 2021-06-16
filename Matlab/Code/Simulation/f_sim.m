@@ -18,7 +18,7 @@ if isempty(model_run)
         
         if stg.simdetail
             % Load the models for equilibrium
-            load(script_folder + "Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
+            load(script_folder + "Model/" +stg.folder_model + "/Data/exp/Model_detail_" + stg.name +...
                 "_" + n + ".mat",'model_exp','config_exp')
 
             % Place the loaded models in the correct place in the array,

@@ -39,5 +39,5 @@ f_setup_input(stg,mmf)
 %species and parameters needed depending on the inputs and outputs
 %specified on the sbtab, one for the equilibrium simulation run and one for
 %the proper run
-f_build_model_exp(stg,sb,Matlab_model_folder)
+f_build_model_exp(stg,sb,mmf)
 end

@@ -11,7 +11,6 @@ mmf.model.main = mmf.main + "Model/" + stg.folder_model + "/";
 mmf.model.sbtab = mmf.model.main + stg.sbtab_excel_name;
 
 
-
 % Folder Data_folder
 mmf.model.data.main = mmf.model.main + "Data/";
 
@@ -35,12 +34,32 @@ mmf.model.data.input_model_data = mmf.model.data.main + "Input_" + stg.name + ".
 mmf.model.data.sbtab = mmf.model.data.main + "SBtab_" + stg.name + ".mat";
 
 
+
+% model_exp_folder
+mmf.model.data.model_exp.main = mmf.model.data.main + "Exp/";
+
+% model_exp
+mmf.model.data.model_exp.default = mmf.model.data.model_exp.main +...
+    "Model_" + stg.name + "_";
+
+% model_exp_eq
+mmf.model.data.model_exp.equilibration = mmf.model.data.model_exp.main +...
+    "Model_eq_" + stg.name + "_";
+
+% model_exp_detail
+mmf.model.data.model_exp.detail = mmf.model.data.model_exp.main +...
+    "Model_detail_" + stg.name + "_";
+
+
+
 % Folder input_functions_folder
 mmf.model.input_functions.main = mmf.model.main + "/Input_functions/";
 
 % model_input
 mmf.model.input_functions.input =...
     mmf.model.input_functions.main + stg.name + "_input";
+
+
 
 
 % Folder tsv_folder
@@ -53,6 +72,8 @@ mmf.model.tsv.model_name = mmf.model.tsv.main + stg.name + "/";
 
 
 mmf.model.results.main = mmf.model.main + "Results/";
+
+
 
 % mmf.model.results.analysis.main =... 
 % mmf.model.results.main + stg.analysis + "/";

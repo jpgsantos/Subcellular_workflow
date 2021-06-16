@@ -1,12 +1,13 @@
-function rst = f_analysis(stg,analysis,script_folder)
+function rst = f_analysis(stg,analysis,mmf)
 
 if contains(analysis,"Diagnostics")
-    rst.diag = f_diagnostics(stg,script_folder);
+    rst.diag = f_diagnostics(stg,mmf);
 end
-if contains(analysis,"Optimization")
-    rst.opt = f_opt(stg,script_folder);
+
+if contains(analysis,"Optimization")%broken
+    rst.opt = f_opt(stg,mmf);
 end
-if contains(analysis,"Sensitivity Analysis")
-    rst.gsa = f_gsa(stg,script_folder);
+if contains(analysis,"Sensitivity Analysis")%broken
+    rst.gsa = f_gsa(stg,mmf);
 end
 end

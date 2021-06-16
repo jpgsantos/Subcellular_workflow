@@ -50,7 +50,7 @@ stg.placsl = true;
 stg.save_results = true;
 
 % True or false to decide whether to run detailed simulation for plots
-stg.simdetail = false;
+stg.simdetail = true;
 
 %% Simulation
 
@@ -169,7 +169,7 @@ stg.plotnames = true;
 %% Sensitivity analysis
 
 % Number of samples to use in SA (Sensitivity analysis number of samples)
-stg.sansamples = 10800;
+stg.sansamples = 10;
 
 % True or false to decide whether to subtract the mean before calculating
 % SI and SIT (Sensitivity analysis subtract mean)
@@ -195,10 +195,10 @@ stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!) (Optimization time)
-stg.optt = 60*10;
+stg.optt = 60*1;
 
 % Population size for the algorithms that use populations (Population size)
-stg.popsize = 1800;
+stg.popsize = 10;
 
 % optimization start method, choose between: 1 Random starting point or
 % group of starting points inside the bounds 2 Random starting point or

@@ -25,13 +25,13 @@ else
     % and also adds the number of experiments and outputs to the settings
     % variable
     if isempty(sb)
-        [stg,sb] = f_generate_sbtab_struct(stg,script_folder);
+        [stg,sb] = f_generate_sbtab_struct(stg,mmf);
     end
 end
 
 % Runs the Analysis chosen in settings
 if stg.analysis ~= "" && Analysis_n ~= 5
-    rst = f_analysis(stg,stg.analysis,script_folder);
+    rst = f_analysis(stg,stg.analysis,mmf);
 end
 % Save Analysis results if chosen in settings
 if stg.save_results

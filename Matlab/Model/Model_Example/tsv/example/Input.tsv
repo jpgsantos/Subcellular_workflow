@@ -1,5 +1,0 @@
-!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='Input' TableTitle='SBTAB example Input' TableType = 'Quantity'						
-!ID	!Name	!DefaultValue	!Unit	!ConservationLaw	LaTeX Construct	!LaTeX	!Comment
-INP1	iReceptor	1	nanomolarity	true	\ce{[Rii}]}	\ce{[PH_{ConservedConst}]}	
-INP2	Ligand	0	nanomolarity	true		\ce{[PH_{ConservedConst}]}	
-INP3	ieffector	1	nanomolarity	true		\ce{[PH_{ConservedConst}]}	

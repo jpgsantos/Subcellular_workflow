@@ -1,16 +1,18 @@
-function f_build_model_exp(stg,sb,script_folder)
+function f_build_model_exp(stg,sb,mmf)
 %Creates two .mat files for each experiment, with all the added rules,
 %species and parameters needed depending on the inputs and outputs
 %specified on the sbtab, one for the equilibrium simulation run and one for
 %the proper run
 
+data_model = mmf.model.data.data_model;
+mat_model = mmf.model.data.mat_model;
+model_exp_eq = mmf.model.data.model_exp.equilibration;
+model_exp_default = mmf.model.data.model_exp.default;
+model_exp_detail = mmf.model.data.model_exp.detail;
+
 %Find correct path for loading depending on the platform
-load(script_folder + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
-    stg.name + ".mat",'Data','sbtab')
-
-load(script_folder + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
-    stg.name + ".mat",'modelobj');
-
+load(data_model,'Data','sbtab')
+load(mat_model,'modelobj');
 
 model_run = cell(size(sb.Experiments.ID,1),1);
 configsetObj = cell(size(sb.Experiments.ID,1),1);
@@ -50,11 +52,9 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    save(model_exp_eq + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
-        stg.name + "_" + number_exp + ".sbproj",'model_exp')
+    sbiosaveproject(model_exp_eq + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     
@@ -124,11 +124,9 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    save(model_exp_default + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
-        stg.name + "_" + number_exp + ".sbproj",'model_exp')
+    sbiosaveproject(model_exp_default + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
     set(configsetObj{number_exp}.SolverOptions,'MaxStep', stg.maxstepdetail);
@@ -136,8 +134,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(script_folder + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    save(model_exp_detail + number_exp + ".mat",'model_exp','config_exp')
     
 end
 end
