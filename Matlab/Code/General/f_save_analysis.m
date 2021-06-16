@@ -1,14 +1,15 @@
 function f_save_analysis(stg,sb,rst,date_stamp,script_folder)
 
-mkdir(script_folder + "Model/" + stg.folder_model,"Results");
+Model_folder = script_folder + "Model/" + stg.folder_model + "/";
+Results_Folder = Model_folder + "Results/";
+Analysis_folder = stg.analysis + "/";
+Date_folder = string(date_stamp) + "/";
 
-Folder_name = stg.analysis;
-Folder_name2 = string(date_stamp);
+mkdir(Model_folder,"Results");
+mkdir(Results_Folder, Analysis_folder);
+mkdir(Results_Folder  + Analysis_folder, Date_folder);
+addpath(Results_Folder  + Analysis_folder  + Date_folder)
 
-mkdir(script_folder + "Model/" + stg.folder_model + "/Results",Folder_name);
-mkdir(script_folder + "Model/" + stg.folder_model + "/Results"+ "/" + Folder_name,Folder_name2);
-addpath(script_folder + "Model/" + stg.folder_model + "/Results"+ "/" + Folder_name+"/"+Folder_name2)
-
-save (script_folder + "Model/" +char(stg.folder_model + "/Results/" +...
-    Folder_name + "/" + Folder_name2 + "/Analysis.mat"),'stg','sb','rst');
+save (Results_Folder +...
+    Analysis_folder + Date_folder + "Analysis.mat",'stg','sb','rst');
 end

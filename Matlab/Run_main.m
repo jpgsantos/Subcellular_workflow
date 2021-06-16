@@ -1,4 +1,5 @@
 % Script to import sbtab and run the analyis
+clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -13,9 +14,12 @@ addpath(genpath(script_folder));
 % Code for choosing the model and loading the settings files
 [stg,rst,sb,Analysis_n] = f_load_settings(script_folder);
 
+%Function where all folder structure used for the models is saved
+[mmf] = f_get_folders(stg,script_folder);
+
 % Runs the import scripts if chosen in settings
 if stg.import
-    [stg,sb] = f_import(stg,sb,script_folder);
+    [stg,sb] = f_import(stg,sb,mmf);
 else
     % Creates a struct based on the sbtab that is used elswhere in the code
     % and also adds the number of experiments and outputs to the settings

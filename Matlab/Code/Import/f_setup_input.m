@@ -1,15 +1,19 @@
-function f_setup_input(stg,script_folder)
+function f_setup_input(stg,mmf)
 % Creates code that loads the inputs of each experiment into a .mat file,
 % and creates the code to read this inputs at runtime when the experiments
 % are being simulated, all this generated code is stored on the
 % Input_functions folder
 
-%Find correct path for loading depending on the platform
-load(script_folder + "/Model/" + stg.folder_model + "/Data/" + "data_" +...
-    stg.name + ".mat",'sbtab')
+mat_model = mmf.model.data.mat_model;
+data_model = mmf.model.data.data_model;
+script_folder = mmf.main;
+model_input = mmf.model.input_functions.input;
+input_model_data = mmf.model.data.input_model_data;
 
-load(script_folder + "/Model/" + stg.folder_model + "/Data/" + "model_" +...
-    stg.name + ".mat",'modelobj');
+%Find correct path for loading depending on the platform
+load(data_model,'sbtab')
+
+load(mat_model,'modelobj');
 
 script_folder = strrep(script_folder,"\","/");
 
@@ -25,9 +29,8 @@ for exp_n = 1:size(sbtab.datasets,2)
             inph1 = input + "h1";
             inph2 = input + "h2";
             
-            fullFileName = sprintf('%s.m',script_folder + "/Model/" +...
-                stg.folder_model + "/Input_functions/" + stg.name +...
-                "_input" + exp_n + "_" + input  );
+            fullFileName = sprintf('%s.m',...
+                model_input + exp_n + "_" + input  );
             
             fileID = fopen(fullFileName, 'wt');
             
@@ -39,8 +42,7 @@ for exp_n = 1:size(sbtab.datasets,2)
                 "persistent " + inph1 + "\n"+...
                 "persistent " + inph2 + "\n"+...
                 "if isempty(" + inpX + ")\n"+...
-                "Data = coder.load('" + script_folder + "/Model/"+...
-                stg.folder_model +"/Data/Input_" + stg.name + ".mat',"+...
+                "Data = coder.load(" + input_model_data+","+...
                 "'exp" + exp_n + "_" + input + "');\n"+...
                 inpX + " = Data.exp" + exp_n + "_" + input + "(:,2);\n"+...
                 inpT + " = Data.exp" + exp_n + "_" + input + "(:,1);\n"+...

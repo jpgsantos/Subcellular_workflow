@@ -7,7 +7,7 @@ persistent settings_file_date_last
 persistent Analysis_n_last
 
 rst = [];
-listing = dir(script_folder + 'Model');
+listing = dir(script_folder + 'Model/');
 
 for n = size(listing,1):-1:1
     if matches(listing(n).name,char("."))

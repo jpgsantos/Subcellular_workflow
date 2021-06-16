@@ -1,10 +1,10 @@
-function thisAmp = example_input2_Ligand(times)
+function thisAmp = Example_input2_Ligand(times)
 persistent LigandX
 persistent LigandT
 persistent Ligandh1
 persistent Ligandh2
 if isempty(LigandX)
-Data = coder.load('C:/Users/Santos/Documents/GitHub/Subcellular_workflow/Matlab//Model/Model_Example/Data/Input_example.mat','exp2_Ligand');
+Data = coder.load(C:/Users/Santos/Documents/GitHub/Subcellular_workflow/Matlab/Model/Model_Example/Data/Input_Example.mat,'exp2_Ligand');
 LigandX = Data.exp2_Ligand(:,2);
 LigandT = Data.exp2_Ligand(:,1);
 Ligandh1 = 1;
