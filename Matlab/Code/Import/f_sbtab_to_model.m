@@ -3,7 +3,7 @@ function f_sbtab_to_model(stg,sb,script_folder)
 % file whith the data to run the model in all different experimental
 % settings defined in the sbtab
 
-modelobj = sbiomodel (stg.name);
+modelobj = sbiomodel(stg.name);
 compObj = [];
 
 sbtab.species = cat(2,sb.Compound.Name,sb.Compound.InitialValue,...
@@ -54,24 +54,20 @@ for n = 1:size(sb.Reaction.ID,1)
     
     reaction_name_compartment = reaction_name;
     
-    % Check if running matlab 2020a or later
-    if f_check_minimum_version(9,8)
-        
-        for m = 1:size(sb.Compound.Name,1)
-            reaction_name_compartment = insertBefore(string(reaction_name_compartment)," " + string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));
-        end
-        
-        while strfind(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}))
-            reaction_name_compartment = strrep(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}), " "+sb.Reaction.Location{n});
-        end
-        
-        while strfind(reaction_name_compartment,"  ")
-            reaction_name_compartment = strrep(reaction_name_compartment,"  "," ");
-        end
-        
-        reaction_name_compartment = strrep(reaction_name_compartment,sb.Reaction.Location{n} + " ",sb.Reaction.Location{n}+".");
-        reaction_name_compartment = string(sb.Reaction.Location{n})+"."+reaction_name_compartment;
+    for m = 1:size(sb.Compound.Name,1)
+        reaction_name_compartment = insertBefore(string(reaction_name_compartment)," " + string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));
     end
+    
+    while strfind(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}))
+        reaction_name_compartment = strrep(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}), " "+sb.Reaction.Location{n});
+    end
+    
+    while strfind(reaction_name_compartment,"  ")
+        reaction_name_compartment = strrep(reaction_name_compartment,"  "," ");
+    end
+    
+    reaction_name_compartment = strrep(reaction_name_compartment,sb.Reaction.Location{n} + " ",sb.Reaction.Location{n}+".");
+    reaction_name_compartment = string(sb.Reaction.Location{n})+"."+reaction_name_compartment;
     
     reactionObj = addreaction(modelobj,reaction_name_compartment);
     set(reactionObj,'ReactionRate',sb.Reaction.KineticLaw{n});

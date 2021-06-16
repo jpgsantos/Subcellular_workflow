@@ -69,7 +69,7 @@ stg.maxt = 2;
 
 % Equilibration time
 % (Equilibration time)
-stg.eqt  = 500000;
+stg.eqt  = 50000;
 
 % True or false to decide whether to do Dimensional Analysis
 % (Dimensional Analysis)
