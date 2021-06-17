@@ -145,7 +145,7 @@ class Timing_Experiment(e.Experiment):
             elif syntype in ['glutamate_phos']:
                 start = p.glutamate_phos_start
                 number = 1
-                interval = p.glutamate_phos_interval
+                interval = 0
                 weight = 1
             
         elif deterministic == 0:
@@ -231,6 +231,8 @@ class Timing_Experiment(e.Experiment):
         self.vdlist = []
         self.tout = h.Vector()
         self.tout.record(h._ref_t, record_step)
+        self.tv = h.Vector()
+        self.tv.record(h._ref_t, p.record_step_v)
         self.cali = []
         self.cali_dend = []
         self.cai_nmda = []
@@ -239,7 +241,7 @@ class Timing_Experiment(e.Experiment):
 
         self.vs = []
         self.vs = h.Vector()
-        self.vs.record(self.cell.somalist[0](0.5)._ref_v, record_step)
+        self.vs.record(self.cell.somalist[0](0.5)._ref_v, p.record_step_v)
                                       
         if self.exptype == 'single_sec':
             self.species = []            
@@ -249,7 +251,7 @@ class Timing_Experiment(e.Experiment):
             
             for i in range(0,len(p.species_to_plot)):
                 self.species.append(h.Vector())
-                cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_D1_LTP_time_window'                                                
+                cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_Nair_2016'                                                
                 self.species[-1].record(eval(cmd), record_step)
             
         if self.exptype == 'record_ca':
@@ -278,11 +280,11 @@ class Timing_Experiment(e.Experiment):
                 self.cali_dend[-1].record(self.cell.dendlist[d](p.pos)._ref_cali, record_step)
                 
                 self.dopamine.append(h.Vector())
-                self.dopamine[-1].record(spine.head(0.5)._ref_DA_D1_LTP_time_window, record_step)
+                self.dopamine[-1].record(spine.head(0.5)._ref_DA_Nair_2016, record_step)
             
                 for i in range(0,len(p.species_to_plot)):
                     self.species.append(h.Vector())
-                    cmd = 'spine.head(0.5)._ref_' + p.cascade_species[indices[i]] + '_D1_LTP_time_window'                                                
+                    cmd = 'spine.head(0.5)._ref_' + p.cascade_species[indices[i]] + '_Nair_2016'                                                
                     self.species[-1].record(eval(cmd), record_step)
                             
             self.w_ampa = []
@@ -328,7 +330,7 @@ class Timing_Experiment(e.Experiment):
             ax_vs = fig_vs.add_subplot(111)
             ax_vs.set_ylabel('Vs')
             ax_vs.set_xlabel('t')
-            ax_vs.plot(self.tout, self.vs)
+            ax_vs.plot(self.tv, self.vs)
             
             fig_DA = plt.figure()
             ax_DA = fig_DA.add_subplot(111)
@@ -345,12 +347,12 @@ class Timing_Experiment(e.Experiment):
             start = int(p.glutamate_phos_start*p.nrn_dots_per_1ms)
             end = int((p.glutamate_phos_start+50)*p.nrn_dots_per_1ms)
             before_LTP = vs[start:end] 
-            start = int((p.glutamate_phos_start+p.glutamate_phos_interval)*p.nrn_dots_per_1ms)
-            end = int((p.glutamate_phos_start+p.glutamate_phos_interval+50)*p.nrn_dots_per_1ms)
-            after_LTP = vs[start:end]
-            t = np.linspace(0,50, len(vs[start:end]))
-            ax_ampa_depol.plot(t, before_LTP); plt.hold(True)
-            ax_ampa_depol.plot(t, after_LTP);
+#            start = int((p.glutamate_phos_start+p.glutamate_phos_interval)*p.nrn_dots_per_1ms)
+#            end = int((p.glutamate_phos_start+p.glutamate_phos_interval+50)*p.nrn_dots_per_1ms)
+#            after_LTP = vs[start:end]
+#            t = np.linspace(0,50, len(vs[start:end]))
+#            ax_ampa_depol.plot(t, before_LTP); plt.hold(True)
+#            ax_ampa_depol.plot(t, after_LTP);
             
             fig_wampa = plt.figure(); 
             ax_wampa = fig_wampa.add_subplot(111);
@@ -405,7 +407,6 @@ class Timing_Experiment(e.Experiment):
                 axes[-1].plot(self.tout, self.species[i])
             
 #            fig_integral = plt.figure(); 
-#            ax_integral = fig_integral.add_subplot(111);
 #            ax_integral.set_ylabel('pSubstrate area')
 #            ax_integral.set_xlabel('t')
 #            plt.hold(True)
@@ -485,7 +486,7 @@ class Timing_Experiment(e.Experiment):
             steady_states = result['steady_states']
             for spine in self.cell.spines:
                 for i in range(0,len(steady_states)):
-                    cmd = 'spine.head(0.5).' + p.cascade_species[i] + '_D1_LTP_time_window' + '=' + str(steady_states[i])
+                    cmd = 'spine.head(0.5).' + p.cascade_species[i] + '_Nair_2016' + '=' + str(steady_states[i])
                     exec(cmd)
                     
     def seti_print_status(self):
@@ -513,5 +514,5 @@ class Timing_Experiment(e.Experiment):
         for i in range(0,num_clamps):                   
             self.iclamp.append(h.IClamp(pos, sec=sec))
             self.iclamp[-1].amp = p.iclamp_amp 
-            self.iclamp[-1].delay = p.plateau_burst_start + p.iclamp_delay + i*p.iclamp_periodic_delay
+            self.iclamp[-1].delay = p.iclamp_start + p.iclamp_delay + i*p.iclamp_periodic_delay
             self.iclamp[-1].dur = p.iclamp_dur

@@ -68,34 +68,37 @@ integral = []
 
 if rank == 0:
     for spine in ex.cell.spines:
-        spine.head(0.5).D1_LTP_time_window.DA_max = 0
-        spine.head(0.5).D1_LTP_time_window.DA_start = 100 
+        spine.head(0.5).Nair_2016.DA_max = 0
+        spine.head(0.5).Nair_2016.DA_start = 100 
         
     ex.simulate()
     integral0 = ex.calculate_aoc(ex.species[pp.species_to_plot.index('pSubstrate')])
 
 for d in DA_start:
     for spine in ex.cell.spines:
-        spine.head(0.5).D1_LTP_time_window.DA_max = pp.DA_max
-        spine.head(0.5).D1_LTP_time_window.DA_start = d + pp.plateau_burst_start 
+        spine.head(0.5).Nair_2016.DA_max = pp.DA_max
+        spine.head(0.5).Nair_2016.DA_start = d + pp.plateau_burst_start 
 
     ex.simulate()
     integral.append(ex.calculate_aoc(ex.species[pp.species_to_plot.index('pSubstrate')]))
+    pSubstrate = ex.species[pp.species_to_plot.index('pSubstrate')]
+    pSubstrate = pSubstrate.to_python()
     
 DA_start = comm.gather(DA_start, root = 0)    
 integral = comm.gather(integral, root = 0)
-    
+pSubstrate = comm.gather(pSubstrate, root = 0)
 # 5. Calculate and plot results
 if rank == 0:
     DA_start = extend_list(DA_start)
     print("DA_start:"); print(DA_start)
     integral = extend_list(integral)
 
-    res_dict = {'integral': integral,
-                'integral0': integral0
+    res_dict = {'DA_start':DA_start,
+                'integral': integral,
+                'integral0': integral0,
     }    
     to_save = json.dumps(res_dict)
-    with open('timing_window_ca_5.dat', 'w', encoding = 'utf-8') as f:
+    with open('timing_window_ca_iclamp.dat', 'w', encoding = 'utf-8') as f:
         json.dump(to_save, f)
     
     sns.set(font_scale = 1.5)
