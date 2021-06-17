@@ -1,21 +1,18 @@
-function f_save_plots(stg,date_stamp,script_folder)
+function f_save_plots(mmf)
 
-Analysis_folder = stg.analysis+"/";
-Date_folder = string(date_stamp)+"/";
-Results_Folder = script_folder + "Model/" + stg.folder_model + "/Results/";
+Analysis_date_folder = mmf.model.results.analysis.date.main;
 
 FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
 
-mkdir(Results_Folder + Analysis_folder,Date_folder);
+mkdir(Analysis_date_folder);
 
 savefig(FigList(end:-1:1),...
-    Results_Folder + Analysis_folder  + Date_folder + "All_figures.fig");
+    Analysis_date_folder + "All_figures.fig");
 
 for iFig = 1:length(FigList)
     FigHandle = FigList(iFig);
     FigName   = get(FigHandle, 'Name');
     
-    saveas(FigHandle, Results_Folder ...
-        + Analysis_folder + Date_folder + FigName + ".png")
+    saveas(FigHandle, Analysis_date_folder + FigName + ".png")
 end
 end

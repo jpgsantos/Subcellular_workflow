@@ -36,7 +36,6 @@ end
 end%function
 
 function [Si,SiT] = bootstrap_h(fM1,fM2,fN,stg,scores_names)
-
 for n = 1:size(scores_names,2)
     eval("fM1h=fM1." + scores_names(n) + ";");
     eval("fM2h=fM2." + scores_names(n) + ";");

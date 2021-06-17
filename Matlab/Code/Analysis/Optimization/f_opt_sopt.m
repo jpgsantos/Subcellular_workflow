@@ -1,4 +1,4 @@
-function rst = f_opt_sopt(stg,script_folder)
+function rst = f_opt_sopt(stg,mmf)
 
 % Set the randomm seed for reproducibility
 rng(stg.rseed);
@@ -27,13 +27,13 @@ if stg.mst
     parfor n = 1:stg.msts
         disp(string(n))
         [x(n,:),fval(n),exitflag(n),output(n)] =...
-            surrogateopt(@(x)f_sim_score(x,stg,script_folder),stg.lb,stg.ub,options);
+            surrogateopt(@(x)f_sim_score(x,stg,mmf),stg.lb,stg.ub,options);
     end
     
     % Optimize the model
 else
     [x(1,:),fval(1),exitflag(1),output(1)] =...
-        surrogateopt(@(x)f_sim_score(x,stg,script_folder),stg.lb,stg.ub,options);
+        surrogateopt(@(x)f_sim_score(x,stg,mmf),stg.lb,stg.ub,options);
 end
 
 % Save results

@@ -5,7 +5,6 @@ function rst = f_prep_sim(parameters,stg,mmf)
 persistent sbtab
 persistent Data
 
-Matlab_model_folder = mmf.main;
 data_model = mmf.model.data.data_model;
 
 % Import the data on the first run
@@ -129,7 +128,7 @@ for n = stg.exprun
     
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-%     try
+    try
         
         % If the correct setting is chosen display messages to console
         if stg.simcsl
@@ -168,7 +167,7 @@ for n = stg.exprun
             end
             
             % Equilibrate the model
-            rst = f_sim(n+stg.expn,stg,rt,rst,Matlab_model_folder);
+            rst = f_sim(n+stg.expn,stg,rt,rst,mmf);
             
             for j = 1:size(sbtab.species,1)
                 
@@ -190,11 +189,11 @@ for n = stg.exprun
         end
         
         % Simulate the model
-        rst = f_sim(n,stg,rt,rst,Matlab_model_folder);
+        rst = f_sim(n,stg,rt,rst,mmf);
         
         try
             if stg.simdetail
-                rst = f_sim(n+2*stg.expn,stg,rt,rst,Matlab_model_folder);
+                rst = f_sim(n+2*stg.expn,stg,rt,rst,mmf);
             end
         catch
         end
@@ -211,12 +210,12 @@ for n = stg.exprun
             % not worked properly
             rst.simd{n} = 0;
         end
-%     catch
-%         
-%         % Set the simulation output to be 0, this is a non function value
-%         % that the score function expects in simulations that did not
-%         % worked properly
-%         rst.simd{n} = 0;
-%     end
+    catch
+        
+        % Set the simulation output to be 0, this is a non function value
+        % that the score function expects in simulations that did not
+        % worked properly
+        rst.simd{n} = 0;
+    end
 end
 end

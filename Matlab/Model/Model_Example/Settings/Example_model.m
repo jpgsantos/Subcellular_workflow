@@ -14,9 +14,6 @@ stg.name = "Example";
 % Name of the default model compartment (Compartment name)
 stg.cname = "Compartment";
 
-% Name of the sbtab saved in .mat format (SBtab name)
-stg.sbtab_name = "sbtab_" + stg.name;
-
 %% Analysis
 
 % Experiments to run
@@ -50,7 +47,7 @@ stg.placsl = true;
 stg.save_results = true;
 
 % True or false to decide whether to run detailed simulation for plots
-stg.simdetail = true;
+stg.simdetail = false;
 
 %% Simulation
 
@@ -132,10 +129,6 @@ stg.lb = zeros(1,stg.parnum)-4;
 stg.ub = zeros(1,stg.parnum)+4;
 
 %% Diagnostics
-bestx = [3.99978790168342,0.696083638229722,1.07222177510192,3.42855002452532,-0.750862557020435,-3.74117757759210,-0.568806346697929,0.831169654480516,3.06774547222632,0.920863707272552,-2.15633836658656,-1.96976812567269];
-
-pa(1,:)=[3.99978790168342,0.696083638229722,1.07222177510192,3.42855002452532,-0.750862557020435,-3.74117757759210,-0.568806346697929,0.831169654480516,3.06774547222632,0.920863707272552,-2.15633836658656,-1.96976812567269];
-pa(2,:)=[3.999,0.696,1.072,3.429,-0.751,-3.741,-0.569,0.831,3.068,0.921,-2.156,-1.970];
 
 % Choice of what parameters in the array to test, the indices correspond to
 % the parameters in the model and the numbers correspond to the parameters
@@ -144,18 +137,17 @@ pa(2,:)=[3.999,0.696,1.072,3.429,-0.751,-3.741,-0.569,0.831,3.068,0.921,-2.156,-
 stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2 ,8 ,9,...
     10 ,11 ,12];
 
-% stg.ms.partest(:,1) = [0  ,0  ,0  ,0  ,0  ,0  ,0 ,0 ,1 ,2,...
-%                        3  ,4  ,5];
-
 % (Parameter array to test)
-stg.pat = 1:2;
+stg.pat = 1:3;
 
 % All the parameter arrays, in this case there is only one (Parameter
 % arrays)
-stg.pa = pa;
+stg.pa(1,:) = [3.999,0.696,1.072,3.429,-0.751,-3.741,-0.569,0.831,3.068,0.921,-2.156,-1.970];
+stg.pa(2,:) = stg.pa(1,:)-1;
+stg.pa(3,:) = stg.pa(1,:)+1;
 
 % Best parameter array found so far for the model (Best parameter array)
-stg.bestpa = bestx;
+stg.bestpa = stg.pa(1,:);
 
 %% Plots
 

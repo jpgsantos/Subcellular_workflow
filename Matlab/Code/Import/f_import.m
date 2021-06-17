@@ -1,7 +1,6 @@
 function [stg,sb] = f_import(stg,sb,mmf)
 
 Model_folder = mmf.model.main;
-Matlab_model_folder = mmf.main;
 
 % Create needed folders
 mkdir(Model_folder,"Data");
@@ -13,7 +12,7 @@ mkdir(Model_folder,"Data/Exp");
 disp("Reading SBtab Excel")
 f_excel_sbtab_importer(mmf);
 
-addpath(genpath(Matlab_model_folder));
+addpath(genpath(Model_folder));
 
 % Creates a struct based on the sbtab that is used elswhere in the code and
 % also adds the number of experiments and outputs to the settings variable

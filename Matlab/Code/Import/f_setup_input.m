@@ -4,16 +4,16 @@ function f_setup_input(stg,mmf)
 % are being simulated, all this generated code is stored on the
 % Input_functions folder
 
-mat_model = mmf.model.data.mat_model;
+matlab_model = mmf.model.data.mat_model;
 data_model = mmf.model.data.data_model;
 input_model_data = mmf.model.data.input_model_data;
-Matlab_model_folder = mmf.main;
+Model_folder = mmf.model.main;
 model_input = mmf.model.input_functions.input;
 
 %Find correct path for loading depending on the platform
 load(data_model,'sbtab')
 
-load(mat_model,'modelobj');
+load(matlab_model,'modelobj');
 
 for exp_n = 1:size(sbtab.datasets,2)
     
@@ -114,6 +114,6 @@ end
 fprintf(fileID, "end\n");
 fclose(fileID);
 
-addpath(genpath(Matlab_model_folder));
+addpath(genpath(Model_folder));
 eval(stg.name + "_input_creator()");
 end

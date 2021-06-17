@@ -1,5 +1,4 @@
 % Script to import sbtab and run the analyis
-clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -7,15 +6,17 @@ date_stamp = string(year(datetime)) + "_" + ...
     + "__" + string(hour(datetime)) + "_" + string(minute(datetime))...
     + "_" + string(round(second(datetime)));
 
-script_folder = convertCharsToStrings(fileparts(mfilename('fullpath')))+"/";
-script_folder = strrep(script_folder,"\","/");
-addpath(genpath(script_folder));
+% Get the folder where the MATLAB code and models are located
+Matlab_main_folder = fileparts(mfilename('fullpath'))+"/";
+Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
+addpath(genpath(Matlab_main_folder));
+mmf.main = Matlab_main_folder;
 
 % Code for choosing the model and loading the settings files
-[stg,rst,sb,Analysis_n] = f_load_settings(script_folder);
+[stg,rst,sb,Analysis_n] = f_load_settings(mmf);
 
-%Function where all folder structure used for the models is saved
-[mmf] = f_get_folders(stg,script_folder);
+% Get the folder structure used for the model files
+[mmf] = default_folders(stg,script_folder,date_stamp);
 
 % Runs the import scripts if chosen in settings
 if stg.import
@@ -35,15 +36,15 @@ if stg.analysis ~= "" && Analysis_n ~= 5
 end
 % Save Analysis results if chosen in settings
 if stg.save_results
-    f_save_analysis(stg,sb,rst,date_stamp,script_folder)
+    f_save_analysis(stg,sb,rst,mmf)
 end
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 if stg.plot
-    f_plot(rst,stg,script_folder)
+    f_plot(rst,stg,mmf)
     % Save plots results if chosen in settings
     if stg.save_results
-        f_save_plots(stg,date_stamp,script_folder)
+        f_save_plots(mmf)
     end
 end

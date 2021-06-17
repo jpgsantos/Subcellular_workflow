@@ -245,13 +245,13 @@ if isfield(sb,"Constant")
 end
 
 sbproj_model = mmf.model.data.sbproj_model;
-mat_model = mmf.model.data.mat_model;
+matlab_model = mmf.model.data.mat_model;
 data_model = mmf.model.data.data_model; 
 xml_model = mmf.model.data.xml_model; 
 
 sbiosaveproject(sbproj_model,'modelobj')
 
-save(mat_model,'modelobj')
+save(matlab_model,'modelobj')
 
 save(data_model,'Data','sbtab','sb')
 
