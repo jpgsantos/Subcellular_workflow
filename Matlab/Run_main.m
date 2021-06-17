@@ -1,4 +1,5 @@
 % Script to import sbtab and run the analyis
+clear functions
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -16,7 +17,7 @@ mmf.main = Matlab_main_folder;
 [stg,rst,sb,Analysis_n] = f_load_settings(mmf);
 
 % Get the folder structure used for the model files
-[mmf] = default_folders(stg,script_folder,date_stamp);
+[mmf] = default_folders(stg,mmf,date_stamp);
 
 % Runs the import scripts if chosen in settings
 if stg.import

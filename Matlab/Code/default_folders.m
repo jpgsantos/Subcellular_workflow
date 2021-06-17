@@ -1,9 +1,9 @@
-function [mmf] = default_folders(stg,script_folder,date_stamp)
+function [mmf] = default_folders(stg,mmf,date_stamp)
 
 
 % Matlab_main_folder
 % Matlab/
-mmf.main = script_folder;
+% mmf.main
 
     % Model_folder
     % Matlab/"Model Folder name"
