@@ -1,6 +1,0 @@
-!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='Output' TableTitle='SBTAB example Output' TableType = 'Quantity'								
-!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!ProbDist	!LaTeX	!Location	!Formula
-Y0	iReceptor_Out	Inactive Receptor	SD_Y0	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	iReceptor + iReceptor_Ligand
-Y1	aReceptor_Out	Active Receptor	SD_Y1	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	aReceptor + aReceptor_Ligand
-Y2	aeffector_Out	Active effector	SD_Y2	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	aeffector
-Y3	iefector_Out	Inactive efector	SD_Y3	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	ieffector
