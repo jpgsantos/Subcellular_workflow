@@ -8,5 +8,5 @@
 *.xml
 *.m
 *.tsv
-!**/tsv/*
+!**/tsv/Example/*
 !**/Settings/*.m
