@@ -1,4 +1,4 @@
-function [stg,rst,sb,Analysis_n] = f_load_settings(script_folder)
+function [stg,rst,sb,Analysis_n] = f_load_settings(mmf)
 
 persistent sbtab_date_last
 persistent folder_n_last
@@ -6,8 +6,10 @@ persistent settings_file_n_last
 persistent settings_file_date_last
 persistent Analysis_n_last
 
+Matlab_main_folder = mmf.main;
+
 rst = [];
-listing = dir(script_folder + 'Model');
+listing = dir(Matlab_main_folder + "Model/");
 
 for n = size(listing,1):-1:1
     if matches(listing(n).name,char("."))

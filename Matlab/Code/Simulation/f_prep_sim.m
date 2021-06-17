@@ -1,15 +1,17 @@
-function rst = f_prep_sim(parameters,stg,script_folder)
+function rst = f_prep_sim(parameters,stg,mmf)
 
 % Save variables that need to be mantained over multiple function calls
 % persistent modelobj
 persistent sbtab
 persistent Data
 
+data_model = mmf.model.data.data_model;
+
 % Import the data on the first run
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    load(script_folder + "Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
+    load(data_model,'Data','sbtab')
 end
 
 % Set the parameters that are going to be used for the simulation to the
@@ -165,21 +167,12 @@ for n = stg.exprun
             end
             
             % Equilibrate the model
-            rst = f_sim(n+stg.expn,stg,rt,rst,script_folder);
+            rst = f_sim(n+stg.expn,stg,rt,rst,mmf);
             
             for j = 1:size(sbtab.species,1)
                 
                 % Set the starting amount for species that after
                 % equilibrium have very low values to zero
-                
-%                 rst
-%                 rst.simd{n+stg.expn}
-%                 
-%                 j
-%                 rst.simd{n+stg.expn}.Data()
-%                 rst.simd{n+stg.expn}.DataNames()
-%                 rst.simd{n+stg.expn}.Data(end,j)
-                
                 if rst.simd{n+stg.expn}.Data(end,j) < 1.0e-15
                     rt.ssa(j,n) = 0;
                     
@@ -196,11 +189,11 @@ for n = stg.exprun
         end
         
         % Simulate the model
-        rst = f_sim(n,stg,rt,rst,script_folder);
+        rst = f_sim(n,stg,rt,rst,mmf);
         
         try
             if stg.simdetail
-                rst = f_sim(n+2*stg.expn,stg,rt,rst,script_folder);
+                rst = f_sim(n+2*stg.expn,stg,rt,rst,mmf);
             end
         catch
         end

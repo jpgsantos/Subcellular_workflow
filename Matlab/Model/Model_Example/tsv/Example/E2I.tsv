@@ -1,0 +1,5 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='E2I' TableTitle='SBTAB example E2I' TableType = 'QuantityMatrix'	
+!ID	!Input_Time_S4	>S4
+E2IT0	0	0
+E2IT1	2	10
+E2IT2	5	0

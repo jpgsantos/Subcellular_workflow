@@ -1,4 +1,4 @@
-function rst = f_make_output_sample(rst,stg,script_folder)
+function rst = f_make_output_sample(rst,stg,mmf)
 % Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J.
 % comp. neuroscience 27.3 (2009): 471.)
 
@@ -13,7 +13,7 @@ end
 
 parfor i=1:nSamples
     disp("M1 " + i + "/" + nSamples)
-    [~,~,RM1(i)] = f_sim_score(parameter_array(i,:),stg,script_folder);
+    [~,~,RM1(i)] = f_sim_score(parameter_array(i,:),stg,mmf);
 end
 
 for i=1:nSamples
@@ -32,7 +32,7 @@ end
 
 parfor i=1:nSamples
     disp("M2 " + i + "/" + nSamples)
-    [~,~,RM2(i)] = f_sim_score(parameter_array(i,:),stg,script_folder);
+    [~,~,RM2(i)] = f_sim_score(parameter_array(i,:),stg,mmf);
 end
 
 for i=1:nSamples
@@ -57,7 +57,7 @@ parfor i=1:nSamples
         if ~mod(j,35)
             disp("N " + i + "/" + nSamples + " Par " + j + "/" + nPars)
         end
-        [~,~,RN{i,j}] = f_sim_score(parameter_array(i,:,j),stg,script_folder);
+        [~,~,RN{i,j}] = f_sim_score(parameter_array(i,:,j),stg,mmf);
     end
 end
 

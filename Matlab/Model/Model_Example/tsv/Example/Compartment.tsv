@@ -1,0 +1,3 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='Compartment' TableTitle='SBTAB example Compartment' TableType = 'Quantity'		
+!ID	!Name	!Unit	!Size
+V1	Compartment	liter	1
