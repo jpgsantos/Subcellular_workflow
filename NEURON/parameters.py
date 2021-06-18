@@ -11,7 +11,7 @@ results_directory = './results'
 #      1. General recording and simulation parameters       #
 #-----------------------------------------------------------#
 step = 20.0
-record_step = 100
+record_step = 0.1
 record_step_v = 0.1
 g_record_step = 0.1
 
@@ -221,7 +221,8 @@ species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII',
                    'AC5_GaolfGTP','ATP', 'PP2B', 'PP2B_CaM_Ca2', 
                    'CaM_Ca2', 'CaM_Ca4', 'PP1', 'AMP', 'B56PP2A',
                    'B72PP2A_Ca', 'B56PP2A', 'D32', 'ARPP21', 'B72PP2A']
-species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']            
+species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']
+species_to_plot = ['pSubstrate']            
 cascade_species = [
      'AC5', 
  	'AC5_ATP', 
@@ -322,4 +323,4 @@ cascade_species = [
 	'CaMKII_CaM_psd_Substrate', 
 	'CaMKII_CaM_Ca2_psd_Substrate', 
 	'CaMKII_CaM_Ca4_psd_Substrate']
-species_to_plot  = cascade_species 
+#species_to_plot  = cascade_species 

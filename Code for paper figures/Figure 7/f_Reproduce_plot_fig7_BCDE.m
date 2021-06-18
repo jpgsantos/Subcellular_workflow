@@ -5,7 +5,8 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 load(folder + "Nair_2016_optimized_Matlab_data_fig7",...
     'Nair_2016_optimized_Matlab_data_fig7')
 
-load(folder + "auc",'DA_start','response_integral','response_integral_0')
+load(folder + "DA_start",'DA_start')
+load(folder + "pSubstrate_auc",'pSubstrate_auc')
 load(folder + "Ca_dopamine_spike_train",'Ca','Da','t')
 
 figHandles = findobj('type', 'figure', 'name', 'Paper Figure 7');
@@ -54,7 +55,7 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,...
 nexttile(layout);
 
 hold on
-p1 = plot (DA_start,response_integral/response_integral_0,...
+p1 = plot (DA_start,pSubstrate_auc,...
     'b', 'LineWidth',1);
 p2 = plot (Nair_2016_optimized_Matlab_data_fig7{3}(:,1),...
     Nair_2016_optimized_Matlab_data_fig7{3}(:,2),'r--', 'LineWidth', 1);

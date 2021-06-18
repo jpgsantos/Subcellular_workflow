@@ -18,6 +18,9 @@ cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 cnfst.SolverOptions.AbsoluteToleranceStepSize = 0.01;
 
+set(obj.Parameters(233), 'Value', 43.09) % parameter 233 is Ca_basal
+set(obj.species(25), 'InitialAmount', 43.09) % species 25 is Ca
+
 [t,species,~] = sbiosimulate(obj);
 
 SteadyState=species(length(t),:);
