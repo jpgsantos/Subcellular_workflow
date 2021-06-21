@@ -72,6 +72,8 @@ Matlab&reg; packages needed:
   * Global Optimization Toolbox
   * SimBiology&reg;
   * Parallel Computing Toolbox&trade;
+  * MATLAB&reg Compiler
+  * MATLAB&reg Compiler SDK
 
 # References
 
