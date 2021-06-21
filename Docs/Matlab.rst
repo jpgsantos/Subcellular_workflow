@@ -3,9 +3,9 @@ MATLAB\ |Reg| code
 
 The MATLAB\ |Reg| section of this workflow has been developed to facilitate model building and 
 rapid iteration between different versions of a model.
-In this workflow we use one main script that calls all the relevant functions to be used.
-To run this script MATLAB\ |Reg| should be opened with the folder "Matlab" from our repository as the main folder, and the script Run_main.m should be used.
-When running the Run_main.m a user facing prompt should be generated that allows the user to choose;
+In this workflow we use one main script, "Run_main.m", that calls all the relevant functions to be used.
+To run the MATLAB\ |Reg| code the Subcellular Workflow repository should be added to the MATLAB\ |Reg| path.
+Running the script "Run_main.m" generates a prompt in the MATLAB terminal, this requires user input to choose between the numbered options. These prompts allow the user to choose:
 
   - The model to use (from all the models that are in the "Matlab/model" folder). 
 	
@@ -13,13 +13,11 @@ When running the Run_main.m a user facing prompt should be generated that allows
 
   - The analysis to be performed, with the following options:
 
-    1. Diagnostics
+    1. :ref:`Diagnostics<diag>`
   
-    2. Parameter Estimation
+    2. :ref:`Parameter Estimation<param_ext>`
   
-  
-    3. Global Sensitivity Analysis
-  
+    3. :ref:`Global Sensitivity Analysis<gsa>`
   
     4. Repruduction of a previous Analysis
   
@@ -31,13 +29,13 @@ When running the Run_main.m a user facing prompt should be generated that allows
   
          Similar to the previous option but here only the plots are re-done.
       
-  - The settings file to use on the model (From the settings files present in "Matlab/model/Model_name/settings")
+  - The settings file to use on the model (From the settings files present in "Matlab/model/"Model_name"/settings")
   
 Examples of the output recieved when the different models are run through the workflow can be find on 
 
-- `Fujita_2010 examples <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Results/Examples>`_
-- `Nair_2016 examples <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Results/Examples>`_
-- `Viswan_2018 examples <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/Results/Examples>`_
+  - `Fujita_2010 examples <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Results/Examples>`_
+  - `Nair_2016 examples <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Results/Examples>`_
+  - `Viswan_2018 examples <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/Results/Examples>`_
 
 In order to gain a better understanding on how the code works, there are detailed pages for the following:
 
@@ -56,6 +54,7 @@ In order to gain a better understanding on how the code works, there are detaile
    :hidden:
    :maxdepth: 2
 
+   Analysis
    Scripts
    Functions
    Settings_file

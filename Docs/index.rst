@@ -13,24 +13,32 @@ Using MATLAB\ |Reg| we have developed custom scripts for parameter estimation, g
 
 We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016.
 
-Code to run this model in MATLAB\ |Reg|, NEURON, and the Subcellular web application (STEPS) can be found on the "MATLAB", "NEURON" and "BioNetGen and STEPS folders", respectively.
+Code and files to run these models in different simulators:
 
-|
+* | For MATLAB\ |Reg|
+  | `Matlab/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Fujita_2010 <https://github.com/jpgsantos/Model_Fujita_2010>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_ 
+* | For Neuron  
+  | `NEURON/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/NEURON>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
+* | For the Subcellular application (STEPS)  
+  | `BioNetGen and STEPS/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_ 
+* | Copasi  
+  | `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
 
 Features:
 
-* Model simulation using MATLAB\ |Reg|, the Subcellular application (STEPS), or NEURON
-* Analysis of selected parameter sets, using MATLAB\ |Reg|
-* Parameter optimization using MATLAB\ |Reg|
-* Global Sensitivity Analysis using MATLAB\ |Reg|
+* Wrapper for model simulation in MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Analysis of selected parameter sets, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Parameter optimization, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Global Sensitivity analysis, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
 * Conversion tools:
 
-  * SBtab (.xlsx,.xls) to SBtab(.tsv), using MATLAB\ |Reg|
-  * SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |Reg| (.m, .sbproj), using MATLAB\ |Reg|
-  * MATLAB\ |Reg| SimBiology\ |Reg| to SBML (.xml), using MATLAB\ |Reg|
-  * SBtab (.tsv) to VFGEN (.vf), using R
-  * SBtab (.tsv) to MOD (.mod), using R
-  * SBtab (.tsv) to SBML (.xml), using R
+  * | SBtab (.xlsx,.xls) to SBtab (.tsv), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+  * | SBtab (.xlsx) to MATLAB&reg; SimBiology&reg; (.m, .sbproj), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+  * | MATLAB&reg; SimBiology&reg; to SBML (.xml), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+    | Needs to be fixed with our R script (https://github.com/a-kramer/simbiology-sbml-fix)
+  * | SBtab (.tsv) to VFGEN (.vf), using R (https://github.com/a-kramer/SBtabVFGEN)
+  * | SBtab (.tsv) to Mod (.mod), using R (https://github.com/a-kramer/SBtabVFGEN)
+  * | SBtab (.tsv) to SBML (.xml), using R (https://github.com/a-kramer/SBtabVFGEN)
 
 |
 

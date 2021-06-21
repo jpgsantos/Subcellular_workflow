@@ -1,6 +1,5 @@
 function [mmf] = default_folders(stg,mmf,date_stamp)
 
-
 % Matlab_main_folder
 % Matlab/
 % mmf.main
