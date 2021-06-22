@@ -9,7 +9,7 @@ obj = modelobj;
 
 cnfst = getconfigset(obj);
 cnfst.SolverType = 'ode15s';
-cnfst.StopTime = 2000;
+cnfst.StopTime = 4000;
 cnfst.TimeUnits = 'second';
 cnfst.SolverOptions.AbsoluteTolerance = 1e-4;
 cnfst.SolverOptions.RelativeTolerance = 1e-4;
@@ -18,10 +18,15 @@ cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 cnfst.SolverOptions.AbsoluteToleranceStepSize = 0.01;
 
-set(obj.Parameters(233), 'Value', 43.09) % parameter 233 is Ca_basal
-set(obj.species(25), 'InitialAmount', 43.09) % species 25 is Ca
+obj.Parameters(233)
+set(obj.Parameters(233), 'Value', 28.42) % parameter 233 is Ca_basal
+obj.species(25)
+set(obj.species(25), 'InitialAmount', 28.42) % species 25 is Ca
 
 [t,species,~] = sbiosimulate(obj);
+
+obj.Parameters(233)
+obj.species(25)
 
 SteadyState=species(length(t),:);
 
@@ -34,6 +39,14 @@ end
 for i=1:length(SteadyState)
     set(obj.species(i), 'InitialAmount', SteadyState(i));
 end
+
+% C = readcell("steady_states_NEURON.csv");
+% 
+% for i=1:length(C)
+%     set(obj.species(i), 'InitialAmount', C{i,2});
+% end
+
+obj.species
 
 %% Add parameters used by the Calcium input
 
@@ -82,7 +95,6 @@ objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
-    n
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end

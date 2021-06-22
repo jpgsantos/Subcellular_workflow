@@ -2,7 +2,7 @@ function f_Reproduce_data_fig6_B_Matlab(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
-load(folder + "model_Nair_2016_optimized_fig6.mat",'modelobj');
+load(folder + "model_Nair_2016_optimized_alternative.mat",'modelobj');
 obj = modelobj;
 
 %% Get steady state values after equilibrating for 50000 s
@@ -17,6 +17,7 @@ cnfst.CompileOptions.UnitConversion = 1;
 cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 
+sbioaccelerate(obj);
 [t,species,~] = sbiosimulate(obj);
 
 SteadyState=species(length(t),:);
