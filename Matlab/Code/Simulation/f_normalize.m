@@ -1,11 +1,11 @@
-function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number)
+function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number,mmf)
 
 persistent sbtab
 persistent Data
 persistent sb
 
 if isempty(Data)
-    load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab','sb')
+    load(mmf.model.data.data_model,'Data','sbtab','sb')
 end
 
 sim_results = rst.simd{1,exp_number}.Data(:,end-...

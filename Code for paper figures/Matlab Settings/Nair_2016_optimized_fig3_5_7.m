@@ -1,4 +1,4 @@
-function [stg] = Nair_2016_optimized_fig3_5_6_7()
+function [stg] = Nair_2016_optimized_fig3_5_7()
 % stg means (settings)
 
 %% Import

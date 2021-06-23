@@ -1,11 +1,11 @@
-function f_plot_outputs(rst,stg,sbtab,Data)
+function f_plot_outputs(rst,stg,sbtab,Data,mmf)
 % Generates a figure with Outputs, one subplot per experimental output
 
 % Inform the user that fig3 is being ploted
 disp("Plotting Outputs")
 
 % Get the total number of outputs to set the total number of plots
-[plot_tn,~] = f_get_outputs(stg);
+[plot_tn,~] = f_get_outputs(stg,sbtab);
 plot_n = 1;
 fig_n = 0;
 
@@ -59,10 +59,10 @@ for n = stg.exprun
             if rst(m).simd{1,n} ~= 0
                 
                 time = rst(m).simd{1,n}.Time;
-                [sim_results,~] = f_normalize(rst(m),stg,n,j);
+                [sim_results,~] = f_normalize(rst(m),stg,n,j,mmf);
                 if stg.simdetail
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
-                    [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j);
+                    [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
                 end
                 
                 % Plot the outputs to each dataset (new subplots) and

@@ -83,7 +83,7 @@ disp("Running " + Analysis_options(Analysis_n))
 
 if Analysis_n <=3
     
-    listing2 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Settings");
+    listing2 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Matlab/Settings");
     
     for n = size(listing2,1):-1:1
         if matches(listing2(n).name,char("."))

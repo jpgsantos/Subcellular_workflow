@@ -19,7 +19,7 @@
 % 
 % Run this script with Subcellular_workflow as your main MATLAB® folder.
 % 
-% Run Nair_2016 model with optimized parameters (used for figure 3, 5, 6 and 7)
+% Run Nair_2016 model with optimized parameters (used for figure 3, 5, and 7)
 % Run time ~= 40 seconds first time and 25 seconds subsequent runs (user input 
 % is needed and might afect this time)
 % 
@@ -30,8 +30,8 @@
 % folder.
 
 tic
-copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_2016_optimized_fig3_5_6_7.m", ...
-    "../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Settings/Nair_2016_optimized_fig3_5_6_7.m")
+copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_2016_optimized_fig3_5_7.m", ...
+    "../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Settings/Nair_2016_optimized_fig3_5_7.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
@@ -44,7 +44,7 @@ copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_20
 % 
 % Diagnostics (The analysis to be performed)
 % 
-% Nair_2016_optimized_fig3_5_6_7.m (The settings file to be used)
+% Nair_2016_optimized_fig3_5_7.m (The settings file to be used)
 
 Run_main
 toc
@@ -59,24 +59,22 @@ save ("../Subcellular_workflow/Code for paper figures/Figure 3/Analysis_diagnost
 %% 
 % 
 
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Data/model_Nair_2016_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Figure 3/model_Nair_2016_optimized_fig3.mat")
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Data/model_Nair_2016_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Figure 5/model_Nair_2016_optimized_fig5.mat")
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Data/model_Nair_2016_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Figure 7/model_Nair_2016_optimized_fig7.mat")
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Data/model_Nair_2016_optimized.mat", ...
-    "../Subcellular_workflow/Code for paper figures/Figure 6/model_Nair_2016_optimized_fig6.mat")
 %% 
 % 
 
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Data/data_Nair_2016_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/data_Nair_2016_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Figure 3/data_Nair_2016_optimized_fig3.mat")
 toc
 %% 
 % 
 % Run the optimized model with dopamine input at different times
-% Run time ~= 1 minute
+% Run time ~= 3 minutes
 % 
 % For Figure 3 C and D
 
@@ -90,16 +88,49 @@ tic
 f_Reproduce_data_fig5_BC("../Subcellular_workflow/Code for paper figures/Figure 5/")
 toc
 %% 
-% For Figure 6 B
-
-tic
-f_Reproduce_data_fig6_B_Matlab("../Subcellular_workflow/Code for paper figures/Figure 6/")
-toc
-%% 
 % For Figure 7 C
 
 tic
 f_Reproduce_data_fig7_C("../Subcellular_workflow/Code for paper figures/Figure 7/")
+toc
+%% 
+% 
+% Run Nair_2016 model with alternative optimized parameters (used for figure 6)
+% Run time ~= 40 seconds first time and 25 seconds subsequent runs (user input 
+% is needed and might afect this time)
+% 
+% 
+% 
+% Copy the settings file to be used in this analysis from the "Subcellular_workflow\Code 
+% for paper figures\Reproduce paper figure 3" into the Subcellular_workflow\Matlab\Model\Model_Nair_2016\Settings" 
+% folder.
+
+tic
+copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_2016_optimized_fig6.m", ...
+    "../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Settings/Nair_2016_optimized_fig6.m")
+%% 
+% In the command window select the following:
+% 
+% Model_Nair_2016 (The folder of the model)
+% 
+% Diagnostics (The analysis to be performed)
+% 
+% Nair_2016_optimized_fig6.m (The settings file to be used)
+
+Run_main
+toc
+% Copy the needed files for the plots from the model folder
+% Run time <= 0.1 seconds
+
+tic
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized.mat", ...
+    "../Subcellular_workflow/Code for paper figures/Figure 6/model_Nair_2016_optimized_fig6.mat")
+toc
+% Run the optimized model with dopamine input at different times
+% Run time ~= 5 minutes
+
+tic
+f_Reproduce_data_fig6_B_Matlab("../Subcellular_workflow/Code for paper figures/Figure 6/")
 toc
 %% Figure 4 A and B
 % Run sensitivity analysis on the model with optimized parameters
@@ -111,7 +142,7 @@ toc
 % for paper figures\Reproduce paper figure 4" into the Subcellular_workflow\Matlab\Model\Model_Nair_2016\Settings" 
 % folder.
 
-copyfile("../Subcellular_workflow/Code for paper figures/Figure 4/Nair_2016_optimized_fig4.m","../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Settings/Nair_2016_optimized_fig4.m")
+% copyfile("../Subcellular_workflow/Code for paper figures/Figure 4/Nair_2016_optimized_fig4.m","../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Settings/Nair_2016_optimized_fig4.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
@@ -126,7 +157,7 @@ copyfile("../Subcellular_workflow/Code for paper figures/Figure 4/Nair_2016_opti
 % 
 % Nair_2016_optimized_fig4.m (The settings file to be used)
 
-Run_main
+% Run_main
 %% 
 % Note: The live script is not as performant as native scripts so consider running 
 % the non-live script provided for increased performance
@@ -134,4 +165,4 @@ Run_main
 % 
 % Save the needed files for the plots
 
-save ("../Subcellular_workflow/Code for paper figures/Figure 4/SA_results.mat",'rst')
+% save ("../Subcellular_workflow/Code for paper figures/Figure 4/SA_results.mat",'rst')
