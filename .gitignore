@@ -1,6 +1,4 @@
-
 **/NEURON/single_sec_cell.py
 *.pdf
 *.tiff
 *.png
-!**/Docs/Images/**
