@@ -33,8 +33,8 @@ Running the script "Run_main.m" generates a prompt in the MATLAB terminal, this 
     5. Reproduction of the plots of a previous analyis
   
          Similar to the previous option but here only the plots are re-done.
-      
-  - | The settings file to use on the model.
+
+  - | The :ref:`settings file<stg>` to use on the model.
     | These settings files can be found can be found on the respective model repository in the directory "Matlab/Settings", in the example model from our main repository in the directory "Matlab/model/Model_Example/Matlab/Settings", or by following these links:
 	
     - `Example model settings files <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab/Model/Model_Example/Matlab/Settings>`_

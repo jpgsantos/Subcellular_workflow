@@ -20,7 +20,7 @@ Code and files to run these models in different simulators:
 * | For Neuron  
   | `NEURON/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/NEURON>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
 * | For the Subcellular application (STEPS)  
-  | `BioNetGen and STEPS/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_ 
+  | `BioNetGen and STEPS/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Nair_2016/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Viswan_2018/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS>`_ 
 * | Copasi  
   | `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
 
