@@ -43,7 +43,7 @@ function output = runCaDACombination(obj, daStart, caStart, burstNum, burstFreq,
     end
     
     compartments = {'Neuron'};
-    logTimePoints = 0:0.1:runTime;
+    logTimePoints = 0:0.01:runTime;
     output.Time = logTimePoints;
     
     [totam vobj robj cmpn miss] = FFmodobj(obj,[],variants,rules,compartments,'',0);
