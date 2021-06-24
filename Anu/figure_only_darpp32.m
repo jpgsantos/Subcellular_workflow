@@ -1,9 +1,10 @@
-proj = sbioloadproject('Nair_2016');
+proj = sbioloadproject('D1 LTP time window_clean');
 obj = proj.m1;
 
-effectors = {'Spine.totalpSubstrate'};
-
-species.names = {'RCS'};
+effectors = {'totalpCamui'};
+species = [];
+name2 = "RCS";
+species.names = {char(name2)};
 species.values = [0.0];
 
 DAdelay = [-4:0.2:4];
