@@ -25,8 +25,8 @@ Code and files to run these models in different simulators:
   [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
 * For the Subcellular application (STEPS)  
   [BioNetGen and STEPS/](https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS);
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
+  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS);
+  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS)  
 * Copasi  
   [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
   [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
