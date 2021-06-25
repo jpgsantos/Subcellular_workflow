@@ -1,10 +1,10 @@
-function [stg,sb] = f_generate_sbtab_struct(stg)
+function [stg,sb] = f_generate_sbtab_struct(stg,mmf)
 
-if isfile(pwd + "/Model/" + stg.folder_model +"/Data/" +...
-        stg.sbtab_name + ".mat")
+Matlab_sbtab = mmf.model.data.sbtab;
+
+if isfile(Matlab_sbtab)
     
-    load(pwd + "/Model/" + stg.folder_model +"/Data/" +...
-        stg.sbtab_name + ".mat",'sbtab_excel');
+    load(Matlab_sbtab,'sbtab_excel');
     
     sb = f_get_sbtab_fields(sbtab_excel);
     

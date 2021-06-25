@@ -1,4 +1,4 @@
-function [stg,rst,sb,Analysis_n] = f_load_settings()
+function [stg,rst,sb,Analysis_n] = f_load_settings(mmf)
 
 persistent sbtab_date_last
 persistent folder_n_last
@@ -6,15 +6,19 @@ persistent settings_file_n_last
 persistent settings_file_date_last
 persistent Analysis_n_last
 
-rst = [];
+Matlab_main_folder = mmf.main;
 
-listing = dir('Model');
+rst = [];
+listing = dir(Matlab_main_folder + "Model/");
 
 for n = size(listing,1):-1:1
     if matches(listing(n).name,char("."))
         listing(n)= [];
     end
     if matches(listing(n).name,char(".."))
+        listing(n)= [];
+    end
+    if matches(listing(n).name,char("Place models here.txt"))
         listing(n)= [];
     end
 end
@@ -79,7 +83,7 @@ disp("Running " + Analysis_options(Analysis_n))
 
 if Analysis_n <=3
     
-    listing2 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Settings");
+    listing2 = dir(string(listing(folder_n).folder)+ "/"  + listing(folder_n).name + "/Matlab/Settings");
     
     for n = size(listing2,1):-1:1
         if matches(listing2(n).name,char("."))

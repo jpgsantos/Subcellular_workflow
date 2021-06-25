@@ -4,6 +4,7 @@ Conversion tools
 For this workflow we have developed some conversion tools to facilitate model developement.
 
 The MATLAB\ |Reg| code takes the SBtab file in excel format and generates tab separeted file (.tsv) of this SBtab, an SBML file (.xml) of the model, and two MATLAB\ |Reg| versions of the model (.m and .sbproj).
+This conversion happens as a setup step of running any of the Matlab analysis, it might be added as a standalone option in the future.
 
   SBtab (.xls,.xlsx) -> Matlab\ |Reg| model (.m .sbproj), SBtab (.tsv), Matlab\ |Reg| SBML (.xml)
 

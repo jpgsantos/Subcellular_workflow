@@ -4,37 +4,53 @@
 Settings file
 =============
 
-A place for the user to define all the relevant properties of model simulation that are not stored in SBTAB.
-This are usually things that need to change during optimizations or model development.
+| A place for the user to define all the relevant properties of model simulation that are not stored in SBtab. This are usually things that need to change during optimizations or model development.
+
+| These settings files can be found can be found on the respective model repository in the directory "Matlab/Settings", in the example model from our main repository in the directory "Matlab/model/Model_Example/Matlab/Settings", or by following these links:
+	
+    - `Example model settings files <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab/Model/Model_Example/Matlab/Settings>`_
+    - `Fujita_2010 model settings files <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Matlab/Settings>`_
+    - `Nair_2016 model settings files  <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Matlab/Settings>`_
+    - `Viswan_2018 model settings files  <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/Matlab/Settings>`_
 
   .. toggle-header::
-      :header: **Code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: matlab
-	
-|
-	
+		 
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
+         :linenos:
+         :language: matlab
+
 Import
 ------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Import
          :end-before: %% Analysis	  
+		 
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Import
+         :end-before: %% Analysis		 
 
   .. _stg.import:
   
 - **stg.import** - (logical) Decide whether to run import functions
-
-  .. _stg.folder_model:
-  
-- **stg.folder_model** - (string) Name of the folder where everything related to the model is stored
 
   .. _stg.sbtab_excel_name:
 
@@ -52,25 +68,27 @@ Import
 
 - **stg.sbtab_name** - (string) Name of the SBtab saved in .mat format
 
-|
-
 Analysis
 --------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Analysis
          :end-before: %% Simulation	
-
-	   
-  .. _stg.analysis:
-
-- **stg.analysis** - (string) Name of the analysis to be run. The options are "diag", "opt", "SA" and they can be combined, for example "diag, opt". To not run any analysis set stg.analysis to "".
-
+		 
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Analysis
+         :end-before: %% Simulation	
+		 
   .. _stg.exprun:
 
 - **stg.exprun** - (double) Experiments to run
@@ -99,15 +117,26 @@ Analysis
 
 - **stg.save_results** - (logical) Decide whether to save results
 
-|
+  .. _stg.simdetail:
+
+- **stg.simdetail** - (logical) Decide whether to run detailed simulation for plots
 
 Simulation
 ----------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
      
       .. literalinclude:: ../Matlab/Code/default_settings.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Simulation
+         :end-before: %% Model
+			 
+  .. toggle-header::
+      :header: **Example settings code**
+     
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
          :linenos:
          :language: MATLAB
          :start-after: %% Simulation
@@ -149,19 +178,42 @@ Simulation
 
 - **stg.sbioacc** - (logical) Decide whether to run `sbioaccelerate <https://www.mathworks.com/help/simbio/ref/sbioaccelerate.html>`_ (after changing this value you need to run “clear functions” to see an effect)
 
+  .. _stg.abstolstepsize_eq:
+
+- **stg.abstolstepsize_eq** - (double) Absolute tolerance step size for equilibration (if empty MATLAB\ |Reg| decides whats best)
+
   .. _stg.maxstep:
 
-- **stg.maxstep** - (double) Max step size in the simulation (if empty MATLAB\ |TM| decides what's best)
+- **stg.maxstep** - (double) Max step size in the simulation (if empty MATLAB\ |Reg| decides what's best)
 
-|
+  .. _stg.maxstepeq:
+
+- **stg.maxstepeq** - (double) Max step size in the equilibration (if empty MATLAB\ |Reg| decides whats best)
+
+  .. _stg.maxstepdetail:
+
+- **stg.maxstepdetail** - (double) Max step size in the detailed plots (if empty MATLAB\ |Reg| decides whats best)
+
+  .. _stg.errorscore:
+
+- **stg.errorscore** - (double) Default score when there is a simulation error, this is needed to keep the optimizations working.
 
 Model
 -----
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Model
+         :end-before: %% Diagnostics 
+			 
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
          :linenos:
          :language: MATLAB
          :start-after: %% Model
@@ -207,15 +259,22 @@ Model
 		   
   - :math:`i =` Parameter index   
 
-|
-
 Diagnostics
 -----------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Diagnostics
+         :end-before: %% Plots
+
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
          :linenos:
          :language: MATLAB
          :start-after: %% Diagnostics
@@ -273,14 +332,12 @@ Diagnostics
   - :math:`i =` Index of Parameters being worked on
   - :math:`k =` Index of the parameters in SBtab
   - :math:`j =` Index of the Parameter set to work on
-
-|
-
+  
 Plots
 -----
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
@@ -288,6 +345,15 @@ Plots
          :start-after: %% Plots
          :end-before: %% Sensitivity analysis
 
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Plots
+         :end-before: %% Sensitivity analysis
+		 
   .. _stg.plot:
 
 - **stg.plot** - (logical) Decide whether to plot results
@@ -296,20 +362,27 @@ Plots
 
 - **stg.plotoln** - (logical) Decide whether to use long names in the title of the output plots in f_plot_outputs.m
 
-|
-
 Global Sensitivity Analysis (GSA)
 ---------------------------------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
          :linenos:
          :language: MATLAB
          :start-after: %% Sensitivity analysis
          :end-before: %% Optimization 
-		 
+
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Sensitivity analysis
+         :end-before: %% Optimization 
+		 		 
   .. _stg.sansamples:
 
 - **stg.sansamples** - (double) Number of samples to use in GSA (in total (2+npars)*sansamples simulations will be performed, where npars are the number of parameters).
@@ -395,15 +468,21 @@ Global Sensitivity Analysis (GSA)
 
 - **stg.sasamplesigma** - (double) σ for creating the normal distribution of parameters to perform sensitivity analysis
 
-|
-
 Optimization
 ------------
 
   .. toggle-header::
-      :header: **Example model code**
+      :header: **Default settings code**
   
       .. literalinclude:: ../Matlab/Code/default_settings.m
+         :linenos:
+         :language: MATLAB
+         :start-after: %% Optimization
+
+  .. toggle-header::
+      :header: **Example settings code**
+  
+      .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
          :linenos:
          :language: MATLAB
          :start-after: %% Optimization

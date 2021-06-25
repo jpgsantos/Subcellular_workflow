@@ -1,16 +1,18 @@
-function f_build_model_exp(stg,sb)
+function f_build_model_exp(stg,sb,mmf)
 %Creates two .mat files for each experiment, with all the added rules,
 %species and parameters needed depending on the inputs and outputs
 %specified on the sbtab, one for the equilibrium simulation run and one for
 %the proper run
 
+data_model = mmf.model.data.data_model;
+mat_model = mmf.model.data.mat_model;
+model_exp_eq = mmf.model.data.model_exp.equilibration;
+model_exp_default = mmf.model.data.model_exp.default;
+model_exp_detail = mmf.model.data.model_exp.detail;
+
 %Find correct path for loading depending on the platform
-load(pwd + "/Model/" +stg.folder_model +"/Data/" + "data_" +...
-    stg.name + ".mat",'Data','sbtab')
-
-load(pwd + "/Model/" +stg.folder_model +"/Data/" + "model_" +...
-    stg.name + ".mat",'modelobj');
-
+load(data_model,'Data','sbtab')
+load(mat_model,'modelobj');
 
 model_run = cell(size(sb.Experiments.ID,1),1);
 configsetObj = cell(size(sb.Experiments.ID,1),1);
@@ -43,14 +45,16 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     set(configsetObj{number_exp}.SolverOptions,...
         'MaxStep', stg.maxstepeq);
     
+    set(configsetObj{number_exp}.SolverOptions,...
+        'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
+    
+    
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    save(model_exp_eq + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_eq_" +...
-        stg.name + "_" + number_exp + ".sbproj",'model_exp')
+    sbiosaveproject(model_exp_eq + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     
@@ -80,8 +84,15 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     end
     
     for j = 1:size(input_species,2)
+        
+        input_indexcode = str2double(strrep(input_species(j),'S',''));
+        input_name = string(model_run{number_exp}.species(1 +...
+                input_indexcode).name);
+        
         if size(input_time{j},2) < 100
             
+            model_run{number_exp}.species(...
+                1 + input_indexcode).BoundaryCondition = 1;
             for n = 1:size(input_time{j},2)
                 if ~isnan(input_time{j}(n))
                     
@@ -92,35 +103,30 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                     addparameter(model_run{number_exp},char("time_event_r_" + j + "_" +  n),...
                         str2double(string(input_value{j}(n))),...
                         'ValueUnits',char(model_run{number_exp}.species(1 +...
-                        str2double(strrep(input_species(j),'S',''))).InitialAmountUnits));
+                        input_indexcode).InitialAmountUnits));
                     
                     addevent(model_run{number_exp}, ...
                         char("time>=time_event_t_" + j + "_" +  n),...
                         cellstr(sbtab.datasets(number_exp).output_location{1} +...
-                        "." + string(model_run{number_exp}.species(1 +...
-                        str2double(strrep(input_species(j),'S',''))).name)...
-                        + " = time_event_r_" + j + "_" +  n));
+                        "." + input_name + " = time_event_r_" + j + "_" +  n));
+
                 end
             end
         else
-            name = string(model_run{number_exp}.species(1 +...
-                str2double(strrep(input_species(j),'S',''))).name);
             
             addrule(model_run{number_exp}, char(sbtab.datasets(...
-                number_exp).output_location{1} + "." + name +...
+                number_exp).output_location{1} + "." + input_name +...
                 "=" + string(model_run{number_exp}.name)+ "_input" + ...
-                number_exp + "_" + name + "(time)"), 'repeatedAssignment');
+                number_exp + "_" + input_name + "(time)"), 'repeatedAssignment');
         end
     end
     
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
-    
-    sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_" +...
-        stg.name + "_" + number_exp + ".sbproj",'model_exp')
+    save(model_exp_default + number_exp + ".mat",'model_exp','config_exp')
+
+    sbiosaveproject(model_exp_default + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
     set(configsetObj{number_exp}.SolverOptions,'MaxStep', stg.maxstepdetail);
@@ -128,8 +134,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
-    save(pwd + "/Model/" + stg.folder_model + "/Data/Exp/Model_diag_" +...
-        stg.name + "_" + number_exp + ".mat",'model_exp','config_exp')
+    save(model_exp_detail + number_exp + ".mat",'model_exp','config_exp')
     
 end
 end

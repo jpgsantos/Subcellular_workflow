@@ -12,12 +12,13 @@ results_directory = './results'
 #-----------------------------------------------------------#
 step = 20.0
 record_step = 0.1
+record_step_v = 0.1
 g_record_step = 0.1
 
 nrn_dots_per_1ms = 1/record_step
 time_to_avg_over = 20 # in seconds
 
-simtime = 1000
+simtime = 20000
 num_trials = 20
 NUMBER_OF_PROCESSES = 7
 
@@ -73,6 +74,7 @@ iclamp_delay = 5
 iclamp_periodic_delay = 100
 iclamp_dur = 15
 num_iclamps = 10
+iclamp_start = 5000
 
 tau1_exp2syn = 0.1
 tau2_exp2syn = 2.0
@@ -84,15 +86,13 @@ glu_thresh = 0.06
 #-----------------------------------------#
 
 plateau_syn_rate = 10
-plateau_burst_start = 100
-plateau_burst_end = 130
+plateau_burst_start = 5000
+plateau_burst_end = 5030
 plateau_cluster_size = 10
 cluster_start_pos = 0.5
 cluster_end_pos = 0.5
 
-probe_time = 30000
-glutamate_phos_start = 12000
-glutamate_phos_interval = probe_time - glutamate_phos_start
+glutamate_phos_start = 30000
 DA_start = 1000
 DA_max = 1480
 
@@ -221,7 +221,8 @@ species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII',
                    'AC5_GaolfGTP','ATP', 'PP2B', 'PP2B_CaM_Ca2', 
                    'CaM_Ca2', 'CaM_Ca4', 'PP1', 'AMP', 'B56PP2A',
                    'B72PP2A_Ca', 'B56PP2A', 'D32', 'ARPP21', 'B72PP2A']
-species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']            
+species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']
+species_to_plot = ['pSubstrate']            
 cascade_species = [
      'AC5', 
  	'AC5_ATP', 
@@ -322,4 +323,4 @@ cascade_species = [
 	'CaMKII_CaM_psd_Substrate', 
 	'CaMKII_CaM_Ca2_psd_Substrate', 
 	'CaMKII_CaM_Ca4_psd_Substrate']
- 
+#species_to_plot  = cascade_species 

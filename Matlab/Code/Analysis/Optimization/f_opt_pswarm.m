@@ -1,4 +1,4 @@
-function rst = f_opt_pswarm(stg)
+function rst = f_opt_pswarm(stg,mmf)
 
 % Set the randomm seed for reproducibility
 rng(stg.rseed);
@@ -28,14 +28,14 @@ if stg.mst
     parfor n = 1:stg.msts
         disp(string(n))
         [x(n,:),fval(n),exitflag(n),output(n)] =...
-            particleswarm(@(x)f_sim_score(x,stg),...
+            particleswarm(@(x)f_sim_score(x,stg,mmf),...
             stg.parnum,stg.lb,stg.ub,options);
     end
     
     % Optimize the model
 else
     [x(1,:),fval(1),exitflag(1),output(1)] =...
-        particleswarm(@(x)f_sim_score(x,stg),...
+        particleswarm(@(x)f_sim_score(x,stg,mmf),...
         stg.parnum,stg.lb,stg.ub,options);
 end
 

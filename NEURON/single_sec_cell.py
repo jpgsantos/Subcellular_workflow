@@ -27,6 +27,6 @@ class SingleSecCell(n.Neuron):
         
     def insert_channels(self):
         self.somalist[0].insert('pas')
-        self.somalist[0].insert('D1_LTP_time_window')
+        self.somalist[0].insert('Nair_2016')
         self.somalist[0].insert('cadyn_nmda')
     

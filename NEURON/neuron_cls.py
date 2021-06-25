@@ -131,7 +131,7 @@ class Neuron(object):
             syn.obj.w_ampa0 = p.gAMPAmax_plateau
             syn.obj.w_nmda0 = p.gNMDAmax_plateau
             syn.obj.total_Substrate = p.total_Substrate
-            h.setpointer(sec(pos)._ref_pSubstrate_D1_LTP_time_window, 'pSubstrate', syn.obj)
+            h.setpointer(sec(pos)._ref_pSubstrate_Nair_2016, 'pSubstrate', syn.obj)
             self.esyn.append(syn)
             return syn
             
@@ -145,7 +145,7 @@ class Neuron(object):
             syn.obj.w_ampa0 = p.gAMPAmax_phos
             syn.obj.w_nmda0 = p.gNMDAmax_phos
             syn.obj.total_Substrate = p.total_Substrate
-            h.setpointer(sec(pos)._ref_pSubstrate_D1_LTP_time_window, 'pSubstrate', syn.obj)
+            h.setpointer(sec(pos)._ref_pSubstrate_Nair_2016, 'pSubstrate', syn.obj)
             self.esyn.append(syn)
             return syn
             
