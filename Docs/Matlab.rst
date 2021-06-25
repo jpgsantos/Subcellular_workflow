@@ -5,7 +5,7 @@ The MATLAB\ |Reg| section of this workflow has been developed to facilitate mode
 rapid iteration between different versions of a model.
 In this workflow we use one main script, "Run_main.m", that calls all the relevant functions to be used.
 To run the MATLAB\ |Reg| code the Subcellular Workflow repository should be added to the MATLAB\ |Reg| path.
-Running the script "Run_main.m" generates a prompt in the MATLAB terminal, this requires user input to choose between the numbered options. These prompts allow the user to choose:
+Running the script "Run_main.m" generates a prompt in the MATLAB\ |Reg| terminal, this requires user input to choose between the numbered options. These prompts allow the user to choose:
 
   - The model to use (from all the models that are in the "Matlab/model" folder). 
 	
