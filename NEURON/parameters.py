@@ -92,7 +92,7 @@ plateau_cluster_size = 10
 cluster_start_pos = 0.5
 cluster_end_pos = 0.5
 
-glutamate_phos_start = 30000
+glutamate_phos_start = 12000
 DA_start = 1000
 DA_max = 1480
 
