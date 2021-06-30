@@ -21,7 +21,7 @@ time_to_avg_over = 20 # in seconds
 simtime = 20000
 num_trials = 20
 NUMBER_OF_PROCESSES = 7
-
+steady_states_file = 'steady_states.dat'
 #-----------------------------------#
 #      2. Synaptic parameters       #
 #-----------------------------------#
@@ -46,7 +46,7 @@ gNMDAmax = gAMPAmax*nmda_ampa_ratio
 gGABAmax = 1.5e-3
 g_expsyn_max =  0.2e-3
 g_inhexpsyn_max = gGABAmax
-
+ 
 gAMPAmax_plateau = 0.5e-3 
 gNMDAmax_plateau = 1.5e-3 
 gGABAmax_plateau = 0.0015*1
@@ -66,15 +66,17 @@ glu_thresh2 = 0.5
 tNMDAon = 2.76
 tNMDAoff = 115.5
 
-taur_cadyn_nmda = 160
+taur_cadyn_nmda = 230.83
 scale_cadyn_nmda = 0.083
+cainf_cadyn_nmda = 130e-6
+cainit_cadyn_nmda = 28.2653e-6
 
 iclamp_amp = 1.85
 iclamp_delay = 5
 iclamp_periodic_delay = 100
 iclamp_dur = 15
 num_iclamps = 10
-iclamp_start = 5000
+iclamp_start = 4000
 
 tau1_exp2syn = 0.1
 tau2_exp2syn = 2.0
@@ -86,13 +88,13 @@ glu_thresh = 0.06
 #-----------------------------------------#
 
 plateau_syn_rate = 10
-plateau_burst_start = 5000
+plateau_burst_start = 4000
 plateau_burst_end = 5030
 plateau_cluster_size = 10
 cluster_start_pos = 0.5
 cluster_end_pos = 0.5
 
-glutamate_phos_start = 30000
+glutamate_phos_start = 12000
 DA_start = 1000
 DA_max = 1480
 
@@ -221,7 +223,7 @@ species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII',
                    'AC5_GaolfGTP','ATP', 'PP2B', 'PP2B_CaM_Ca2', 
                    'CaM_Ca2', 'CaM_Ca4', 'PP1', 'AMP', 'B56PP2A',
                    'B72PP2A_Ca', 'B56PP2A', 'D32', 'ARPP21', 'B72PP2A']
-species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca']
+species_to_plot = ['PKA', 'cAMP', 'pSubstrate', 'CaMKII', 'pCaMKII', 'Ca', 'DA']
 species_to_plot = ['pSubstrate']            
 cascade_species = [
      'AC5', 

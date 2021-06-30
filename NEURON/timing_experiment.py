@@ -128,6 +128,8 @@ class Timing_Experiment(e.Experiment):
                             start = p.plateau_burst_start, end = p.plateau_burst_end, deterministic = 0, numsyn = 1):
         
         if deterministic == 1:
+            if self.exptype =='equilibration':
+                start = 1e7
             noise = 0
             start = start + numsyn*p.deterministic_interval
             number = p.num_deterministic_spikes
@@ -215,7 +217,11 @@ class Timing_Experiment(e.Experiment):
         if syntype in ['glutamate_phos_sat']:        
             gen = h.NetStim(0.5, sec = self.presyn)
             gen.seed(int(time.time() + rnd.randint(1,10**7)))
-            gen.start = p.glutamate_phos_start
+            if self.exptype == 'equilibration':
+                start = 1e7
+            else:
+                start = p.glutamate_phos_start    
+            gen.start = start
             gen.noise = 0
             gen.number = 1        
             gen.interval = 1
@@ -243,7 +249,7 @@ class Timing_Experiment(e.Experiment):
         self.vs = h.Vector()
         self.vs.record(self.cell.somalist[0](0.5)._ref_v, p.record_step_v)
                                       
-        if self.exptype == 'single_sec':
+        if self.exptype == 'single_sec' or self.exptype == 'equilibration':
             self.species = []            
             indices = []
             for s in p.species_to_plot:
@@ -251,7 +257,10 @@ class Timing_Experiment(e.Experiment):
             
             for i in range(0,len(p.species_to_plot)):
                 self.species.append(h.Vector())
-                cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_Nair_2016'                                                
+                if self.exptype == 'single_sec':    
+                    cmd = 'self.cell.somalist[0](0.5)._ref_' + p.cascade_species[indices[i]] + '_Nair_2016'                                                
+                elif self.exptype == 'equilibration':
+                    cmd = 'self.cell.esyn[0].sec(0.5)._ref_' + p.cascade_species[indices[i]] + '_Nair_2016'                                                
                 self.species[-1].record(eval(cmd), record_step)
             
         if self.exptype == 'record_ca':
@@ -302,7 +311,7 @@ class Timing_Experiment(e.Experiment):
         sns.set_style("whitegrid")                
         plt.style.use('ggplot')
                    
-        if self.exptype == 'single_sec':
+        if self.exptype == 'single_sec' or self.exptype == 'equilibration':
             species_10_elem = []
             for i in range(0,len(self.species)):
                 species_10_elem.append(self.species[i].to_python()[0:10])
@@ -479,8 +488,8 @@ class Timing_Experiment(e.Experiment):
         end = time.time()
         print("It took %.2f hours or %.4f seconds to simulate." % ((end-start)/3600 , (end-start)))
 
-    def seti_steady_states(self):
-        with open('steady_states.dat', 'r', encoding = 'utf-8') as f:
+    def seti_steady_states(self, filename = p.steady_states_file):
+        with open(filename, 'r', encoding = 'utf-8') as f:
             to_read = json.load(f)
             result = json.loads(to_read)
             steady_states = result['steady_states']

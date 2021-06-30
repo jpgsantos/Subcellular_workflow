@@ -82,6 +82,8 @@ class Spine():
         
         head.taur_cadyn_nmda = p.taur_cadyn_nmda
         head.scale_cadyn_nmda = p.scale_cadyn_nmda
+        head.cainf_cadyn_nmda = p.cainf_cadyn_nmda
+        head.cainf_cadyn_nmda = p.cainit_cadyn_nmda
         
         head.connect(neck(1),0)
         

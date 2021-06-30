@@ -14,9 +14,9 @@ mod        = "./mod/"
 params  = "./params_dMSN.json"
 morphology = "./morphology/"
 
-h.load_file('stdlib.hoc')
-h.load_file('import3d.hoc')
-h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
+#h.load_file('stdlib.hoc')
+#h.load_file('import3d.hoc')
+#h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
 
 
 class SingleSecCell(n.Neuron):
