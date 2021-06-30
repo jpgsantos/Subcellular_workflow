@@ -25,8 +25,8 @@ Code and files to run these models in different simulators:
   [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
 * For the Subcellular application (STEPS)  
   [BioNetGen and STEPS/](https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS);
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
+  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS);
+  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS)  
 * Copasi  
   [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
   [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
@@ -60,6 +60,20 @@ Conversion tools
 * https://github.com/jpgsantos/Model_Fujita_2010
 * https://github.com/jpgsantos/Model_Viswan_2018
 
+# Compatibility
+
+Subcellular workflow MATLAB&reg; code is compatible with MATLAB&reg; 2020a or above running on Microsoft Windows, macOS and Linux.
+
+Matlab&reg; packages needed:
+
+  * Optimization Toolbox&trade;
+  * Statistics and Machine Learning Toolbox&trade;
+  * Fuzzy Logic Toolbox&trade;
+  * Financial Toolbox&trade;
+  * Global Optimization Toolbox
+  * SimBiology&reg;
+  * Parallel Computing Toolbox&trade;
+
 # Documentation
 
 To check the online documentation please go to: https://subcellular-workflow.readthedocs.io/
@@ -74,20 +88,6 @@ After installing sphinx, install the following extra extensions to sphinx;
 * [sphinx_markdown_tables](https://pypi.org/project/sphinx-markdown-tables/)
 
 Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use with your browser to open and browse the documentation.
-
-# Compatibility
-
-Subcellular workflow MATLAB&reg; code is compatible with MATLAB&reg; 2020a or above running on Microsoft Windows, macOS and Linux.
-
-Matlab&reg; packages needed:
-
-  * Optimization Toolbox&trade;
-  * Statistics and Machine Learning Toolbox&trade;
-  * Fuzzy Logic Toolbox&trade;
-  * Financial Toolbox&trade;
-  * Global Optimization Toolbox
-  * SimBiology&reg;
-  * Parallel Computing Toolbox&trade;
 
 # References
 

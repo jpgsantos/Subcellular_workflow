@@ -14,7 +14,7 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
 
         % Data_folder
         % Matlab/"Model Folder name"/Data/
-        mmf.model.data.main = mmf.model.main + "Data/";
+        mmf.model.data.main = mmf.model.main + "Matlab/" + "Data/";
 
             % sbproj_model
             % Matlab/"Model Folder name"/Data/model_"model name".sbproj
@@ -72,7 +72,7 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
         % input_functions_folder
         % Matlab/"Model Folder name"/Input_functions/
         mmf.model.input_functions.main =...
-            mmf.model.main + "Input_functions/";
+            mmf.model.main + "Matlab/" + "Input_functions/";
 
             % model_input
             % Matlab/"Model Folder name"/Input_functions/"model name"_input
@@ -89,7 +89,7 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
 
         % Results_Folder
         % Matlab/"Model Folder name"/Results/
-        mmf.model.results.main = mmf.model.main + "Results/";
+        mmf.model.results.main =  mmf.model.main + "Matlab/" + "Results/";
 
             % Analysis_folder
             % Matlab/"Model Folder name"/Results/"Analysis name"/

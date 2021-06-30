@@ -56,13 +56,15 @@ for n = 1:size(rt.par,1)
                         % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcm(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to
+                            % Check if the parametrer needs to be set to
                             % the value relevant for Profile Likelihood
-                            if stg.partest(stg.tcm(n,m),1) ==...
-                                    stg.PLind
-                                parameters(stg.partest(...
-                                    stg.tcm(n,m),1))...
-                                    = stg.PLval;
+                            if isfield(stg,"PLind")
+                                if stg.partest(stg.tcm(n,m),1) ==...
+                                        stg.PLind
+                                    parameters(stg.partest(...
+                                        stg.tcm(n,m),1))...
+                                        = stg.PLval;
+                                end
                             end
                             
                             % Make the appropriate multiplications to get
@@ -89,15 +91,16 @@ for n = 1:size(rt.par,1)
                         % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcd(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to
+                            % Check if the parametrer needs to be set to
                             % the value relevant for Profile Likelihood
-                            if stg.partest(stg.tcd(n,m),1) ==...
-                                    stg.PLind
-                                parameters(stg.partest(...
-                                    stg.tcd(n,m),1))...
-                                    = stg.PLval;
+                            if isfield(stg,"PLind")
+                                if stg.partest(stg.tcd(n,m),1) ==...
+                                        stg.PLind
+                                    parameters(stg.partest(...
+                                        stg.tcd(n,m),1))...
+                                        = stg.PLval;
+                                end
                             end
-                            
                             % Make the appropriate divisions to get the
                             % thermodinamicly constrained parameter
                             rt.par(n) = rt.par(n)./(10.^...

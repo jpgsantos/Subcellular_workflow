@@ -43,13 +43,31 @@ end = int((p.glutamate_phos_start+50)*p.nrn_dots_per_1ms + 1)
 
 #1. Only calcium input #
 for spine in d1.spines:
+<<<<<<< HEAD
     spine.head(0.5).Nair_2016.DA_max = 20
     spine.head(0.5).Nair_2016.DA_start = p.DA_start
+=======
+   spine.head(0.5).Nair_2016.DA_max = 20
+   spine.head(0.5).Nair_2016.DA_start = p.DA_start
+>>>>>>> 3d7b23d5f93c06a822a78c5bddf4e012bb742682
 ex.simulate()
 onlyCa_soma = ex.vs.to_python()[start:end]
 onlyCa_spine = ex.vspine[0].to_python()[start:end]
 
+<<<<<<< HEAD
 #2. Da before calcium #
+=======
+##2. Da before calcium #
+for spine in d1.spines:
+   spine.head(0.5).Nair_2016.DA_max = p.DA_max
+   spine.head(0.5).Nair_2016.DA_start = p.plateau_burst_start - 1000
+
+ex.simulate()
+DaCa_soma = ex.vs.to_python()[start:end]
+DaCa_spine = ex.vspine[0].to_python()[start:end]
+
+#2. Da after calcium #
+>>>>>>> 3d7b23d5f93c06a822a78c5bddf4e012bb742682
 for spine in d1.spines:
     spine.head(0.5).Nair_2016.DA_max = p.DA_max
     spine.head(0.5).Nair_2016.DA_start = p.plateau_burst_start - 1000
@@ -120,6 +138,7 @@ plt.show()
 
 import pandas as pd
 time = pd.DataFrame(t.tolist())
+<<<<<<< HEAD
 onlyCa_soma = pd.DataFrame(onlyCa_soma)
 DaCa_soma = pd.DataFrame(DaCa_soma)
 CaDa_soma = pd.DataFrame(CaDa_soma)
@@ -136,3 +155,21 @@ CaDa_spine = pd.DataFrame(CaDa_spine)
 onlyCa_spine.to_csv("onlyCa_spine.csv")
 DaCa_spine.to_csv("DaCa_spine.csv")
 CaDa_spine.to_csv("CaDa_spine.csv")
+=======
+only_Ca = pd.DataFrame(onlyCa_soma)
+DaCa = pd.DataFrame(DaCa_soma)
+CaDa = pd.DataFrame(CaDa_soma)
+
+time.to_csv("time.csv")
+only_Ca.to_csv("only_Ca_soma.csv")
+DaCa.to_csv("DaCa_soma.csv")
+CaDa.to_csv("CaDa_soma.csv")
+
+only_Ca = pd.DataFrame(onlyCa_spine)
+DaCa = pd.DataFrame(DaCa_spine)
+CaDa = pd.DataFrame(CaDa_spine)
+
+only_Ca.to_csv("only_Ca_spine.csv")
+DaCa.to_csv("DaCa_spine.csv")
+CaDa.to_csv("CaDa_spine.csv")
+>>>>>>> 3d7b23d5f93c06a822a78c5bddf4e012bb742682

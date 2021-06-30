@@ -22,7 +22,7 @@ for n = stg.exprun
             data = Data(n).Experiment.x(:,j);
             data_sd = Data(n).Experiment.x_SD(:,j);
             number_points = size(Data(n).Experiment.x(:,j),1);
-            sim_results = f_normalize(rst,stg,n,j);
+            sim_results = f_normalize(rst,stg,n,j,mmf);
             rst.xfinal{n,1}(j) = sim_results(end);
             
             % Calculate score using formula that accounts for normalization

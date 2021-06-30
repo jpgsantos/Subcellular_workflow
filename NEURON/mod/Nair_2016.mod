@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 TITLE D1_LTP_time_window
+=======
+TITLE Nair_2016
+>>>>>>> 3d7b23d5f93c06a822a78c5bddf4e012bb742682
 COMMENT
 	automatically generated from an SBtab file
 	date: Fri Apr 03 16:29:37 2020
 ENDCOMMENT
 NEURON {
+<<<<<<< HEAD
 	SUFFIX Nair_2016 
+=======
+	SUFFIX Nair_2016 : OR perhaps POINT_PROCESS ?
+>>>>>>> 3d7b23d5f93c06a822a78c5bddf4e012bb742682
 	RANGE DA_start, DA_max : input
 	RANGE pSubstrate_out, PP1_out, CaM_out, D32_out : output
 	RANGE ATP_expression : assigned

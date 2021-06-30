@@ -20,7 +20,7 @@ end
 
 % Generate figure with Outputs
 if isfield(rst,'diag')
-    f_plot_outputs(rst.diag,stg,sbtab,Data)
+    f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
 end
 % Generate figure with input and Output of all experiments
 if isfield(rst,'diag')

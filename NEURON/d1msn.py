@@ -13,6 +13,7 @@ morphology = "./morphology/"
 h.load_file('stdlib.hoc')
 h.load_file('import3d.hoc')
 h.nrn_load_dll(mod + 'x86_64/.libs/libnrnmech.so')
+#h.nrn_load_dll(mod + 'nrnmech.dll') #Use instead when running on Windows
 
 #h.nrn_load_dll('/pdc/vol/neuron/7.4-py27/x86_64/.libs/libnrnmech.so')
 

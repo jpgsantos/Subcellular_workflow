@@ -3,10 +3,10 @@ function [stg,sb] = f_import(stg,sb,mmf)
 Model_folder = mmf.model.main;
 
 % Create needed folders
-mkdir(Model_folder,"Data");
-mkdir(Model_folder,"Input_functions");
-mkdir(Model_folder,"tsv/" + stg.name + "/");
-mkdir(Model_folder,"Data/Exp");
+mkdir(mmf.model.data.main);
+mkdir(mmf.model.input_functions.main);
+mkdir(mmf.model.tsv.model_name);
+mkdir(mmf.model.data.model_exp.main);
 
 % Creates a .mat and a tsvs from the sbtab file
 disp("Reading SBtab Excel")

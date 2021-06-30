@@ -33,7 +33,7 @@
 
 tic
 copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Viswan_2018_optimized_sup_fig1_3_5.m", ...
-    "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Settings/Viswan_2018_optimized_sup_fig1_3_5.m")
+    "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Settings/Viswan_2018_optimized_sup_fig1_3_5.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
@@ -71,11 +71,11 @@ save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 5/Ana
 % 
 % 
 
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Data/data_Viswan_2018_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Data/data_Viswan_2018_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Supplementary figure 1/data_Viswan_2018_optimized_sup_fig1.mat")
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Data/data_Viswan_2018_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Data/data_Viswan_2018_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Supplementary figure 3/data_Viswan_2018_optimized_sup_fig3.mat")
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Data/data_Viswan_2018_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Data/data_Viswan_2018_optimized.mat", ...
     "../Subcellular_workflow/Code for paper figures/Supplementary figure 5/data_Viswan_2018_optimized_sup_fig5.mat")
 toc
 %% 
@@ -89,7 +89,7 @@ toc
 
 tic
 copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Viswan_2018_optimized_sup_fig2.m", ...
-    "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Settings/Viswan_2018_optimized_sup_fig2.m")
+    "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Settings/Viswan_2018_optimized_sup_fig2.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
