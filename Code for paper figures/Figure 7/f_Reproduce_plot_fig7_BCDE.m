@@ -79,15 +79,15 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.65/5,...
     'C','fontsize',10,'FontWeight','bold');
 
-load(folder + "Vspine",'t','Ca','DaCa','CaDa')
+load(folder + "Vspine_new",'time','onlyCaspine','DaCaspine','CaDaspine')
 
 % Figure 7D
 nexttile(layout);
 
 hold on
-plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
-plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
-plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
+plot (time,onlyCaspine,'Color',[0.7 0 0], 'LineWidth',1)
+plot (time,DaCaspine,'Color',[0 0 0.7], 'LineWidth',1)
+plot (time,CaDaspine,'Color',[0 0.7 0], 'LineWidth',1)
 set(gca,'FontSize',8,'Fontweight','bold')
 xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
 ylabel('Vspine (mV)','FontSize', 8,'Fontweight','bold')
@@ -102,15 +102,15 @@ text(min(xlim)-(max(xlim)-min(xlim))*3.5/30,...
     max(ylim)+(max(ylim)-min(ylim))*0.65/5,...
     'D','fontsize',10,'FontWeight','bold');
 
-load(folder + "Vsoma",'t','Ca','DaCa','CaDa')
+load(folder + "Vsoma_new",'time','onlyCasoma','DaCasoma','CaDasoma')
 
 % Figure 7E
 nexttile(layout);
 
 hold on
-plot (t,Ca,'Color',[0.7 0 0], 'LineWidth',1)
-plot (t,DaCa,'Color',[0 0 0.7], 'LineWidth',1)
-plot (t,CaDa,'Color',[0 0.7 0], 'LineWidth',1)
+plot (time,onlyCasoma,'Color',[0.7 0 0], 'LineWidth',1)
+plot (time,DaCasoma,'Color',[0 0 0.7], 'LineWidth',1)
+plot (time,CaDasoma,'Color',[0 0.7 0], 'LineWidth',1)
 set(gca,'FontSize',8,'Fontweight','bold')
 xlabel('time (ms)','FontSize', 8,'Fontweight','bold')
 ylabel('Vsoma (mV)','FontSize', 8,'Fontweight','bold')

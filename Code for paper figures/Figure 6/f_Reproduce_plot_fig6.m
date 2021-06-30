@@ -58,9 +58,6 @@ Tst_=[Tst_; tsti];
 end
 % cd(d0)
 
-
-
-
 %% read steps noDA v_spine=0.02um^3
 
 % d0=cd;
@@ -171,8 +168,6 @@ nexttile(layout)
 % subplot(1,2,1)
 hold on
 
-
-
 ii = 1;
 ntrain=40;
 DT = 150; 
@@ -242,10 +237,8 @@ cst2_noDA_v2 = cst2;
 tst2 = Tst_noDA_v2{1:DT,'Time'};
 plot(tst2-tst2(1), mean(cst2,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)), '-', 'LineWidth', 1,'Color',[0.4,0.4, 1.0])
 
-
 % plot(new_data{2}(:,1), x_DA(:,ii)/max(new_data{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
 plot(Nair_2016_optimized_Matlab_data_fig6{2}(:,1), Nair_2016_optimized_Matlab_data_fig6{2}(:,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)),'Color',[0.5,0, 0], 'LineWidth', 1)
-
 
 ntrain=40;
 DT = 150; 
@@ -262,9 +255,7 @@ cst_v2 = [cst_v2; zeros(DT*ntrain-size(cst_v2,1), size(cst_v2,2))];
 cst2 = reshape(cst_v2(1:DT*ntrain,ii),DT,[]);
 tst2 = Tst_DA_v2{1:DT,'Time'};
 plot(tst2-tst2(1), mean(cst2,2)/max(Nair_2016_optimized_Matlab_data_fig6{1}(:,2)), '-', 'LineWidth', 1,'Color',[1.0,0.4, 0.4])
-text(-2.5,5.25,'A','FontWeight','bold')
-
-
+text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25/5,'A','FontWeight','bold')
 
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)');
@@ -275,7 +266,6 @@ legend boxoff
 xl = xlim;
 %xlim(xl);
 xlim([0,30]);
-
 
 %figure
 %{'pSubstrate','DA','Ca','CaM_Ca2','D1R_DA'};
@@ -322,7 +312,6 @@ hold on
 % boxplot(randn(10,5));
 % boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Colors','r','PlotStyle','compact')
 % boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',DA,'Labels',DA,'Colors','r','MedianStyle','target','BoxStyle','filled','OutlierSize',2,'Symbol','ro');
-
 
 % scatter(new_data{3}(:,1), new_data{3}(:,2),'filled','MarkerFaceColor', [0 0 0])
 

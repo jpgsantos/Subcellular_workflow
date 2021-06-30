@@ -1,7 +1,7 @@
 # Subcellular application
 
 Subcellular application (https://subcellular.humanbrainproject.eu/model/meta) provides a web interface for simulation of biomolecular networks expressed on bionetgen language (https://bionetgen.org/) using network free solver NFsim and reaction-diffusion stochastic systems solver STEPS (http://steps.sourceforge.net/STEPS/documentation.php) Models can be imported from an sbml file.
-In this repository we used to model examples to exemplify the usage of this tool.
+In this repository we used two model examples to exemplify the usage of this tool.
 
 ##  BioNetGen translation of SBtab [Nair_2016](https://github.com/jpgsantos/Model_Nair_2016) model 
 The model was translated from [SBtab](https://github.com/tlubitz/SBtab) model format to rule-based [BioNetGen language](http://bionetgen.org/) for the simulation with [STEPS](http://steps.sourceforge.net/STEPS/default.php) and [NFsim](http://michaelsneddon.net/nfsim/) solvers embedded in the [subcellular web app](https://subcellular.humanbrainproject.eu/ ) and with the [RuleBender](https://github.com/RuleWorld/rulebender)
