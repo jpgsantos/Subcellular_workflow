@@ -1,5 +1,5 @@
-MATLAB\ |Reg| code
-==================
+MATLAB\ |Reg|
+=============
 
 The MATLAB\ |Reg| section of this workflow has been developed to facilitate model building and 
 rapid iteration between different versions of a model.
@@ -24,7 +24,7 @@ Running the script "Run_main.m" generates a prompt in the MATLAB\ |Reg| terminal
   
     3. :ref:`Global Sensitivity Analysis<gsa>`
   
-    4. Repruduction of a previous Analysis
+    4. Reproduction of a previous Analysis
   
          This option can be used to re-do an analysis that has previously been performed.
          This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.

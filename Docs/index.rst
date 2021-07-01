@@ -1,7 +1,7 @@
-Welcome to the Subcellular workflow documentation! (Under construction - last updated |today|)
-=============================================================================================
+Welcome to the Subcellular workflow documentation! 
+==================================================
 
-|
+(Under construction - last updated |today|)
 
 This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software. (Santos et al. 2020) (Preprint)
 
@@ -16,25 +16,25 @@ We demonstrate all these features using three example models, the main one being
 Code and files to run these models in different simulators:
 
 * | For MATLAB\ |Reg|
-  | `Matlab/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Fujita_2010 <https://github.com/jpgsantos/Model_Fujita_2010>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_ 
+  | `Matlab/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab>`_; `Model_Nair_2016/Matlab <https://github.com/jpgsantos/Model_Nair_2016/tree/master/Matlab>`_; `Model_Fujita_2010/Matlab <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Matlab>`_; `Model_Viswan_2018/Matlab <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/Matlab>`_ 
 * | For Neuron  
-  | `NEURON/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/NEURON>`_; `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
+  | `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
 * | For the Subcellular application (STEPS)  
-  | `BioNetGen and STEPS/ <https://github.com/jpgsantos/Subcellular_workflow/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Nair_2016/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Viswan_2018/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS>`_ 
+  | `Model_Nair_2016/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS>`_; `Model_Viswan_2018/BioNetGen and STEPS/ <https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS>`_ 
 * | Copasi  
   | `Model_Nair_2016 <https://github.com/jpgsantos/Model_Nair_2016>`_; `Model_Viswan_2018 <https://github.com/jpgsantos/Model_Viswan_2018>`_
 
 Features:
 
-* Wrapper for model simulation in MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
-* Analysis of selected parameter sets, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
-* Parameter optimization, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
-* Global Sensitivity analysis, using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Wrapper for model simulation in MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Analysis of selected parameter sets, using MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Parameter optimization, using MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+* Global Sensitivity analysis, using MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
 * Conversion tools:
 
-  * | SBtab (.xlsx,.xls) to SBtab (.tsv), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
-  * | SBtab (.xlsx) to MATLAB&reg; SimBiology&reg; (.m, .sbproj), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
-  * | MATLAB&reg; SimBiology&reg; to SBML (.xml), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+  * | SBtab (.xlsx,.xls) to SBtab (.tsv), using MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+  * | SBtab (.xlsx) to MATLAB\ |Reg| SimBiology\ |Reg| (.m, .sbproj), using MATLAB&reg; (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
+  * | MATLAB\ |Reg| SimBiology\ |Reg| to SBML (.xml), using MATLAB\ |Reg| (`Matlab/Run_main.m <https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m>`_)
     | Needs to be fixed with our R script (https://github.com/a-kramer/simbiology-sbml-fix)
   * | SBtab (.tsv) to VFGEN (.vf), using R (https://github.com/a-kramer/SBtabVFGEN)
   * | SBtab (.tsv) to Mod (.mod), using R (https://github.com/a-kramer/SBtabVFGEN)
@@ -86,6 +86,7 @@ Matlab\ |Reg| packages needed:
    Sub_application
    Conversion_tools
    Model
+   Code on Github <https://github.com/jpgsantos/Subcellular_workflow>
 
 References
 ----------
