@@ -79,8 +79,8 @@ for n = 1:size(sb.Reaction.ID,1)
 end
 
 for n = 1:size(sb.Compound.ID,1)
-    if ischar(sb.Compound.Assignement{n})
-        if contains(convertCharsToStrings(sb.Compound.Assignement{n}),["true","True"])
+    if ischar(sb.Compound.Assignment{n})
+        if contains(convertCharsToStrings(sb.Compound.Assignment{n}),["true","True"])
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
