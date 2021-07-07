@@ -1,4 +1,4 @@
-function [stg,sb] = f_import(stg,sb,mmf)
+function [stg,sb] = f_import(stg,mmf)
 
 Model_folder = mmf.model.main;
 
@@ -16,9 +16,7 @@ addpath(genpath(Model_folder));
 
 % Creates a struct based on the sbtab that is used elswhere in the code and
 % also adds the number of experiments and outputs to the settings variable
-if isempty(sb)
-    [stg,sb] = f_generate_sbtab_struct(stg,mmf);
-end
+[stg,sb] = f_generate_sbtab_struct(stg,mmf);
 
 % % Create the model and input output structure from sbtab.mat
 disp("Creating the model, input and output")
