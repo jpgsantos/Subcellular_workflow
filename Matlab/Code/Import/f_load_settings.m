@@ -1,219 +1,219 @@
-function [stg,rst,Analysis_n] = f_load_settings(mmf)
+function [stg,rst,sb,analysis_n] = f_load_settings(mmf)
 
-    persistent sbtab_date_last
+persistent last_SBtab_date
+persistent last_model_folder
+persistent last_settings_file_text
+persistent last_settings_file_date
+persistent last_analysis_text
 
-    persistent last_model_folder
-    persistent last_model_folder_n
+Matlab_main_folder = mmf.main;
 
-    persistent settings_file_text_last
-    persistent settings_file_n_last
+rst = [];
+sb = [];
+functions_cleared = false;
+
+% Get the folder of the model
+model_folder_general = Matlab_main_folder + "Model/";
+last_choice = last_model_folder;
+prompt = "What model folder should be used?\n";
+[model_folder,last_model_folder] =...
+    choose_options(model_folder_general,prompt,last_choice);
+
+model_name_specific = string(model_folder);
+folder_model_specific = model_folder_general + "/" + model_name_specific;
+
+% Get the Analysis to be run
+analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
+    "Reproduce a previous Analysis",...
+    "Reproduce the plots of a previous Analysis"];
+
+prompt = "\nWhat analysis should be performed?\n";
+last_choice = last_analysis_text;
+[analysis_n,analysis_text,last_analysis_text] =...
+    parse_choices(prompt,analysis_options,last_choice);
+
+% Check if an analysis was chosen
+if any(contains(["Diagnostics","Optimization","Sensitivity Analysis"],...
+        analysis_text))
     
-    persistent settings_file_date_last
+    %Get the Setting file to be used
+    settings_folder = folder_model_specific + "/Matlab/Settings";
+    last_choice = last_settings_file_text;
+    prompt = "\nWhat file should be used as settings?\n";
+    [settings_file_text,last_settings_file_text] =...
+        choose_options(settings_folder,prompt,last_choice);
     
-    persistent Analysis_text_last
-    persistent Analysis_n_last
-
-    Matlab_main_folder = mmf.main;
-
-    rst = [];
-
-    % Get the folder of the model
-    model_folder_general = Matlab_main_folder + "Model/";
-    last_used = last_model_folder;
-    last_chosen_n = last_model_folder_n;
-    prompt = "What model folder should be used?\n";
-    [listing,folder_n,last_model_folder_n,model_folder,last_model_folder] = f_choose(model_folder_general,prompt,last_chosen_n,last_used);
-
-    model_name_specific = string(listing(folder_n).name);
-    folder_model_specific = model_folder_general + "/" + model_name_specific;
-
-    %Get the Analysis to be run
-    Analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
-        "Reproduce a previous Analysis",...
-        "Reproduce the plots of a previous Analysis"];
-
-    prompt = "\nWhat analysis should be performed?\n";
-    last_chosen_text = Analysis_text_last;
-    last_chosen_n = Analysis_n_last;
-        [Analysis_n,Analysis_n_last,Analysis_text,Analysis_text_last] =...
-        prompt_parser(prompt,Analysis_options,last_chosen_n,last_chosen_text);
-
-    % Check if an analysis was chosen
-    if any(contains(["Diagnostics","Optimization","Sensitivity Analysis"],...
-            Analysis_text))
-
-        %Get the Setting file to be used
-        settings_folder = folder_model_specific + "/Matlab/Settings";
-        last_used = settings_file_text_last;
-        last_chosen_n = settings_file_n_last;
-        prompt = "\nWhat file should be used as settings?\n";
-        [listing2,settings_file_n,settings_file_n_last,...
-            settings_file_text,settings_file_text_last] =...
-            f_choose(settings_folder,prompt,last_chosen_n,last_used);
-
-        % Generate the settings struct to be used
-        settings_file = strrep(listing2(settings_file_n).name,".m","");
-        
-        % Add the default settings to the struct
-        stg_add_default = eval("default_settings()");
-
-        f = fieldnames(stg_add_default);
-        for i = 1:length(f)
-            stg.(f{i}) = stg_add_default.(f{i});
-        end
-        
-        % Add chosen settings to the struct overwriting defaults when
-        % appropriate
-        [stg_add] = eval(settings_file + "()");
-
-        f = fieldnames(stg_add);
-        for i = 1:length(f)
-            stg.(f{i}) = stg_add.(f{i});
-        end   
-        
-        % Check if the date of the settings file changed, if so clear
-        % functions
-        functions_cleared = false;
-        settings_file_date = listing2(settings_file_n).date;
-        
-        [settings_file_date_last,functions_cleared] =...
-            compare_choices(settings_file_date,settings_file_date_last,...
-            functions_cleared);
-        
-        % Check if the name of the settings file changed, if so clear
-        % functions
-        [settings_file_text_last,functions_cleared] =...
-            compare_choices(settings_file_text,settings_file_text_last,...
-            functions_cleared);
-
-        % Check if the date of the SBtab changed, if so clear functions
-        listing = dir(folder_model_specific);
-
-        for n = 1:size(listing,1)
-            if matches(stg.sbtab_excel_name,listing(n).name,"IgnoreCase",true)
-                sbtab_date = listing(n).date;
-            end
-        end
-        [sbtab_date_last,~] = compare_choices(sbtab_date,...
-            sbtab_date_last,functions_cleared);
-        
-        % Store the name of the chosen analysis in the settings struct
-        stg.analysis = Analysis_options(Analysis_n);
-    else
-
-        %Get the folder of the Analysis that should be reproduced
-        folder_results = folder_model_specific + "/Matlab/Results";
-        last_used = [];
-        last_chosen_n = [];
-        prompt = "What Analysis should be reproduced?\n";
-        [listing3,folder_n_2,~,~,~] =...
-            f_choose(folder_results,prompt,last_chosen_n,last_used);
-
-        folder_results_specific = folder_results +...
-            string(listing3(folder_n_2).name);
-
-        last_used = [];
-        last_chosen_n = [];
-        prompt = "";
-        [listing4,folder_n_3,~,~,~] =...
-            f_choose(folder_results_specific,prompt,last_chosen_n,last_used);
-
-        folder_results_specific_date = folder_results_specific +...
-            string(listing4(folder_n_3).name);
-
-        load(folder_results_specific_date + "/Analysis.mat","stg","sb")
-
-        if Analysis_n == 4
-        end
-        if Analysis_n == 5
-            stg.plot = true;
-            load(folder_results_specific_date + "/Analysis.mat","rst")
-        end
+    settings_file = strrep(settings_file_text,".m","");
+    
+    % Add the default settings to the struct
+    stg_add_default = eval("default_settings()");
+    
+    f = fieldnames(stg_add_default);
+    for i = 1:length(f)
+        stg.(f{i}) = stg_add_default.(f{i});
     end
-    % Set the chosen model folder in the settings struct
-    stg.folder_model = model_name_specific;
-end
-
-function [listing,chosen_n,last_chosen_n,chosen_text,last_chosen_text] =...
-        f_choose(folder,prompt,last_chosen_n,last_chosen_text)
-
-    listing = dir(folder);
-
-    for n = size(listing,1):-1:1
-        if matches(listing(n).name,char("."))
-            listing(n)= [];
-        end
-        if matches(listing(n).name,char(".."))
-            listing(n)= [];
-        end
-        if matches(listing(n).name,char("Place models here.txt"))
-            listing(n)= [];
-        end
+    
+    % Add chosen settings to the struct overwriting defaults when
+    % appropriate
+    [stg_add] = eval(settings_file + "()");
+    
+    f = fieldnames(stg_add);
+    for i = 1:length(f)
+        stg.(f{i}) = stg_add.(f{i});
     end
-
+    
+    % Check if the date of the settings file changed, if so clear functions
+    listing = dir(settings_folder);
     for n = 1:size(listing,1)
-        possible_choice(n) = string(listing(n).name);
-    end
-
-    [chosen_n,last_chosen_n,chosen_text,last_chosen_text] =...
-        prompt_parser(prompt,possible_choice,last_chosen_n,last_chosen_text);
-end
-
-function [chosen_n,last_chosen_n,chosen_text,last_chosen_text] =...
-    prompt_parser(prompt,possible_choice,last_chosen_n,last_chosen_text)
-
-    for n = 1:size(possible_choice,2)
-        prompt = prompt + "\n" + n + ": " + possible_choice(n);
-    end
-
-    if ~isempty(last_chosen_text)
-        if any(contains(possible_choice,last_chosen_text))
-            prompt = prompt + "\n\nPress enter to use " + last_chosen_text;
-        else
-            last_chosen_text = [];
+        if matches(settings_file_text,listing(n).name,"IgnoreCase",true)
+            settings_file_date = listing(n).date;
         end
     end
+    
+    [last_settings_file_date,functions_cleared] =...
+        compare_last(settings_file_date,last_settings_file_date,...
+        functions_cleared);
+    
+    % Check if the name of the settings file changed, if so clear functions
+    [last_settings_file_text,functions_cleared] =...
+        compare_last(settings_file_text,last_settings_file_text,...
+        functions_cleared);
+    
+    % Check if the date of the SBtab changed, if so clear functions
+    listing = dir(folder_model_specific);
+    
+    for n = 1:size(listing,1)
+        if matches(stg.sbtab_excel_name,listing(n).name,"IgnoreCase",true)
+            sbtab_date = listing(n).date;
+        end
+    end
+    [last_SBtab_date,~] =...
+        compare_last(sbtab_date,last_SBtab_date,functions_cleared);
+    
+    % Store the name of the chosen analysis in the settings struct
+    stg.analysis = analysis_options(analysis_n);
+else
+    
+    % Get the folder of the Analysis that should be reproduced
+    folder_results = folder_model_specific + "/Matlab/Results";
+    
+    last_choice = [];
+    prompt = "\nWhat analysis should be reproduced?\n";
 
-    prompt = prompt + "\n";
+    [r_analysis_text,~] =...
+        choose_options(folder_results,prompt,last_choice);
+    
+    folder_results_specific = folder_results + "/" + ...
+        r_analysis_text;
+    
+    last_choice = [];
+    prompt = "\nWhen was this analysis run originaly?\n";
+  
+    [r_analysis_date_text,~] =...
+        choose_options(folder_results_specific,prompt,last_choice);
+    
+    folder_results_specific_date = folder_results_specific + "/" + ...
+        r_analysis_date_text;
+    
+    % Load the settings file and the SBtab struct
+    load(folder_results_specific_date + "/Analysis.mat","stg","sb")
+    
+    % Set inport to false since we don't want to overwrite anything
+    stg.import = false;
+    
+    % If the reproduction of an analysis is chosen clear the functions
+    % because the settings most likely changed
+    if analysis_n == 4
+        f_functions_to_clear()
+    end
+    
+    % I the reproduction of the plots of an analyis is chosen make sure
+    % we tell the code to produce plots and also load the results that were
+    % previously obtained
+    if analysis_n == 5
+        stg.plot = true;
+        load(folder_results_specific_date + "/Analysis.mat","rst")
+    end
+end
+% Set the chosen model folder in the settings struct
+stg.folder_model = model_name_specific;
+end
 
-    chosen_n = input(prompt);
+function [choice,last_choice] = choose_options(folder,prompt,last_choice)
 
-    if isempty(chosen_n)
-        chosen_text = [];
-    elseif chosen_n > 0 && chosen_n < size(possible_choice,2)+1
-        chosen_text = possible_choice(chosen_n);
-        disp("The choice was: " + chosen_text)
+listing = dir(folder);
+
+for n = size(listing,1):-1:1
+    if matches(listing(n).name,char("."))
+        listing(n)= [];
+    end
+    if matches(listing(n).name,char(".."))
+        listing(n)= [];
+    end
+    if matches(listing(n).name,char("Place models here.txt"))
+        listing(n)= [];
+    end
+end
+
+for n = 1:size(listing,1)
+    options(n) = string(listing(n).name);
+end
+
+[~,choice,last_choice] = parse_choices(prompt,options,last_choice);
+end
+
+function [i,choice,last_choice] = parse_choices(prompt,options,last_choice)
+
+for n = 1:size(options,2)
+    prompt = prompt + "\n" + n + ": " + options(n);
+end
+
+if ~isempty(last_choice)
+    if any(contains(options,last_choice))
+        prompt = prompt + "\n\nPress enter to use " + last_choice;
+    else
+        last_choice = [];
+    end
+end
+
+prompt = prompt + "\n";
+
+i = input(prompt);
+
+if isempty(i)
+    choice = [];
+elseif i > 0 && i < size(options,2)+1
+    choice = options(i);
+    disp("The option chosen was: " + choice)
+else
+    prompt = "Please choose from the provided options";
+    [i,choice,last_choice] = parse_choices(prompt,options,last_choice);
+end
+
+if isempty(choice)
+    if ~isempty(last_choice)
+        choice = last_choice;
+        i = find(contains(options,last_choice));
+        disp("The option chosen was: " + last_choice)
     else
         prompt = "Please choose from the provided options";
-        [chosen_n,last_chosen_n,chosen_text,last_chosen_text] =...
-            prompt_parser(prompt,possible_choice,last_chosen_n,last_chosen_text);
+        [i,choice,last_choice] = parse_choices(prompt,options,last_choice);
     end
+else
+    last_choice = choice;
+end
+end
 
-    if isempty(chosen_text)
-        if ~isempty(last_chosen_text)
-            chosen_text = last_chosen_text;
-            chosen_n = last_chosen_n;
-            disp("The choice was: " + last_chosen_text)
-        else
-            prompt = "Please choose from the provided options";
-            [chosen_n,last_chosen_n,chosen_text,last_chosen_text] =...
-                prompt_parser(prompt,possible_choice,last_chosen_n,last_chosen_text);
+function [previous,f_cleared] = compare_last(current,previous,f_cleared)
+
+if ~isempty(previous)
+    if ~contains(current,previous)
+        if f_cleared == false
+            disp("Settings file changed, clearing functions")
+            f_functions_to_clear()
+            f_cleared = true;
         end
-    else
-        last_chosen_text = chosen_text;
-        last_chosen_n = chosen_n;
     end
 end
-function [previous_choice,functions_cleared] = compare_choices(current_choice,previous_choice,functions_cleared)
-        
-        if ~isempty(previous_choice)
-            if ~contains(current_choice,previous_choice)
-                if functions_cleared == false
-                    disp("Settings file changed, clearing functions")
-                    f_functions_to_clear()
-                    functions_cleared = true;
-                end
-            end
-        end
-        previous_choice = current_choice;
+previous = current;
 end
