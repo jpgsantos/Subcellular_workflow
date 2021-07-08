@@ -19,18 +19,13 @@ for n = 1:size(sbtab_excel,2)
     if ~isempty(sbtab_excel{1,n}{1,2})
         
         field = regexp(sbtab_excel{1,n}{1,2},"TableName='[^']*'",'match');
-        field = strrep(field,"TableName='",'');
-        field = strrep(field,"'",'');
-        field = strrep(field," ",'_');
-        
+        field = string(replace(field,["TableName='","'"," "],["","","_"]));
+
         for k = 1:size(sbtab_excel{1,n},2)
             
             if ~isempty(sbtab_excel{1,n}{2,k})
                 subfield = sbtab_excel{1,n}{2,k};
-                subfield = strrep(subfield,"!",'');
-                subfield = strrep(subfield,">",'');
-                subfield = strrep(subfield,":",'_');
-                subfield = strrep(subfield," ",'_');
+                subfield = string(replace(subfield,["!",">",":"," "],["","","_","_"]));
                 
                 sb.(field).(subfield)(:,1) = sbtab_excel{1,n}(3:end,k)';
                 

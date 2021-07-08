@@ -40,9 +40,8 @@ sbtab_excel(mask) = {[]};
 
 % Get name for tsv that is going to be exported
 field = regexp(sbtab_excel{1,2},"TableName='[^']*'",'match');
-field = strrep(field,"TableName='",'');
-field = strrep(field,"'",'');
-field = strrep(field," ",'_');
+field = string(replace(field,["TableName='","'"," "],["","","_"]));
+
 %Export the tsv
 cell_write_tsv(tsv_name_folder + field + ".tsv",sbtab_excel)
 end
