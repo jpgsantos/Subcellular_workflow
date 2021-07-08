@@ -1,4 +1,4 @@
-function [stg,rst,sb,analysis_n] = f_user_input(mmf)
+function [stg,rst,sb] = f_user_input(mmf,analysis_options)
 
 persistent last_SBtab_date
 persistent last_model_folder
@@ -22,18 +22,15 @@ prompt = "What model folder should be used?\n";
 model_name_specific = string(model_folder);
 folder_model_specific = model_folder_general + "/" + model_name_specific;
 
-% Get the Analysis to be run
-analysis_options = ["Diagnostics","Optimization","Sensitivity Analysis",...
-    "Reproduce a previous Analysis",...
-    "Reproduce the plots of a previous Analysis"];
-
 prompt = "\nWhat analysis should be performed?\n";
 last_choice = last_analysis_text;
-[analysis_n,analysis_text,last_analysis_text] =...
+[analysis_text,last_analysis_text] =...
     parse_choices(prompt,analysis_options,last_choice);
 
+% analysis_n = find(contains(analysis_options,analysis_text));
+    
 % Check if an analysis was chosen
-if any(contains(["Diagnostics","Optimization","Sensitivity Analysis"],...
+if any(contains(analysis_options([1:3,6]),...
         analysis_text))
     
     %Get the Setting file to be used
@@ -91,8 +88,14 @@ if any(contains(["Diagnostics","Optimization","Sensitivity Analysis"],...
         compare_last(sbtab_date,last_SBtab_date,functions_cleared);
     
     % Store the name of the chosen analysis in the settings struct
-    stg.analysis = analysis_options(analysis_n);
-else
+    stg.analysis = analysis_text;
+
+    if contains(analysis_options(6),analysis_text)
+        stg.import = true;
+        stg.save_results = false;
+        stg.plot = false;
+    end
+elseif any(contains(analysis_options(4:5),analysis_text))
     
     % Get the folder of the Analysis that should be reproduced
     folder_results = folder_model_specific + "/Matlab/Results";
@@ -123,18 +126,19 @@ else
     
     % If the reproduction of an analysis is chosen clear the functions
     % because the settings most likely changed
-    if analysis_n == 4
+    if contains(analysis_options(4),analysis_text)
         f_functions_to_clear()
     end
     
     % I the reproduction of the plots of an analyis is chosen make sure
     % we tell the code to produce plots and also load the results that were
     % previously obtained
-    if analysis_n == 5
+    if contains(analysis_options(5),analysis_text)
         stg.plot = true;
         load(folder_results_specific_date + "/Analysis.mat","rst")
     end
 end
+
 % Set the chosen model folder in the settings struct
 stg.folder_model = model_name_specific;
 end
@@ -144,13 +148,7 @@ function [choice,last_choice] = choose_options(folder,prompt,last_choice)
 listing = dir(folder);
 
 for n = size(listing,1):-1:1
-    if matches(listing(n).name,char("."))
-        listing(n)= [];
-    end
-    if matches(listing(n).name,char(".."))
-        listing(n)= [];
-    end
-    if matches(listing(n).name,char("Place models here.txt"))
+    if any(matches(listing(n).name,[".","..","Place models here.txt"]))
         listing(n)= [];
     end
 end
@@ -159,10 +157,10 @@ for n = 1:size(listing,1)
     options(n) = string(listing(n).name);
 end
 
-[~,choice,last_choice] = parse_choices(prompt,options,last_choice);
+[choice,last_choice] = parse_choices(prompt,options,last_choice);
 end
 
-function [i,choice,last_choice] = parse_choices(prompt,options,last_choice)
+function [choice,last_choice] = parse_choices(prompt,options,last_choice)
 
 for n = 1:size(options,2)
     prompt = prompt + "\n" + n + ": " + options(n);
@@ -187,17 +185,16 @@ elseif i > 0 && i < size(options,2)+1
     disp("The option chosen was: " + choice)
 else
     prompt = "Please choose from the provided options";
-    [i,choice,last_choice] = parse_choices(prompt,options,last_choice);
+    [choice,last_choice] = parse_choices(prompt,options,last_choice);
 end
 
 if isempty(choice)
     if ~isempty(last_choice)
         choice = last_choice;
-        i = find(contains(options,last_choice));
         disp("The option chosen was: " + last_choice)
     else
         prompt = "Please choose from the provided options";
-        [i,choice,last_choice] = parse_choices(prompt,options,last_choice);
+        [choice,last_choice] = parse_choices(prompt,options,last_choice);
     end
 else
     last_choice = choice;
