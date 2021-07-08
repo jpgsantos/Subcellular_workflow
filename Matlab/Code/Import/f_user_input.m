@@ -1,4 +1,4 @@
-function [stg,rst,sb,analysis_n] = f_load_settings(mmf)
+function [stg,rst,sb,analysis_n] = f_user_input(mmf)
 
 persistent last_SBtab_date
 persistent last_model_folder
