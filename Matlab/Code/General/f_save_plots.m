@@ -4,7 +4,7 @@ Analysis_date_folder = mmf.model.results.analysis.date.main;
 
 FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
 
-mkdir(Analysis_date_folder);
+[~,~] = mkdir(Analysis_date_folder);
 
 savefig(FigList(end:-1:1),...
     Analysis_date_folder + "All_figures.fig");

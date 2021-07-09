@@ -37,7 +37,7 @@ else
 end
 
 % Runs the Analysis chosen in settings
-if any(contains(analysis_options([1:3,6]),stg.analysis))
+if any(contains(analysis_options(1:3),stg.analysis))
     rst = f_analysis(stg,stg.analysis,mmf);
 end
 % Save Analysis results if chosen in settings

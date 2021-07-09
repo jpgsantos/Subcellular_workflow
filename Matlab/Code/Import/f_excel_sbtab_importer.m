@@ -4,30 +4,29 @@ Source_sbtab = mmf.model.sbtab;
 Matlab_sbtab = mmf.model.data.sbtab;
 
 % Get the total number of sheets in the SBTAB
-[~,sheets] = xlsfinfo(Source_sbtab);
+sheets = sheetnames(Source_sbtab);
 
 % Try to run the import the sheets in multicore, depending on the version
 % of excel this migth not work
 try
-    parfor i = 1:size(sheets,2)
+    parfor i = 1:size(sheets,1)
         sbtab_excel{i} = impexp (i,mmf);
     end
 catch
-    for i = 1:size(sheets,2)
+    for i = 1:size(sheets,1)
         sbtab_excel{i} = impexp (i,mmf);
     end
 end
 
 % Save the SBTAB tables in .mat format
 save(Matlab_sbtab,'sbtab_excel');
+disp("SBtab with " + size(sheets,2) + " sheets parsed successfully")
 end
 
 function sbtab_excel = impexp (i,mmf)
 
 Source_sbtab = mmf.model.sbtab;
 tsv_name_folder = mmf.model.tsv.model_name;
-
-disp("Reading sbtab_excel Excel sheet number " + i)
 
 % Import the SBTAB to a cell with a sheet per cell
 sbtab_excel = readcell(Source_sbtab,'sheet',i);
