@@ -2,7 +2,7 @@ function f_Reproduce_data_fig6_B_Matlab(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
 
-load(folder + "model_Nair_2016_optimized_alternative.mat",'modelobj');
+load(folder + "model_Nair_2016_optimized_fig6.mat",'modelobj');
 obj = modelobj;
 
 %% Get steady state values after equilibrating for 50000 s
@@ -14,42 +14,29 @@ cnfst.TimeUnits = 'second';
 cnfst.SolverOptions.AbsoluteTolerance = 1e-7;
 cnfst.SolverOptions.RelativeTolerance = 1e-4;
 cnfst.CompileOptions.UnitConversion = 1;
-cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
+cnfst.SolverOptions.AbsoluteToleranceScaling = 0;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 
-sbioaccelerate(obj);
-[t,species,~] = sbiosimulate(obj);
+sbioaccelerate(obj,cnfst);
 
-SteadyState=species(length(t),:);
+[t,species,~] = sbiosimulate(obj,cnfst);
 
-for i=1:length(SteadyState)
+SteadyState = species(length(t),:);
+
+for i = 1:length(SteadyState)
     if SteadyState(i)<0
         SteadyState(i)=0;
     end
 end
 
-for i=1:length(SteadyState)
+for i = 1:length(SteadyState)
     set(obj.species(i), 'InitialAmount', SteadyState(i));
 end
 
-%% Add parameters used by the Calcium input
-
-addparameter(obj, 'nCa_peaksn', 10);
-addparameter(obj, 'nCa_peakfirst', 4);
-addparameter(obj, 'nCa_minpeaklngth', 0.01);
-addparameter(obj, 'nCa_minburstinter', 5);
-addparameter(obj, 'nCa_k2', 9.3);
-addparameter(obj, 'nCa_k1', 39.4);
-addparameter(obj, 'nCa_frequency', 10);
-addparameter(obj, 'nCa_burstn', 1.0);
-addparameter(obj, 'nCa_burstfreq', 0.03);
-addparameter(obj, 'nCa_ampmax_noMg', 1200);
-addparameter(obj, 'nCa_ampbasal', 60);
-set(obj.parameters(end-10:end), 'ValueUnits', 'dimensionless');
-
-ruleobj=addrule(obj, 'Spine.Ca = spiketraindd_Ca(time,nCa_peakfirst,nCa_frequency,nCa_peaksn,nCa_ampbasal,nCa_ampmax_noMg,nCa_k1,nCa_k2,nCa_minpeaklngth,[],nCa_burstfreq,nCa_burstn,nCa_minburstinter,1)');
+ruleobj=addrule(obj, 'Spine.Ca = Ca_input_fig6(time,Ca_input)');
+addparameter(obj, 'Ca_input', 0);
 set(ruleobj,'RuleType','RepeatedAssignment');
-set(obj.rules(2), 'Name', '0 Ca spikes with 3 AP');
+set(obj.parameters(end), 'ValueUnits', 'dimensionless');
 
 % Assign DA_expression to dopamine
 ruleobj=addrule(obj, 'Spine.DA = Spine.DA_expression');
@@ -66,18 +53,24 @@ cnfst.RuntimeOptions.StatesToLog = {'pSubstrate'};
 set(obj.rules(2), 'Active', 1);
 set(obj.rules(3), 'Active', 0);
 
-[t_noDA,x_noDA,~] = sbiosimulate(obj);
+obj.parameters(end).Value = 1;%Ca_input
+
+[t_noDA,x_noDA,~] = sbiosimulate(obj,cnfst);
+
 activationArea = sum(x_noDA) - x_noDA(1) * length(x_noDA);
 
 set(obj.rules(3), 'Active', 1);
 set(obj.parameters(228), 'ValueUnits', 'second'); % par 228 = DA_start
 obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
-[t_DA,x_DA,~] = sbiosimulate(obj);
+obj.parameters(end).Value = 2;%Ca_input
+
+[t_DA,x_DA,~] = sbiosimulate(obj,cnfst);
 
 activationAreaWithMultipleDA = zeros(1,length(DA));
 
 for n = 1:length(DA)
 objm{n} = copyobj(obj);
+objm{n}.parameters(end).Value = n*5+2-4;%Ca_input
 objm{n}.parameters(228).Value = CaStart + DA(n); % par 228 = DA_start
 objm_cnfst{n} = getconfigset(objm{n});
 objm_cnfst{n}.StopTime = 30;
@@ -93,7 +86,9 @@ objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
+    warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
+
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end
 

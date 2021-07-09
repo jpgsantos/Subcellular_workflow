@@ -78,6 +78,7 @@ objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
+    warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end

@@ -18,15 +18,10 @@ cnfst.SolverOptions.AbsoluteToleranceScaling = 1;
 cnfst.RunTimeOptions.StatesToLog = 'all';
 cnfst.SolverOptions.AbsoluteToleranceStepSize = 0.01;
 
-obj.Parameters(233)
 set(obj.Parameters(233), 'Value', 28.42) % parameter 233 is Ca_basal
-obj.species(25)
 set(obj.species(25), 'InitialAmount', 28.42) % species 25 is Ca
 
 [t,species,~] = sbiosimulate(obj);
-
-obj.Parameters(233)
-obj.species(25)
 
 SteadyState=species(length(t),:);
 
@@ -45,8 +40,6 @@ end
 % for i=1:length(C)
 %     set(obj.species(i), 'InitialAmount', C{i,2});
 % end
-
-obj.species
 
 %% Add parameters used by the Calcium input
 
@@ -95,6 +88,7 @@ objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
+    warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
 end

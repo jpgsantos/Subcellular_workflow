@@ -113,7 +113,7 @@ copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_20
 % 
 % Model_Nair_2016 (The folder of the model)
 % 
-% Diagnostics (The analysis to be performed)
+% Import model files (The analysis to be performed)
 % 
 % Nair_2016_optimized_fig6.m (The settings file to be used)
 
@@ -123,11 +123,11 @@ toc
 % Run time <= 0.1 seconds
 
 tic
-copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized.mat", ...
+copyfile("../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Data/model_Nair_2016_optimized_alternative.mat", ...
     "../Subcellular_workflow/Code for paper figures/Figure 6/model_Nair_2016_optimized_fig6.mat")
 toc
 % Run the optimized model with dopamine input at different times
-% Run time ~= 5 minutes
+% Run time ~= 11 seconds
 
 tic
 f_Reproduce_data_fig6_B_Matlab("../Subcellular_workflow/Code for paper figures/Figure 6/")

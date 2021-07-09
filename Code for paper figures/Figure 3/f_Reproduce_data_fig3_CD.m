@@ -53,21 +53,21 @@ cnfst.RuntimeOptions.StatesToLog = {'pSubstrate'};
 set(obj.rules(2), 'Active', 1);
 set(obj.rules(3), 'Active', 0);
 
-obj.parameters(end).Value = 1;
+obj.parameters(end).Value = 1;%Ca_input
 [t_noDA,x_noDA,~] = sbiosimulate(obj);
 activationArea = sum(x_noDA) - x_noDA(1) * length(x_noDA);
 
 set(obj.rules(3), 'Active', 1);
 set(obj.parameters(228), 'ValueUnits', 'second'); % par 228 = DA_start
 obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
-obj.parameters(end).Value = 2;
+obj.parameters(end).Value = 2;%Ca_input
 [t_DA,x_DA,~] = sbiosimulate(obj);
 
 activationAreaWithMultipleDA = zeros(1,length(DA));
 
 for n = 1:length(DA)
 objm{n} = copyobj(obj);
-objm{n}.parameters(end).Value = n+2;
+objm{n}.parameters(end).Value = n+2;%Ca_input
 objm{n}.parameters(228).Value = CaStart + DA(n); % par 228 = DA_start
 objm_cnfst{n} = getconfigset(objm{n});
 objm_cnfst{n}.StopTime = 30;
@@ -83,8 +83,10 @@ objm_cnfst{n}.SolverOptions.AbsoluteToleranceScaling = 1;
 end
 
 parfor n = 1:length(DA)
+    warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
     [~,x,~] = sbiosimulate(objm{n},objm_cnfst{n});
     activationAreaWithMultipleDA(n) = sum(x) - x(1) * length(x);
+%     ME = MException(errID,msgtext)
 end
 
 Nair_2016_optimized_Matlab_data_fig3{1}(:,1) = t_noDA;

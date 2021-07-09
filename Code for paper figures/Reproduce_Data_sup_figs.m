@@ -87,9 +87,9 @@ toc
 %% Supplementary figure 2
 % 
 
-tic
-copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Viswan_2018_optimized_sup_fig2.m", ...
-    "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Settings/Viswan_2018_optimized_sup_fig2.m")
+% tic
+% copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Viswan_2018_optimized_sup_fig2.m", ...
+%     "../Subcellular_workflow/Matlab/Model/Model_Viswan_2018/Matlab/Settings/Viswan_2018_optimized_sup_fig2.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
@@ -104,14 +104,14 @@ copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Viswan_
 % 
 % Viswan_2018_optimized_sup_fig2.m (The settings file to be used)
 
-Run_main
-save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/Analysis_sup_fig2_no_rst.mat", ...
-     'stg','sb')
-
-SiQ = rst.gsa.SiQ;
-save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/GSA_SiQ_sup_fig2.mat", ...
-     "SiQ")
-SiTQ = rst.gsa.SiTQ;
-save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/GSA_SiTQ_sup_fig2.mat", ...
-     "SiTQ")
-toc
+% Run_main
+% save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/Analysis_sup_fig2_no_rst.mat", ...
+%      'stg','sb')
+% 
+% SiQ = rst.gsa.SiQ;
+% save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/GSA_SiQ_sup_fig2.mat", ...
+%      "SiQ")
+% SiTQ = rst.gsa.SiTQ;
+% save ("../Subcellular_workflow/Code for paper figures/Supplementary figure 2/GSA_SiTQ_sup_fig2.mat", ...
+%      "SiTQ")
+% toc
