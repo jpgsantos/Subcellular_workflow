@@ -1,4 +1,4 @@
-!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='Parameter' TableTitle='SBTAB example Parameter' TableType = 'Quantity'															
+!!SBtab	SBtabVersion='1.0' Document='Example' TableName='Parameter' TableTitle='Parameter' TableType = 'Quantity'															
 !ID	!Name	!Unit	!Value:log2	!Value:linspace	!Value:log10	!Median	!Max	!Min	!Std	!ProbDist	!Description	!Location	!Comment	!Scale	!LaTeX	LaTeX Construct
 K0	kf_0	1/(nanomolarity*second)	3.8346	6832.934	3.8346							Compartment	kf_aReceptorXLigand__aReceptor_Ligand			
 K1	kr_0	1/second	0.6998	5.0095	0.6998							Compartment	kr_aReceptorXLigand__aReceptor_Ligand			

@@ -1,4 +1,4 @@
-!!SBtab	SBtabVersion='1.0' Document='SBTAB example' TableName='E0' TableTitle='SBTAB example E0' TableType = 'QuantityMatrix'				
+!!SBtab	SBtabVersion='1.0' Document='Example' TableName='E0' TableTitle='E0' TableType = 'QuantityMatrix'				
 !ID	!Time	>Y0	SD_Y0	>Y1	SD_Y1
 E0T0	0	1	0.1	0	0.1
 E0T1	0.1	1	0.1	0	0.1
