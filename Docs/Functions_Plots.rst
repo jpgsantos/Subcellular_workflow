@@ -90,22 +90,11 @@ Plots diagnosis that are important to understand if everything is working as it 
  
  	.. image:: ../Docs/Images/SA_SI_sd_example.png
 
-   :math:`S_{i}`
-
    .. toggle-header::
        :header: **Figure Sensitivity Analysis** :math:`S_{Ti}`
 	   
 	.. image:: ../Docs/Images/SA_STI_sd_example.png
 
-   :math:`S_{Ti}`
-
-   .. toggle-header::
-       :header: **Figure Sensitivity Analysis** :math:`S_{Ti}-S_{i}`
-	   
-	.. image:: ../Docs/Images/SA_STI-SI_sd_example.png
-
-   :math:`S_{Ti}-S_{i}`
-   
    .. toggle-header::
        :header: **Code figures SA**
  	  

@@ -5,11 +5,11 @@ The MATLAB\ |Reg| section of this workflow has been developed to facilitate mode
 rapid iteration between different versions of a model.
 In this workflow we use one main script, "Run_main.m", that calls all the relevant functions to be used.
 To run the MATLAB\ |Reg| code the Subcellular Workflow repository should be added to the MATLAB\ |Reg| path.
-Running the script "Run_main.m" generates a prompt in the MATLAB\ |Reg| terminal, this requires user input to choose between the numbered options. These prompts allow the user to choose:
+Running the script "Run_main.m" generates prompts in the MATLAB\ |Reg| terminal window with a request to the user, to choose between a number of different options. These prompts allow the user to choose:
 
   - The model to use (from all the models that are in the "Matlab/model" folder). 
 	
-	| The first time you run a model you have to add the folder for a specific model from its home repository (e.g. copy the folder "Model_nair_2016" from its repository to "Matlab/model/" ).
+	| Note that the very first time you run a model you have to add the folder for that specific model from its home repository into the “Matlab/model” folder(e.g. copy the folder "Model_nair_2016" from its repository to "Matlab/model/" ).
 	| For implemented models so far go to the following links:
 	
 	- `Fujita_2010 model <https://github.com/jpgsantos/Model_Fujita_2010/>`_
@@ -24,18 +24,22 @@ Running the script "Run_main.m" generates a prompt in the MATLAB\ |Reg| terminal
   
     3. :ref:`Global Sensitivity Analysis<gsa>`
   
-    4. Reproduction of a previous Analysis
+    4. Reproduction of a previous analysis
   
-         This option can be used to re-do an analysis that has previously been performed.
-         This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
-         The user should specify the analysis file that they want to use, examples are provided in the each model repository.
+      This option can be used to re-do an analysis that has previously been performed.
+      This is useful for reproducibility and in the case of the code getting updated with extra funcionalities.
+      The user should specify the analysis file that they want to use, examples are provided in the each model repository.
   
     5. Reproduction of the plots of a previous analyis
   
-         Similar to the previous option but here only the plots are re-done.
+      Similar to the previous option but here only the plots are re-done.
+	  
+    6. Import model files
+
+      Creation of the model files and folder that are needed to run the model in Matlab, the creation of a folder with the model in .tsv format (one tsv file for each excel sheet of the original SBtab), as well as the conversion of the model to the SBML format (.xml).
 
   - | The :ref:`settings file<stg>` to use on the model.
-    | These settings files can be found can be found on the respective model repository in the directory "Matlab/Settings", in the example model from our main repository in the directory "Matlab/model/Model_Example/Matlab/Settings", or by following these links:
+    | These settings files can be found either in the respective model repository in the directory "Matlab/Settings", or in the example model from our main repository in the directory "Matlab/model/Model_Example/Matlab/Settings", or by following these links:
 	
     - `Example model settings files <https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab/Model/Model_Example/Matlab/Settings>`_
     - `Fujita_2010 model settings files <https://github.com/jpgsantos/Model_Fujita_2010/tree/master/Matlab/Settings>`_

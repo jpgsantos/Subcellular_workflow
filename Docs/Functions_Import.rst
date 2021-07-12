@@ -19,7 +19,6 @@ It prompts the user to choose the model to run, the settings file to use, and th
 
 - **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, :ref:`sb<sb>`, Analysis_n
 
-
 .. _f_import:
 
 f_import

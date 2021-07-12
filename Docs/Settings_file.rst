@@ -26,6 +26,8 @@ Settings file
       .. literalinclude:: ../Matlab/Model/Model_Example/Matlab/Settings/Example_model.m
          :linenos:
          :language: matlab
+		 
+.. _stg.imp:
 
 Import
 ------
@@ -67,6 +69,8 @@ Import
   .. _stg.sbtab_name:
 
 - **stg.sbtab_name** - (string) Name of the SBtab saved in .mat format
+
+.. _stg.analysis:
 
 Analysis
 --------
@@ -120,6 +124,8 @@ Analysis
   .. _stg.simdetail:
 
 - **stg.simdetail** - (logical) Decide whether to run detailed simulation for plots
+
+  .. _stg.sim:
 
 Simulation
 ----------
@@ -198,6 +204,8 @@ Simulation
 
 - **stg.errorscore** - (double) Default score when there is a simulation error, this is needed to keep the optimizations working.
 
+.. _stg.model:
+
 Model
 -----
 
@@ -258,6 +266,8 @@ Model
           \end{bmatrix}
 		   
   - :math:`i =` Parameter index   
+
+  .. _stg.diag:
 
 Diagnostics
 -----------
@@ -362,6 +372,8 @@ Plots
 
 - **stg.plotoln** - (logical) Decide whether to use long names in the title of the output plots in f_plot_outputs.m
 
+.. _stg.gsa:
+
 Global Sensitivity Analysis (GSA)
 ---------------------------------
 
@@ -436,7 +448,7 @@ Global Sensitivity Analysis (GSA)
  
  	.. image:: ../Docs/Images/SA_Dist_3.png
 
- 3. Log normal distribution centered at the mean of the parameter bounds and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` truncated at the parameter bounds
+ 3. Log normal distribution with μ corresponding to the mean of the parameter bounds and σ as :ref:`stg.sasamplesigma<stg.sasamplesigma>` but truncated at the parameter bounds
  
   :math:`X_{i} \sim TruncatedLogNormal(μ_{i}, σ, a_{i}, b_{i})`
   
@@ -467,6 +479,8 @@ Global Sensitivity Analysis (GSA)
   .. _stg.sasamplesigma:
 
 - **stg.sasamplesigma** - (double) σ for creating the normal distribution of parameters to perform sensitivity analysis
+
+  .. _stg.opt:
 
 Optimization
 ------------
