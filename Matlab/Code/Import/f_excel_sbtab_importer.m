@@ -20,7 +20,7 @@ end
 
 % Save the SBTAB tables in .mat format
 save(Matlab_sbtab,'sbtab_excel');
-disp("SBtab with " + size(sheets,2) + " sheets parsed successfully")
+disp("SBtab with " + size(sheets,1) + " sheets parsed successfully")
 end
 
 function sbtab_excel = impexp (i,mmf)

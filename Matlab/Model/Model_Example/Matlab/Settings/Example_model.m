@@ -161,7 +161,7 @@ stg.plotnames = true;
 %% Sensitivity analysis
 
 % Number of samples to use in SA (Sensitivity analysis number of samples)
-stg.sansamples = 10;
+stg.sansamples = 100;
 
 % True or false to decide whether to subtract the mean before calculating
 % SI and SIT (Sensitivity analysis subtract mean)
