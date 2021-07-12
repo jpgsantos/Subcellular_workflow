@@ -50,7 +50,7 @@ ax2.XAxisLocation = 'top';
 ax2.YAxis.Visible = 'off';
 
 xlim(ax1,[0 10000])
-xlim(ax2,[-1600 8000])
+xlim(ax2,[-1600 8400])
 ylim(ax1,[0 0.1])
 ylim(ax2,[0 0.1])
 ax2.Color = 'none';
@@ -89,13 +89,13 @@ p1 = plot(ax1,time_detailed,...
     'LineWidth',1);
 set(gca,'FontSize',8,'Fontweight','bold')
 ax2 = axes(layout2);
-p2 = plot (ax2,Time,pERK_ratio,'Color',[1 0 0], 'LineWidth',1);
+p2 = plot (ax2,Time,pERK_ratio/pERK_ratio(161),'Color',[1 0 0], 'LineWidth',1);
 
 ax2.XColor = 'r';
 ax2.XAxisLocation = 'top';
 ax2.YAxis.Visible = 'off';
 
-xlim(ax2,[-1600 8000])
+xlim(ax2,[-1600 8400])
 ylim(ax1,[0 1.2])
 ylim(ax2,[0 1.2])
 ax2.Color = 'none';
@@ -145,7 +145,6 @@ exportgraphics(layout,...
 exportgraphics(layout,...
     folder + "supplementary figure 5_alt3.pdf",...
     'ContentType','vector')
-% end
 end
 
 function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number,folder)
