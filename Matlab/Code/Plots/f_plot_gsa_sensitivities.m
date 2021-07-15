@@ -1,8 +1,8 @@
-function f_plot_gsa_sensitivities(rst,stg)
+function f_plot_gsa_sensitivities(rst,stg,sbtab)
 % Generates figures for Sensitivity Analysis
 
 % Get the total number of outputs
-[~,outputNames.sd] = f_get_outputs(stg);
+[~,outputNames.sd] = f_get_outputs(stg,sbtab);
 
 for n = 1:size(outputNames.sd,2)
     outputNames.sd{n}{:} = strrep(outputNames.sd{n}{:},"_","\_");

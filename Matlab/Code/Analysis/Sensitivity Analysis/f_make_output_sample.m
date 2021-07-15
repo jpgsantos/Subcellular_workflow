@@ -3,18 +3,25 @@ function rst = f_make_output_sample(rst,stg,mmf)
 % comp. neuroscience 27.3 (2009): 471.)
 
 nSamples = stg.sansamples;
-[nOutputs,~] = f_get_outputs(stg);
 nPars = stg.parnum;
 parameter_array = zeros(nSamples,nPars);
+progress = 1;
+time_begin = datetime;
+D = parallel.pool.DataQueue;
+
+afterEach(D, @progress_track);
 
 for i=1:nSamples
     parameter_array(i,:) = rst.M1(i,:);
 end
 
 parfor i=1:nSamples
-    disp("M1 " + i + "/" + nSamples)
     [~,~,RM1(i)] = f_sim_score(parameter_array(i,:),stg,mmf);
+    send(D, "GSA M1 ");
 end
+disp("GSA M1 Runtime: " + string(datetime - time_begin) +...
+                "  All " + nSamples + " samples executed")
+
 
 for i=1:nSamples
     fM1.sd(i,:) = [RM1(i).sd{:}];
@@ -30,10 +37,13 @@ for  i=1:nSamples
     parameter_array(i,:)= rst.M2(i,:);
 end
 
+progress = 1;
 parfor i=1:nSamples
-    disp("M2 " + i + "/" + nSamples)
     [~,~,RM2(i)] = f_sim_score(parameter_array(i,:),stg,mmf);
+    send(D, "GSA M2 ");
 end
+disp("GSA M2 Runtime: " + string(datetime - time_begin) +...
+                "  All " + nSamples + " samples executed")
 
 for i=1:nSamples
     fM2.sd(i,:) = [RM2(i).sd{:}];
@@ -51,15 +61,15 @@ for i=1:nSamples
     end
 end
 
+progress = 1;
 parfor i=1:nSamples
-    disp("N " + i + "/" + nSamples)
     for j=1:nPars
-        if ~mod(j,35)
-            disp("N " + i + "/" + nSamples + " Par " + j + "/" + nPars)
-        end
         [~,~,RN{i,j}] = f_sim_score(parameter_array(i,:,j),stg,mmf);
     end
+    send(D, "GSA N  ");
 end
+disp("GSA N  Runtime: " + string(datetime - time_begin) +...
+                "  All " + nSamples + " samples executed")
 
 for i=1:nSamples
     for j=1:nPars
@@ -72,4 +82,12 @@ end
 
 rst.fN = fN;
 clear c FN
+
+    function progress_track(name)
+        progress = progress + 1;
+        if mod(progress,ceil(nSamples/10)) == 0 && progress ~= nSamples
+            disp(name + "Runtime: " + string(datetime - time_begin) +...
+                "  Samples:" + progress + "/" + nSamples)
+        end
+    end
 end

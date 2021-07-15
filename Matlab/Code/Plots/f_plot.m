@@ -22,6 +22,7 @@ end
 if isfield(rst,'diag')
     f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
 end
+
 % Generate figure with input and Output of all experiments
 if isfield(rst,'diag')
     f_plot_in_out(rst.diag,stg,sbtab,Data)
@@ -34,6 +35,6 @@ end
 
 % Generate figures for Sensitivity Analysis
 if isfield(rst,'gsa')
-    f_plot_gsa_sensitivities(rst.gsa,stg);
+    f_plot_gsa_sensitivities(rst.gsa,stg,sbtab);
 end
 end
