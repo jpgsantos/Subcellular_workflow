@@ -9,11 +9,11 @@ stg.import = true;
 
 % Name of the excel file with the sbtab
 % (SBtab excel name)
-stg.sbtab_excel_name = "SBtab_Nair_2016_optimized.xlsx";
+stg.sbtab_excel_name = "SBtab_Nair_2016_optimized_alternative.xlsx";
 
 % Name of the model
 % (Name)
-stg.name = "Nair_2016_optimized";
+stg.name = "Nair_2016_optimized_alternative";
 
 % Name of the default model compartment
 % (Compartment name)
@@ -90,7 +90,7 @@ stg.reltol = 1.0E-4;
 
 % Value of Absolute tolerance
 % (Absolute tolerance)
-stg.abstol = 1.0E-4;
+stg.abstol = 1.0E-7;
 
 % Time units for simulation
 % (Simulation time)
@@ -102,7 +102,7 @@ stg.simtime = "second";
 stg.sbioacc = true;
 
 % (Absolute tolerance step size for equilibration)
-stg.abstolstepsize_eq = 0.01;
+stg.abstolstepsize_eq = [];
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -150,10 +150,8 @@ stg.pat = [1:1];
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-
 stg.pa(1,:) = [-6.443697499,-1.638272164,-2.408935393,-5.958607315,-2.26760624,1];
 % stg.pa(2,:) = [-6.551532095	-1.702640692	-2.335079764	-6.029650717	-2.184835444	1.090514988];
-
 
 % Best parameter array found so far for the model
 % (Best parameter array)
@@ -198,4 +196,5 @@ stg.sasamplemode = 2;
 % (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
 
+stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 end

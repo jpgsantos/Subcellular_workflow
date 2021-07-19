@@ -1,5 +1,6 @@
 function f_Reproduce_plot_sup_fig1(folder)
 load(folder + "Analysis_sup_fig1.mat")
+load(folder + "Copasi_simulation_results.mat")
 
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
@@ -18,7 +19,7 @@ layout = tiledlayout(1,2,'Padding','none','TileSpacing','compact');
 
 layout.Units = 'inches';
 layout.OuterPosition = [0 0 6.85 4];
-
+% layout.OuterPosition = [0 0 12 8];
 
 % supplementary figure 1A and C
 layout1 = tiledlayout(layout,2,1,'TileSpacing','compact');
@@ -112,25 +113,41 @@ for m = 1:2
     time_detailed = rst(1).simd{1,m+2*stg.expn}.Time;
     [~,sim_results_detailed]= f_normalize(rst(1),stg,m,j,folder);
     
+    plot(time_detailed,...
+        sim_results_detailed,'k')
+    plot(time_detailed,...
+        sim_results_detailed,'k-.')
+%     scatter(time_detailed,...
+%         sim_results_detailed,'r.')
+%     scatter(time_detailed,...
+%         sim_results_detailed,'b.')
     
     plot(time_detailed,...
-        sim_results_detailed,'b',...
+        sim_results_detailed,'r',...
         'DisplayName',string("Parameter set "+p),...
-        'LineWidth',1)
+        'LineWidth',2)
     
     time_detailed = rst(2).simd{1,m+2*stg.expn}.Time;
     [~,sim_results_detailed]= f_normalize(rst(2),stg,m,j,folder);
     
     plot(time_detailed,...
-        sim_results_detailed,'r',...
+        sim_results_detailed,'r-.',...
         'DisplayName',string("Parameter set "+p),...
-        'LineWidth',1)
+        'LineWidth',2)
     
+    if m == 1
+        plot(E0_Time,E0_orig_norm,'b','LineWidth',1)
+        plot(E0_Time,E0_opt_norm,'b-.','LineWidth',1)
+    else
+        plot(E1_Time,E1_orig_norm,'b','LineWidth',1)
+        plot(E1_Time,E1_opt_norm,'b-.','LineWidth',1)
+    end
     hold off
     
     set(gca,'FontSize',8,'Fontweight','bold')
     
-    legend(["Data + SEM","Original parameters","Optimized parameters"],'FontSize', 6.5,'Fontweight','bold')
+    legend(["Data + SEM","Original parameters","Optimized parameters"]...
+        ,'FontSize', 6.5,'Fontweight','bold')
     legend boxoff
     
     xlabel('time (s)','FontSize', 8,'Fontweight','bold')

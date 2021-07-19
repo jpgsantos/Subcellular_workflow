@@ -165,7 +165,7 @@ stg.plotoln = false;
 
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 100;
+stg.sansamples = 100000;
 
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT

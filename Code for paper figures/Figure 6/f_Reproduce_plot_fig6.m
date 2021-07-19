@@ -260,7 +260,7 @@ text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('time (s)');
 ylabel('Substrate phosphorylation');
-legend({'Ca Original','Ca STEPS','Ca + DA (\Deltat=1s) Original', 'Ca + DA (\Deltat=1s) STEPS'});
+legend({'Ca MATLAB','Ca STEPS','Ca + DA (\Deltat=1s) MATLAB', 'Ca + DA (\Deltat=1s) STEPS'});
 legend boxoff
 
 xl = xlim;
@@ -329,7 +329,7 @@ boxplot(activationAreaWithMultipleDA_steps/activationArea_steps,'Positions',Nair
 set(gca,'FontSize',8, 'FontWeight', 'bold')
 xlabel('\Deltat (s)');
 ylabel('Substrate phosphorylation area');
-legend({'Original','STEPS'}, 'Location', 'Northwest');
+legend({'MATLAB','STEPS'}, 'Location', 'Northwest');
 legend boxoff
 
 text(min(xlim)-(max(xlim)-min(xlim))*2.5/30,max(ylim)+(max(ylim)-min(ylim))*0.25/5,'B','FontWeight','bold')

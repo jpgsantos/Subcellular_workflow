@@ -6,7 +6,7 @@
 % 
 % Run times measured on a Intel® Core™ i9-10980XE and MATLAB® 2021a
 % 
-% Total run time approximately ??? hours.
+% Total run time approximately 3 hours 35 min.
 % 
 % 
 % 
@@ -134,7 +134,7 @@ f_Reproduce_data_fig6_B_Matlab("../Subcellular_workflow/Code for paper figures/F
 toc
 %% Figure 4 A and B
 % Run sensitivity analysis on the model with optimized parameters
-% Run time ~= 4 hours (user input is needed and might afect this time)
+% Run time ~= 3 hours 30 min (user input is needed and might afect this time)
 % 
 % 
 % 
@@ -142,7 +142,9 @@ toc
 % for paper figures\Reproduce paper figure 4" into the Subcellular_workflow\Matlab\Model\Model_Nair_2016\Settings" 
 % folder.
 
-% copyfile("../Subcellular_workflow/Code for paper figures/Figure 4/Nair_2016_optimized_fig4.m","../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Settings/Nair_2016_optimized_fig4.m")
+tic
+copyfile("../Subcellular_workflow/Code for paper figures/Matlab Settings/Nair_2016_optimized_fig4.m",...
+    "../Subcellular_workflow/Matlab/Model/Model_Nair_2016/Matlab/Settings/Nair_2016_optimized_fig4.m")
 %% 
 % Note: If you have customized folder names please change the above code accordingly 
 % or manually copy the settings file.
@@ -157,7 +159,7 @@ toc
 % 
 % Nair_2016_optimized_fig4.m (The settings file to be used)
 
-% Run_main
+Run_main
 %% 
 % Note: The live script is not as performant as native scripts so consider running 
 % the non-live script provided for increased performance
@@ -165,4 +167,5 @@ toc
 % 
 % Save the needed files for the plots
 
-% save ("../Subcellular_workflow/Code for paper figures/Figure 4/SA_results.mat",'rst')
+save ("../Subcellular_workflow/Code for paper figures/Figure 4/SA_results.mat",'rst')
+toc

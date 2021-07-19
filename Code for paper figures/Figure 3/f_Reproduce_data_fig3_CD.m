@@ -1,6 +1,7 @@
 function f_Reproduce_data_fig3_CD(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
+warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
 
 load(folder + "model_Nair_2016_optimized_fig3.mat",'modelobj');
 obj = modelobj;
@@ -61,6 +62,7 @@ set(obj.rules(3), 'Active', 1);
 set(obj.parameters(228), 'ValueUnits', 'second'); % par 228 = DA_start
 obj.parameters(228).Value = CaStart + 1; % par 228 = DA_start
 obj.parameters(end).Value = 2;%Ca_input
+
 [t_DA,x_DA,~] = sbiosimulate(obj);
 
 activationAreaWithMultipleDA = zeros(1,length(DA));

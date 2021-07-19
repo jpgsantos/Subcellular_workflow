@@ -19,7 +19,7 @@ layout.OuterPosition = [0 0 6.85 3];
 % Figure 4A
 nexttile(layout);
 
-bar(rst.SA.Si.se(:,:),'stacked')
+bar(rst.gsa.Si.se(:,:),'stacked')
 
 xticklabels({'E0','E1','E2','E3','E4','E5','E6','E7','E8','E9'})
 set(gca,'FontSize',8,'Fontweight','bold')
@@ -34,7 +34,7 @@ text(min(xlim)-(max(xlim)-min(xlim))*3/30,...
 % Figure 4B
 nexttile(layout);
 
-bar(rst.SA.SiT.se(:,:),'stacked')
+bar(rst.gsa.SiT.se(:,:),'stacked')
 legend(["k216, k222","k217, k223","k218, k224","k219, k225",...
     "k220, k226","k221, k227"],'FontSize', 7,'Fontweight','bold');
 legend boxoff

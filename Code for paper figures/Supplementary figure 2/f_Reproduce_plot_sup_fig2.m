@@ -2,12 +2,13 @@ function f_Reproduce_plot_sup_fig2(folder)
 set(0,'defaultTextFontName', 'Times New Roman')
 set(0,'defaultAxesFontName', 'Times New Roman')
 
-% load(folder + "GSA_SiQ_sup_fig2.mat")
-% load(folder + "GSA_SiTQ_sup_fig2.mat")
-load(folder + "GSA_SiQ.mat")
-load(folder + "GSA_SiTQ.mat")
+load(folder + "GSA_SiQ_sup_fig2.mat")
+load(folder + "GSA_SiTQ_sup_fig2.mat")
+% load(folder + "GSA_SiQ.mat")
+% load(folder + "GSA_SiTQ.mat")
 
-load(folder + "Analysis_without_rst.mat")
+load(folder + "Analysis_sup_fig2_no_rst.mat")
+% load(folder + "Analysis_without_rst.mat")
 
 figHandles = findobj('type', 'figure', 'name', 'Paper supplementary Figure 2');
 close(figHandles);

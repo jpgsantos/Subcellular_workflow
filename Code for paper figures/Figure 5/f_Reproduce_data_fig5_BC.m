@@ -1,6 +1,7 @@
 function f_Reproduce_data_fig5_BC(folder)
 %% Running this script will generate figures 1C and 2C from Nair et al 2016
 %% using the updated model with new parameters governing CaMKII autophosphorylation
+warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
 
 load(folder + "model_Nair_2016_optimized_fig5.mat",'modelobj');
 obj = modelobj;
