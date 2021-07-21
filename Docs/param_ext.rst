@@ -1,0 +1,5 @@
+.. _param_ext:
+
+Parameter Estimation
+====================
+Parameter estimation is performed by various MATLAB optimization algorithms. The number of parameters to estimate, possible thermodynamic constraints (can be determined by a standalone `script <https://github.com/jpgsantos/Subcellular_workflow/blob/1.0/Matlab/Code/Standalone/get_thermodynamic_constraints.m>`_), and upper and lower bounds can be specified in the :ref:`model section of the settings file<stg.model>`. In addition, the parameter indices and the best available parameter sets can specified in the :ref:`diagnostics section<stg.diag>`. Optimization algorithm and optimization settings can be found in the :ref:`optimziation section of the settings file<stg.opt>` and simulation settings in the  :ref:`simulation section<stg.sim>`.

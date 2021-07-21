@@ -1,15 +1,17 @@
-function rst = f_prep_sim(parameters,stg)
+function rst = f_prep_sim(parameters,stg,mmf)
 
 % Save variables that need to be mantained over multiple function calls
 % persistent modelobj
 persistent sbtab
 persistent Data
 
+data_model = mmf.model.data.data_model;
+
 % Import the data on the first run
 if isempty(sbtab)
     
     %Find correct path for loading depending on the platform
-    load("Model/" +stg.folder_model +"/Data/" + "data_"+stg.name+".mat",'Data','sbtab')
+    load(data_model,'Data','sbtab')
 end
 
 % Set the parameters that are going to be used for the simulation to the
@@ -54,13 +56,15 @@ for n = 1:size(rt.par,1)
                         % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcm(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to
+                            % Check if the parametrer needs to be set to
                             % the value relevant for Profile Likelihood
-                            if stg.partest(stg.tcm(n,m),1) ==...
-                                    stg.PLind
-                                parameters(stg.partest(...
-                                    stg.tcm(n,m),1))...
-                                    = stg.PLval;
+                            if isfield(stg,"PLind")
+                                if stg.partest(stg.tcm(n,m),1) ==...
+                                        stg.PLind
+                                    parameters(stg.partest(...
+                                        stg.tcm(n,m),1))...
+                                        = stg.PLval;
+                                end
                             end
                             
                             % Make the appropriate multiplications to get
@@ -87,15 +91,16 @@ for n = 1:size(rt.par,1)
                         % thermodynamic constraintsis is not the default
                         if stg.partest(stg.tcd(n,m),1) > 0
                             
-                            % Check if the parametrer needs to be tset to
+                            % Check if the parametrer needs to be set to
                             % the value relevant for Profile Likelihood
-                            if stg.partest(stg.tcd(n,m),1) ==...
-                                    stg.PLind
-                                parameters(stg.partest(...
-                                    stg.tcd(n,m),1))...
-                                    = stg.PLval;
+                            if isfield(stg,"PLind")
+                                if stg.partest(stg.tcd(n,m),1) ==...
+                                        stg.PLind
+                                    parameters(stg.partest(...
+                                        stg.tcd(n,m),1))...
+                                        = stg.PLval;
+                                end
                             end
-                            
                             % Make the appropriate divisions to get the
                             % thermodinamicly constrained parameter
                             rt.par(n) = rt.par(n)./(10.^...
@@ -165,7 +170,7 @@ for n = stg.exprun
             end
             
             % Equilibrate the model
-            rst = f_sim(n+stg.expn,stg,rt,rst);
+            rst = f_sim(n+stg.expn,stg,rt,rst,mmf);
             
             for j = 1:size(sbtab.species,1)
                 
@@ -187,11 +192,11 @@ for n = stg.exprun
         end
         
         % Simulate the model
-        rst = f_sim(n,stg,rt,rst);
+        rst = f_sim(n,stg,rt,rst,mmf);
         
         try
             if stg.simdetail
-                rst = f_sim(n+2*stg.expn,stg,rt,rst);
+                rst = f_sim(n+2*stg.expn,stg,rt,rst,mmf);
             end
         catch
         end

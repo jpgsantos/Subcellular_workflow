@@ -82,6 +82,9 @@ stg.simtime = "second";
 % (sbioaccelerate)
 stg.sbioacc = true;
 
+% (Absolute tolerance step size for equilibration)
+stg.abstolstepsize_eq = [];
+
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
 stg.maxstep = [10];
@@ -94,6 +97,10 @@ stg.maxstepeq = [2];
 % (Maximum step)
 stg.maxstepdetail = [2];
 
+% Default score when there is a simulation error, this is needed to keep
+% the optimizations working.
+% (error score)
+stg.errorscore = 10^5;
 %% Model
 
 % Number of parameters to optimize (Parameter number)
@@ -160,42 +167,6 @@ stg.sasamplemode = 2;
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
-
-%% Profile Likelihood
-
-% Parameter(optimization array) that is being worked on in a specific
-% iteration of PL (if -1 no parameter is being worked in PL) (Profile
-% Likelihood Index)
-stg.PLind = -1;
-
-% Which parameters to do PL on, it should be all parameters but can also be
-% a subset for testing purposes (Profile Likelihood parameters to Test)
-stg.pltest = (1:15);
-
-% How many points to do for each parameter in the PL (Profile Likelihood
-% Resolution)
-stg.plres = 20;
-
-% True or false to decide whether to do plots after calculating PL (Profile
-% Likelihood Plots)
-stg.plplot = true;
-
-% True or false to decide whether to run simulated annealing (Profile
-% Likelihood Simulated Annealing)
-stg.plsa = false;
-
-% Options for simulated annealing
-stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
-    'MaxTime',5,'ReannealInterval',40);
-
-% 0 or 1 to decide whether to run fmincon (Profile Likelihood FMincon)
-stg.plfm = false;
-
-% Options for fmincon
-stg.plfmo = optimoptions('fmincon','Display','off',...
-    'Algorithm','interior-point',...
-    'MaxIterations',1,'OptimalityTolerance',0,...
-    'StepTolerance',1e-6,'FiniteDifferenceType','central');
 
 %% Optimization
 

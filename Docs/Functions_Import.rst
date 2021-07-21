@@ -11,14 +11,13 @@ f_load_settings
  .. toggle-header::
      :header: **Code**
 
-     .. literalinclude:: ../Matlab/Code/Import/f_load_settings.m
+     .. literalinclude:: ../Matlab/Code/Import/f_user_input.m
 		:linenos:
 		:language: matlab
-		
+
 It prompts the user to choose the model to run, the settings file to use, and the Analysis to perform.
 
-- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, :ref:`sb<sb>`,Analysis_n
-
+- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, :ref:`sb<sb>`, Analysis_n
 
 .. _f_import:
 

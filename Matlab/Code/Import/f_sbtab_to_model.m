@@ -1,9 +1,9 @@
-function f_sbtab_to_model(stg,sb)
+function f_sbtab_to_model(stg,sb,mmf)
 % Saves the model in .mat, .sbproj and .xml format, while also creating a
 % file whith the data to run the model in all different experimental
 % settings defined in the sbtab
 
-modelobj = sbiomodel (stg.name);
+modelobj = sbiomodel(stg.name);
 compObj = [];
 
 sbtab.species = cat(2,sb.Compound.Name,sb.Compound.InitialValue,...
@@ -43,7 +43,6 @@ for n = 1:size(sb.Reaction.ID,1)
         else
             reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' -> ');
         end
-        
     else
         if sb.Reaction.IsReversible{n}
             reaction_name = strrep(sb.Reaction.ReactionFormula{n},'<=>',' <-> ');
@@ -54,32 +53,34 @@ for n = 1:size(sb.Reaction.ID,1)
     
     reaction_name_compartment = reaction_name;
     
-    % Check if running matlab 2020a or later
-    if f_check_minimum_version(9,8)
-        
-        for m = 1:size(sb.Compound.Name,1)
-            reaction_name_compartment = insertBefore(string(reaction_name_compartment)," " + string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));
-        end
-        
-        while strfind(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}))
-            reaction_name_compartment = strrep(reaction_name_compartment,string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}), " "+sb.Reaction.Location{n});
-        end
-        
-        while strfind(reaction_name_compartment,"  ")
-            reaction_name_compartment = strrep(reaction_name_compartment,"  "," ");
-        end
-        
-        reaction_name_compartment = strrep(reaction_name_compartment,sb.Reaction.Location{n} + " ",sb.Reaction.Location{n}+".");
-        reaction_name_compartment = string(sb.Reaction.Location{n})+"."+reaction_name_compartment;
+    for m = 1:size(sb.Compound.Name,1)
+        reaction_name_compartment =...
+            insertBefore(string(reaction_name_compartment)," " +...
+            string(sb.Compound.Name{m})," " + string(sb.Reaction.Location{n}));
     end
+    
+    while contains(reaction_name_compartment,...
+            string(sb.Reaction.Location{n})+" "+string(sb.Reaction.Location{n}))
+        reaction_name_compartment =...
+            strrep(reaction_name_compartment,string(sb.Reaction.Location{n})+...
+            " "+string(sb.Reaction.Location{n})," "+sb.Reaction.Location{n});
+    end
+    
+    while contains(reaction_name_compartment,"  ")
+        reaction_name_compartment = strrep(reaction_name_compartment,"  "," ");
+    end
+    
+    reaction_name_compartment = strrep(reaction_name_compartment,...
+        sb.Reaction.Location{n} + " ",sb.Reaction.Location{n}+".");
+    reaction_name_compartment = string(sb.Reaction.Location{n})+"."+reaction_name_compartment;
     
     reactionObj = addreaction(modelobj,reaction_name_compartment);
     set(reactionObj,'ReactionRate',sb.Reaction.KineticLaw{n});
 end
 
 for n = 1:size(sb.Compound.ID,1)
-    if ischar(sb.Compound.Assignement{n})
-        if contains(convertCharsToStrings(sb.Compound.Assignement{n}),["true","True"])
+    if ischar(sb.Compound.Assignment{n})
+        if contains(convertCharsToStrings(sb.Compound.Assignment{n}),["true","True"])
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
@@ -118,17 +119,16 @@ end
 
 for n = 1:size(sb.Experiments.ID,1)
     startamount = cell(1,size(species_INP_matcher,1));
+    nstartamount = 0;
     nInputTime = 0;
     nInput = 0;
     nOutput = 0;
-    nExpression = 0;
-    
-    a = 0;
+
     for m = 1:size(sb.Compound.ID,1)
         if isfield(sb.Experiments,"S"+(m-1))
-            a = a+1;
-            startamount{a} = eval("sb.Experiments.S"+(m-1)+"(n)");
-            startAmountName(a) = sb.Compound.Name(m);
+            nstartamount = nstartamount+1;
+            startamount{nstartamount} = eval("sb.Experiments.S"+(m-1)+"(n)");
+            startAmountName(nstartamount) = sb.Compound.Name(m);
         end
     end
     
@@ -244,16 +244,17 @@ if isfield(sb,"Constant")
     end
 end
 
-sbiosaveproject(pwd + "/Model/" + stg.folder_model + "/Data/model_" +...
-    stg.name + ".sbproj",'modelobj')
+sbproj_model = mmf.model.data.sbproj_model;
+matlab_model = mmf.model.data.mat_model;
+data_model = mmf.model.data.data_model; 
+xml_model = mmf.model.data.xml_model; 
 
-save(pwd + "/Model/" + stg.folder_model + "/Data/" + "model_" +...
-    stg.name + ".mat",'modelobj')
-save(pwd + "/Model/" + stg.folder_model + "/Data/data_" +...
-    stg.name + ".mat",...
-    'Data','sbtab','sb')
+sbiosaveproject(sbproj_model,'modelobj')
 
-sbmlexport(modelobj,pwd + "/Model/" + stg.folder_model + "/Data/model_" +...
-    stg.name + ".xml")
+save(matlab_model,'modelobj')
+
+save(data_model,'Data','sbtab','sb')
+
+sbmlexport(modelobj,xml_model)
 
 end

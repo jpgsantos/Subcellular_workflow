@@ -1,4 +1,4 @@
-function rst = f_sim(exp_n,stg,rt,rst)
+function rst = f_sim(exp_n,stg,rt,rst,mmf)
 
 % Save variables that need to be mantained over multiple function calls
 persistent model_run
@@ -13,13 +13,16 @@ if isempty(model_run)
     model_run = cell(1,stg.expn*2);
     config_run = cell(1,stg.expn*2);
     
+    model_exp_default = mmf.model.data.model_exp.default;
+    model_exp_eq = mmf.model.data.model_exp.equilibration;
+    model_exp_detail = mmf.model.data.model_exp.detail;
+    
     % Iterate over the experiments thar are being run
     for n = stg.exprun
         
         if stg.simdetail
             % Load the models for equilibrium
-            load("Model/" +stg.folder_model + "/Data/exp/Model_diag_" + stg.name +...
-                "_" + n + ".mat",'model_exp','config_exp')
+            load(model_exp_detail + n + ".mat",'model_exp','config_exp')
 
             % Place the loaded models in the correct place in the array,
             % models for equilibrium are set to be on the second half of
@@ -35,12 +38,8 @@ if isempty(model_run)
             end
         end
         % Load the models for equilibrium
-        load("Model/" +stg.folder_model + "/Data/exp/Model_eq_" + stg.name +...
-            "_" + n + ".mat",'model_exp','config_exp')
-        %         load("Model/" +stg.folder_model + "/Data/exp/Model_diag_"
-        %         + stg.name +...
-        %             "_" + n + ".mat",'model_exp')
-        
+        load(model_exp_eq + n + ".mat",'model_exp','config_exp')
+
         % Place the loaded models in the correct place in the array, models
         % for equilibrium are set to be on the second half of the array
         model_run{n+stg.expn} = model_exp;
@@ -53,8 +52,7 @@ if isempty(model_run)
         end
         
         % Load the models for main run
-        load("Model/" +stg.folder_model + "/Data/exp/Model_" + stg.name +...
-            "_" + n + ".mat",'model_exp','config_exp')
+        load(model_exp_default + n + ".mat",'model_exp','config_exp')
         
         % Place the loaded models in the correct place in the array, models
         % for main run are set to be on the first half of the array

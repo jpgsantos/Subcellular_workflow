@@ -20,7 +20,7 @@ The supported analysis right now are:
 
   - :ref:`Model diagnostics functions<f_diagnostics>`
   - :ref:`Optimization<f_opt>`
-  - :ref:`Global sensitivity analysis<f_SA>`
+  - :ref:`Global sensitivity analysis<f_gsa>`
   
 - **Inputs**
 
@@ -174,29 +174,29 @@ Optimizers used:
 Global Sensitivity Analysis
 ---------------------------
 
-.. _f_SA:
+.. _f_gsa:
 
-f_SA
-^^^^
+f_gsa
+^^^^^
 
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_SA.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_gsa.m
  	   :linenos:
 	   :language: matlab
 
 Calls the global sensitivity analysis functions in the correct order.
 
-.. _makeParSamplesFromRanges:
+.. _f_make_par_samples:
 
-makeParSamplesFromRanges
-^^^^^^^^^^^^^^^^^^^^^^^^
+f_make_par_samples
+^^^^^^^^^^^^^^^^^^
 
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeParSamples.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_make_par_samples.m
  	   :linenos:
 	   :language: matlab
 
@@ -210,15 +210,15 @@ Creates parameter sets samples with :ref:`specific parameter distributions <stg.
 
 *Code inspired by Geir Halnes et al. 2009 paper.*
 
-.. _makeOutputSample:
+.. _f_make_output_sample:
 
-makeOutputSample
-^^^^^^^^^^^^^^^^
+f_make_output_sample
+^^^^^^^^^^^^^^^^^^^^
 
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_makeOutputSample.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_make_output_sample.m
  	   :linenos:
 	   :language: matlab
 
@@ -232,15 +232,15 @@ respectively.
 
 *Code inspired by Geir Halnes et al. 2009 paper.*
 
-.. _calcSobolSaltelli:
+.. _f_calc_sensitivities:
 
-calcSobolSaltelli
-^^^^^^^^^^^^^^^^^
+f_calc_sensitivities
+^^^^^^^^^^^^^^^^^^^^
 
  .. toggle-header::
      :header: **Code**
  
- 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_calcSobolSaltelli.m
+ 	.. literalinclude:: ../Matlab/Code/Analysis/Sensitivity Analysis/f_calc_sensitivities.m
  	   :linenos:
 	   :language: matlab
 

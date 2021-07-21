@@ -1,10 +1,12 @@
-function f_plot(rst,stg)
+function f_plot(rst,stg,mmf)
 
 % Inform the user that the plots are being done
 disp("Plotting ...")
 
+data_model = mmf.model.data.data_model;
+
 % Import the data on the first run
-load("Model/" +stg.folder_model + "/Data/data_"+stg.name+".mat",'Data','sbtab')
+load(data_model,'Data','sbtab')
 
 % Generate figure with Scores
 if isfield(rst,'diag')
@@ -18,8 +20,9 @@ end
 
 % Generate figure with Outputs
 if isfield(rst,'diag')
-    f_plot_outputs(rst.diag,stg,sbtab,Data)
+    f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
 end
+
 % Generate figure with input and Output of all experiments
 if isfield(rst,'diag')
     f_plot_in_out(rst.diag,stg,sbtab,Data)
@@ -31,7 +34,7 @@ if isfield(rst,'opt')
 end
 
 % Generate figures for Sensitivity Analysis
-if isfield(rst,'SA')
-    f_plot_SA_sensitivities(rst.SA,stg);
+if isfield(rst,'gsa')
+    f_plot_gsa_sensitivities(rst.gsa,stg,sbtab);
 end
 end

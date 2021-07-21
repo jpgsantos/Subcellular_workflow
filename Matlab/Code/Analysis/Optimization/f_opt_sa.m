@@ -1,4 +1,4 @@
-function rst = f_opt_sa(stg)
+function rst = f_opt_sa(stg,mmf)
 
 % Set the randomm seed for reproducibility
 rng(stg.rseed);
@@ -27,14 +27,14 @@ if stg.mst
     parfor n = 1:stg.msts
         disp(string(n))
         [x(n,:),fval(n),exitflag(n),output(n)] =...
-            simulannealbnd(@(x)f_sim_score(x,stg),startpoint(n,:),...
+            simulannealbnd(@(x)f_sim_score(x,stg,mmf),startpoint(n,:),...
             stg.lb,stg.ub,options);
     end
     
     % Optimize the model
 else
     [x(1,:),fval(1),exitflag(1),output(1)] =...
-        simulannealbnd(@(x)f_sim_score(x,stg),startpoint(1,:),...
+        simulannealbnd(@(x)f_sim_score(x,stg,mmf),startpoint(1,:),...
         stg.lb,stg.ub,options);
 end
 
