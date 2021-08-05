@@ -3,10 +3,10 @@
 Setup and Import 
 ----------------
 
-.. _f_load_settings:
+.. _f_user_input:
 
-f_load_settings
-^^^^^^^^^^^^^^^
+f_user_input
+^^^^^^^^^^^^
 
  .. toggle-header::
      :header: **Code**
@@ -17,7 +17,7 @@ f_load_settings
 
 It prompts the user to choose the model to run, the settings file to use, and the Analysis to perform.
 
-- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, :ref:`sb<sb>`, Analysis_n
+- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, sb, Analysis_n
 
 .. _f_import:
 
@@ -102,7 +102,7 @@ f_setup_input
 
 Creates code that loads the inputs of each experiment into a :ref:`.mat file<input.mat>` and
 the code to read these inputs at runtime when the experiments are being simulated. All
-this generated code is stored on the "Model/:ref:`«model folder name»<stg.folder_model>`/Formulas" folder.
+this generated code is stored on the :ref:`"Model/'model folder name'/Formulas"<files_functions>` folder.
 
 - **Inputs** - :ref:`stg<stg>`
 - **Saves** - :ref:`model-specific functions<files_functions>`

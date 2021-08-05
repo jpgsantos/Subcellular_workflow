@@ -49,7 +49,7 @@ Prepares the simulation making sure that an equilibration is preformed when nece
 
 - **Inputs**
 
-  - :ref:`stg<stg>` - :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.partest<stg.partest>`, :ref:`stg.tci<stg.tci>`, :ref:`stg.tcm<stg.tcm>`, :ref:`stg.tcd<stg.tcd>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.simcsl<stg.simcsl>`, :ref:`stg.expn<stg.expn>`
+  - :ref:`stg<stg>` - :ref:`stg.name<stg.name>`, :ref:`stg.partest<stg.partest>`, :ref:`stg.tci<stg.tci>`, :ref:`stg.tcm<stg.tcm>`, :ref:`stg.tcd<stg.tcd>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.simcsl<stg.simcsl>`, :ref:`stg.expn<stg.expn>`
   - parameters - (double) Set of parameters that we are working on
   
 - **Created Variables**
@@ -85,7 +85,7 @@ The first time it is run it loads a representation of the model and the simulati
 - **Inputs**
 
   - exp_n - (double) Unique number to identify the model for each experiment or equilibrium reaction (it needs a new model object for each one)
-  - :ref:`stg<stg>` - :ref:`stg.expn<stg.expn>`, :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.sbioacc<stg.sbioacc>`
+  - :ref:`stg<stg>` - :ref:`stg.expn<stg.expn>`, :ref:`stg.name<stg.name>`, :ref:`stg.sbioacc<stg.sbioacc>`
 	
   - rt
   
@@ -118,7 +118,7 @@ Uses the results from the simulation of the model and the Data provided via the 
 - **Inputs**
 
   - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
-  - :ref:`stg<stg>` - :ref:`stg.folder_model<stg.folder_model>`, :ref:`stg.name<stg.name>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.useLog<stg.useLog>`  
+  - :ref:`stg<stg>` - :ref:`stg.name<stg.name>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.useLog<stg.useLog>`  
 	
 - **Outputs**
 
