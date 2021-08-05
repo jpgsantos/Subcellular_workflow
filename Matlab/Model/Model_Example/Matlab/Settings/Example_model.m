@@ -17,8 +17,8 @@ stg.cname = "Compartment";
 %% Analysis
 
 % Experiments to run
-stg.exprun = [1,3];
-% stg.exprun = [1,2,3];
+% stg.exprun = [1,3];
+stg.exprun = [1,2,3];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation) (Use logarithm)
