@@ -8,6 +8,8 @@ persistent config_run
 % and compile the code for simulation run
 if isempty(model_run)
     
+    warning('off','SimBiology:InvalidSpeciesInitAmtUnits')
+    
     %Generate an empty array to be populated with the model suited for each
     %equilibration and experiment%
     model_run = cell(1,stg.expn*2);
