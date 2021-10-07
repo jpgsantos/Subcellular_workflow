@@ -43,10 +43,10 @@ for n = stg.exprun
                 
                 % Plot the outputs to each dataset (new subplots) as they
                 % are given in the data provided in sbtab
-                scatter(time,data,'filled','k',...
-                    'DisplayName','data')
+%                 scatter(time,data,'filled','k',...
+%                     'DisplayName','data')
                 
-                errorbar(time,data,data_SD, 'vertical',	'k', 'LineStyle', 'none','LineWidth',1);
+                errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
                 
                 break
             end

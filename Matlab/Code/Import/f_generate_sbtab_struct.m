@@ -5,7 +5,7 @@ Matlab_sbtab = mmf.model.data.sbtab;
 if isfile(Matlab_sbtab)
     
     load(Matlab_sbtab,'sbtab_excel');
-    
+
     sb = f_get_sbtab_fields(sbtab_excel);
     
     stg.expn = size(sb.Experiments.ID,1);

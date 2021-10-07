@@ -46,9 +46,9 @@ for n = stg.exprun
     
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
+        
         label{size(label,2)+1} = {strrep("E" + (n-1) + " " + ...
-            string(rst(max(stg.pat)).simd{1,n}.DataNames(...
-            end-size(sbtab.datasets(n).output,2)+j)),"_","\_")};
+            string(sbtab.datasets(n).output_name{j}),"_","\_")};
     end
 end
 

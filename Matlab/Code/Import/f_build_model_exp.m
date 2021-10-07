@@ -21,9 +21,11 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
     output_value = sbtab.datasets(number_exp).output_value;
     output = sbtab.datasets(number_exp).output;
+    output_unit = sbtab.datasets(number_exp).output_unit;
     input_time = sbtab.datasets(number_exp).input_time;
     input_value = sbtab.datasets(number_exp).input_value;
     input_species = sbtab.datasets(number_exp).input;
+    
     
     model_run{number_exp} = copyobj(modelobj);
     configsetObj{number_exp} = getconfigset(model_run{number_exp});
@@ -74,9 +76,14 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         end
         
         if m == 0
+            if strcmp( output_unit{1,n},'dimensionless' )
+                warning('off','SimBiology:InvalidSpeciesInitAmtUnits')
+            else
+                warning('on','SimBiology:InvalidSpeciesInitAmtUnits')
+            end
             addspecies (model_run{number_exp}.Compartments(1),...
                 char(output{1,n}),0,...
-                'InitialAmountUnits',sb.Output.Unit{n});
+                'InitialAmountUnits',output_unit{1,n});
         end
         
         addrule(model_run{number_exp}, char(output_value{1,n}),...
