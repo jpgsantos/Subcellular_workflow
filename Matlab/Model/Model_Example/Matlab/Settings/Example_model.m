@@ -183,6 +183,45 @@ stg.sasamplesigma = 0.1;
 
 stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 
+%% Profile Likelihood
+
+% Parameter(optimization array) that is being worked on in a specific
+% iteration of PL (if -1 no parameter is being worked in PL)
+% (Profile Likelihood Index)
+stg.PLind = -1;
+
+% Which parameters to do PL on, it should be all parameters but can also be
+% a subset for testing purposes
+% (Profile Likelihood parameters to Test)
+stg.pltest = (1:12);
+
+% How many points to do for each parameter in the PL
+% (Profile Likelihood Resolution)
+stg.plres = 20;
+
+% True or false to decide whether to do plots after calculating PL
+% (Profile Likelihood Plots)
+stg.plplot = true;
+
+% True or false to decide whether to run simulated annealing
+% (Profile Likelihood Simulated Annealing)
+stg.plsa = true;
+
+% Options for simulated annealing
+stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum)*1,'MaxTime',1,'ReannealInterval',40);
+
+% 0 or 1 to decide whether to run fmincon
+% (Profile Likelihood FMincon)
+stg.plfm = false;
+
+% Options for fmincon
+stg.plfmo = optimoptions('fmincon','Display','off',...
+    'Algorithm','interior-point',...
+    'MaxIterations',5,'OptimalityTolerance',0,...
+    'StepTolerance',1e-6,'FiniteDifferenceType','central');
+
 %% Optimization
 
 %  Time for the optimization in seconds (fmincon does not respect this
