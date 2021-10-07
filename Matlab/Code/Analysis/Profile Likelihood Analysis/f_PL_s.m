@@ -54,15 +54,15 @@ for n = [start_n:stg.plres+1,start_n-1:-1:1]
         % Get the optimization options from settings
         
         if n == start_n
-            
             options = optimoptions(@simulannealbnd,'Display','iter', ...
                 'InitialTemperature',...
                 ones(1,stg.parnum-1)*1,'MaxTime',7.5,'ReannealInterval',35);
         else
                 options = stg.plsao;
+                
+                % number of parameters changed from defenition in settings
                 options.InitialTemperature = ones(1,stg.parnum-1)*1;
         end
-        
         % Optimize the model
         [x{1}{n},fval{1}(n)] = simulannealbnd(@(x)f_sim_score(x,stg,mmf),...
             x{1}{n+offset},temp_lb,temp_up,options);
@@ -82,7 +82,6 @@ for n = [start_n:stg.plres+1,start_n-1:-1:1]
                 'Algorithm','interior-point',...
                 'MaxIterations',20,'OptimalityTolerance',0,...
                 'StepTolerance',1e-6,'FiniteDifferenceType','central');
-            
         else
             % Get the optimization options from settings
             options = stg.plfmo;

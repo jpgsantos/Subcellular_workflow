@@ -197,7 +197,7 @@ stg.pltest = (1:12);
 
 % How many points to do for each parameter in the PL
 % (Profile Likelihood Resolution)
-stg.plres = 20;
+stg.plres = 80;
 
 % True or false to decide whether to do plots after calculating PL
 % (Profile Likelihood Plots)
@@ -210,7 +210,7 @@ stg.plsa = true;
 % Options for simulated annealing
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum)*1,'MaxTime',1,'ReannealInterval',40);
+    ones(1,stg.parnum)*1,'MaxTime',5,'ReannealInterval',40);
 
 % 0 or 1 to decide whether to run fmincon
 % (Profile Likelihood FMincon)

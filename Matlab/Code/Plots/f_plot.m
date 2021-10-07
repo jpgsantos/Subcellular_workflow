@@ -40,7 +40,7 @@ end
 
 % Generate figure for Profile Likelihood Analysis
 if isfield(rst,'PLA')
-    f_plot_PL(rst,stg)
+    f_plot_PL(rst,stg,mmf)
 end
 
 end
