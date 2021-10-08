@@ -25,8 +25,13 @@ for m = stg.pltest
         Lgnd = legend('show','Orientation','Horizontal');
 %         Lgnd.Position(1) = 0;
 %         Lgnd.Position(2) = 0.5;
-        Lgnd.Layout.Tile = 'South';
+        Lgnd.Layout.Tile = 'North';
         legend boxoff
+    xlabel(layout,"log_{10} pval", 'FontSize', 12,'Fontweight','bold')
+%     layout.XLabel.String = 'My x-Axis Label';
+%     layout.XLabel.FontSize = 14;
+    ylabel(layout,"-2 PL", 'FontSize', 12,'Fontweight','bold')
+%     title(layout,"Profile Likelihood", 'FontSize', 16,'Fontweight','bold')
     end
     
     plot_n = plot_n + 1;
@@ -38,27 +43,41 @@ for m = stg.pltest
         % If there are PL results from simulated annealing plot them
         if isfield(rst.PLA,'sa')
             plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
-                [rst.PLA.sa.fval{m}],'DisplayName','sa')
-            minfval = min(rst.PLA.sa.fval{m});
+                [rst.PLA.sa.fvalt{m}],'DisplayName','sa T','LineWidth',1.5,'color','k')
+            minfval = min(rst.PLA.sa.fvalt{m});
         end
         
         % If there are PL results from fmincon plot them
         if isfield(rst.PLA,'fm')
             plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
-                [rst.PLA.fm.fval{m}],'DisplayName','fmincon')
-            minfval = min(rst.PLA.fm.fval{m});
+                [rst.PLA.fm.fvalt{m}],'DisplayName','fmincon T','LineWidth',1.5,'color','k')
+            minfval = min(rst.PLA.fm.fvalt{m});
+        end
+        for j = stg.exprun
+        if isfield(rst.PLA,'sa')
+            plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
+                [rst.PLA.sa.fval{j}{m}],'DisplayName',"sa E"+j,'LineWidth',1)
+%             minfval2 = min(rst.PLA.sa.fval{j}{m});
+        end
+        
+        % If there are PL results from fmincon plot them
+        if isfield(rst.PLA,'fm')
+            plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
+                [rst.PLA.fm.fval{j}{m}],'DisplayName',"fmincon E"+j,'LineWidth',1)
+%             minfval3 = min(rst.PLA.fm.fval{j}{m});
+        end
         end
     end
-    xlabel("log_{10} val", 'FontSize', 12,'Fontweight','bold')
-    ylabel("-2 PL", 'FontSize', 12,'Fontweight','bold')
+%     xlabel("log_{10} pval", 'FontSize', 12,'Fontweight','bold')
+%     ylabel("-2 PL", 'FontSize', 12,'Fontweight','bold')
 %     yline(icdf('chi2',0.90,1),'DisplayName','icdf(\chi^2,0.90)')
-    yline(icdf('chi2',0.95,1),'DisplayName','icdf(\chi^2,0.95)')
+    yline(icdf('chi2',0.95,1),'DisplayName','T icdf(\chi^2,0.95)')
 %     yline(icdf('chi2',0.99,1),'DisplayName','icdf(\chi^2,0.99)')
     
     % If it exists in settings plot the best parameter value
     if isfield(stg,'bestpa')
         scatter(stg.bestpa(m),best_score,20,'filled',...
-            'DisplayName','best pa')
+            'DisplayName','best pa','MarkerFaceColor','k')
     end
     
     % If it exists in results plot the parameters run in diagnostics
@@ -69,7 +88,7 @@ for m = stg.pltest
     
     hold off
     xlim([stg.lb(m) stg.ub(m)])
-    ylim([0 icdf('chi2',0.99,1)+minfval+0.1])
+    ylim([0 icdf('chi2',0.95,1)+max(minfval)+0.1])
    
     % Add a title to each plot
     title("Parameter " + find(stg.partest==m))

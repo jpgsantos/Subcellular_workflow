@@ -1,11 +1,14 @@
 function [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,fig_name,layout)
 
-size_x = 4;
-size_y = 6;
+% size_x = 4;
+% size_y = 6;
 size_t = 24;
-ratio_1 = 3;
-ratio_2 = 4;
+% ratio_1 = 3;
+% ratio_2 = 4;
 
+
+size_x = [1,2,3,2,3,3,4,4,3,4,4,4,5,5,5,4,5,5,5,5,6,6,6,6];
+size_y = [1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
 
 % If the amount of plots is bigger thatn the maximum amount of plots per
 % figure subdivide the plots to more than one figure
@@ -43,10 +46,16 @@ ratio_2 = 4;
         close(figHandles);
         figure('WindowStyle', 'docked','Name', fig_name, 'NumberTitle', 'off');
         sgtitle(fig_name);
+%         layout = tiledlayout(...
+%             ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_1),...
+%             ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_2),...
+%             'Padding','none','TileSpacing','compact');
         layout = tiledlayout(...
-            ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_1),...
-            ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_2),...
-            'Padding','none','TileSpacing','compact');        
+            size_x(plot_tn-(floor(plot_tn/size_t)*size_t)),...
+            size_y(plot_tn-(floor(plot_tn/size_t)*size_t)),...
+            'Padding','none','TileSpacing','compact');
+        
+        title(layout,fig_name, 'FontSize', 16,'Fontweight','bold')
         fig_n = fig_n + 1;
          
     end

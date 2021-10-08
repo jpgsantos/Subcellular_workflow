@@ -22,13 +22,39 @@ end
 for n = stg.pltest
     
     if stg.plsa
-        rst.sa.x(n) = x{n}(1);
-        rst.sa.fval(n) = fval{n}(1);
+        rst.sa.xt(n) = x{n}(1);
+        rst.sa.fvalt(n) = fval{n}(1);
     end
     if stg.plfm
-        rst.fm.x(n) = x{n}(2);
-        rst.fm.fval(n) = fval{n}(2);
+        rst.fm.xt(n) = x{n}(2);
+        rst.fm.fvalt(n) = fval{n}(2);
     end
+end
+
+for j = stg.exprun
+exprun = stg.exprun;
+% useLog = stg.useLog;
+stg.exprun = j;
+% stg.useLog = 5;
+parfor m = stg.pltest
+    % Calculate Profile Likelihood
+    [x{m},fval{m}] = f_PL_s(m,start_n{m},stg,mmf);
+end
+% Assign the values of x and fval to the correct struct entries, this needs
+% to be done because struct assignemnts don't work inside parfor loop
+for n = stg.pltest
+    
+    if stg.plsa
+        rst.sa.x{j}(n) = x{n}(1);
+        rst.sa.fval{j}(n) = fval{n}(1);
+    end
+    if stg.plfm
+        rst.fm.x{j}(n) = x{n}(2);
+        rst.fm.fval{j}(n) = fval{n}(2);
+    end
+end
+stg.exprun = exprun;  
+% stg.useLog = useLog;
 end
 end
 

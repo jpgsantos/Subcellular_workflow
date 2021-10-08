@@ -30,6 +30,9 @@ for n = stg.exprun
             if stg.useLog == 4
                 rst.sd{n,1}(j) = sum(((data-sim_results)./...
                     (data_sd*sqrt(number_points))).^2);
+%             elseif stg.useLog == 5  
+%                 rst.sd{n,1}(j) = sum(((data-sim_results)./...
+%                         (data_sd)).^2);
             else
                     rst.sd{n,1}(j) = sum(((data-sim_results)./...
                         (data_sd)).^2)/(number_points);
