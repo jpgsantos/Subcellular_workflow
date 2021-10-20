@@ -84,7 +84,7 @@ for n = 1:size(sb.Compound.ID,1)
             modelobj.species(n).BoundaryCondition = 1;
         end
     else
-        if sb.Compound.Assignement{n} == 1
+        if sb.Compound.Assignment{n} == 1
             modelobj.species(n).BoundaryCondition = 1;
         end
     end

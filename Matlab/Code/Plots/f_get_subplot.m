@@ -7,13 +7,12 @@ size_t = 24;
 % ratio_2 = 4;
 
 
-size_x = [1,2,3,2,3,3,4,4,3,4,4,4,5,5,5,4,5,5,5,5,6,6,6,6];
-size_y = [1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
+size_x = [1,1,1,2,3,3,4,4,3,4,4,4,5,5,5,4,5,5,5,5,6,6,6,6];
+size_y = [1,2,3,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
 
 % If the amount of plots is bigger thatn the maximum amount of plots per
 % figure subdivide the plots to more than one figure
 % if plot_tn > 24
-%     
 %     % Generate a new figure for the first plot and each time the number of
 %     % plots is greater than figure number divided by max plot number per
 %     % figure
@@ -35,7 +34,6 @@ size_y = [1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
 % %     else
 % %         subplot(ceil(sqrt(24/6)*2),ceil(sqrt(24/6)*3),plot_n-(fig_n-1)*24)
 % %     end
-%     
 % else
     
     % Generate a new figure for the first plot
@@ -55,7 +53,7 @@ size_y = [1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
             size_y(plot_tn-(floor(plot_tn/size_t)*size_t)),...
             'Padding','none','TileSpacing','compact');
         
-        title(layout,fig_name, 'FontSize', 16,'Fontweight','bold')
+%         title(layout,fig_name, 'FontSize', 16,'Fontweight','bold')
         fig_n = fig_n + 1;
          
     end

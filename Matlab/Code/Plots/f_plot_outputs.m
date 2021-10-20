@@ -29,7 +29,7 @@ for n = stg.exprun
 %             Lgnd.Position(1) = 0;
 %             Lgnd.Position(2) = 0.5;
             Lgnd.Layout.Tile = 'North';
-            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold')
+            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
 %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
 %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             legend boxoff
@@ -82,19 +82,19 @@ for n = stg.exprun
                 if stg.simdetail
                     plot(time_detailed,...
                         sim_results_detailed,'DisplayName',...
-                        string("Parameter set "+m),'LineWidth',1.5)
+                        string("$\theta_"+m + "$"),'LineWidth',1.5)
                 else
                     
                     plot(time,...
                         sim_results,'DisplayName',...
-                        string("Parameter set "+m),'LineWidth',1.5)
+                        string("$\theta_"+m + "$"),'LineWidth',1.5)
                 end
                 
 %                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
 %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
                
                 ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
+                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
             end
         end
         

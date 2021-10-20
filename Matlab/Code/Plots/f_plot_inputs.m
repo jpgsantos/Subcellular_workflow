@@ -23,7 +23,7 @@ if mod(plot_n,24) == 1
 %             Lgnd.Position(1) = 0;
 %             Lgnd.Position(2) = 0.5;
 %             Lgnd.Layout.Tile = 'North';
-            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold')
+            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
 %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
 %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
 %             legend boxoff
@@ -56,7 +56,7 @@ if mod(plot_n,24) == 1
                                   
                 ylabel(layout,string(rst(m).simd{1,n}.DataInfo{...
                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1,1}.Units),...
-                    'FontSize', 12,'Fontweight','bold')
+                    'FontSize', 12,'Fontweight','bold','Interpreter','latex')
                 
                 break
             end

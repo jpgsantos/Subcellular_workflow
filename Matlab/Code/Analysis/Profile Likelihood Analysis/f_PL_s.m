@@ -1,4 +1,4 @@
-function [x,fval] = f_PL_s(m,start_n,stg,mmf)
+function [x,fval,simd] = f_PL_s(m,start_n,stg,mmf)
 
 %Set the parameter for which we are going to perform the profile Likelihood
 %calculations to the correct one
@@ -54,7 +54,7 @@ for n = [start_n:stg.plres+1,start_n-1:-1:1]
         % Get the optimization options from settings
         
         if n == start_n
-            options = optimoptions(@simulannealbnd,'Display','iter', ...
+            options = optimoptions(@simulannealbnd,'Display','off', ...
                 'InitialTemperature',...
                 ones(1,stg.parnum-1)*1,'MaxTime',7.5,'ReannealInterval',35);
         else
@@ -72,13 +72,17 @@ for n = [start_n:stg.plres+1,start_n-1:-1:1]
             disp("m: " + m + "  n: " + n +...
                 "  PLval: " + stg.PLval + "  fval: " + fval{1}(n))
         end
+        
+        [~,rst,~] = f_sim_score(x{1}{n},stg,mmf);
+        simd{1}{n} = rst.simd{1,1};
+
     end
     
     % Run fmincon if chosen in settings
     if stg.plfm
         
         if n == start_n
-            options = optimoptions('fmincon','Display','iter-detailed',...
+            options = optimoptions('fmincon','Display','off',...
                 'Algorithm','interior-point',...
                 'MaxIterations',20,'OptimalityTolerance',0,...
                 'StepTolerance',1e-6,'FiniteDifferenceType','central');

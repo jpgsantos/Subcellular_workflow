@@ -22,9 +22,4 @@ if contains(analysis,analysis_options(4))
     rst.PLA = f_PL_m(stg,mmf);
     disp(analysis_options(4) + " completed successfully")
 end
-% if contains(analysis,"Profile Likelihood Analysis")
-% % if Analysis_n == 4
-%     rst.PL = f_PL_m(stg);
-% end
-
 end
