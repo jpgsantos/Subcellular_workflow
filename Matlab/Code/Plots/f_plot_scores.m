@@ -62,17 +62,18 @@ for k = stg.pat
     
     % Iterate over the number of experiments
     for n = stg.exprun
-        
+
         % Get the score of each dataset
-        heatpoint{k} = [heatpoint{k},rst(k).sd(n,:)];
-%         heatpoint{k}
+        heatpoint{k} = [heatpoint{k};rst(k).sd(:,n)];
+        
     end
     % Combine heatpoints in order to correctly display heatmap
-    heatline = [heatline;heatpoint{k}];
+    heatline = [heatline,heatpoint{k}];
 end
+heatline( ~any(heatline,2), : ) = [];
 
 % Plot the heatmap
-h = heatmap(transpose(heatline),'Colormap',turbo,'YDisplayLabels',label,...
+h = heatmap(heatline,'Colormap',turbo,'YDisplayLabels',label,...
     'GridVisible','off','FontSize',10);
 h.CellLabelFormat = '%.2e';
 
