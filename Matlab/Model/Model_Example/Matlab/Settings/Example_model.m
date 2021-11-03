@@ -158,7 +158,13 @@ stg.plot = true;
 % outputs plots in f_plot_outputs.m (Plot outputs long names)
 stg.plotnames = true;
 
-%% Sensitivity analysis
+%% Local Sensitivity analysis
+
+stg.lsa_samples = 360;
+stg.lsa_range_from_best = 1;
+
+%% Global Sensitivity analysis
+
 
 % Number of samples to use in SA (Sensitivity analysis number of samples)
 stg.sansamples = 1000;
@@ -197,7 +203,7 @@ stg.pltest = (1:12);
 
 % How many points to do for each parameter in the PL
 % (Profile Likelihood Resolution)
-stg.plres = 80;
+stg.plres = 20;
 
 % True or false to decide whether to do plots after calculating PL
 % (Profile Likelihood Plots)
@@ -210,7 +216,7 @@ stg.plsa = true;
 % Options for simulated annealing
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum)*1,'MaxTime',5,'ReannealInterval',40);
+    ones(1,stg.parnum)*1,'MaxTime',1,'ReannealInterval',40);
 
 % 0 or 1 to decide whether to run fmincon
 % (Profile Likelihood FMincon)
@@ -226,7 +232,7 @@ stg.plfmo = optimoptions('fmincon','Display','off',...
 
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!) (Optimization time)
-stg.optt = 60*1;
+stg.optt = 5*1;
 
 % Population size for the algorithms that use populations (Population size)
 stg.popsize = 10;

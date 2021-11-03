@@ -30,7 +30,7 @@ last_choice = last_analysis_text;
 % analysis_n = find(contains(analysis_options,analysis_text));
     
 % Check if an analysis was chosen
-if any(contains(analysis_options([1:4,7]),...
+if any(contains(analysis_options([1:5,8]),...
         analysis_text))
     
     %Get the Setting file to be used
@@ -90,12 +90,12 @@ if any(contains(analysis_options([1:4,7]),...
     % Store the name of the chosen analysis in the settings struct
     stg.analysis = analysis_text;
 
-    if contains(analysis_options(7),analysis_text)
+    if contains(analysis_options(8),analysis_text)
         stg.import = true;
         stg.save_results = false;
         stg.plot = false;
     end
-elseif any(contains(analysis_options(5:6),analysis_text))
+elseif any(contains(analysis_options(6:7),analysis_text))
     
     % Get the folder of the Analysis that should be reproduced
     folder_results = folder_model_specific + "/Matlab/Results";
@@ -126,14 +126,14 @@ elseif any(contains(analysis_options(5:6),analysis_text))
     
     % If the reproduction of an analysis is chosen clear the functions
     % because the settings most likely changed
-    if contains(analysis_options(5),analysis_text)
+    if contains(analysis_options(6),analysis_text)
         f_functions_to_clear()
     end
     
     % I the reproduction of the plots of an analyis is chosen make sure
     % we tell the code to produce plots and also load the results that were
     % previously obtained
-    if contains(analysis_options(6),analysis_text)
+    if contains(analysis_options(7),analysis_text)
         stg.plot = true;
         load(folder_results_specific_date + "/Analysis.mat","rst")
     end
