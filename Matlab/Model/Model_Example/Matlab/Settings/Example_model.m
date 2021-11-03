@@ -17,8 +17,8 @@ stg.cname = "Compartment";
 %% Analysis
 
 % Experiments to run
-% stg.exprun = [1,3];
 stg.exprun = [1,2];
+% stg.exprun = [1,2,3];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation) (Use logarithm)
@@ -26,7 +26,7 @@ stg.useLog = 0;
 
 % True or false to decide whether to use multicore everywhere it is
 % available (Optimization Multicore)
-stg.optmc = true;
+stg.optmc = false;
 
 % Choice of ramdom seed (Ramdom seed)
 stg.rseed = 1;
@@ -138,23 +138,16 @@ stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2 ,8 ,9,...
     10 ,11 ,12];
 
 % (Parameter array to test)
-stg.pat = 1:4;
+stg.pat = 1:3;
 
 % All the parameter arrays, in this case there is only one (Parameter
 % arrays)
 stg.pa(1,:) = [3.999,0.696,1.072,3.429,-0.751,-3.741,-0.569,0.831,3.068,0.921,-2.156,-1.970];
 stg.pa(2,:) = stg.pa(1,:)-1;
 stg.pa(3,:) = stg.pa(1,:)+1;
-stg.pa(4,:) = [2.41905219362396,-3.25952428488799,-4,3.99873706301039,-3.99988228829464,3.99988946843043,2.86229002710164,-4,4,-3.74501017221198,1.06110831142764,4];
 
 % Best parameter array found so far for the model (Best parameter array)
 stg.bestpa = stg.pa(1,:);
-% stg.bestpa = zeros(1,stg.parnum);
-
-% stg.lb = stg.bestpa-2;
-% stg.ub = stg.bestpa+2;
-
-
 
 %% Plots
 
@@ -190,6 +183,45 @@ stg.sasamplesigma = 0.1;
 
 stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 
+%% Profile Likelihood
+
+% Parameter(optimization array) that is being worked on in a specific
+% iteration of PL (if -1 no parameter is being worked in PL)
+% (Profile Likelihood Index)
+stg.PLind = -1;
+
+% Which parameters to do PL on, it should be all parameters but can also be
+% a subset for testing purposes
+% (Profile Likelihood parameters to Test)
+stg.pltest = (1:12);
+
+% How many points to do for each parameter in the PL
+% (Profile Likelihood Resolution)
+stg.plres = 80;
+
+% True or false to decide whether to do plots after calculating PL
+% (Profile Likelihood Plots)
+stg.plplot = true;
+
+% True or false to decide whether to run simulated annealing
+% (Profile Likelihood Simulated Annealing)
+stg.plsa = true;
+
+% Options for simulated annealing
+stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum)*1,'MaxTime',5,'ReannealInterval',40);
+
+% 0 or 1 to decide whether to run fmincon
+% (Profile Likelihood FMincon)
+stg.plfm = false;
+
+% Options for fmincon
+stg.plfmo = optimoptions('fmincon','Display','off',...
+    'Algorithm','interior-point',...
+    'MaxIterations',5,'OptimalityTolerance',0,...
+    'StepTolerance',1e-6,'FiniteDifferenceType','central');
+
 %% Optimization
 
 %  Time for the optimization in seconds (fmincon does not respect this
@@ -197,7 +229,7 @@ stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 stg.optt = 60*1;
 
 % Population size for the algorithms that use populations (Population size)
-stg.popsize = 144;
+stg.popsize = 10;
 
 % optimization start method, choose between: 1 Random starting point or
 % group of starting points inside the bounds 2 Random starting point or
@@ -226,9 +258,9 @@ stg.fmincon = false;
 stg.fm_options = optimoptions('fmincon',...
     'UseParallel',stg.optmc,...
     'Algorithm','interior-point',...
-    'MaxIterations',200,'OptimalityTolerance',0,...
+    'MaxIterations',2,'OptimalityTolerance',0,...
     'StepTolerance',1e-6,'FiniteDifferenceType','central',...
-    'FiniteDifferenceStepSize',0.2,'MaxFunctionEvaluations',10000);
+    'MaxFunctionEvaluations',10000);
 
 % True or false to decide whether to run simulated annealing (Simulated
 % annealing)
@@ -242,18 +274,16 @@ stg.sa_options = optimoptions(@simulannealbnd, ...
 
 % True or false to decide whether to run Pattern search (Pattern search)
 stg.psearch = false;
-% 'UseCompleteSearch',true,'SearchFcn','GPSPositiveBasis2N',
+
 % Options for Pattern search (Pattern search options)
-% stg.psearch_options = optimoptions(@patternsearch,...
-%     'MaxTime',stg.optt,'UseParallel',stg.optmc,...
-%     'UseCompletePoll',true,'UseCompleteSearch',true,...
-%     'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
 stg.psearch_options = optimoptions(@patternsearch,...
-    'MaxTime',stg.optt,'UseParallel',stg.optmc,'UseCompletePoll',true,...
-    'MaxMeshSize',2,'MaxFunctionEvaluations',5000,'AccelerateMesh',true);
+    'MaxTime',stg.optt,'UseParallel',stg.optmc,...
+    'UseCompletePoll',true,'UseCompleteSearch',true,...
+    'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
+
 % True or false to decide whether to run Genetic algorithm (Genetic
 % algorithm)
-stg.ga = false;
+stg.ga = true;
 
 % Options for Genetic algorithm (Genetic algorithm options)
 stg.ga_options = optimoptions(@ga,'MaxGenerations',200,...
@@ -271,13 +301,11 @@ stg.pswarm_options = optimoptions('particleswarm',...
 
 % True or false to decide whether to run Surrogate optimization (Surrogate
 % optimization)
-stg.sopt = true;
+stg.sopt = false;
 
 % Options for Surrogate optimization (Surrogate optimization options)
 stg.sopt_options = optimoptions('surrogateopt',...
     'MaxTime',stg.optt,'UseParallel',stg.optmc,...
-    'MaxFunctionEvaluations',5000);
-% ,...
-%     'MinSampleDistance',0.2
-% ,'MinSurrogatePoints',32*2+1
+    'MaxFunctionEvaluations',5000,...
+    'MinSampleDistance',0.2,'MinSurrogatePoints',32*2+1);
 end

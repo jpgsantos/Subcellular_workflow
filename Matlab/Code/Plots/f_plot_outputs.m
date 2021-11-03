@@ -8,7 +8,7 @@ disp("Plotting Outputs")
 [plot_tn,~] = f_get_outputs(stg,sbtab);
 plot_n = 1;
 fig_n = 0;
-
+layout = [];
 % Iterate over the number of experiments
 for n = stg.exprun
     
@@ -17,14 +17,25 @@ for n = stg.exprun
         
         % Generate the right amount of figures for all plots and calculates
         % proper subploting position
-        fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
+        
+                [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
+    nexttile(layout);
+    
+%         fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
         
         % Add a legend to the figure
         if mod(plot_n,24) == 1
-            Lgnd = legend('show');
-            Lgnd.Position(1) = 0;
-            Lgnd.Position(2) = 0.5;
+            Lgnd = legend('show','Orientation','Horizontal');
+%             Lgnd.Position(1) = 0;
+%             Lgnd.Position(2) = 0.5;
+            Lgnd.Layout.Tile = 'North';
+            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
+%             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
+%                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             legend boxoff
+            
+%             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+%                     size(sbtab.datasets(n).output,2)+j,1}.Units))
         end
         
         plot_n = plot_n + 1;
@@ -71,22 +82,25 @@ for n = stg.exprun
                 if stg.simdetail
                     plot(time_detailed,...
                         sim_results_detailed,'DisplayName',...
-                        string("Parameter set "+m),'LineWidth',1.5)
+                        string("$\theta_"+m + "$"),'LineWidth',1.5)
                 else
                     
                     plot(time,...
                         sim_results,'DisplayName',...
-                        string("Parameter set "+m),'LineWidth',1.5)
+                        string("$\theta_"+m + "$"),'LineWidth',1.5)
                 end
                 
-                ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units))
+%                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+%                     size(sbtab.datasets(n).output,2)+j,1}.Units))
+               
+                ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
+                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
             end
         end
         
         hold off
         
-        xlabel('seconds')
+%         xlabel('seconds')
         
         if stg.simdetail
             ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf])

@@ -37,4 +37,10 @@ end
 if isfield(rst,'gsa')
     f_plot_gsa_sensitivities(rst.gsa,stg,sbtab);
 end
+
+% Generate figure for Profile Likelihood Analysis
+if isfield(rst,'PLA')
+    f_plot_PL(rst,stg,mmf)
+end
+
 end

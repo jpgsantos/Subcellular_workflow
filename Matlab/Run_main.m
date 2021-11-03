@@ -15,7 +15,7 @@ mmf.main = Matlab_main_folder;
 
 % Name of the various analysis that can be run with this code
 analysis_options = ["Diagnostics","Parameter Estimation",...
-    "Global Sensitivity Analysis","Reproduce a previous analysis",...
+    "Global Sensitivity Analysis","PLA","Reproduce a previous analysis",...
     "Reproduce the plots of a previous analysis","Import model files"];
 
 % Code for choosing the model and loading the settings files
@@ -37,7 +37,7 @@ else
 end
 
 % Runs the Analysis chosen in settings
-if any(contains(analysis_options(1:3),stg.analysis))
+if any(contains(analysis_options(1:4),stg.analysis))
     rst = f_analysis(stg,stg.analysis,mmf,analysis_options);
 end
 % Save Analysis results if chosen in settings

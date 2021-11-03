@@ -17,7 +17,7 @@ subplot(4,1,1)
 
 % Plot the total scores of each parameter array to test
 scatter(stg.pat,[rst(stg.pat).st],20,'filled')
-ylabel('Total Score')
+ylabel('Total Score ($s_t$)')
 set(gca,'xtick',[])
 set(gca,'FontSize',10,'Fontweight','bold')
 
@@ -51,7 +51,6 @@ for n = stg.exprun
             string(sbtab.datasets(n).output_name{j}),"_","\_")};
     end
 end
-
 % Choose wether to use the score of each dataset or its log base 10
 % according to settings
 % if stg.useLog == 1 || stg.useLog == 4
@@ -65,9 +64,9 @@ for k = stg.pat
     for n = stg.exprun
         
         % Get the score of each dataset
-        heatpoint{k} = [heatpoint{k},rst(k).sd{n,1}];
+        heatpoint{k} = [heatpoint{k},rst(k).sd(n,:)];
+%         heatpoint{k}
     end
-    
     % Combine heatpoints in order to correctly display heatmap
     heatline = [heatline;heatpoint{k}];
 end
@@ -77,8 +76,18 @@ h = heatmap(transpose(heatline),'Colormap',turbo,'YDisplayLabels',label,...
     'GridVisible','off','FontSize',10);
 h.CellLabelFormat = '%.2e';
 
-title("Score of each Experimental Output")
-h.XLabel = 'Parameter arrays being tested';
+h.Title = "Score of each Experimental Output ($s_e$)";
+h.XLabel = 'Parameter arrays ($\theta$)';
 h.YLabel = 'Experimental Outputs';
+
+h.NodeChildren(3).XAxis.Label.Interpreter = 'latex';
+h.NodeChildren(3).YAxis.Label.Interpreter = 'latex';
+% h.NodeChildren(3).ZAxis.Label.Interpreter = 'latex';
+h.NodeChildren(3).Title.Interpreter = 'latex';
+h.NodeChildren(3).TickLabelInterpreter = 'latex';
+h.NodeChildren(2).TickLabelInterpreter = 'latex';
+% h.NodeChildren(1).TickLabelInterpreter = 'latex';
+% h.NodeChildren(1).Label.Interpreter = 'Latex';
+% h.NodeChildren(2).Label.Interpreter = 'Latex';
 
 end

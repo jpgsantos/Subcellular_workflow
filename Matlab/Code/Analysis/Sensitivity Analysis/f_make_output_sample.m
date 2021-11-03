@@ -22,9 +22,12 @@ end
 disp("GSA M1 Runtime: " + string(datetime - time_begin) +...
                 "  All " + nSamples + " samples executed")
 
+% [RM1(i).sd{:}]
+% RM1(i).sdtest(:,:)
+% reshape(RM1(i).sd(:,:),1,[])
 
 for i=1:nSamples
-    fM1.sd(i,:) = [RM1(i).sd{:}];
+    fM1.sd(i,:) = reshape(RM1(i).sd(:,:),1,[]);
     fM1.se(i,:) = RM1(i).se(:);
     fM1.st(i,:) = RM1(i).st;
     fM1.xfinal(i,:) = [RM1(i).xfinal{:}];
@@ -46,7 +49,7 @@ disp("GSA M2 Runtime: " + string(datetime - time_begin) +...
                 "  All " + nSamples + " samples executed")
 
 for i=1:nSamples
-    fM2.sd(i,:) = [RM2(i).sd{:}];
+    fM2.sd(i,:) = reshape(RM2(i).sd(:,:),1,[]);
     fM2.se(i,:) = RM2(i).se(:);
     fM2.st(i,:) = RM2(i).st;
     fM2.xfinal(i,:) = [RM2(i).xfinal{:}];
@@ -73,7 +76,7 @@ disp("GSA N  Runtime: " + string(datetime - time_begin) +...
 
 for i=1:nSamples
     for j=1:nPars
-        fN.sd(i,:,j) = [RN{i,j}.sd{:}];
+        fN.sd(i,:,j) = reshape(RN{i,j}.sd(:,:),1,[]);
         fN.se(i,:,j) = RN{i,j}.se(:);
         fN.st(i,:,j) = RN{i,j}.st;
         fN.xfinal(i,:,j) = [RN{i,j}.xfinal{:}];
