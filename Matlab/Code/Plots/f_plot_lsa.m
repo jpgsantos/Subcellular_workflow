@@ -15,7 +15,7 @@ for k=1:2
   set(h(k),'LineStyle',LineArray{k});
 end
 
-title(layout,"Local sensitivity Analysis",'FontSize', 12,'Fontweight','bold','Interpreter','latex');
+title(layout,"Local sensitivity Analysis",'FontSize', 12,'Fontweight','bold');
 legend({'\mu_{deviation}','\sigma_{deviation}'});
 legend boxoff
 end

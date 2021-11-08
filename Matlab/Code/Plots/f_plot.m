@@ -1,4 +1,6 @@
 function f_plot(rst,stg,mmf)
+set(0,'defaultAxesFontName','Arial')
+set(0,'defaultAxesFontSize',10)
 
 % Inform the user that the plots are being done
 disp("Plotting ...")

@@ -66,9 +66,19 @@ for l = 1:r
     % B_star_not = [B_star_not;(x_star)+(delta*B_matrix)];
 end
 
+B_star = B_star.*(stg.ub-stg.lb)+stg.lb;
+% B_star
+
+progress = 1;
+time_begin = datetime;
+D = parallel.pool.DataQueue;
+afterEach(D, @progress_track);
+
 parfor n = 1:r*m
 [~,~,score_B_star(n)] = f_sim_score(B_star(n,:),stg,mmf);
+send(D, "LSA ");
 end
+rst.B_star = B_star;
 rst.score_B_star = score_B_star;
 rst.x1 = x1_1;
 rst.x11 = x11_1;
@@ -143,5 +153,13 @@ end
 %     rst(m).average_deviation = mean(score_total);
 %     rst(m).sigma_deviation = sqrt(sum((score_total-mean(score_total)).^2)/(number_samples-1));
 % end
+
+    function progress_track(name)
+        progress = progress + 1;
+        if mod(progress,ceil(r*m/m)) == 0 && progress ~= r*m
+            disp(name + "Runtime: " + string(datetime - time_begin) +...
+                "  Samples:" + progress + "/" + r*m)
+        end
+    end
 
 end

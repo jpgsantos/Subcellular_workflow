@@ -149,6 +149,22 @@ stg.pa(3,:) = stg.pa(1,:)+1;
 % Best parameter array found so far for the model (Best parameter array)
 stg.bestpa = stg.pa(1,:);
 
+stg.lb = stg.bestpa-2;
+stg.ub = stg.bestpa+2;
+for n = 1:stg.parnum
+    if stg.lb(n)<-4
+        stg.ub(n) = stg.ub(n) - stg.lb(n)-4;
+        stg.lb(n) = -4;
+
+    end
+    if stg.ub(n)>4
+        stg.lb(n) = stg.lb(n) - stg.ub(n)+4;
+        stg.ub(n) = 4;
+
+    end
+end
+% disp(stg.lb)
+% disp(stg.ub)
 %% Plots
 
 % True or false to decide whether to plot results (Plots)
@@ -181,7 +197,7 @@ stg.sasubmean = true;
 % at the mean of the parameter bounds and sigma as stg.sasamplesigma
 % truncated at the parameter bounds 4 same as 3 without truncation.
 % (Sensitivity analysis sampling mode)
-stg.sasamplemode = 2;
+stg.sasamplemode = 0;
 
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis (Sensitivity analysis sampling sigma)

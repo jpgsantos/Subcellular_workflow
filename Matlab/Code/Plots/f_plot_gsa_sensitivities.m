@@ -17,7 +17,7 @@ parNames = cell(1,stg.parnum);
 parNames2 = cell(1,stg.parnum);
 
 for n = 1:stg.parnum
-    parNames{n} = char("P" + find(stg.partest==n));
+    parNames{n} = char("\theta_{" + find(stg.partest==n) + "}");
 end
 
 for n = 1:size(parNames,2)
