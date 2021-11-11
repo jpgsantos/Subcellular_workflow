@@ -123,10 +123,10 @@ stg.tcd([8],2) = [3];
 stg.tcd([8],3) = [6];
 
 % Array with the lower bound of all parameters (Lower bound)
-stg.lb = zeros(1,stg.parnum)-4;
+stg.lb = zeros(1,stg.parnum)-0;
 
 % Array with the upper bound of all parameters (Upper bound)
-stg.ub = zeros(1,stg.parnum)+4;
+stg.ub = zeros(1,stg.parnum)+1;
 
 %% Diagnostics
 
@@ -149,20 +149,20 @@ stg.pa(3,:) = stg.pa(1,:)+1;
 % Best parameter array found so far for the model (Best parameter array)
 stg.bestpa = stg.pa(1,:);
 
-stg.lb = stg.bestpa-2;
-stg.ub = stg.bestpa+2;
-for n = 1:stg.parnum
-    if stg.lb(n)<-4
-        stg.ub(n) = stg.ub(n) - stg.lb(n)-4;
-        stg.lb(n) = -4;
-
-    end
-    if stg.ub(n)>4
-        stg.lb(n) = stg.lb(n) - stg.ub(n)+4;
-        stg.ub(n) = 4;
-
-    end
-end
+% stg.lb = stg.bestpa-2;
+% stg.ub = stg.bestpa+2;
+% for n = 1:stg.parnum
+%     if stg.lb(n)<-4
+%         stg.ub(n) = stg.ub(n) - stg.lb(n)-4;
+%         stg.lb(n) = -4;
+% 
+%     end
+%     if stg.ub(n)>4
+%         stg.lb(n) = stg.lb(n) - stg.ub(n)+4;
+%         stg.ub(n) = 4;
+% 
+%     end
+% end
 % disp(stg.lb)
 % disp(stg.ub)
 %% Plots
@@ -204,7 +204,6 @@ stg.sasamplemode = 0;
 stg.sasamplesigma = 0.1;
 
 stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
-
 %% Profile Likelihood
 
 % Parameter(optimization array) that is being worked on in a specific

@@ -7,67 +7,60 @@ end
 
 function [SiQ,SiTQ,Si,SiT]=bootstrap(rst,stg)
 % calculates confidence intervals.
+
 fM1 = rst.fM1;
 fM2 = rst.fM2;
 fN = rst.fN;
 
-scores_names_list = ["sd","se","st","xfinal"];
-
-[Si,SiT] = bootstrap_h(fM1,fM2,fN,stg,scores_names_list);
-
+%Set the amount of resamples of the bootstraping
 if (isempty(stg.gsabootstrapsize))
     stg.gsabootstrapsize=ceil(sqrt(size(fM1.sd)));
 end%if
 
-fM1q = cell(stg.gsabootstrapsize,1);
-fM2q = cell(stg.gsabootstrapsize,1);
-fNq = cell(stg.gsabootstrapsize,1);
+scores_list = ["sd","se","st","xfinal"];
 
-parfor j=1:stg.gsabootstrapsize
-    [SiQh{j},SiTQh{j}] = bootstrap_hq(fM1,fM2,fN,stg,scores_names_list,j);
-end%parfor
+for j=1:stg.gsabootstrapsize
+    rng(j*stg.rseed)
+    I(j,:)=ceil(rand(size(fM1.sd,1),1)*size(fM1.sd,1));
+end
 
-for n = 1:size(scores_names_list,2)
+for n = 1:size(scores_list,2)
+    eval("fM1h=fM1." + scores_list(n) + ";");
+    eval("fM2h=fM2." + scores_list(n) + ";");
+    eval("fNh=fN." + scores_list(n) + ";");
+
+    %Get the values of Si and SiT without bootstraping
+    [Sih,SiTh] = calcSobolSaltelli(fM1h,fM2h,fNh,stg);
+
+    eval("Si." + scores_list(n) + "=Sih;");
+    eval("SiT." + scores_list(n) + "=SiTh;");
+
+    %needed so the parallel workers can see these variables
+    fM1h = fM1h;
+    fM2h = fM2h;
+    fNh = fNh;
+
+    parfor j=1:stg.gsabootstrapsize
+        [SiQh{j},SiTQh{j}] = bootstrap_q(fM1h,fM2h,fNh,stg,j,I);
+    end%parfor
+
     for j=1:stg.gsabootstrapsize
-        eval("SiQ." + scores_names_list(n) + "(j,:,:) = SiQh{j}." + scores_names_list(n) + ";")
-        eval("SiTQ." + scores_names_list(n) + "(j,:,:) = SiTQh{j}." + scores_names_list(n) + ";")
+        eval("SiQ." + scores_list(n) + "(j,:,:) = SiQh{j};")
+        eval("SiTQ." + scores_list(n) + "(j,:,:) = SiTQh{j};")
     end
 end
 end%function
 
-function [Si,SiT] = bootstrap_h(fM1,fM2,fN,stg,scores_names)
-for n = 1:size(scores_names,2)
-    eval("fM1h=fM1." + scores_names(n) + ";");
-    eval("fM2h=fM2." + scores_names(n) + ";");
-    eval("fNh=fN." + scores_names(n) + ";");
-    
-    [Sih,SiTh] = calcSobolSaltelli(fM1h,fM2h,fNh,stg);
-    
-    eval("Si." + scores_names(n) + "=Sih;");
-    eval("SiT." + scores_names(n) + "=SiTh;");
-end
-end
-
-function [Si,SiT] = bootstrap_hq(fM1,fM2,fN,stg,scores_names,j)
-for n = 1:size(scores_names,2)
-    eval("fM1h=fM1." + scores_names(n) + ";");
-    eval("fM2h=fM2." + scores_names(n) + ";");
-    eval("fNh=fN." + scores_names(n) + ";");
-    
-    rng(j*stg.rseed)
-    I=ceil(rand(size(fM1h,1),1)*size(fM1h,1));
-    fM1q = fM1h(I,:);
-    fM2q = fM2h(I,:);
-    fNq = fNh(I,:,:);
-    
-    [Sih,SiTh] = calcSobolSaltelli(fM1q,fM2q,fNq,stg);
-    eval("Si." + scores_names(n) + "=Sih;");
-    eval("SiT." + scores_names(n) + "=SiTh;");
-end
+function [Si,SiT] = bootstrap_q(fM1,fM2,fN,stg,j,I)
+    fM1q = fM1(I(j,:),:);
+    fM2q = fM2(I(j,:),:);
+    fNq = fN(I(j,:),:,:);
+    [Si,SiT] = calcSobolSaltelli(fM1q,fM2q,fNq,stg);
 end
 
 function [Si,SiT] = calcSobolSaltelli(fM1,fM2,fN,stg)
-%Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J. comp. neuroscience 27.3 (2009): 471.)
+%Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J.
+%comp. neuroscience 27.3 (2009): 471.)
 
 [Nsamples,Nvars,Npars]=size(fN);
 

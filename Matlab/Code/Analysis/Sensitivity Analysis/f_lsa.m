@@ -11,7 +11,7 @@ delta = p_1/(p-1);
 
 k = stg.parnum;
 m = k+1;
-r = 1000;% needs to go to settings file
+r = 50;% needs to go to settings file
 B_star = [];
 % B_star_not = [];
 P_matrix_1 = [];
@@ -67,6 +67,9 @@ for l = 1:r
 end
 
 B_star = B_star.*(stg.ub-stg.lb)+stg.lb;
+% for n = 1:k
+delta_scaled = delta * (stg.ub-stg.lb);
+% end
 % B_star
 
 progress = 1;
@@ -78,6 +81,7 @@ parfor n = 1:r*m
 [~,~,score_B_star(n)] = f_sim_score(B_star(n,:),stg,mmf);
 send(D, "LSA ");
 end
+
 rst.B_star = B_star;
 rst.score_B_star = score_B_star;
 rst.x1 = x1_1;
@@ -97,10 +101,14 @@ for n = 1:r
 %             score_B_star(x11_1(n,m)+1+(n-1)*(k+1)).st);
 parameter_score(n,x22_1(n,m)) = score_B_star(x11_1(n,m)+(n-1)*(k+1)).st -...
 score_B_star(x11_1(n,m)+1+(n-1)*(k+1)).st;
-parameter_score_delta(n,x22_1(n,m)) = parameter_score(n,x22_1(n,m))/delta;
+% parameter_score_delta(n,x22_1(n,m)) = parameter_score(n,x22_1(n,m))/delta;
     end
 end
+
 rst.parameter_score = parameter_score;
+for n = 1:k
+parameter_score_delta(:,n) = parameter_score(:,n)/delta_scaled(n);
+end
 rst.parameter_score_delta = parameter_score_delta;
 rst.sum_parameter_score = sum(abs(parameter_score));
 rst.sum_parameter_score_delta = sum(abs(parameter_score_delta));
@@ -136,6 +144,10 @@ rst.average_deviation(m) = rst.mean_parameter_score_delta(1,m);
 rst.sigma_deviation(m) = rst.sigma_parameter_score_delta(m);
 end
 % rst.sigma_parameter_score_delta = sum(abs(parameter_score_delta))/r;
+
+
+
+
 
 % disp(parameter_score)
 
