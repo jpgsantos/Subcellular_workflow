@@ -1,0 +1,6 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example small' TableName='Reaction' TableTitle='SBTAB example small Reaction' TableType = 'Reaction'				
+!ID	!Name	!KineticLaw	!IsReversible	!Location	!ReactionFormula
+R0	ReactionFlux0	kf_0*aReceptor*Ligand - kr_0*aReceptor_Ligand	1	Compartment	aReceptor + Ligand <=> aReceptor_Ligand
+R1	ReactionFlux1	kf_1*iReceptor - kr_1*aReceptor	1	Compartment	iReceptor <=> aReceptor
+R2	ReactionFlux2	kf_2*iReceptor_Ligand - kr_2*aReceptor_Ligand	1	Compartment	iReceptor_Ligand <=> aReceptor_Ligand
+R3	ReactionFlux3	kf_3*iReceptor*Ligand - kr_3*iReceptor_Ligand	1	Compartment	iReceptor + Ligand <=> iReceptor_Ligand

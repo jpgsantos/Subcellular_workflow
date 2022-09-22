@@ -8,4 +8,5 @@
 **/Data/Exp/*.mat
 **/Model/*
 !**/Model/Model_Example/
+!**/Model/Model_Example_Small/
 *.xml
