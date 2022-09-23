@@ -1,5 +1,28 @@
-% Script to import sbtab and run the analyis
+function [stg,sb,rst,mmf] = Run_main(Folder,Analysis,settings)
+% Function that runs one of the selected analysis on the selected model
+% given a settings file.
+%
+% It takes three inputs, in order:
+% 
+% 1) Folder - The name of the folder present at
+% "Repository_name"/Matlab/Model/
+% 
+% 2) Analysis - One of the numbered codes
+%   1 = Diagnostics 
+%   2 = Parameter Estimation 
+%   3 = Local Sensitivity Analysis
+%   4 = Global Sensitivity Analysis 
+%   5 = Profile Likelihood Analysis 
+%   6 = Reproduce a previous analysis 
+%   7 = Reproduce the plots of a previous analysis 
+%   8 = Import model files
+% 
+% 3) Settings - The name of the file present at
+% "Repository_name"/Matlab/Model/"Folder"/Matlab/Settings
+
 % clear functions
+
+user_choices = {Folder,Analysis,settings};
 
 %Get the date and time
 date_stamp = string(year(datetime)) + "_" + ...
@@ -20,7 +43,7 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
     "Reproduce the plots of a previous analysis","Import model files"];
 
 % Code for choosing the model and loading the settings files
-[stg,rst,sb] = f_user_input(mmf,analysis_options);
+[stg,rst,sb] = f_user_input(mmf,analysis_options,user_choices);
 
 % Get the folder structure used for the model files
 [mmf] = default_folders(stg,mmf,date_stamp);
@@ -55,4 +78,5 @@ if stg.plot
     if stg.save_results
         f_save_plots(mmf)
     end
+end
 end

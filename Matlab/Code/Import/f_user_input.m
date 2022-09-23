@@ -1,4 +1,4 @@
-function [stg,rst,sb] = f_user_input(mmf,analysis_options)
+function [stg,rst,sb] = f_user_input(mmf,analysis_options,user_choices)
 
 persistent last_SBtab_date
 persistent last_model_folder
@@ -14,18 +14,40 @@ functions_cleared = false;
 
 % Get the folder of the model
 model_folder_general = Matlab_main_folder + "Model/";
-last_choice = last_model_folder;
-prompt = "What model folder should be used?\n";
-[model_folder,last_model_folder] =...
-    choose_options(model_folder_general,prompt,last_choice);
+
+if isstring(user_choices{1})
+    model_folder =user_choices{1};
+    last_model_folder = model_folder;
+    disp("The model folder choosen was: " + model_folder)
+    if not(isfolder(model_folder_general + model_folder))
+        disp("This folder does not exist, please choose a valid folder")
+        last_choice = last_model_folder;
+        prompt = "What model folder should be used?\n";
+        [model_folder,last_model_folder] =...
+            choose_options(model_folder_general,prompt,last_choice);
+    end
+else
+    last_choice = last_model_folder;
+    prompt = "What model folder should be used?\n";
+    [model_folder,last_model_folder] =...
+        choose_options(model_folder_general,prompt,last_choice);
+end
 
 model_name_specific = string(model_folder);
 folder_model_specific = model_folder_general + "/" + model_name_specific;
 
-prompt = "\nWhat analysis should be performed?\n";
+
+if user_choices{2} >= 1 && user_choices{2} <= 8
+analysis_text = analysis_options(user_choices{2});
+last_analysis_text = analysis_text;
+ disp("The analysis chosen was: " + analysis_text)
+else
+    disp("The analysis choosen does not exist, please choose a valid analysis")
+    prompt = "\nWhat analysis should be performed?\n";
 last_choice = last_analysis_text;
 [analysis_text,last_analysis_text] =...
-    parse_choices(prompt,analysis_options,last_choice);
+    parse_choices(prompt,analysis_options,last_choice); 
+end
 
 % analysis_n = find(contains(analysis_options,analysis_text));
     
@@ -33,12 +55,35 @@ last_choice = last_analysis_text;
 if any(contains(analysis_options([1:5,8]),...
         analysis_text))
     
+settings_folder = folder_model_specific + "/Matlab/Settings";
+
+    if isstring(user_choices{3})
+        settings_file_text = user_choices{3};
+        last_settings_file_text = settings_folder;
+        disp("The model settings file choosen was: " + settings_file_text)
+        if not(isfile(settings_folder + "/"+ settings_file_text ))
+            disp("This file does not exist, please choose a valid file")
+            last_choice = last_settings_file_text;
+            prompt = "\nWhat file should be used as settings?\n";
+            [settings_file_text,last_settings_file_text] =...
+                choose_options(settings_folder,prompt,last_choice);
+        end
+    else
+        last_choice = last_settings_file_text;
+        prompt = "\nWhat file should be used as settings?\n";
+        [settings_file_text,last_settings_file_text] =...
+            choose_options(settings_folder,prompt,last_choice);
+    end
+
+% settings_file_text
+
+
     %Get the Setting file to be used
-    settings_folder = folder_model_specific + "/Matlab/Settings";
-    last_choice = last_settings_file_text;
-    prompt = "\nWhat file should be used as settings?\n";
-    [settings_file_text,last_settings_file_text] =...
-        choose_options(settings_folder,prompt,last_choice);
+%     settings_folder = folder_model_specific + "/Matlab/Settings";
+%     last_choice = last_settings_file_text;
+%     prompt = "\nWhat file should be used as settings?\n";
+%     [settings_file_text,last_settings_file_text] =...
+%         choose_options(settings_folder,prompt,last_choice);
     
     settings_file = strrep(settings_file_text,".m","");
     
