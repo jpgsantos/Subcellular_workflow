@@ -4,4 +4,8 @@ E0	Experiment 1		Time Series	Y0,Y1	EE0	0	1	0		-120	1	10
 E1	Experiment 2		Time Series	Y0,Y1	EE1	0	1	0		-120	1	10
 E2	Experiment 3		Time Series	Y0,Y1	EE2	0	1	0		-120	1	10
 E3	Experiment 4		Time Series	Y0,Y1	EE3	0	1	0		-120	1	10
-E4	Experiment 5		Time Series	Y0,Y2	EE4	0	1	0		-120	1	10
+E4	Experiment 5		Time Series	Y0,Y1	EE3	0	1	0		-120	1	10
+E5	Experiment 6		Time Series	Y0,Y1	EE3	0	1	0		-120	1	10
+E6	Experiment 7		Time Series	Y0,Y1	EE3	0	1	0		-120	1	10
+E7	Experiment 8		Time Series	Y0,Y1	EE3	0	1	0		-120	1	10
+E8	Experiment 9		Time Series	Y0,Y2	EE4	0	1	0		-120	1	10
