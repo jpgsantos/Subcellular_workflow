@@ -187,7 +187,7 @@ stg.bestpa = stg.pa(1,:);
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = true;
+stg.plot = false;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m
