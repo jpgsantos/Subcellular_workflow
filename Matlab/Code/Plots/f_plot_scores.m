@@ -1,6 +1,4 @@
 function f_plot_scores(rst,stg,sbtab)
-set(0,'defaultTextFontName', 'Helvetica')
-set(0,'defaultAxesFontName', 'Helvetica')
 
 % Generates a figure with Scores
 
@@ -17,7 +15,7 @@ subplot(4,1,1)
 
 % Plot the total scores of each parameter array to test
 scatter(stg.pat,[rst(stg.pat).st],20,'filled')
-ylabel('Total Score ($s_t$)')
+ylabel('Total Score (s_t)')
 set(gca,'xtick',[])
 set(gca,'FontSize',10,'Fontweight','bold')
 
@@ -77,18 +75,18 @@ h = heatmap(heatline,'Colormap',turbo,'YDisplayLabels',label,...
     'GridVisible','off','FontSize',10);
 h.CellLabelFormat = '%.2e';
 
-h.Title = "Score of each Experimental Output ($s_e$)";
-h.XLabel = 'Parameter arrays ($\theta$)';
+h.Title = "Score of each Experimental Output (s_e)";
+h.XLabel = 'Parameter arrays (\theta)';
 h.YLabel = 'Experimental Outputs';
 
-h.NodeChildren(3).XAxis.Label.Interpreter = 'latex';
-h.NodeChildren(3).YAxis.Label.Interpreter = 'latex';
-% h.NodeChildren(3).ZAxis.Label.Interpreter = 'latex';
-h.NodeChildren(3).Title.Interpreter = 'latex';
-h.NodeChildren(3).TickLabelInterpreter = 'latex';
-h.NodeChildren(2).TickLabelInterpreter = 'latex';
-% h.NodeChildren(1).TickLabelInterpreter = 'latex';
-% h.NodeChildren(1).Label.Interpreter = 'Latex';
-% h.NodeChildren(2).Label.Interpreter = 'Latex';
+% h.NodeChildren(3).XAxis.Label.Interpreter = 'latex';
+% h.NodeChildren(3).YAxis.Label.Interpreter = 'latex';
+% % h.NodeChildren(3).ZAxis.Label.Interpreter = 'latex';
+% h.NodeChildren(3).Title.Interpreter = 'latex';
+% h.NodeChildren(3).TickLabelInterpreter = 'latex';
+% h.NodeChildren(2).TickLabelInterpreter = 'latex';
+% % h.NodeChildren(1).TickLabelInterpreter = 'latex';
+% % h.NodeChildren(1).Label.Interpreter = 'Latex';
+% % h.NodeChildren(2).Label.Interpreter = 'Latex';
 
 end

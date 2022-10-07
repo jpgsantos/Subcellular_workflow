@@ -34,7 +34,7 @@ for n = stg.exprun
             %             Lgnd.Position(1) = 0;
             %             Lgnd.Position(2) = 0.5;
             Lgnd.Layout.Tile = 'North';
-            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
+            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold')
             %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
             %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             legend boxoff
@@ -62,8 +62,9 @@ for n = stg.exprun
                 %                 scatter(time,data,'filled','k',...
                 %                     'DisplayName','data')
 
-                errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
+%                 errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
 
+                f_error_area(transpose(time),transpose([data-data_SD,data+data_SD]))
                 break
             end
         end
@@ -87,19 +88,19 @@ for n = stg.exprun
                 if stg.simdetail
                     plot(time_detailed,...
                         sim_results_detailed,'DisplayName',...
-                        string("$\theta_"+m + "$"),'LineWidth',1.5)
+                        string("\theta_"+m),'LineWidth',1.5)
                 else
 
                     plot(time,...
                         sim_results,'DisplayName',...
-                        string("$\theta_"+m + "$"),'LineWidth',1.5)
+                        string("\theta_"+m),'LineWidth',1.5)
                 end
 
                 %                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                 %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
 
-                ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
+                ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             end
         end
 
