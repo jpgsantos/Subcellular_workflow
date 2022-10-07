@@ -131,7 +131,7 @@ for n = stg.exprun
     
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-%     try
+    try
         
         % If the correct setting is chosen display messages to console
         if stg.simcsl
@@ -213,12 +213,12 @@ for n = stg.exprun
             % not worked properly
             rst.simd{n} = 0;
         end
-%     catch
-%         
-%         % Set the simulation output to be 0, this is a non function value
-%         % that the score function expects in simulations that did not
-%         % worked properly
-%         rst.simd{n} = 0;
-%     end
+    catch
+        
+        % Set the simulation output to be 0, this is a non function value
+        % that the score function expects in simulations that did not
+        % worked properly
+        rst.simd{n} = 0;
+    end
 end
 end

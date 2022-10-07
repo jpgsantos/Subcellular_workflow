@@ -11,71 +11,76 @@ fig_n = 0;
 layout = [];
 % Iterate over the number of experiments
 for n = stg.exprun
-    
+
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-        
+
         % Generate the right amount of figures for all plots and calculates
         % proper subploting position
-        
-                [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
-    nexttile(layout);
-    
-%         fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
-        
+        %         plot_tn
+        % plot_n
+        % fig_n
+        % "Outputs"
+        % layout
+        [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
+        nexttile(layout);
+        %     fig_n
+        % layout
+        %         fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
+
         % Add a legend to the figure
         if mod(plot_n,24) == 1
             Lgnd = legend('show','Orientation','Horizontal');
-%             Lgnd.Position(1) = 0;
-%             Lgnd.Position(2) = 0.5;
+            %             Lgnd.Position(1) = 0;
+            %             Lgnd.Position(2) = 0.5;
             Lgnd.Layout.Tile = 'North';
             xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
-%             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
-%                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
+            %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
+            %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             legend boxoff
-            
-%             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-%                     size(sbtab.datasets(n).output,2)+j,1}.Units))
+
+            %             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+            %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
         end
-        
+
         plot_n = plot_n + 1;
-        
+
         hold on
-        
+
         % Iterate over the number of parameter arrays to test
         for m = stg.pat
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
-                
+
                 time = rst(m).simd{1,n}.Time;
                 data = Data(n).Experiment.x(:,j);
-                
+
                 data_SD = Data(n).Experiment.x_SD(:,j);
-                
+
                 % Plot the outputs to each dataset (new subplots) as they
                 % are given in the data provided in sbtab
-%                 scatter(time,data,'filled','k',...
-%                     'DisplayName','data')
-                
+                %                 scatter(time,data,'filled','k',...
+                %                     'DisplayName','data')
+
                 errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
-                
+
                 break
             end
         end
-        
+
         % Iterate over the number of parameter arrays to test
         for m = stg.pat
-            
+
             % Plot only if the simulation was successful
             if rst(m).simd{1,n} ~= 0
-                
+
                 time = rst(m).simd{1,n}.Time;
                 [sim_results,~] = f_normalize(rst(m),stg,n,j,mmf);
                 if stg.simdetail
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
                     [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
                 end
-                
+
                 % Plot the outputs to each dataset (new subplots) and
                 % parameter array to test that are simulated using
                 % Simbiology
@@ -84,30 +89,30 @@ for n = stg.exprun
                         sim_results_detailed,'DisplayName',...
                         string("$\theta_"+m + "$"),'LineWidth',1.5)
                 else
-                    
+
                     plot(time,...
                         sim_results,'DisplayName',...
                         string("$\theta_"+m + "$"),'LineWidth',1.5)
                 end
-                
-%                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-%                     size(sbtab.datasets(n).output,2)+j,1}.Units))
-               
+
+                %                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
+                %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
+
                 ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold','Interpreter','latex')
             end
         end
-        
+
         hold off
-        
-%         xlabel('seconds')
-        
+
+        %         xlabel('seconds')
+
         if stg.simdetail
             ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf])
         else
             ylim([min([0,min(sim_results),min(data-data_SD),min(data)]) inf])
         end
-        
+
         % Choose correct title according to settings
         if stg.plotoln == 1
             title("E" + (n-1) + " " +...
@@ -116,7 +121,7 @@ for n = stg.exprun
             title("E" + (n-1) + " " +...
                 string(sbtab.datasets(n).output{1,j}))
         end
-        
+
         % Choose number of decimal places for y axis
         ytickformat('%.2g')
     end
