@@ -175,9 +175,9 @@ stg.pat = 1:4;
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
 stg.pa(1,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(2,:) = [3,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(3,:) = [2,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(4,:) = [1,0.7,0.9,3.1,4,-1.7,1.1];
+stg.pa(2,:) = [4,-0.3,0.9,3.1,4,-1.7,1.1];
+stg.pa(3,:) = [4,-1.3,0.9,3.1,4,-1.7,1.1];
+stg.pa(4,:) = [4,-2.3,0.9,3.1,4,-1.7,1.1];
 
 % Best parameter array found so far for the model
 % (Best parameter array)
@@ -187,7 +187,7 @@ stg.bestpa = stg.pa(1,:);
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = false;
+stg.plot = true;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m
