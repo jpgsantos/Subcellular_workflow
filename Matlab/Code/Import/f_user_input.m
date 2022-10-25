@@ -18,7 +18,7 @@ model_folder_general = Matlab_main_folder + "Model/";
 if isstring(user_choices{1})
     model_folder =user_choices{1};
     last_model_folder = model_folder;
-    disp("The model folder choosen was: " + model_folder)
+    disp("The model folder chosen was: " + model_folder)
     if not(isfolder(model_folder_general + model_folder))
         disp("This folder does not exist, please choose a valid folder")
         last_choice = last_model_folder;
@@ -60,7 +60,7 @@ settings_folder = folder_model_specific + "/Matlab/Settings";
     if isstring(user_choices{3})
         settings_file_text = user_choices{3};
         last_settings_file_text = settings_folder;
-        disp("The model settings file choosen was: " + settings_file_text)
+        disp("The model settings file chosen was: " + settings_file_text)
         if not(isfile(settings_folder + "/"+ settings_file_text ))
             disp("This file does not exist, please choose a valid file")
             last_choice = last_settings_file_text;
