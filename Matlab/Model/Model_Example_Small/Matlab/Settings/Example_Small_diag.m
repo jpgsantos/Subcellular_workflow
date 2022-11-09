@@ -1,4 +1,4 @@
-function [stg] = Example_Small_test_parameters()
+function [stg] = Example_Small_diag()
 
 %% Import
 
@@ -29,7 +29,7 @@ stg.sbtab_name = "SBtab_" + stg.name;
 %% Analysis
 
 % Experiments to run
-stg.exprun = [4];
+stg.exprun = [1:9];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -187,7 +187,7 @@ stg.bestpa = stg.pa(1,:);
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = false;
+stg.plot = true;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m

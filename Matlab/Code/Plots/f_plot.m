@@ -12,13 +12,13 @@ load(data_model,'Data','sbtab')
 
 if isfield(rst,'diag')
     % Generate figure with Scores
-    f_plot_scores(rst.diag,stg,sbtab)
+%     f_plot_scores(rst.diag,stg,sbtab)
     % Generate figure with Inputs
-    f_plot_inputs(rst.diag,stg,sbtab)
+%     f_plot_inputs(rst.diag,stg,sbtab)
     % Generate figure with Outputs
-    f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
+%     f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
     % Generate figure with input and Output of all experiments
-    f_plot_in_out(rst.diag,stg,sbtab,Data)
+    f_plot_in_out(rst.diag,stg,sbtab,Data,mmf)
 end
 
 % Generate figure with optimization results
