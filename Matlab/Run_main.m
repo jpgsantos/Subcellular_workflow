@@ -1,4 +1,4 @@
-function [stg,sb,rst,mmf] = Run_main(Folder,Analysis,settings)
+function [stg,sb,rst,mmf,plots] = Run_main(Folder,Analysis,settings)
 % Function that runs one of the selected analysis on the selected model
 % given a settings file.
 %
@@ -73,7 +73,7 @@ end
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 if stg.plot
-    f_plot(rst,stg,mmf)
+    plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
     if stg.save_results
         f_save_plots(mmf)

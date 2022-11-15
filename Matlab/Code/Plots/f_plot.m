@@ -1,4 +1,4 @@
-function f_plot(rst,stg,mmf)
+function plots = f_plot(rst,stg,mmf)
 set(0,'defaultAxesFontName','Arial')
 set(0,'defaultAxesFontSize',10)
 
@@ -16,11 +16,11 @@ if isfield(rst,'diag')
     % Generate figure with Inputs
 %     f_plot_inputs(rst.diag,stg,sbtab)
     % Generate figure with Outputs
-%     f_plot_outputs(rst.diag,stg,sbtab,Data,mmf)
+    plots1 = f_plot_outputs(rst.diag,stg,sbtab,Data,mmf);
     % Generate figure with input and Output of all experiments
-    f_plot_in_out(rst.diag,stg,sbtab,Data,mmf)
+    plots2 = f_plot_in_out(rst.diag,stg,sbtab,Data,mmf);
 end
-
+plots = [plots1; plots2];
 % Generate figure with optimization results
 if isfield(rst,'opt')
     f_plot_opt(rst,stg)

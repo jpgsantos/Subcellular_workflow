@@ -1,4 +1,4 @@
-function f_plot_outputs(rst,stg,sbtab,Data,mmf)
+function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf)
 % Generates a figure with Outputs, one subplot per experimental output
 
 % Inform the user that fig3 is being ploted
@@ -9,6 +9,26 @@ disp("Plotting Outputs")
 plot_n = 1;
 fig_n = 0;
 layout = [];
+plots_1 = [];
+plots = cell(1,2);
+
+
+
+%Font settings
+Letter_FontSize = 10;
+Letter_Fontweight = 'bold';
+Axis_FontSize = 8;
+Axis_Fontweight = 'bold';
+Minor_title_FontSize = 10;
+Minor_title_Fontweight = 'bold';
+Major_title_FontSize = 12;
+Major_title_Fontweight = 'bold';
+Legend_FontSize = 8;
+Legend_Fontweight = 'bold';
+Legend_ItemTokenSize = [20,18];
+line_width = 1;
+
+
 % Iterate over the number of experiments
 for n = stg.exprun
 
@@ -22,19 +42,31 @@ for n = stg.exprun
         % fig_n
         % "Outputs"
         % layout
-        [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
-        nexttile(layout);
+
+
+
+%  disp (j)
+
         %     fig_n
         % layout
         %         fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
+%         if mod(plot_n,24) == 1
+            [fig_n,layout,plots_1] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
+            plots{fig_n,1} = plots_1{1};
+            plots{fig_n,2} = plots_1{2};
+%         end
 
         % Add a legend to the figure
-        if mod(plot_n,24) == 1
+        if mod(plot_n,24) == 2
+%             [fig_n,layout,plots_1] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
+%             plots{fig_n,1} = plots_1{1};
+%             plots{fig_n,2} = plots_1{2};
+
             Lgnd = legend('show','Orientation','Horizontal');
             %             Lgnd.Position(1) = 0;
             %             Lgnd.Position(2) = 0.5;
             Lgnd.Layout.Tile = 'North';
-            xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold')
+            xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight','bold')
             %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
             %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
             legend boxoff
@@ -42,7 +74,8 @@ for n = stg.exprun
             %             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
             %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
         end
-
+%         disp(1)
+        nexttile(layout);
         plot_n = plot_n + 1;
 
         hold on
@@ -62,9 +95,10 @@ for n = stg.exprun
                 %                 scatter(time,data,'filled','k',...
                 %                     'DisplayName','data')
 
-%                 errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
+                %                 errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
 
-                f_error_area(transpose(time),transpose([data-data_SD,data+data_SD]))
+                f_error_area(transpose(time),transpose([data-data_SD,data+data_SD]));
+%                 disp(2)
                 break
             end
         end
@@ -100,7 +134,7 @@ for n = stg.exprun
                 %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
 
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
+                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', Axis_FontSize,'Fontweight','bold')
             end
         end
 
@@ -109,18 +143,18 @@ for n = stg.exprun
         %         xlabel('seconds')
 
         if stg.simdetail
-            ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf])
+            ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf]);
         else
-            ylim([min([0,min(sim_results),min(data-data_SD),min(data)]) inf])
+            ylim([min([0,min(sim_results),min(data-data_SD),min(data)]) inf]);
         end
 
         % Choose correct title according to settings
         if stg.plotoln == 1
             title("E" + (n-1) + " " +...
-                strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'))
+                strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'),"FontSize",Minor_title_FontSize)
         else
             title("E" + (n-1) + " " +...
-                string(sbtab.datasets(n).output{1,j}))
+                string(sbtab.datasets(n).output{1,j}),"FontSize",Minor_title_FontSize)
         end
 
         % Choose number of decimal places for y axis

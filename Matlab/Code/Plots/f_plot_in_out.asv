@@ -1,4 +1,4 @@
-function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
+function f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % Generates a figure with input and Output of all experiments on the left
 % side it plots the inputs of the experiment and on the right side it plots
 % the outputs
@@ -146,8 +146,8 @@ end
 %         if reuse
             figHandles = findobj('type', 'figure', 'name', name_short);
             close(figHandles);
-            plots{n-1+helper,1} = name_short;
-            plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
+            test(1,n-1+helper) = name_short;
+            test(2,n-1+helper) = figure('WindowStyle','docked','Name', name_short,...
                 'NumberTitle', 'off');
             %             sgtitle( "Experiment " + (n-1) + " " + helper + "  (E " +...
             %                 (n-1) + " " + helper +")",'FontSize', Major_title_FontSize,'Fontweight','bold');
