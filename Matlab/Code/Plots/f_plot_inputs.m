@@ -59,7 +59,7 @@ for n = stg.exprun
 
                 % Plot the inputs to each experiment
                 plot(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
-                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',1.5)
+                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',line_width)
 
                 % Get the correct label for each input of the experiment
                 labelfig2(j) = rst(m).simd{1,n}.DataNames(str2double(...
@@ -76,7 +76,7 @@ for n = stg.exprun
 
     if mod(plot_n,12) == 1
 
-        xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+        xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
         Lgnd = legend(labelfig2,'Orientation','vertical', ...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
@@ -86,7 +86,7 @@ for n = stg.exprun
     end
 
     ylim([0 inf])
-
+    ytickformat('%-4.1f')
     % Add a title to each plot
     title("E"+(n-1))
 

@@ -3,7 +3,6 @@ function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % side it plots the inputs of the experiment and on the right side it plots
 % the outputs
 
-
 %Font settings
 Letter_FontSize = 10;
 Letter_Fontweight = 'bold';
@@ -17,7 +16,6 @@ Legend_FontSize = 8;
 Legend_Fontweight = 'bold';
 Legend_ItemTokenSize = [20,18];
 line_width = 1;
-
 
 for n = stg.exprun
 
@@ -33,16 +31,6 @@ for n = stg.exprun
                 size(sbtab.datasets(n).output,2) > 4);
         end
 
-        %         if size(sbtab.datasets(n).output,2) == 1
-        %             subplot(1,2,j+ceil(j/(2/2))*1)
-        %         elseif size(sbtab.datasets(n).output,2) == 2
-        %             subplot(2,2,j+ceil(j/(2/2))*1)
-        %         elseif size(sbtab.datasets(n).output,2) > 2 &&...
-        %                 size(sbtab.datasets(n).output,2) <= 4
-        %             subplot(2,4,j+ceil(j/(4/2))*2)
-        %         elseif size(sbtab.datasets(n).output,2) > 4
-        %             subplot(2,4,j+ceil(j/(4/2))*2-helper*8+8)
-        %         end
         nexttile(layout,[1 1]);
         hold on
 
@@ -53,15 +41,13 @@ for n = stg.exprun
 
                 % Plot the outputs to each dataset (new subplots) as they
                 % are given in the data provided in sbtab
-
                 time = rst(m).simd{1,n}.Time;
                 data = Data(n).Experiment.x(:,j);
                 data_SD = Data(n).Experiment.x_SD(:,j);
 
-                                 plot_data = plot(time,data,'LineWidth',0.5,...
-                                     'DisplayName','data','Color','k');
+                plot_data = plot(time,data,'LineWidth',0.5,...
+                    'DisplayName','data','Color','k');
 
-                %                 errorbar(time,data,data_SD, 'vertical',	'k', 'LineStyle', 'none','LineWidth',1);
                 plot_data_SD = f_error_area(transpose(time),transpose([data-data_SD,data+data_SD]));
                 break
             end
@@ -97,13 +83,11 @@ for n = stg.exprun
 
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units),...
-                    'FontSize', Axis_FontSize,'Fontweight','bold')
+                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
             end
         end
 
         hold off
-
-        %         set(gca,'FontSize',12,'Fontweight','bold')
 
         if stg.simdetail
             ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf])
@@ -111,21 +95,23 @@ for n = stg.exprun
             ylim([min([0,min(sim_results),min(data-data_SD),min(data)]) inf])
         end
 
-        xlabel('seconds','FontSize', Axis_FontSize,'Fontweight','bold')
+        xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
         % Choose correct title according to settings
         if stg.plotoln == 1
             title(strrep(string(sbtab.datasets(n).output_name{1,j}),'_',...
-                '\_'),'FontSize', Minor_title_FontSize,'Fontweight','bold')
+                '\_'),'FontSize',Minor_title_FontSize,'Fontweight',Minor_title_Fontweight)
         else
-            title(string(sbtab.datasets(n).output{1,j}),'FontSize', Minor_title_FontSize,...
-                'Fontweight','bold')
+            title(string(sbtab.datasets(n).output{1,j}),'FontSize',Minor_title_FontSize,...
+                'Fontweight',Minor_title_Fontweight)
         end
 
         % Choose number of decimal places for y axis
-        ytickformat('%.2g')
+%         ytickformat('%.2g')
+        ytickformat('%-3.1f')
+        % Add a legend for te entire image
 
-        leg = legend([p1,p2(1:4),plot_data,plot_data_SD],...
+        leg = legend([p1,p2(1:end),plot_data,plot_data_SD],...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout',"Orientation","Horizontal");
         leg.Layout.Tile = 'South';
         leg.ItemTokenSize = Legend_ItemTokenSize;
@@ -143,33 +129,18 @@ end
             name_short = "E " + (n-1);
             name_long = "Experiment " + (n-1) + "  (E " + (n-1) +")";
         end
-%         if reuse
-            figHandles = findobj('type', 'figure', 'name', name_short);
-            close(figHandles);
-            plots{n-1+helper,1} = name_short;
-            plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
-                'NumberTitle', 'off');
-            %             sgtitle( "Experiment " + (n-1) + " " + helper + "  (E " +...
-            %                 (n-1) + " " + helper +")",'FontSize', Major_title_FontSize,'Fontweight','bold');
-%         else
-%             figHandles = findobj('type', 'figure', 'name', "E " + (n-1));
-%             close(figHandles);
-%             figure('WindowStyle', 'docked','Name', "E " + (n-1),...
-%                 'NumberTitle', 'off','Position', [0 0 15 6]);
-            %             sgtitle( "Experiment " + (n-1) + "  (E " + (n-1) +...
-            %                 ")",'FontSize', Major_title_FontSize,'Fontweight','bold');
-%         end
 
+        figHandles = findobj('type', 'figure', 'name', name_short);
+        close(figHandles);
+        plots{n-1+helper,1} = name_short;
+        plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
+            'NumberTitle', 'off');
 
-        layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','compact' );
-
-        layout.Units = 'centimeters';
-%         layout.OuterPosition = [0 0 15 10];
-        %         subplot(2,4,[1,2,5,6])
+        layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
         nexttile(layout,[2 1]);
 
         title(layout,name_long,...
-            'FontSize', Major_title_FontSize,'Fontweight','bold')
+            'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
         hold on
         for o = 1:size(sbtab.datasets(n).input,2)
             for p = stg.pat
@@ -182,43 +153,20 @@ end
                         )+1),'DisplayName',string(rst(p).simd{1,n}.DataNames(str2double(...
                         strrep(sbtab.datasets(n).input(o),'S',''))+1)),'LineWidth',line_width);
 
-                    % Get the correct label for each input of the
-                    % experiment
-%                     labelfig2(o) = rst(p).simd{1,n}.DataNames(str2double(...
-%                         strrep(sbtab.datasets(n).input(o),'S',''))+1);
-
                     ylabel(string(rst(p).simd{1,n}.DataInfo{...
                         str2double(strrep(sbtab.datasets(n).input(o),'S',''))+1,1}.Units),...
-                        'FontSize', Axis_FontSize,'Fontweight','bold')
-
-
+                        'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
                     break
                 end
             end
 
         end
 
-        %         set(gca,'FontSize',12,'Fontweight','bold')
-
-
-
-        xlabel('seconds','FontSize', Axis_FontSize,'Fontweight','bold')
-        % Add a legend to each plot
-
-
-%         leg = legend(labelfig2,...
-%             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','Best',"Orientation","Horizontal");
-%         % leg.Layout.Tile = 'South';
-%         leg.ItemTokenSize = Legend_ItemTokenSize;
-%         set(leg,'Box','off')
-%         %         legend(labelfig2,'FontSize', 16,'Fontweight','bold')
-%         %         legend boxoff
-% %         clear labelfig2
-
+        xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
         ylim([0 inf])
-
+        ytickformat('%-3.1f')
         % Add a title to each plot
-        title("Inputs",'FontSize', Minor_title_FontSize,'Fontweight','bold')
+        title("Inputs",'FontSize', Minor_title_FontSize,'Fontweight',Minor_title_Fontweight)
 
         hold off
     end

@@ -44,7 +44,7 @@ for n = stg.exprun
                 fig_name = "Outputs";
             end
             title(layout,fig_name,...
-                'FontSize', Major_title_FontSize,'Fontweight','bold')
+                'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
         end
 
         nexttile(layout);
@@ -88,16 +88,17 @@ for n = stg.exprun
                 if stg.simdetail
                     plot(time_detailed,...
                         sim_results_detailed,'DisplayName',...
-                        string("\theta_"+m),'LineWidth',1.5)
+                        string("\theta_"+m),'LineWidth',line_width)
                 else
 
                     plot(time,...
                         sim_results,'DisplayName',...
-                        string("\theta_"+m),'LineWidth',1.5)
+                        string("\theta_"+m),'LineWidth',line_width)
                 end
 
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', Axis_FontSize,'Fontweight','bold')
+                    size(sbtab.datasets(n).output,2)+j,1}.Units),...
+                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
             end
         end
 
@@ -112,22 +113,27 @@ for n = stg.exprun
         % Choose correct title according to settings
         if stg.plotoln == 1
             title("E" + (n-1) + " " +...
-                strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'),"FontSize",Minor_title_FontSize)
+                strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_'),...
+                "FontSize",Minor_title_FontSize,...
+                'Fontweight',Minor_title_Fontweight)
         else
             title("E" + (n-1) + " " +...
-                string(sbtab.datasets(n).output{1,j}),"FontSize",Minor_title_FontSize)
+                string(sbtab.datasets(n).output{1,j}),"FontSize",...
+                Minor_title_FontSize,'Fontweight',Minor_title_Fontweight)
         end
 
         % Choose number of decimal places for y axis
-        ytickformat('%.2g')
-
+%         ytickformat('%.2g')
+        ytickformat('%-4.1f')
         if mod(plot_n,12) == 1
 
             Lgnd = legend('show','Orientation','vertical',...
-                'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout');
+                'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+                'Location','layout');
             Lgnd.Layout.Tile = 'East';
             Lgnd.ItemTokenSize = Legend_ItemTokenSize;
-            xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight','bold')
+            xlabel(layout,"Seconds",...
+                'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
             set(Lgnd,'Box','off')
         end
