@@ -1,37 +1,48 @@
-function f_plot_inputs(rst,stg,sbtab)
+function plots = f_plot_inputs(rst,stg,sbtab)
 % Generates a figure with Inputs, one subplot per experiment
 
 % Inform the user that fig2 is being ploted
 disp("Plotting Inputs")
 
-plot_n = 1;
+plot_n = 0;
 fig_n = 0;
 layout = [];
+plots_1 = [];
+
+%Font settings
+Letter_FontSize = 10;
+Letter_Fontweight = 'bold';
+Axis_FontSize = 8;
+Axis_Fontweight = 'bold';
+Minor_title_FontSize = 10;
+Minor_title_Fontweight = 'bold';
+Major_title_FontSize = 12;
+Major_title_Fontweight = 'bold';
+Legend_FontSize = 8;
+Legend_Fontweight = 'bold';
+Legend_ItemTokenSize = [20,18];
+line_width = 1;
+
 % Iterate over the number of experiments
 for n = stg.exprun
 
     % Generate the right amount of figures for all plots and calculates
     % proper subploting position
+        if mod(plot_n,12) == 0
+            [fig_n,layout,plots_1] = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs",layout,plots_1);
+            plots{fig_n,1} = plots_1{1};
+            plots{fig_n,2} = plots_1{2};
+    
+            if fig_n > 1
+                fig_name = "Inputs " + fig_n;
+            else
+                fig_name = "Inputs";
+            end
+            title(layout,fig_name,...
+                'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
+        end
 
-    [fig_n,layout] = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs",layout);
     nexttile(layout);
-
-    %     fig_n = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs");
-
-    if mod(plot_n,24) == 1
-        %             Lgnd = legend('show','Orientation','Horizontal');
-        %             Lgnd.Position(1) = 0;
-        %             Lgnd.Position(2) = 0.5;
-        %             Lgnd.Layout.Tile = 'North';
-        xlabel(layout,"seconds", 'FontSize', 12,'Fontweight','bold')
-        %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
-        %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
-        %             legend boxoff
-
-        %             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-        %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
-    end
-
 
     plot_n = plot_n +1;
 
@@ -56,18 +67,23 @@ for n = stg.exprun
 
                 ylabel(layout,string(rst(m).simd{1,n}.DataInfo{...
                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1,1}.Units),...
-                    'FontSize', 12,'Fontweight','bold')
+                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
                 break
             end
         end
     end
 
-    %     xlabel('seconds')
-    % Add a legend to each plot
-    legend(labelfig2)
-    legend boxoff
-    clear labelfig2
+    if mod(plot_n,12) == 1
+
+        xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+
+        Lgnd = legend(labelfig2,'Orientation','vertical', ...
+            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+            'Location','layout','Box','off');
+        Lgnd.Layout.Tile = 'East';
+        Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+    end
 
     ylim([0 inf])
 
@@ -76,5 +92,4 @@ for n = stg.exprun
 
     hold off
 end
-
 end

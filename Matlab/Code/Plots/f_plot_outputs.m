@@ -6,13 +6,11 @@ disp("Plotting Outputs")
 
 % Get the total number of outputs to set the total number of plots
 [plot_tn,~] = f_get_outputs(stg,sbtab);
-plot_n = 1;
+plot_n = 0;
 fig_n = 0;
 layout = [];
 plots_1 = [];
 plots = cell(1,2);
-
-
 
 %Font settings
 Letter_FontSize = 10;
@@ -28,7 +26,6 @@ Legend_Fontweight = 'bold';
 Legend_ItemTokenSize = [20,18];
 line_width = 1;
 
-
 % Iterate over the number of experiments
 for n = stg.exprun
 
@@ -37,44 +34,19 @@ for n = stg.exprun
 
         % Generate the right amount of figures for all plots and calculates
         % proper subploting position
-        %         plot_tn
-        % plot_n
-        % fig_n
-        % "Outputs"
-        % layout
-
-
-
-%  disp (j)
-
-        %     fig_n
-        % layout
-        %         fig_n = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs");
-%         if mod(plot_n,24) == 1
+        if mod(plot_n,12) == 0
             [fig_n,layout,plots_1] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
             plots{fig_n,1} = plots_1{1};
             plots{fig_n,2} = plots_1{2};
-%         end
-
-        % Add a legend to the figure
-        if mod(plot_n,24) == 2
-%             [fig_n,layout,plots_1] = f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
-%             plots{fig_n,1} = plots_1{1};
-%             plots{fig_n,2} = plots_1{2};
-
-            Lgnd = legend('show','Orientation','Horizontal');
-            %             Lgnd.Position(1) = 0;
-            %             Lgnd.Position(2) = 0.5;
-            Lgnd.Layout.Tile = 'North';
-            xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight','bold')
-            %             ylabel(layout,string(rst(m).simd{1,n}.DataInfo{end-...
-            %                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', 12,'Fontweight','bold')
-            legend boxoff
-
-            %             ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-            %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
+            if fig_n > 1
+                fig_name = "Outputs " + fig_n;
+            else
+                fig_name = "Outputs";
+            end
+            title(layout,fig_name,...
+                'FontSize', Major_title_FontSize,'Fontweight','bold')
         end
-%         disp(1)
+
         nexttile(layout);
         plot_n = plot_n + 1;
 
@@ -92,13 +64,7 @@ for n = stg.exprun
 
                 % Plot the outputs to each dataset (new subplots) as they
                 % are given in the data provided in sbtab
-                %                 scatter(time,data,'filled','k',...
-                %                     'DisplayName','data')
-
-                %                 errorbar(time,data,data_SD,'ok','LineWidth',0.5,'MarkerSize',1,'DisplayName',"test");
-
                 f_error_area(transpose(time),transpose([data-data_SD,data+data_SD]));
-%                 disp(2)
                 break
             end
         end
@@ -130,17 +96,12 @@ for n = stg.exprun
                         string("\theta_"+m),'LineWidth',1.5)
                 end
 
-                %                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                %                     size(sbtab.datasets(n).output,2)+j,1}.Units))
-
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units), 'FontSize', Axis_FontSize,'Fontweight','bold')
             end
         end
 
         hold off
-
-        %         xlabel('seconds')
 
         if stg.simdetail
             ylim([min([0,min(sim_results_detailed),min(sim_results),min(data-data_SD),min(data)]) inf]);
@@ -159,6 +120,17 @@ for n = stg.exprun
 
         % Choose number of decimal places for y axis
         ytickformat('%.2g')
+
+        if mod(plot_n,12) == 1
+
+            Lgnd = legend('show','Orientation','vertical',...
+                'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout');
+            Lgnd.Layout.Tile = 'East';
+            Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+            xlabel(layout,"seconds", 'FontSize', Axis_FontSize,'Fontweight','bold')
+
+            set(Lgnd,'Box','off')
+        end
     end
 end
 end
