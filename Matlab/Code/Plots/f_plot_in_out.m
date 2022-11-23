@@ -110,8 +110,9 @@ for n = stg.exprun
 %         ytickformat('%.2g')
         ytickformat('%-3.1f')
         % Add a legend for te entire image
-
-        leg = legend([p1,p2(1:end),plot_data,plot_data_SD],...
+% p2(stg.pat)
+% [p1,transpose(p2(stg.pat)),plot_data,plot_data_SD]
+        leg = legend([p1,transpose(p2(stg.pat)),plot_data,plot_data_SD],...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout',"Orientation","Horizontal");
         leg.Layout.Tile = 'South';
         leg.ItemTokenSize = Legend_ItemTokenSize;

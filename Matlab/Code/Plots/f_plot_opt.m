@@ -1,9 +1,10 @@
-function f_plot_opt(rst,stg)
+function plots = f_plot_opt(rst,stg)
 % Generates a figure with optimization results
 
 figHandles = findobj('type', 'figure', 'name', 'Optimization results');
 close(figHandles);
-figure('WindowStyle', 'docked','Name','Optimization results','NumberTitle', 'off');
+plots{1} = 'Optimization results';
+plots{2} = figure('WindowStyle', 'docked','Name','Optimization results','NumberTitle', 'off');
 
 n_opt_done = 0;
 for n = 1:size(rst.opt,2)

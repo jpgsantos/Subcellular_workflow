@@ -62,7 +62,7 @@ end
 
 % Runs the Analysis chosen by the user input
 % if any(contains(analysis_options(1:5),stg.analysis))
-    rst = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
+    [rst,stg] = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
 % end
 
 % Save Analysis results if chosen in settings

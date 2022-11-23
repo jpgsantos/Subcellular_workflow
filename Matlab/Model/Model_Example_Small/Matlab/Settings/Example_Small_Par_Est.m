@@ -1,4 +1,4 @@
-function [stg] = Example_Small_diag()
+function [stg] = Example_Small_Par_Est()
 
 %% Import
 
@@ -101,7 +101,7 @@ stg.simtime = "second";
 % True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = false;
+stg.sbioacc = true;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -266,11 +266,11 @@ stg.plfmo = optimoptions('fmincon','Display','off',...
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 60*5;
+stg.optt = 60*30;
 
 % Population size for the algorithms that use populations
 % (Population size)
-stg.popsize = 200;
+stg.popsize = 2000;
 
 % optimization start method, choose between:
 % 1 Random starting point or group of starting points inside the bounds

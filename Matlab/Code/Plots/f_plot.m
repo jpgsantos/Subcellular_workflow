@@ -19,14 +19,14 @@ if isfield(rst,'diag')
     plots3 = f_plot_outputs(rst.diag,stg,sbtab,Data,mmf);
     % Generate figure with input and Output of all experiments
     plots4 = f_plot_in_out(rst.diag,stg,sbtab,Data,mmf);
-    plots = [plots1;plots2;plots3;plots4];
+    
 end
 
 % Generate figure with optimization results
 if isfield(rst,'opt')
-    f_plot_opt(rst,stg)
+    plots5 = f_plot_opt(rst,stg);
 end
-
+plots = [plots1;plots2;plots3;plots4;plots5];
 % Generate figures for Local Sensitivity Analysis
 if isfield(rst,'lsa')
     f_plot_lsa(rst.lsa,stg);

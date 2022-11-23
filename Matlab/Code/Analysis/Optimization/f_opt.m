@@ -1,8 +1,9 @@
-function rst = f_opt(stg,mmf)
+function [rst,pa] = f_opt(stg,mmf)
 % Call function to run fmincon optimization algorithm if chosen in settings
 
 if stg.fmincon
     rst(1) = f_opt_fmincon(stg,mmf);
+
 end
 
 % Call function to run simulated annealing optimization algorithm if chosen
@@ -20,6 +21,7 @@ end
 % Call function to run genetic algorithm optimization if chosen in settings
 if stg.ga
     rst(4) = f_opt_ga(stg,mmf);
+    pa(4,:) = rst(4).x;
 end
 
 % Call function to run Particle swarm optimization algorithm if chosen in
