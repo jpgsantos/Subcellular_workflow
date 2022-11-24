@@ -76,7 +76,7 @@ if stg.plot
     plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
     if stg.save_results
-        f_save_plots(mmf)
+%         f_save_plots(mmf)
     end
 end
 end

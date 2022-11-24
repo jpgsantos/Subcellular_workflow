@@ -59,7 +59,7 @@ stg.placsl = true;
 
 % True or false to decide whether to save results
 % (Save results)
-stg.save_results = false;
+stg.save_results = true;
 
 % True or false to decide whether to run detailed simulation for plots
 stg.simdetail = false;
@@ -266,11 +266,11 @@ stg.plfmo = optimoptions('fmincon','Display','off',...
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 60*30;
+stg.optt = 5;
 
 % Population size for the algorithms that use populations
 % (Population size)
-stg.popsize = 2000;
+stg.popsize = 8;
 
 % optimization start method, choose between:
 % 1 Random starting point or group of starting points inside the bounds
@@ -284,19 +284,19 @@ stg.dbs = 0.1;
 
 % True or false to decide whether to use Multistart
 % (Multistart)
-stg.mst = false;
+stg.mst = true;
 
 % Multistart size
-stg.msts = 1;
+stg.msts = 8;
 
 % True or false to decide whether to display Plots (Plots doesn't work if using
-% multicore)
+% multistart)
 % (Optimization plots)
 stg.optplots = true;
 
 % True or false to decide whether to run fmincon (no gradient so this doesn't work
 % very well, no max time!!)
-stg.fmincon = false;
+stg.fmincon = true;
 
 % Options for fmincon
 % (fmincon options)
@@ -309,7 +309,7 @@ stg.fm_options = optimoptions('fmincon',...
 
 % True or false to decide whether to run simulated annealing
 % (Simulated annealing)
-stg.sa = false;
+stg.sa = true;
 
 % Options for simulated annealing
 % (Simulated annealing options)
@@ -320,7 +320,7 @@ stg.sa_options = optimoptions(@simulannealbnd, ...
 
 % True or false to decide whether to run Pattern search
 % (Pattern search)
-stg.psearch = false;
+stg.psearch = true;
 
 % Options for Pattern search
 % (Pattern search options)
@@ -342,7 +342,7 @@ stg.ga_options = optimoptions(@ga,'MaxGenerations',100,...
 
 % True or false to decide whether to run Particle swarm
 % (Particle swarm)
-stg.pswarm = false;
+stg.pswarm = true;
 
 % Options for Particle swarm
 % (Particle swarm options)
@@ -352,7 +352,7 @@ stg.pswarm_options = optimoptions('particleswarm',...
 
 % True or false to decide whether to run Surrogate optimization
 % (Surrogate optimization)
-stg.sopt = false;
+stg.sopt = true;
 
 % Options for Surrogate optimization
 % (Surrogate optimization options)

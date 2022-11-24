@@ -10,6 +10,7 @@ Axis_FontSize = 8;
 Axis_Fontweight = 'bold';
 Minor_title_FontSize = 10;
 Minor_title_Fontweight = 'bold';
+Minor_Title_Spacing = 2;
 Major_title_FontSize = 12;
 Major_title_Fontweight = 'bold';
 Legend_FontSize = 8;
@@ -71,11 +72,11 @@ for n = stg.exprun
                 % parameter array to test that are simulated using
                 % Simbiology
                 if stg.simdetail
-                    p2(m) = plot(time_detailed,...
+                    p2(:,m) = plot(time_detailed,...
                         sim_results_detailed,'DisplayName',...
                         string("\theta_"+m),'LineWidth',line_width);
                 else
-                    p2(m) = plot(time,...
+                    p2(:,m) = plot(time,...
                         sim_results,...
                         'DisplayName',string("\theta_"+m),...
                         'LineWidth',line_width);
@@ -99,20 +100,21 @@ for n = stg.exprun
 
         % Choose correct title according to settings
         if stg.plotoln == 1
-            title(strrep(string(sbtab.datasets(n).output_name{1,j}),'_',...
-                '\_'),'FontSize',Minor_title_FontSize,'Fontweight',Minor_title_Fontweight)
+            [t1,t2] = title(strrep(string(sbtab.datasets(n).output_name{1,j}),'_',...
+                '\_')," ",'FontSize',Minor_title_FontSize,'Fontweight',Minor_title_Fontweight);
         else
-            title(string(sbtab.datasets(n).output{1,j}),'FontSize',Minor_title_FontSize,...
-                'Fontweight',Minor_title_Fontweight)
+            [t1,t2] = title(string(sbtab.datasets(n).output{1,j})," ",'FontSize',Minor_title_FontSize,...
+                'Fontweight',Minor_title_Fontweight);
         end
 
+        t2.FontSize = Minor_Title_Spacing;
         % Choose number of decimal places for y axis
 %         ytickformat('%.2g')
         ytickformat('%-3.1f')
         % Add a legend for te entire image
 % p2(stg.pat)
 % [p1,transpose(p2(stg.pat)),plot_data,plot_data_SD]
-        leg = legend([p1,transpose(p2(stg.pat)),plot_data,plot_data_SD],...
+        leg = legend([p1,p2(:,stg.pat),plot_data,plot_data_SD],...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout',"Orientation","Horizontal");
         leg.Layout.Tile = 'South';
         leg.ItemTokenSize = Legend_ItemTokenSize;
@@ -167,8 +169,8 @@ end
         ylim([0 inf])
         ytickformat('%-3.1f')
         % Add a title to each plot
-        title("Inputs",'FontSize', Minor_title_FontSize,'Fontweight',Minor_title_Fontweight)
-
+        [t3,t4] = title("Inputs"," ",'FontSize', Minor_title_FontSize,'Fontweight',Minor_title_Fontweight);
+        t4.FontSize = Minor_Title_Spacing;
         hold off
     end
 end

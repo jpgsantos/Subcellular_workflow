@@ -3,16 +3,15 @@ function [rst,pa] = f_opt(stg,mmf)
 
 if stg.fmincon
     rst(1) = f_opt_fmincon(stg,mmf);
-            [~,b]=min(rst(1).fval);
-    pa(1,:) = rst(1).x(b,:);
+
 end
 
 % Call function to run simulated annealing optimization algorithm if chosen
 % in settings
 if stg.sa
     rst(2) = f_opt_sa(stg,mmf);
-            [~,b]=min(rst(2).fval);
-    pa(2,:) = rst(2).x(b,:);
+            [~,b]=min(rst(5).fval);
+    pa(5,:) = rst(5).x(b,:);
 end
 
 % Call function to run pattern search optimization algorithm if chosen in
