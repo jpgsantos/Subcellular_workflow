@@ -13,12 +13,15 @@ fM2 = rst.fM2;
 fN = rst.fN;
 
 %Set the amount of resamples of the bootstraping
+fM1.sd
+size(fM1.sd,2)
+ceil(sqrt(size(fM1.sd,2)))
 if (isempty(stg.gsabootstrapsize))
-    stg.gsabootstrapsize=ceil(sqrt(size(fM1.sd)));
+    stg.gsabootstrapsize=ceil(sqrt(size(fM1.sd,2)));
 end%if
 
 scores_list = ["sd","se","st","xfinal"];
-
+stg.gsabootstrapsize
 for j=1:stg.gsabootstrapsize
     rng(j*stg.rseed)
     I(j,:)=ceil(rand(size(fM1.sd,1),1)*size(fM1.sd,1));
