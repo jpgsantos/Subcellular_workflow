@@ -31,14 +31,14 @@ end
 
 % Generate figures for Local Sensitivity Analysis
 if isfield(rst,'lsa')
-    f_plot_lsa(rst.lsa,stg);
-    plots = [];
+    plots = f_plot_lsa(rst.lsa,stg);
+%     plots = [];
 end
 
 % Generate figures for Global Sensitivity Analysis
 if isfield(rst,'gsa')
-    f_plot_gsa_sensitivities(rst.gsa,stg,sbtab);
-    plots = [];
+    plots = f_plot_gsa_sensitivities(rst.gsa,stg,sbtab);
+%     plots = [];
 end
 
 % Generate figure for Profile Likelihood Analysis

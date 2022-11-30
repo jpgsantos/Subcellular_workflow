@@ -101,7 +101,7 @@ stg.simtime = "second";
 % True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = true;
+stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
