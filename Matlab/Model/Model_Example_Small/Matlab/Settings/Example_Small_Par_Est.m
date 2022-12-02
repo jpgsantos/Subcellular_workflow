@@ -266,11 +266,11 @@ stg.plfmo = optimoptions('fmincon','Display','off',...
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 10;
+stg.optt = 60;
 
 % Population size for the algorithms that use populations
 % (Population size)
-stg.popsize = 80;
+stg.popsize = 500;
 
 % optimization start method, choose between:
 % 1 Random starting point or group of starting points inside the bounds
@@ -284,10 +284,10 @@ stg.dbs = 0.1;
 
 % True or false to decide whether to use Multistart
 % (Multistart)
-stg.mst = true;
+stg.mst = false;
 
 % Multistart size
-stg.msts = 8;
+stg.msts = 1;
 
 % True or false to decide whether to display Plots (Plots doesn't work if using
 % multistart)
@@ -303,7 +303,7 @@ stg.fmincon = true;
 stg.fm_options = optimoptions('fmincon',...
     'UseParallel',stg.optmc,...
     'Algorithm','interior-point',...
-    'MaxIterations',5,'OptimalityTolerance',0,...
+    'MaxIterations',10,'OptimalityTolerance',0,...
     'StepTolerance',1e-6,'FiniteDifferenceType','central',...
     'MaxFunctionEvaluations',10000);
 

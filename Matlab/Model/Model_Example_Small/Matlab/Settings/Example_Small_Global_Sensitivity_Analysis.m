@@ -199,7 +199,7 @@ stg.lsa_samples = 36;
 stg.lsa_range_from_best = 0.1;
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 36;
+stg.sansamples = 500;
 stg.gsabootstrapsize = [];
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT
@@ -216,7 +216,7 @@ stg.sasubmean = true;
 % sigma as stg.sasamplesigma truncated at the parameter bounds
 % 4 same as 3 without truncation.
 % (Sensitivity analysis sampling mode)
-stg.sasamplemode = 2;
+stg.sasamplemode = 3;
 
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis

@@ -13,9 +13,6 @@ fM2 = rst.fM2;
 fN = rst.fN;
 
 %Set the amount of resamples of the bootstraping
-fM1.sd
-size(fM1.sd,2)
-ceil(sqrt(size(fM1.sd,2)))
 if (isempty(stg.gsabootstrapsize))
     stg.gsabootstrapsize=ceil(sqrt(size(fM1.sd,2)));
 end%if

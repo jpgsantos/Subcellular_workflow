@@ -1,4 +1,4 @@
-function [stg] = Example_Small_Sensitivity_Analysis()
+function [stg] = Example_Small_Local_Sensitivity_Analysis()
 
 %% Import
 
@@ -195,7 +195,7 @@ stg.plot = true;
 stg.plotoln = true;
 
 %% Sensitivity analysis
-stg.lsa_samples = 36;
+stg.lsa_samples = 500;
 stg.lsa_range_from_best = 0.1;
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)

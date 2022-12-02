@@ -11,7 +11,7 @@ delta = p_1/(p-1);
 
 k = stg.parnum;
 m = k+1;
-r = 50;% needs to go to settings file
+r = number_samples;% needs to go to settings file
 B_star = [];
 % B_star_not = [];
 P_matrix_1 = [];
@@ -53,7 +53,6 @@ for l = 1:r
 
     x11 = randperm(k);
     x22 = randperm(k);
-
 
     x1 = sub2ind(size(P_matrix), x11, x22); % Create Linear Indices For ‘1’
     P_matrix(x1) = 1;
