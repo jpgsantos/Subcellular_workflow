@@ -1,7 +1,12 @@
 function rst = f_prep_sim(parameters,stg,mmf)
+%F_PREP_SIM Prepare parameters for simulation
+%   This function prepares the parameters for a simulation by setting them
+%   to the default values defined in the SBTAB and then updating any
+%   parameters that are being tested. The parameters are also adjusted
+%   according to any thermodynamic constraints.
+
 
 % Save variables that need to be mantained over multiple function calls
-% persistent modelobj
 persistent sbtab
 persistent Data
 
@@ -9,7 +14,6 @@ data_model = mmf.model.data.data_model;
 
 % Import the data on the first run
 if isempty(sbtab)
-    
     %Find correct path for loading depending on the platform
     load(data_model,'Data','sbtab')
 end

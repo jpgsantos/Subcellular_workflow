@@ -3,7 +3,7 @@ function [rst,pa] = f_opt(stg,mmf)
 
 if stg.fmincon
     rst(1) = f_opt_fmincon(stg,mmf);
-            [~,b]=min(rst(1).fval);
+    [~,b]=min(rst(1).fval);
     pa(1,:) = rst(1).x(b,:);
 end
 
@@ -11,7 +11,7 @@ end
 % in settings
 if stg.sa
     rst(2) = f_opt_sa(stg,mmf);
-            [~,b]=min(rst(2).fval);
+    [~,b]=min(rst(2).fval);
     pa(2,:) = rst(2).x(b,:);
 end
 
@@ -19,24 +19,22 @@ end
 % settings
 if stg.psearch
     rst(3) = f_opt_psearch(stg,mmf);
-            [~,b]=min(rst(3).fval);
+    [~,b]=min(rst(3).fval);
     pa(3,:) = rst(3).x(b,:);
 end
 
 % Call function to run genetic algorithm optimization if chosen in settings
 if stg.ga
     rst(4) = f_opt_ga(stg,mmf);
-%     rst(4).x
     [~,b]=min(rst(4).fval);
     pa(4,:) = rst(4).x(b,:);
-%     pa(4,:)
 end
 
 % Call function to run Particle swarm optimization algorithm if chosen in
 % settings
 if stg.pswarm
     rst(5) = f_opt_pswarm(stg,mmf);
-        [~,b]=min(rst(5).fval);
+    [~,b]=min(rst(5).fval);
     pa(5,:) = rst(5).x(b,:);
 end
 
@@ -44,7 +42,9 @@ end
 % settings
 if stg.sopt
     rst(6) = f_opt_sopt(stg,mmf);
-            [~,b]=min(rst(6).fval);
+    [~,b]=min(rst(6).fval);
     pa(6,:) = rst(6).x(b,:);
 end
 end
+
+

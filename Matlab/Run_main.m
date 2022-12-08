@@ -61,9 +61,7 @@ else
 end
 
 % Runs the Analysis chosen by the user input
-% if any(contains(analysis_options(1:5),stg.analysis))
     [rst,stg] = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
-% end
 
 % Save Analysis results if chosen in settings
 if stg.save_results
@@ -73,8 +71,8 @@ end
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 if stg.plot
-    plots = [];
-%     plots = f_plot(rst,stg,mmf);
+%     plots = [];
+    plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
     if stg.save_results
 %         f_save_plots(mmf)

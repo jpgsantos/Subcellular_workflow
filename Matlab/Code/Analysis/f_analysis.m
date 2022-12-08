@@ -1,45 +1,35 @@
 function [rst,stg] = f_analysis(stg,analysis,mmf,analysis_options,rst)
+% This function performs an analysis, based on the input analysis options
+% Inputs:
+% stg: settings to use in the analysis
+% analysis: type of analysis to be performed
+% mmf: main model files
+% analysis_options: list of possible analysis options
+% rst: structure for storing analysis results
 
-% n = find(contains(analysis_options,analysis) == 1);
-
-switch find(contains(analysis_options,analysis) == 1)
-    case 1
-        disp("Starting " + analysis_options(1))
-        rst.diag = f_diagnostics(stg,mmf);
-        disp(analysis_options(1) + " completed successfully")
-    case 2
-        disp("Starting " + analysis_options(2))
-        [rst.opt,pa] = f_opt(stg,mmf);
-%         rst.diag = f_diagnostics(stg,mmf);
-%         pa(1,:) = rst.opt(4).x;
-%         pa
-stg.pat = [];
-a = 0;
-for n = 1:size(pa,1)
-%     pa(n,1)
-    if pa(n,1) ~= 0
-        a = a+1;
-%         disp("y")
-        stg.pat(a) = n;
-    end
-end
-% stg.pat
-        parfor n=stg.pat
-            [~,rst_1(n),~] = f_sim_score(pa(n,:),stg,mmf);
+for i = 1:length(analysis_options) % loop through all analysis options
+    if contains(analysis_options(i),analysis) == 1 % check if current option matches desired analysis
+        disp("Starting " + {analysis_options(i)}) % display start message
+        switch i % switch based on current analysis option index
+            case 1
+                rst.diag = f_diagnostics(stg,mmf); % run diagnostic analysis
+            case 2
+                [rst.opt,pa] = f_opt(stg,mmf); % run optimization analysis
+                valid_options = find(pa(:,1) ~= 0); % find valid optimization options
+                stg.pat = valid_options; % update stage with valid options
+                sim_results = cell(length(valid_options),1); % create cell array for simulation results
+                parfor j = 1:length(valid_options) % parallelize simulation runs
+                    [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf); % run simulation for current valid option
+                end
+                rst.diag = sim_results; % store simulation results in results structure
+            case 3
+                rst.lsa = f_lsa(stg,mmf); % run LSA analysis
+            case 4
+                rst.gsa = f_gsa(stg,mmf); % run GSA analysis
+            case 5
+                rst.PLA = f_PL_m(stg,mmf); % run PLA analysis
         end
-        rst.diag = rst_1;
-        disp(analysis_options(2) + " completed successfully")
-    case 3
-        disp("Starting " + analysis_options(3))
-        rst.lsa = f_lsa(stg,mmf);
-        disp(analysis_options(3) + " completed successfully")
-    case 4
-        disp("Starting " + analysis_options(4))
-        rst.gsa = f_gsa(stg,mmf);
-        disp(analysis_options(4) + " completed successfully")
-    case 5
-        disp("Starting " + analysis_options(5))
-        rst.PLA = f_PL_m(stg,mmf);
-        disp(analysis_options(5) + " completed successfully")
+        disp(analysis_options(i) + " completed successfully") % display completion message
+    end
 end
 end
