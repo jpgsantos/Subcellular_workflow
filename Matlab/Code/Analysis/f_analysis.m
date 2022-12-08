@@ -13,7 +13,17 @@ switch find(contains(analysis_options,analysis) == 1)
 %         rst.diag = f_diagnostics(stg,mmf);
 %         pa(1,:) = rst.opt(4).x;
 %         pa
-        stg.pat = 1:6;
+stg.pat = [];
+a = 0;
+for n = 1:size(pa,1)
+%     pa(n,1)
+    if pa(n,1) ~= 0
+        a = a+1;
+%         disp("y")
+        stg.pat(a) = n;
+    end
+end
+% stg.pat
         parfor n=stg.pat
             [~,rst_1(n),~] = f_sim_score(pa(n,:),stg,mmf);
         end

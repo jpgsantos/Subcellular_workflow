@@ -123,7 +123,7 @@ settings_folder = folder_model_specific + "/Matlab/Settings";
     
     % Check if the date of the SBtab changed, if so clear functions
     listing = dir(folder_model_specific);
-    
+
     for n = 1:size(listing,1)
         if matches(stg.sbtab_excel_name,listing(n).name,"IgnoreCase",true)
             sbtab_date = listing(n).date;

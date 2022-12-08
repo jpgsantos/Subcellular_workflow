@@ -108,14 +108,15 @@ nexttile(layout,[1 1]);
 
 hold on
 m = 0;
-
+b = 0;
 for n = 1:size(rst.opt,2)
     if ~isempty(rst.opt(n).x)
         B = sort(rst.opt(n).fval);
+        b = b +1;
         for a = 1:size(rst.opt(n).x,1)
             %             m = m+1;
             if a == 1
-                p1(n) = scatter(a+(0.5/size(rst.opt,2)*n)-(0.5/size(rst.opt,2)*(size(rst.opt,2)+1)/2),log10(B(a)),20,...
+                p1(b) = scatter(a+(0.5/size(rst.opt,2)*n)-(0.5/size(rst.opt,2)*(size(rst.opt,2)+1)/2),log10(B(a)),20,...
                     'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n},...
                     'DisplayName',char(string(rst.opt(n).name)));
                 %            name{n} = char(string(rst.opt(n).name));
@@ -126,7 +127,7 @@ for n = 1:size(rst.opt,2)
             end
         end
     end
-
+    
 end
 
 hold off
