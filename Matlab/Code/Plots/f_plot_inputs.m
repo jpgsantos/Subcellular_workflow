@@ -53,10 +53,10 @@ for n = stg.exprun
 
         % Iterate over the number of parameter arrays to test
         for m = stg.pat
-
+% disp(m)
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
-
+% disp(m)
                 % Plot the inputs to each experiment
                 plot(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',line_width)

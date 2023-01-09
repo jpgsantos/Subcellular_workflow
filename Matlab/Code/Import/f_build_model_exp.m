@@ -47,8 +47,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     set(configsetObj{number_exp}.SolverOptions,...
         'MaxStep', stg.maxstepeq);
     
-    set(configsetObj{number_exp}.SolverOptions,...
-        'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
+%     set(configsetObj{number_exp}.SolverOptions,...
+%         'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
     
     
     model_exp = model_run{number_exp};

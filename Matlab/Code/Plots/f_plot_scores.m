@@ -63,7 +63,6 @@ for n = stg.exprun
 
     % Iterate over the number of datasets in each experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-
         label{size(label,2)+1} = {strrep("E" + (n-1) + " " + ...
             string(sbtab.datasets(n).output_name{j}),"_","\_")};
     end
@@ -75,6 +74,7 @@ heatline = [];
 
 % Iterate over the number of parameter arrays to test
 for k = stg.pat
+%     k
     heatpoint{k} = [];
 
     % Iterate over the number of experiments
