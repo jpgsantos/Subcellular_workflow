@@ -16,19 +16,19 @@ for i = 1:length(analysis_options) % loop through all analysis options
             case 2
                 [rst.opt,pa] = f_opt(stg,mmf); % run optimization analysis
                 valid_options = find(pa(:,1) ~= 0); % find valid optimization options
-                stg.pat = transpose(valid_options); % update stage with valid options
-                valid_options
+                stg.pat = transpose(valid_options); % update settings with valid options
+%                 valid_options
                 
                 sim_results = cell(length(valid_options),1); % create cell array for simulation results
 %                 pa
 %                 valid_options
                 for j = stg.pat % parallelize simulation runs
-                    pa(j,:)
+%                     pa(j,:)
                     [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf); % run simulation for current valid option
                 end
-                sim_results{:}
-                stg.pat
-                [sim_results{:}]
+%                 sim_results{:}
+%                 stg.pat
+%                 [sim_results{:}]
                 rst.diag(stg.pat) = [sim_results{:}]; % store simulation results in results structure
             case 3
                 rst.lsa = f_lsa(stg,mmf); % run LSA analysis

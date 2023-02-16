@@ -135,7 +135,7 @@ for n = stg.exprun
     
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-%     try
+    try
         
         % If the correct setting is chosen display messages to console
         if stg.simcsl
@@ -156,7 +156,7 @@ for n = stg.exprun
                 && rst.simd{n-1} ~= 0
 
 
-            disp("pass " + n) 
+%             disp("pass " + n) 
             
             % Set the values of the start amounts to the values obtained
             % after the first equilibration
@@ -172,7 +172,7 @@ for n = stg.exprun
 %                 [sbtab.datasets(max(1,stg.exprun(...
 %                 find(stg.exprun==n)-1))).start_amount{:,2}]) + " "+ n)
 
-           disp("fail 2 " + rst.simd{n-1} + " " + n)
+%            disp("fail 2 " + rst.simd{n-1} + " " + n)
             end
             % Iterate over the numbre of species that need a starting value
             % different than 0
@@ -187,16 +187,16 @@ for n = stg.exprun
             
             % Equilibrate the model
             rst = f_sim(n+stg.expn,stg,rt,rst,mmf);
-            disp("eq done " + n)
+%             disp("eq done " + n)
             for j = 1:size(sbtab.species,1)
                 
                 % Set the starting amount for species that after
                 % equilibrium have very low values to zero
-n+stg.expn
-j
-rst.simd{n+stg.expn}
-rst.simd{n+stg.expn}.Data
-rst.simd{n+stg.expn}.Data(end,j)
+% n+stg.expn
+% j
+% rst.simd{n+stg.expn}
+% rst.simd{n+stg.expn}.Data
+% rst.simd{n+stg.expn}.Data(end,j)
 
                 if rst.simd{n+stg.expn}.Data(end,j) < 1.0e-15
                     rt.ssa(j,n) = 0;
@@ -215,7 +215,7 @@ rst.simd{n+stg.expn}.Data(end,j)
         
         % Simulate the model
         rst = f_sim(n,stg,rt,rst,mmf);
-        disp("sim done " + n)
+%         disp("sim done " + n)
         try
             if stg.simdetail
                 rst = f_sim(n+2*stg.expn,stg,rt,rst,mmf);
@@ -236,13 +236,13 @@ rst.simd{n+stg.expn}.Data(end,j)
             rst.simd{n} = 0;
         end
 %         disp("y " + n)
-%     catch ME
-%         disp(ME.identifier + " " + n)
-%         
-%         % Set the simulation output to be 0, this is a non function value
-%         % that the score function expects in simulations that did not
-%         % worked properly
-%         rst.simd{n} = 0;
-%     end
+    catch ME
+        disp(ME.identifier + " " + n)
+        
+        % Set the simulation output to be 0, this is a non function value
+        % that the score function expects in simulations that did not
+        % worked properly
+        rst.simd{n} = 0;
+    end
 end
 end

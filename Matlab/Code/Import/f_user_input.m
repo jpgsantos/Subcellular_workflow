@@ -5,6 +5,12 @@ persistent last_model_folder
 persistent last_settings_file_text
 persistent last_settings_file_date
 persistent last_analysis_text
+% 
+% if isempty(last_analysis_text)
+% 
+%     disp("yey")
+% stg.import = false;
+% end
 
 Matlab_main_folder = mmf.main;
 
@@ -16,7 +22,7 @@ functions_cleared = false;
 model_folder_general = Matlab_main_folder + "Model/";
 
 if isstring(user_choices{1})
-    model_folder =user_choices{1};
+    model_folder = user_choices{1};
     last_model_folder = model_folder;
     disp("The model folder chosen was: " + model_folder)
     if not(isfolder(model_folder_general + model_folder))
@@ -59,7 +65,7 @@ settings_folder = folder_model_specific + "/Matlab/Settings";
 
     if isstring(user_choices{3})
         settings_file_text = user_choices{3};
-        last_settings_file_text = settings_folder;
+%         last_settings_file_text = settings_folder;
         disp("The model settings file chosen was: " + settings_file_text)
         if not(isfile(settings_folder + "/"+ settings_file_text ))
             disp("This file does not exist, please choose a valid file")
@@ -111,11 +117,23 @@ settings_folder = folder_model_specific + "/Matlab/Settings";
             settings_file_date = listing(n).date;
         end
     end
-    
+%     last_settings_file_date
+%     settings_file_date
+%     functions_cleared
+if isempty(last_settings_file_date)
+
+%     disp("yey")
+stg.import = true;
+else 
+    stg.import = false;
+end
     [last_settings_file_date,functions_cleared] =...
         compare_last(settings_file_date,last_settings_file_date,...
         functions_cleared);
     
+% settings_file_text
+% last_settings_file_text
+% functions_cleared
     % Check if the name of the settings file changed, if so clear functions
     [last_settings_file_text,functions_cleared] =...
         compare_last(settings_file_text,last_settings_file_text,...
@@ -129,11 +147,20 @@ settings_folder = folder_model_specific + "/Matlab/Settings";
             sbtab_date = listing(n).date;
         end
     end
+
+% sbtab_date
+% last_SBtab_date
+% functions_cleared
     [last_SBtab_date,~] =...
         compare_last(sbtab_date,last_SBtab_date,functions_cleared);
-    
+%     functions_cleared
     % Store the name of the chosen analysis in the settings struct
     stg.analysis = analysis_text;
+% functions_cleared
+    if functions_cleared == 1
+%         disp("ney")
+        stg.import = true;
+    end
 
     if contains(analysis_options(8),analysis_text)
         stg.import = true;
@@ -186,6 +213,8 @@ end
 
 % Set the chosen model folder in the settings struct
 stg.folder_model = model_name_specific;
+
+% stg.import
 end
 
 function [choice,last_choice] = choose_options(folder,prompt,last_choice)

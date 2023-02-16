@@ -38,7 +38,7 @@ stg.useLog = 0;
 
 % True or false to decide whether to use multicore everywhere it is available
 % (Optimization Multicore)
-stg.optmc = true;
+stg.optmc = false;
 
 % Choice of ramdom seed
 % (Ramdom seed)
@@ -170,14 +170,17 @@ stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2];
 %                        3  ,4  ,5];
 
 % (Parameter array to test)
-stg.pat = 1:4;
+stg.pat = 1:20;
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-stg.pa(1,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(2,:) = stg.pa(1,:)-0.5;
-stg.pa(3,:) = stg.pa(1,:)+0.5;
-stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
+for n = 1:20
+stg.pa(n,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
+end
+% 
+% stg.pa(2,:) = stg.pa(1,:)-0.5;
+% stg.pa(3,:) = stg.pa(1,:)+0.5;
+% stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
 
 % Best parameter array found so far for the model
 % (Best parameter array)
@@ -187,7 +190,7 @@ stg.bestpa = stg.pa(1,:);
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = true;
+stg.plot = false;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m

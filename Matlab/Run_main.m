@@ -45,6 +45,8 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
 % Code for choosing the model and loading the settings files
 [stg,rst,sb] = f_user_input(mmf,analysis_options,user_choices);
 
+% stg.import
+
 % Get the folder structure used for the model files
 [mmf] = default_folders(stg,mmf,date_stamp);
 
@@ -71,8 +73,8 @@ end
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 if stg.plot
-    plots = [];
-%     plots = f_plot(rst,stg,mmf);
+%     plots = [];
+    plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
     if stg.save_results
 %         f_save_plots(mmf)

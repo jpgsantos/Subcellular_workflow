@@ -69,6 +69,10 @@ if isempty(model_run)
     end
 end
 
+% accelerate(F)
+% tf = isaccelerated(model_run{exp_n});
+% disp(tf)
+
 % substitute the start amount of the species in the model with the correct
 % ones for  simulations
 set(model_run{exp_n}.species(1:size(rt.ssa(:,exp_n),1)),{'InitialAmount'},num2cell(rt.ssa(:,exp_n)))
