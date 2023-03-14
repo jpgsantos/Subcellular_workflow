@@ -217,7 +217,7 @@ for n = stg.exprun
         % unfavorable configurations of parameters, controlled by stg.maxt
         if size(Data(n).Experiment.t,1) ~=...
                 size(rst.simd{n}.Data(:,end),1)
-            disp("not enough time" + n)
+%             disp("not enough time " + n)
             % Set the simulation output to be 0, this is a non function
             % value that the score function expects in simulations that did
             % not worked properly
@@ -226,9 +226,9 @@ for n = stg.exprun
     catch ME
         disp(ME.identifier + " " + n)
 
-        % Set the simulation output to be 0, this is a non function value
-        % th3at the score function expects in simulations that did not
-        % worked properly
+%         Set the simulation output to be 0, this is a non function value
+%         that the score function expects in simulations that did not
+%         worked properly
         rst.simd{n} = 0;
     end
 end

@@ -49,14 +49,13 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
 %     set(configsetObj{number_exp}.SolverOptions,...
 %         'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
-    
-    
+
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
     save(model_exp_eq + number_exp + ".mat",'model_exp','config_exp')
     
-    sbiosaveproject(model_exp_eq + number_exp + ".sbproj",'model_exp')
+%     sbiosaveproject(model_exp_eq + number_exp + ".sbproj",'model_exp','config_exp')
     
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     
@@ -127,17 +126,17 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 number_exp + "_" + input_name + "(time)"), 'repeatedAssignment');
         end
     end
-    
+
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
     save(model_exp_default + number_exp + ".mat",'model_exp','config_exp')
 
-    sbiosaveproject(model_exp_default + number_exp + ".sbproj",'model_exp')
+%     sbiosaveproject(model_exp_default + number_exp + ".sbproj",'model_exp')
     
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);
     set(configsetObj{number_exp}.SolverOptions,'MaxStep', stg.maxstepdetail);
-    
+
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     
