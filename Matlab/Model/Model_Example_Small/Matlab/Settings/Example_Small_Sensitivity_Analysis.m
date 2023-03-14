@@ -1,4 +1,4 @@
-function [stg] = Example_Small_Global_Sensitivity_Analysis()
+function [stg] = Example_Small_Sensitivity_Analysis()
 
 %% Import
 
@@ -101,7 +101,7 @@ stg.simtime = "second";
 % True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = true;
+stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -199,8 +199,8 @@ stg.lsa_samples = 36;
 stg.lsa_range_from_best = 0.1;
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 5000;
-stg.gsabootstrapsize = [];
+stg.sansamples = 36;
+
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT
 % (Sensitivity analysis subtract mean)
@@ -216,7 +216,7 @@ stg.sasubmean = true;
 % sigma as stg.sasamplesigma truncated at the parameter bounds
 % 4 same as 3 without truncation.
 % (Sensitivity analysis sampling mode)
-stg.sasamplemode = 3;
+stg.sasamplemode = 2;
 
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis

@@ -72,12 +72,12 @@ end
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
+plots = [];
 if stg.plot
-%     plots = [];
     plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
-    if stg.save_results
-%         f_save_plots(mmf)
-    end
+%     if stg.save_results
+%          f_save_plots(mmf)
+%     end
 end
 end

@@ -30,7 +30,7 @@ stg.sbtab_name = "SBtab_" + stg.name;
 
 % Experiments to run
 % stg.ms.exprun = [1,3,4];
-stg.exprun = [1:9];
+stg.exprun = [1:4];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -176,7 +176,9 @@ stg.pat = 1;
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
 % for n = 1:500
-stg.pa(1,:) = [3.83460722728751,0.699795548767896,-0.714497528137255,1.43561343807477,3.58402514949447,-1.06806922196404,3.66375034325316];
+stg.pa(1,:) = [3.98031689729078	0.564422809437181	-2.43350515395489	1.00355333497453	2.94810032547993	0.125408935205199	1.34811452444541	4.19197031579597
+];
+
 % end
 % stg.pa(2,:) = [3.83460722728751,0.699795548767896,-0.714497528137255,1.43561343807477,3.58402514949447,-1.06806922196404,3.66375034325316];
 
@@ -237,7 +239,7 @@ stg.pltest = (1:7);
 
 % How many points to do for each parameter in the PL
 % (Profile Likelihood Resolution)
-stg.plres = 20;
+stg.plres = 100;
 
 % True or false to decide whether to do plots after calculating PL
 % (Profile Likelihood Plots)
@@ -250,7 +252,7 @@ stg.plsa = true;
 % Options for simulated annealing
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum)*1,'MaxTime',5,'ReannealInterval',40);
+    ones(1,stg.parnum)*1,'MaxTime',20,'ReannealInterval',40);
 
 % 0 or 1 to decide whether to run fmincon
 % (Profile Likelihood FMincon)

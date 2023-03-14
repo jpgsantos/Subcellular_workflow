@@ -1,4 +1,4 @@
-function [stg] = Example_Small_Global_Sensitivity_Analysis()
+function [stg] = Example_Par_Est()
 
 %% Import
 
@@ -8,15 +8,15 @@ stg.import = true;
 
 % Name of the folder where everything related to the model is stored
 % (Folder Model)
-stg.folder_model = "Model_Example_Small";
+stg.folder_model = "Model_Example";
 
 % Name of the excel file with the sbtab
 % (SBtab excel name)
-stg.sbtab_excel_name = "SBTAB_Example_Small.xlsx";
+stg.sbtab_excel_name = "SBTAB_Example.xlsx";
 
 % Name of the model
 % (Name)
-stg.name = "Example_Small";
+stg.name = "Example";
 
 % Name of the default model compartment
 % (Compartment name)
@@ -29,7 +29,7 @@ stg.sbtab_name = "SBtab_" + stg.name;
 %% Analysis
 
 % Experiments to run
-stg.exprun = [5:8];
+stg.exprun = [1:4];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -84,7 +84,7 @@ stg.UnitConversion = true;
 
 % True or false to decide whether to do Absolute Tolerance Scaling
 % (Absolute Tolerance Scaling)
-stg.abstolscale = false;
+stg.abstolscale = true;
 
 % Value of Relative tolerance
 % (Relative tolerance)
@@ -92,7 +92,7 @@ stg.reltol = 1.0E-4;
 
 % Value of Absolute tolerance
 % (Absolute tolerance)
-stg.abstol = 1.0E-9;
+stg.abstol = 1.0E-7;
 
 % Time units for simulation
 % (Simulation time)
@@ -115,11 +115,15 @@ stg.maxstepeq = [];
 % (Maximum step)
 stg.maxstepdetail = [2];
 
+% Default score when there is a simulation error, this is needed to keep
+% the optimizations working. (error score)
+stg.errorscore = 10^5;
+
 %% Model
 
 % Number of parameters to optimize
 % (Parameter number)
-stg.parnum = 7;
+stg.parnum = 12;
 % stg.ms.parnum = 5;
 
 % Index for the parameters that have thermodynamic constrains
@@ -164,20 +168,20 @@ stg.ub = zeros(1,stg.parnum)+4;
 % in the optimization array, usually not all parameters are optimized so
 % there needs to be a match between one and the other.
 % (Parameters to test)
-stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2];
+stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2 ,8 ,9,...
+    10 ,11 ,12];
 
 % stg.ms.partest(:,1) = [0  ,0  ,0  ,0  ,0  ,0  ,0 ,0 ,1 ,2,...
 %                        3  ,4  ,5];
 
 % (Parameter array to test)
-stg.pat = 1:4;
+stg.pat = 1:3;
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-stg.pa(1,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(2,:) = stg.pa(1,:)-0.5;
-stg.pa(3,:) = stg.pa(1,:)+0.5;
-stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
+stg.pa(1,:) = [3.999,0.696,1.072,3.429,-0.751,-3.741,-0.569,0.831,3.068,0.921,-2.156,-1.970];
+stg.pa(2,:) = stg.pa(1,:)-1;
+stg.pa(3,:) = stg.pa(1,:)+1;
 
 % Best parameter array found so far for the model
 % (Best parameter array)
@@ -195,12 +199,11 @@ stg.plot = true;
 stg.plotoln = true;
 
 %% Sensitivity analysis
-stg.lsa_samples = 36;
-stg.lsa_range_from_best = 0.1;
+
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
-stg.sansamples = 5000;
-stg.gsabootstrapsize = [];
+stg.sansamples = 36;
+
 % True or false to decide whether to subtract the mean before calculating SI and
 % SIT
 % (Sensitivity analysis subtract mean)
@@ -216,7 +219,7 @@ stg.sasubmean = true;
 % sigma as stg.sasamplesigma truncated at the parameter bounds
 % 4 same as 3 without truncation.
 % (Sensitivity analysis sampling mode)
-stg.sasamplemode = 3;
+stg.sasamplemode = 2;
 
 % Sigma for creating the normal distribution of parameters to perform
 % sensitivity analysis
@@ -267,11 +270,11 @@ stg.plfmo = optimoptions('fmincon','Display','off',...
 %  Time for the optimization in seconds (fmincon does not respect this
 % time!!)
 % (Optimization time)
-stg.optt = 10;
+stg.optt = 60;
 
 % Population size for the algorithms that use populations
 % (Population size)
-stg.popsize = 80;
+stg.popsize = 500;
 
 % optimization start method, choose between:
 % 1 Random starting point or group of starting points inside the bounds
@@ -285,10 +288,10 @@ stg.dbs = 0.1;
 
 % True or false to decide whether to use Multistart
 % (Multistart)
-stg.mst = true;
+stg.mst = false;
 
 % Multistart size
-stg.msts = 8;
+stg.msts = 1;
 
 % True or false to decide whether to display Plots (Plots doesn't work if using
 % multistart)
@@ -297,20 +300,20 @@ stg.optplots = true;
 
 % True or false to decide whether to run fmincon (no gradient so this doesn't work
 % very well, no max time!!)
-stg.fmincon = true;
+stg.fmincon = false;
 
 % Options for fmincon
 % (fmincon options)
 stg.fm_options = optimoptions('fmincon',...
     'UseParallel',stg.optmc,...
     'Algorithm','interior-point',...
-    'MaxIterations',5,'OptimalityTolerance',0,...
+    'MaxIterations',10,'OptimalityTolerance',0,...
     'StepTolerance',1e-6,'FiniteDifferenceType','central',...
     'MaxFunctionEvaluations',10000);
 
 % True or false to decide whether to run simulated annealing
 % (Simulated annealing)
-stg.sa = true;
+stg.sa = false;
 
 % Options for simulated annealing
 % (Simulated annealing options)
@@ -321,7 +324,7 @@ stg.sa_options = optimoptions(@simulannealbnd, ...
 
 % True or false to decide whether to run Pattern search
 % (Pattern search)
-stg.psearch = true;
+stg.psearch = false;
 
 % Options for Pattern search
 % (Pattern search options)
@@ -353,7 +356,7 @@ stg.pswarm_options = optimoptions('particleswarm',...
 
 % True or false to decide whether to run Surrogate optimization
 % (Surrogate optimization)
-stg.sopt = true;
+stg.sopt = false;
 
 % Options for Surrogate optimization
 % (Surrogate optimization options)

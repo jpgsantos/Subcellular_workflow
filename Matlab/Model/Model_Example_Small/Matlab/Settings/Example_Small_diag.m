@@ -29,7 +29,7 @@ stg.sbtab_name = "SBtab_" + stg.name;
 %% Analysis
 
 % Experiments to run
-stg.exprun = [1:9];
+stg.exprun = [1:4];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -38,7 +38,7 @@ stg.useLog = 0;
 
 % True or false to decide whether to use multicore everywhere it is available
 % (Optimization Multicore)
-stg.optmc = false;
+stg.optmc = true;
 
 % Choice of ramdom seed
 % (Ramdom seed)
@@ -170,16 +170,15 @@ stg.partest(:,1) = [1  ,2  ,3  ,4  ,5  ,6  ,7 ,2];
 %                        3  ,4  ,5];
 
 % (Parameter array to test)
-stg.pat = 1:20;
+stg.pat = 1:3;
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-for n = 1:20
-stg.pa(n,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
-end
-% 
-% stg.pa(2,:) = stg.pa(1,:)-0.5;
-% stg.pa(3,:) = stg.pa(1,:)+0.5;
+stg.pa(1,:) = [3.98031689729078	0.564422809437181	-2.43350515395489	1.00355333497453	2.94810032547993	0.125408935205199	1.34811452444541	4.19197031579597
+];
+% stg.pa(1,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
+ stg.pa(2,:) = stg.pa(1,:)-0.5;
+ stg.pa(3,:) = stg.pa(1,:)+0.5;
 % stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
 
 % Best parameter array found so far for the model
@@ -190,7 +189,7 @@ stg.bestpa = stg.pa(1,:);
 
 % True or false to decide whether to plot results
 % (Plots)
-stg.plot = false;
+stg.plot = true;
 
 % True or false to decide whether to use long names in the title of the outputs
 % plots in f_plot_outputs.m

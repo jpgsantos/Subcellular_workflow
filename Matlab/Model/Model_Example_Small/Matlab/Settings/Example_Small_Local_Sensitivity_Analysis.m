@@ -29,7 +29,7 @@ stg.sbtab_name = "SBtab_" + stg.name;
 %% Analysis
 
 % Experiments to run
-stg.exprun = [5:8];
+stg.exprun = [1:4];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation)
@@ -101,7 +101,7 @@ stg.simtime = "second";
 % True or false to decide whether to run sbioaccelerate (after changing this value
 % you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
-stg.sbioacc = false;
+stg.sbioacc = true;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
@@ -174,10 +174,10 @@ stg.pat = 1:4;
 
 % All the parameter arrays, in this case there is only one
 % (Parameter arrays)
-stg.pa(1,:) = [4,0.7,0.9,3.1,4,-1.7,1.1];
-stg.pa(2,:) = stg.pa(1,:)-0.5;
-stg.pa(3,:) = stg.pa(1,:)+0.5;
-stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
+stg.pa(1,:) = [3.98031689729078	0.564422809437181	-2.43350515395489	1.00355333497453	2.94810032547993	0.125408935205199	1.34811452444541];
+% stg.pa(2,:) = stg.pa(1,:)-0.5;
+% stg.pa(3,:) = stg.pa(1,:)+0.5;
+% stg.pa(4,:) = [2,0.35,0.45,1.55,2,-0.85,0.55];
 
 % Best parameter array found so far for the model
 % (Best parameter array)
@@ -195,7 +195,7 @@ stg.plot = true;
 stg.plotoln = true;
 
 %% Sensitivity analysis
-stg.lsa_samples = 500;
+stg.lsa_samples = 1000;
 stg.lsa_range_from_best = 0.1;
 % Number of samples to use in SA
 % (Sensitivity analysis number of samples)
