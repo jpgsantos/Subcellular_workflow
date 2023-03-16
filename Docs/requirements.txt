@@ -1,5 +1,0 @@
-# to build documentation locally
-sphinx>=5.0
-sphinx_rtd_theme>=1.0.0
-sphinxcontrib-contentui==0.2.5
--e git://github.com/ryanfox/sphinx-markdown-tables#egg=sphinx-markdown-tables
