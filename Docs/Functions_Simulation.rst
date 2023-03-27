@@ -25,9 +25,7 @@ Calls the function that runs the simulations and the function that scores the ou
 - **Outputs**
 
   - score - :ref:`rst.st<rst.st>`
-
   - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`, :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
-	
   - rst_not_simd - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
 	
 - **Calls** - f_prep_sim_, f_score_
@@ -45,26 +43,48 @@ f_prep_sim
  	   :linenos:
 	   :language: matlab
 
-Prepares the simulation making sure that an equilibration is preformed when necessary before running the main simulation.
+The code defines a main function **f_prep_sim** and three additional helper functions **update_thermo_constrained_multiplications**, **update_thermo_constrained_divisions**, and **f_sim**. The main function f_prep_sim prepares the parameters for a simulation, setting default values and updating any parameters being tested. It also adjusts the parameters according to thermodynamic constraints.
 
-- **Inputs**
+The main function f_prep_sim takes the following inputs:
 
-  - :ref:`stg<stg>` - :ref:`stg.name<stg.name>`, :ref:`stg.partest<stg.partest>`, :ref:`stg.tci<stg.tci>`, :ref:`stg.tcm<stg.tcm>`, :ref:`stg.tcd<stg.tcd>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.simcsl<stg.simcsl>`, :ref:`stg.expn<stg.expn>`
-  - parameters - (double) Set of parameters that we are working on
-  
-- **Created Variables**
+- **parameters**: parameters for the simulation
+- **stg**: settings for the simulation
+- **model_folders**: folder paths for the models
 
-  - rt
-  
-    - rt.ssa - (double) steady state amounts
-    - rt.par - (double) All parameters of the model, takes the default ones from SBtab and then replaces the ones being worked on.
-	
-- **Outputs**
+And it outputs :
 
-  - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
-	
-- **Calls** - f_sim_
-- **Loads** - :ref:`data.mat<data.mat>`, :ref:`model.mat<model.mat>`
+- **rst**: results of the simulation
+
+The function initializes several persistent variables, imports data on the first run, and sets the default parameters for the simulation.
+
+The function checks if the parameters need to be updated for Profile Likelihood.
+
+It iterates through all model parameters, updating tested parameters and thermodynamic constrained parameters accordingly.
+
+The function initializes the start amount for the species in the model to 0 and sets up a loop for each experiment being run.
+
+Within the loop, the function tries to simulate the model, performing several checks and updates. If an error occurs during the simulation, the function catches the error and sets the simulation output to 0, indicating the simulation did not work properly.
+
+The helper functions **update_thermo_constrained_multiplications** and **update_thermo_constrained_divisions** update the parameters according to the thermodynamic constraints. They iterate through parameters that need to be multiplied or divided, respectively, and make the appropriate adjustments.
+
+The helper function **f_sim** runs simulations using SimBiology models for a set of experiments. It takes the following inputs:
+
+- **experiment_idx**: indices of experiments to run
+- **settings**: simulation settings
+- **simulation_parameters**: parameter values for simulations
+- **species_start_amount**: start amounts for species in simulations
+- **results**: output variable to save simulation results
+- **main_model_folders**: paths for model files
+
+It outputs:
+
+- **results**: simulation results
+
+The function **f_sim** maintains the state of the loaded models between calls using persistent variables, loads the appropriate models, compiles the code for the simulation run, substitutes the start amounts of species and parameter values based on real-time results, and runs the simulation.
+
+The simulation results are saved in the output variable, and the function can be called multiple times for different experiments. The function checks if the times of the simulation output and the simulation data from SBTAB match. If they do not match, it sets the simulation output to 0, indicating that the simulation did not work properly.
+
+In summary, the main function **f_prep_sim** prepares the parameters for a simulation by setting them to the default values and then updating any parameters being tested. It adjusts the parameters according to any thermodynamic constraints and iterates through all the experiments to be run. The function then calls the helper function **f_sim** to run the simulation using SimBiology models for the set of experiments. The simulation results are saved in the output variable, and any errors encountered during the simulation are caught and handled appropriately.
 
 .. _f_sim:
 
