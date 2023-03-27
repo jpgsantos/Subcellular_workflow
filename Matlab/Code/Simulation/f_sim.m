@@ -81,7 +81,17 @@ set(models{experiment_idx}.species(1:size(species_start_amount(:,experiment_idx)
 set(models{experiment_idx}.parameters(1:size(simulation_parameters,1)),...
     {'Value'},num2cell(simulation_parameters));
 
-%simulate the model using matlab built in function
-results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
-    configs{experiment_idx});
+try
+    %simulate the model using matlab built in function
+    results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
+        configs{experiment_idx});
+catch ME
+    disp(ME.identifier + " " + n)
+
+    % Set the simulation output to be 0, this is a non function
+    % value that the score function expects in simulations that did
+    % not worked properly
+    results.simd{experiment_idx} = 0;
+end
+
 end
