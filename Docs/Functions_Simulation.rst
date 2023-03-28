@@ -1,7 +1,7 @@
 .. _functions_simulation:
 
 Simulation and Scoring
-----------------------
+======================
 
 .. _f_sim_score:
 
@@ -15,21 +15,24 @@ f_sim_score
  	   :linenos:
 	   :language: matlab
 
-Calls the function that runs the simulations and the function that scores the output of the runs.
+This function, f_sim_score, calculates the total score of a given model by simulating the model and scoring its performance. The function takes three input arguments: parameters, stg, and model_folders. The output of the function includes the total score (score), the result of the simulation and scoring (rst), and the result of the simulation and scoring without the 'simd' field (rst_not_simd).
 
 - **Inputs** 
 
-  - :ref:`stg<stg>`
-  - parameters - (double) Set of parameters that we are working on
-  
+  - :ref:`stg<stg>` - Structure containing the settings and configurations for the simulation and scoring process.
+  - parameters - Double containing the model's parameters that are necessary for the simulation.
+  - model_folders: Structure containing the paths to the folders where the model and other relevant files are stored.
+   
 - **Outputs**
 
-  - score - :ref:`rst.st<rst.st>`
-  - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`, :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
-  - rst_not_simd - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>`
+  - score - :ref:`rst.st<rst.st>` Scalar value representing the total score of the model's performance.
+  - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`, :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>` Structure containing the results of the simulation and scoring process.
+  - rst_not_simd - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, and :ref:`rst.st<rst.st>` Structure containing the results of the simulation and scoring process with the 'simd' field removed.
 	
-- **Calls** - f_prep_sim_, f_score_
-- **Loads**
+- **Calls** 
+
+  - f_prep_sim_  This function simulates the model using the provided parameters, settings, and model folders.
+  - f_score_ This function calculates the score of the model based on the results of the simulation.
 
 .. _f_prep_sim:
 
@@ -48,7 +51,7 @@ The code defines a main function **f_prep_sim** and three additional helper func
 The main function f_prep_sim takes the following inputs:
 
 - **parameters**: parameters for the simulation
-- **stg**: settings for the simulation
+- **:ref:`stg<stg>`**: settings for the simulation
 - **model_folders**: folder paths for the models
 
 And it outputs :
@@ -98,11 +101,13 @@ f_sim
  	   :linenos:
 	   :language: matlab
 
+Description
+-----------
+
 Simulates the model with the provided configurations.
 The first time it is run it loads a representation of the model and the simulation, and compiles this information to C code.
 
-
-- **Inputs**
+**Input Arguments**
 
   - exp_n - (double) Unique number to identify the model for each experiment or equilibrium reaction (it needs a new model object for each one)
   - :ref:`stg<stg>` - :ref:`stg.expn<stg.expn>`, :ref:`stg.name<stg.name>`, :ref:`stg.sbioacc<stg.sbioacc>`
@@ -114,12 +119,12 @@ The first time it is run it loads a representation of the model and the simulati
 	
   - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
   
-- **Outputs**
+**Output Arguments**
 
   - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
 	
-- **Calls** - `Sbioaccelerate <https://www.mathworks.com/help/simbio/ref/sbioaccelerate.html>`_, `Sbiosimulate <https://www.mathworks.com/help/simbio/ref/sbiosimulate.html>`_
-- **Loads** - :ref:`Ready to run model<rr_model.mat>`, :ref:`Ready to run model equilibration<rr_model_eq.mat>`
+**Functions called** - `Sbioaccelerate <https://www.mathworks.com/help/simbio/ref/sbioaccelerate.html>`_, `Sbiosimulate <https://www.mathworks.com/help/simbio/ref/sbiosimulate.html>`_
+**Loaded variables** - :ref:`Ready to run model<rr_model.mat>`, :ref:`Ready to run model equilibration<rr_model_eq.mat>`
 
 .. _f_score:
 
@@ -133,16 +138,65 @@ f_score
  	   :linenos:
 	   :language: matlab
 
-Uses the results from the simulation of the model and the Data provided via the SBTAB to calculate a score for a given parameter set.
+Description
+-----------
 
-- **Inputs**
+The ``f_score`` function computes the score for a given set of simulated results by comparing them with the experimental data. The function calculates the score for each dataset and experiment, and then computes the total score based on the selected scoring strategy. The score serves as a metric for comparing the accuracy of different simulations or models.
 
-  - :ref:`rst<rst>` - :ref:`rst.simd<rst.simd>`
-  - :ref:`stg<stg>` - :ref:`stg.name<stg.name>`, :ref:`stg.exprun<stg.exprun>`, :ref:`stg.useLog<stg.useLog>`  
-	
-- **Outputs**
+**Input Arguments**
 
-  - :ref:`rst.st<rst.st>` - :ref:`rst.xfinal<rst.xfinal>`, :ref:`rst.sd<rst.sd>`, :ref:`rst.se<rst.se>`, :ref:`rst.st<rst.st>`
-	
-- **Calls**
-- **Loads** - :ref:`data.mat<data.mat>`
+- :ref:`rst<rst>`: Structure containing the simulation results and scores.
+- :ref:`stg<stg>`: Structure containing the settings for the scoring strategy, such as the option to use log10 scaling, error score, and other options.
+- mmf: Structure containing the model information, including the data model.
+
+**Output Arguments**
+
+- :ref:`rst.st<rst.st>`: Updated structure containing the calculated scores for each dataset, experiment, and the total score.
+
+Example
+-------
+
+.. code-block:: matlab
+
+   % Define the input structures and settings
+   stg.useLog = 1;
+   stg.errorscore = 1e10;
+   stg.exprun = 1:3;
+   mmf.model.data.data_model = matlab model file
+   rst.simd = matlab output from f_prep_sim
+
+   % Call the f_score function
+   rst = f_score(rst, stg, mmf);
+
+This example demonstrates how to call the ``f_score`` function with the input structures and settings. The function calculates the scores for the given simulation results based on the scoring strategy defined in the :ref:`stg<stg>` structure.
+
+
+.. _f_normalize:
+
+f_normalize
+^^^^^^^^^^^
+
+ .. toggle-header::
+     :header: **Code**
+ 
+ 	.. literalinclude:: ../Matlab/Code/Simulation/f_normalize.m
+ 	   :linenos:
+	   :language: matlab
+
+Description
+-----------
+
+The f_normalize function processes and normalizes simulation results based on a specified normalization method. It accepts a set of inputs, including the simulation results, settings, experiment and output numbers, and a model metafile structure. The function returns normalized simulation results, along with detailed normalized simulation results if the 'simdetail' setting is enabled.
+
+**Input Arguments**
+
+- :ref:`rst<rst>`: A structure containing the simulation results.
+- :ref:`stg<stg>`: A structure containing the settings for the simulation.
+- exp_number: An integer representing the experiment number.
+- output_number: An integer representing the output number.
+- mmf: A structure containing the model metafile information.
+
+**Output Arguments**
+
+- sim_results: A matrix containing the normalized simulation results.
+- sim_results_detailed: A matrix containing the detailed normalized simulation results (if stg.simdetail is true).
