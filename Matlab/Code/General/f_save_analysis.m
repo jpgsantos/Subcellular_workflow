@@ -1,4 +1,4 @@
-function f_save_analysis(stg,sb,rst,mmf)
+function f_save_analysis(stg,sb,rst,mmf,plots)
 
 Results_Folder = mmf.model.results.main;
 Analysis_folder = mmf.model.results.analysis.main;
@@ -9,5 +9,5 @@ Analysis_date_folder = mmf.model.results.analysis.date.main;
 [~,~] = mkdir(Analysis_date_folder);
 addpath(Analysis_date_folder)
 
-save (Analysis_date_folder + "Analysis.mat",'stg','sb','rst');
+save (Analysis_date_folder + "Analysis.mat",'stg','sb','rst','plots');
 end

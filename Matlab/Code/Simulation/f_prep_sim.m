@@ -39,7 +39,7 @@ result.parameters = sim_par;
 result.simd{stg.exprun(1)} = [];
 % Run simulations for each experiment
 for n = stg.exprun
-    disp("n = " + n)
+    
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
 

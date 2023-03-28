@@ -65,10 +65,10 @@ end
 % Runs the Analysis chosen by the user input
     [rst,stg] = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
 
-% Save Analysis results if chosen in settings
-if stg.save_results
-    f_save_analysis(stg,sb,rst,mmf)
-end
+% % Save Analysis results if chosen in settings
+% if stg.save_results
+%     f_save_analysis(stg,sb,rst,mmf,plots)
+% end
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
@@ -80,4 +80,10 @@ if stg.plot
 %          f_save_plots(mmf)
 %     end
 end
+
+% Save Analysis results if chosen in settings
+if stg.save_results
+    f_save_analysis(stg,sb,rst,mmf,plots)
+end
+
 end
