@@ -15,9 +15,53 @@ f_user_input
 		:linenos:
 		:language: matlab
 
-It prompts the user to choose the model to run, the settings file to use, and the Analysis to perform.
+In this code, the main function ``f_user_input`` is responsible for processing user inputs related to model folder, analysis options, and settings file. Based on these inputs, the function returns the necessary settings, results, and SBtab data.
 
-- **Outputs** - :ref:`stg<stg>`, :ref:`rst<rst>`, sb, Analysis_n
+**Inputs**:
+
+- mmf: a struct containing the main folder path.
+- analysis_options: an array containing the available analysis options.
+- user_choices: a cell array containing user inputs for the model folder, analysis option, and settings file.
+
+**Outputs**:
+
+- settings: a struct containing the necessary settings for the chosen analysis.
+- results: a struct containing the results (if any) of the chosen analysis.
+- sbTab: a struct containing the SBtab data (if any) associated with the chosen analysis.
+
+The main function relies on several helper functions to process the user input, update settings, and handle user choices.
+
+1. ``apply_settings``: This function updates the settings based on the chosen settings file, and checks if any changes have been made to the settings file or SBtab since the last analysis.
+
+   **Inputs**: settings, settings_folder, settings_file_text, last_settings_file_date, last_settings_file_text, analysis_options, analysis_text, specific_model_folder, functions_cleared
+
+   **Outputs**: settings, last_settings_file_text, last_settings_file_date
+
+2. ``getValidInput``: This function validates the user input for the model folder, settings file, and analysis option, and returns the valid input.
+
+   **Inputs**: options, user_choice, input_type
+
+   **Outputs**: valid_input
+
+3. ``choose_options``: This function helps the user to choose valid options from available choices in a folder.
+
+   **Inputs**: folder, prompt, last_choice
+
+   **Outputs**: choice, last_choice
+
+4. ``parse_choices``: This function presents a list of choices to the user, validates their input, and returns the chosen option.
+
+   **Inputs**: prompt, options, last_choice
+
+   **Outputs**: choice, last_choice
+
+5. ``compare_and_update``: This function compares the current and previous values, and clears functions if necessary.
+
+   **Inputs**: current, previous, is_cleared
+
+   **Outputs**: previous, is_cleared
+
+The main function starts by initializing the results, settings, and sbTab variables, and setting the model folder paths. It then calls the ``getValidInput`` function to obtain valid user input for the model folder and analysis option. Depending on the user's chosen analysis option, the code proceeds differently. For analysis options 1-5 and 8, the ``apply_settings`` function is called to update the settings. For analysis options 6-7, the function loads the settings file and SBtab struct from a previous analysis, and processes the user input accordingly. Finally, the chosen model folder is set in the settings struct, and the function returns the updated settings, results, and sbTab data.
 
 .. _f_import:
 
