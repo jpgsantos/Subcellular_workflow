@@ -19,7 +19,7 @@ general_model_folder = mmf.main + "Model/";
 % Get the valid model folder based on user input.
 model_folder =...
     getValidInput(general_model_folder, user_choices{1}, "model folder");
-specific_model_folder = general_model_folder + "/" + model_folder;
+specific_model_folder = general_model_folder + model_folder;
 
 % Get the valid analysis option based on user input.
 analysis_text =...
@@ -29,7 +29,7 @@ analysis_text =...
 if any(contains(analysis_options([1:5, 8]), analysis_text))
 
     % Set settings folder path based on user input
-    settings_folder = specific_model_folder + "/Matlab/Settings";
+    settings_folder = specific_model_folder + "/Matlab/Settings/";
     settings_file_text =...
         getValidInput(settings_folder, user_choices{3}, "settings file");
 
@@ -183,6 +183,7 @@ valid_input = user_choice;
 % Check the validity of the input based on the input_type
 switch input_type
     case "model folder"
+
         % If the input is a valid model folder, return it
         if isstring(user_choice) && isfolder(options + valid_input)
             disp("The " + input_type + " chosen was: " + valid_input)
@@ -196,7 +197,7 @@ switch input_type
 
     case "settings file"
         % If the input is a valid settings file, return it
-        if isstring(user_choice) && isfolder(options + valid_input)
+        if isstring(user_choice) && isfile(options + valid_input)
             disp("The " + input_type + " chosen was: " + valid_input)
             return;
             % Otherwise, prompt the user to choose a valid one
@@ -235,11 +236,11 @@ end
 
 % Create an options array containing the names of the valid choices
 for n = 1:size(listing, 1)
-    options(n) = string(listing(n).name);
+    folder(n) = string(listing(n).name);
 end
 
 % Call parse_choices to handle user input
-[choice, last_choice] = parse_choices(prompt, options, last_choice);
+[choice, last_choice] = parse_choices(prompt, folder, last_choice);
 end
 
 function [choice, last_choice] = parse_choices(prompt, options, last_choice)
