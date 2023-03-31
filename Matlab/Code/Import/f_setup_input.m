@@ -122,7 +122,12 @@ end
 fprintf(fileID, "end\n");
 fclose(fileID);
 % Add the path to the model folder and evaluate the input creator function:
-addpath(genpath(Model_folder));
+
+if exist(Model_folder, 'dir') ~= 7
+    % If the folder is not in the path, add it
+    addpath(Model_folder);
+end
+% addpath(genpath(Model_folder));
 eval(stg.name + "_input_creator()");
 end
 
@@ -159,6 +164,7 @@ inp_str =...
     "end\n"+...
     "end";
 end
+
 % The template2() function generates the code for the first input of the
 % first experiment in the "_input_creator()" function.
 function inp_creator_str = template2()
@@ -167,6 +173,7 @@ inp_creator_str = ...
     "expExp_n_input_name(:,2) = sbtab.datasets(Exp_n).input_value{index};\n"+...
     "save('inp_model_data','expExp_n_input_name');\n";
 end
+
 % The template3() function generates the code for the rest of the inputs in
 % the "_input_creator()" function.
 function inp_creator_str = template3()

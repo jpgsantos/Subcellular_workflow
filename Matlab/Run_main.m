@@ -33,7 +33,14 @@ date_stamp = string(year(datetime)) + "_" + ...
 % Get the folder where the MATLAB code and models are located
 Matlab_main_folder = fileparts(mfilename('fullpath'))+"/";
 Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
-addpath(genpath(Matlab_main_folder));
+
+if exist(Matlab_main_folder, 'dir') ~= 7
+    % If the folder is not in the path, add it
+    addpath(genpath(Matlab_main_folder));
+end
+
+% addpath(genpath(Matlab_main_folder));
+
 mmf.main = Matlab_main_folder;
 
 % Name of the various analysis that can be run with this code

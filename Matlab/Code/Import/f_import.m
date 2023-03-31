@@ -13,7 +13,11 @@ disp("Generating model files and folder from SBtab")
 % Creates a .mat and a tsvs from the SBtab file
 f_excel_sbtab_importer(mmf);
 
-addpath(genpath(Model_folder));
+if exist(Model_folder, 'dir') ~= 7
+    % If the folder is not in the path, add it
+    addpath(genpath(Model_folder));
+end
+% addpath(genpath(Model_folder));
 
 % Creates a struct based on the SBtab that is used elswhere in the code and
 % also adds the number of experiments and outputs to the settings struct
