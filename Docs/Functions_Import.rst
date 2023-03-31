@@ -126,11 +126,43 @@ f_sbtab_to_model
  	   :linenos:
 	   :language: matlab
 
-Reads information from the SBtab and saves the model in MATLAB (:ref:`.mat<model.mat>`, :ref:`.sbproj<model.sbproj>`) and SBML(:ref:`.xml<model.xml>`) format, while also creating a
-:ref:`file<data.mat>` whith the data to run the model in all different experimental settings defined in the SBtab.
+This function, f_sbtab_to_model, converts an SBtab data structure into a model format that can be used for simulations and analysis. It then saves the model in .mat, .sbproj, and .xml formats for future use. The function also processes experimental settings defined in the SBtab data structure, adding compartments, species, parameters, reactions, expressions, inputs, constants, and boundary conditions to the model.
 
-- **Inputs** - :ref:`stg<stg>`, sb
-- **Saves** - :ref:`model file .mat<model.mat>`, :ref:`model file .sbproj<model.sbproj>`, :ref:`model file .xml<model.xml>`, and :ref:`data file<data.mat>`
+**Inputs**
+
+- :ref:`stg<stg>`: A structure containing the settings for the model conversion.
+- **sb**: An SBtab data structure containing the model data.
+- **mmf**: A structure containing the file names for saving the model in different formats.
+
+**Outputs**
+
+The function saves the generated model in :ref:`.mat<model.mat>`, :ref:`.sbproj<model.sbproj>`, and SBML(:ref:`.xml<model.xml>`) formats.
+
+**Functions called:**
+
+- **addcompartment**: Adds a compartment to the SimBiology model object.
+- **addspecies**: Adds a species to a specific compartment within the model.
+- **addparameter**: Adds a parameter to the model, including its value, unit, and associated notes.
+- **find_compartment_number**: Locates the index of the compartment based on its name within the compobj cell array.
+- **add_reactions_to_model**: Adds reactions to the model by processing the reaction-related data in the SBtab data structure.
+- **set_boundary_Condition**: Sets the boundary conditions for the model using the information provided in the SBtab data structure.
+- **add_expressions_to_model**: Adds algebraic expressions to the model using the information provided in the SBtab data structure.
+- **add_inputs_to_model**: Adds input variables to the model using the information provided in the SBtab data structure.
+- **add_constants_to_model**: Adds constant variables to the model using the information provided in the SBtab data structure.
+- **process_experiments**: Processes experimental data from the SBtab data structure and returns the updated SBtab and a Data structure containing the processed experimental data.
+- **sbiosaveproject**: Saves the SimBiology model object as an .sbproj file.
+- **save:** Saves the SimBiology model object as a .mat file, and the experimental data as a separate .mat file.
+- **sbmlexport**: Exports the SimBiology model object as an .xml file in the Systems Biology Markup Language (SBML) format.
+
+**Loaded variables:**
+
+- **modelobj**: A SimBiology model object.
+- **compobj**: A cell array containing compartment objects.
+- **sbtab.species**: A table containing species-related data.
+- **sbtab.defpar**: A table containing default parameter-related data.
+- **sbtab.sim_time**: A table containing simulation time data.
+- **Data**: A structure containing processed experimental data.
+- **sbproj_model, matlab_model, data_model, xml_model**: Variables for saving the model in :ref:`.sbproj<model.sbproj>`, :ref:`.mat<model.mat>`, SBML(:ref:`.xml<model.xml>`) formats, and the experimental data(:ref:`file<data.mat>`), respectively.
 
 .. _f_setup_input:
 
