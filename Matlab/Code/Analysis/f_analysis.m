@@ -1,39 +1,61 @@
 function [rst,stg] = f_analysis(stg,analysis,mmf,analysis_options,rst)
-% This function performs an analysis, based on the input analysis options
+% Function: f_analysis
+% Description: This function performs a specific analysis based on the
+% given analysis options. It takes settings, analysis type, main model
+% files, a list of possible analysis options, and a structure for storing
+% analysis results as input arguments. It outputs the results of the
+% analysis and updates the settings as needed. The function calls the
+% appropriate analysis functions (f_diagnostics, f_opt, f_sim_score, f_lsa,
+% f_gsa, f_PL_m) depending on the selected analysis type.
+%
 % Inputs:
-% stg: settings to use in the analysis
-% analysis: type of analysis to be performed
-% mmf: main model files
-% analysis_options: list of possible analysis options
-% rst: structure for storing analysis results
+%   - stg: settings to use in the analysis
+%   - analysis: type of analysis to be performed
+%   - mmf: main model files
+%   - analysis_options: list of possible analysis options
+%   - rst: structure for storing analysis results
+%
+% Outputs:
+%   - rst: updated structure containing the results of the analysis
+%   - stg: updated settings after the analysis
 
-for i = 1:length(analysis_options) % loop through all analysis options
-    if contains(analysis_options(i),analysis) == 1 % check if current option matches desired analysis
-        disp("Starting " + {analysis_options(i)}) % display start message
-        switch i % switch based on current analysis option index
-            case 1
-                rst.diag = f_diagnostics(stg,mmf); % run diagnostic analysis
-            case 2
-                [rst.opt,pa] = f_opt(stg,mmf); % run optimization analysis
-                valid_options = find(pa(:,1) ~= 0); % find valid optimization options
-                stg.pat = transpose(valid_options); % update settings with valid options
+matching_option_idx = find(contains(analysis_options, analysis), 1);
 
-                sim_results = cell(length(valid_options),1); % create cell array for simulation results
+% display start message
+disp("Starting " + {analysis_options(matching_option_idx)})
 
-                for j = stg.pat % parallelize simulation runs
-
-                    [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf); % run simulation for current valid option
-                end
-
-                rst.diag(stg.pat) = [sim_results{:}]; % store simulation results in results structure
-            case 3
-                rst.lsa = f_lsa(stg,mmf); % run LSA analysis
-            case 4
-                rst.gsa = f_gsa(stg,mmf); % run GSA analysis
-            case 5
-                rst.PLA = f_PL_m(stg,mmf); % run PLA analysis
+% Perform the analysis based on the current analysis option index
+switch matching_option_idx
+    case 1
+        % run diagnostic analysis
+        rst.diag = f_diagnostics(stg,mmf);
+    case 2
+        % run optimization analysis
+        [rst.opt,pa] = f_opt(stg,mmf);
+        % find valid optimization options
+        valid_options = find(pa(:,1) ~= 0);
+        % update settings with valid options
+        stg.pat = transpose(valid_options);
+        % create cell array for simulation results
+        sim_results = cell(length(valid_options),1);
+        % parallelize simulation runs
+        for j = stg.pat
+            % run simulation for current valid option
+            [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf);
         end
-        disp(analysis_options(i) + " completed successfully") % display completion message
-    end
+        % store simulation results in results structure
+        rst.diag(stg.pat) = [sim_results{:}];
+    case 3
+        % run LSA analysis
+        rst.lsa = f_lsa(stg,mmf);
+    case 4
+        % run GSA analysis
+        rst.gsa = f_gsa(stg,mmf);
+    case 5
+        % run PLA analysis
+        rst.PLA = f_PL_m(stg,mmf);
 end
+
+% display completion message
+disp(analysis_options(matching_option_idx) + " completed successfully")
 end
