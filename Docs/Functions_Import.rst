@@ -176,12 +176,30 @@ f_setup_input
  	   :linenos:
 	   :language: matlab
 
-Creates code that loads the inputs of each experiment into a :ref:`.mat file<input.mat>` and
-the code to read these inputs at runtime when the experiments are being simulated. All
-this generated code is stored on the :ref:`"Model/'model folder name'/Formulas"<files_functions>` folder.
+The f_setup_input function is designed to generate code for loading experiment inputs into a .mat file and create code to read these inputs during the simulation of the experiments. The generated code is stored in the "Input_functions" folder.
 
-- **Inputs** - :ref:`stg<stg>`
-- **Saves** - :ref:`model-specific functions<files_functions>`
+   :param stg: A structure containing information about the simulation settings.
+   :type stg: structure
+   :param mmf: A structure containing information about the model, including the model data, main folder, and input functions.
+   :type mmf: structure
+   :return: This function creates input function files and an input creator function file in the "Input_functions" folder. The input functions are used to calculate input values based on the simulation time, while the input creator function is used to create input data from the sbtab.datasets.
+   :rtype: None
+
+   The function calls the following helper functions:
+
+   * template1: Generates code for input functions.
+   * template2: Generates code for the first input of the first experiment in the input creator function.
+   * template3: Generates code for the rest of the inputs in the input creator function.
+
+   The function loads the following variables:
+
+   * matlab_model: Loaded from mmf.model.data.mat_model.
+   * data_model: Loaded from mmf.model.data.data_model.
+   * inp_model_data: Loaded from mmf.model.data.input_model_data.
+   * Model_folder: Loaded from mmf.model.main.
+   * model_input: Loaded from mmf.model.input_functions.input.
+   * sbtab: Loaded from the data_model file.
+   * modelobj: Loaded from the matlab_model file.
 
 .. _f_build_model_exp:
 
