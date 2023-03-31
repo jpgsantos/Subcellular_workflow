@@ -218,3 +218,73 @@ These files have all the added rules, species and parameters needed depending on
 
 - **Inputs** - :ref:`stg<stg>`, sb
 - **Saves** - :ref:`Ready to run models<rr_model>`
+
+Function: f_build_model_exp
+Description: This function creates two .mat files for each experiment: one for the equilibrium simulation run and one for the proper run. The .mat files contain necessary rules, species, and parameters based on the inputs and outputs specified in the sbtab. The function also configures simulation settings for the equilibrium and proper simulation runs, processes output and input species, and saves the .mat files for each experiment.
+
+Inputs:
+- stg: A structure containing settings for the simulations
+- sb: An sbtab structure containing information about experiments
+- mmf: A model management framework structure containing the data and mat models
+
+Outputs:
+- .mat files for equilibrium and proper runs for each experiment
+
+Called Functions:
+- getconfigset
+- copyobj
+- set
+- load
+- save
+- addspecies
+- addrule
+- addparameter
+- addevent
+
+Loaded Variables:
+- data_model
+- mat_model
+- model_exp_eq
+- model_exp_default
+- model_exp_detail
+- Data
+- sbtab
+- modelobj
+
+Notes:
+- The function has a loop that iterates through all experiments and saves the corresponding .mat files.
+
+Usage example:
+
+.. code-block:: matlab
+
+	% Initialize stg, sb, and mmf structures
+	stg = ...
+	sb = ...
+	mmf = ...
+
+	% Call the f_build_model_exp function
+	f_build_model_exp(stg, sb, mmf);
+
+This will create .mat files for equilibrium and proper runs for each experiment based on the information provided in the stg, sb, and mmf structures.
+The function f_build_model_exp processes the input structures stg, sb, and mmf to create .mat files for each experiment. The stg structure contains simulation settings such as time units, maximum wall clock, and tolerances. The sb structure contains information about the experiments, while the mmf structure contains data and mat models.
+
+The function loads data from the data_model and mat_model files and initializes arrays for model_run and configsetObj. It then iterates through all experiments, configuring the simulation settings for both the equilibrium and proper simulation runs.
+
+For each experiment, the function processes the output species, adding them to the model if they don't already exist and setting up the appropriate rules. It then processes the input species, adding them either as events or repeated assignments based on the input time.
+
+Finally, the function saves the .mat files for each experiment, creating separate files for the equilibrium, proper (default), and detailed simulation runs.
+
+Below is an example of how to use the function:
+
+.. code-block:: matlab
+
+	% Initialize stg, sb, and mmf structures with the appropriate data
+	stg = ...
+	sb = ...
+	mmf = ...
+
+	% Call the f_build_model_exp function to generate .mat files for each experiment
+	f_build_model_exp(stg, sb, mmf);
+
+After executing the function with the appropriate input structures, .mat files will be created for each experiment, which can then be used for further analysis or simulation runs.
