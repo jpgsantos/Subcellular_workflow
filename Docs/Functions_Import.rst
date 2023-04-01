@@ -274,17 +274,3 @@ The function loads data from the data_model and mat_model files and initializes 
 For each experiment, the function processes the output species, adding them to the model if they don't already exist and setting up the appropriate rules. It then processes the input species, adding them either as events or repeated assignments based on the input time.
 
 Finally, the function saves the .mat files for each experiment, creating separate files for the equilibrium, proper (default), and detailed simulation runs.
-
-Below is an example of how to use the function:
-
-.. code-block:: matlab
-
-	% Initialize stg, sb, and mmf structures with the appropriate data
-	stg = ...
-	sb = ...
-	mmf = ...
-
-	% Call the f_build_model_exp function to generate .mat files for each experiment
-	f_build_model_exp(stg, sb, mmf);
-
-After executing the function with the appropriate input structures, .mat files will be created for each experiment, which can then be used for further analysis or simulation runs.
