@@ -66,18 +66,7 @@ end
 % end
 
 %Font settings
-Letter_FontSize = 10;
-Letter_Fontweight = 'bold';
-Axis_FontSize = 8;
-Axis_Fontweight = 'bold';
-Minor_title_FontSize = 10;
-Minor_title_Fontweight = 'bold';
-Major_title_FontSize = 12;
-Major_title_Fontweight = 'bold';
-Legend_FontSize = 8;
-Legend_Fontweight = 'bold';
-Legend_ItemTokenSize = [20,18];
-line_width = 1;
+set_font_settings(font_settings)
 
 fig_n = 0;
 plot_n = 0;
@@ -154,5 +143,12 @@ end
     % Add a title to each plot
     title(titlestring(1),'FontSize',Minor_title_FontSize,...
         'Fontweight',Minor_title_Fontweight)
+end
+end
+
+function set_font_settings(font_settings)
+font_settings_fields = fieldnames(font_settings);
+for i = 1:numel(font_settings_fields)
+    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
 end
 end

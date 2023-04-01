@@ -2,19 +2,7 @@ function plots = f_plot_gsa_sensitivities(rst,stg,sbtab)
 % Generates figures for Sensitivity Analysis
 
 %Font settings
-Letter_FontSize = 10;
-Letter_Fontweight = 'bold';
-Axis_FontSize = 8;
-Axis_Fontweight = 'bold';
-Minor_title_FontSize = 10;
-Minor_title_Fontweight = 'bold';
-Major_title_FontSize = 12;
-Major_title_Fontweight = 'bold';
-Major_Title_Spacing = 2;
-Legend_FontSize = 8;
-Legend_Fontweight = 'bold';
-Legend_ItemTokenSize = [20,18];
-line_width = 1;
+set_font_settings(font_settings)
 
 % Get the total number of outputs
 [~,outputNames.sd] = f_get_outputs(stg,sbtab);
@@ -169,5 +157,12 @@ title(layout,major_title,'FontSize', Major_title_FontSize,'Fontweight',Major_tit
 % h.Title = title;
 h.XLabel = '\fontsize{8} \bf Outputs';
 h.YLabel = '\fontsize{8} \bf Parameters';
+end
+end
+
+function set_font_settings(font_settings)
+font_settings_fields = fieldnames(font_settings);
+for i = 1:numel(font_settings_fields)
+    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
 end
 end

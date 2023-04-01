@@ -1,19 +1,7 @@
 function plots = f_plot_lsa(rst,stg)
 
 %Font settings
-Letter_FontSize = 10;
-Letter_Fontweight = 'bold';
-Axis_FontSize = 8;
-Axis_Fontweight = 'bold';
-Minor_title_FontSize = 10;
-Minor_title_Fontweight = 'bold';
-Major_title_FontSize = 12;
-Major_title_Fontweight = 'bold';
-Major_Title_Spacing = 2;
-Legend_FontSize = 8;
-Legend_Fontweight = 'bold';
-Legend_ItemTokenSize = [20,18];
-line_width = 1;
+set_font_settings(font_settings)
 
 figHandles = findobj('type', 'figure', 'name', 'Local SA');
 close(figHandles);
@@ -34,16 +22,16 @@ end
 set(gca,'FontSize',Axis_FontSize);
 
 title(layout,"Local sensitivity Analysis",'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight);
-% t2.FontSize = Major_Title_Spacing;
 
 Lgnd = legend({'\mu_{deviation}','\sigma_{deviation}'},'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
     'Location','best','Box','off');
-% legend boxoff
 
-% Lgnd = legend(p1,...
-%     'Orientation','horizontal', ...
-%     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
-%     'Location','layout','Box','off');
-% Lgnd.Layout.Tile = 'South';
 Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+end
+
+function set_font_settings(font_settings)
+font_settings_fields = fieldnames(font_settings);
+for i = 1:numel(font_settings_fields)
+    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
+end
 end

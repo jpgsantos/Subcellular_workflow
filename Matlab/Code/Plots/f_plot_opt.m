@@ -2,19 +2,8 @@ function plots = f_plot_opt(rst,stg)
 % Generates a figure with optimization results
 
 %Font settings
-Letter_FontSize = 10;
-Letter_Fontweight = 'bold';
-Axis_FontSize = 8;
-Axis_Fontweight = 'bold';
-Minor_title_FontSize = 10;
-Minor_title_Fontweight = 'bold';
-Major_title_FontSize = 12;
-Major_title_Fontweight = 'bold';
-Major_Title_Spacing = 2;
-Legend_FontSize = 8;
-Legend_Fontweight = 'bold';
-Legend_ItemTokenSize = [20,18];
-line_width = 1;
+set_font_settings(font_settings)
+
 colour = {[1 0 0],[0 1 0],[0 0 1],[1 0.75 0],[1 0 1],[0 0.75 1]};
 
 figHandles = findobj('type', 'figure', 'name', 'Optimization results');
@@ -106,12 +95,10 @@ for n = 1:size(rst.opt,2)
         B = sort(rst.opt(n).fval);
         b = b +1;
         for a = 1:size(rst.opt(n).x,1)
-            %             m = m+1;
             if a == 1
                 p1(b) = scatter(a+(0.5/size(rst.opt,2)*n)-(0.5/size(rst.opt,2)*(size(rst.opt,2)+1)/2),log10(B(a)),20,...
                     'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n},...
                     'DisplayName',char(string(rst.opt(n).name)));
-                %            name{n} = char(string(rst.opt(n).name));
 
             else
                 scatter(a+(0.5/size(rst.opt,2)*n)-(0.5/size(rst.opt,2)*(size(rst.opt,2)+1)/2),log10(B(a)),20,...
@@ -138,4 +125,11 @@ Lgnd = legend(p1,...
 Lgnd.Layout.Tile = 'South';
 Lgnd.ItemTokenSize = Legend_ItemTokenSize;
 Lgnd.NumColumns = 3;
+end
+
+function set_font_settings(font_settings)
+font_settings_fields = fieldnames(font_settings);
+for i = 1:numel(font_settings_fields)
+    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
+end
 end

@@ -4,19 +4,8 @@ function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % the outputs
 
 %Font settings
-Letter_FontSize = 10;
-Letter_Fontweight = 'bold';
-Axis_FontSize = 8;
-Axis_Fontweight = 'bold';
-Minor_title_FontSize = 10;
-Minor_title_Fontweight = 'bold';
-Minor_Title_Spacing = 2;
-Major_title_FontSize = 12;
-Major_title_Fontweight = 'bold';
-Legend_FontSize = 8;
-Legend_Fontweight = 'bold';
-Legend_ItemTokenSize = [20,18];
-line_width = 1;
+%Font settings
+set_font_settings(font_settings)
 
 for n = stg.exprun
 
@@ -61,7 +50,6 @@ for n = stg.exprun
 
                 time = rst(m).simd{1,n}.Time;
                 [sim_results] = f_normalize(rst(m),stg,n,j,mmf);
-
 
                 if stg.simdetail
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
@@ -109,11 +97,8 @@ for n = stg.exprun
 
         t2.FontSize = Minor_Title_Spacing;
         % Choose number of decimal places for y axis
-%         ytickformat('%.2g')
         ytickformat('%-3.1f')
         % Add a legend for te entire image
-% p2(stg.pat)
-% [p1,transpose(p2(stg.pat)),plot_data,plot_data_SD]
         leg = legend([p1,p2(:,stg.pat),plot_data,plot_data_SD],...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout',"Orientation","Horizontal");
         leg.Layout.Tile = 'South';
@@ -162,7 +147,6 @@ end
                     break
                 end
             end
-
         end
 
         xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
@@ -173,4 +157,11 @@ end
         t4.FontSize = Minor_Title_Spacing;
         hold off
     end
+end
+
+function set_font_settings(font_settings)
+fields = fieldnames(font_settings);
+for i = 1:numel(fields)
+    assignin('caller', fields{i}, font_settings.(fields{i}))
+end
 end
