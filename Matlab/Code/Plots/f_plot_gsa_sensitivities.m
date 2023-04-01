@@ -22,7 +22,6 @@ parNames2 = cell(1,stg.parnum);
 for n = 1:stg.parnum
     parNames{n} = char("\theta_{" + find(stg.partest==n) + "}");
 end
-stg.parnum
 
 for n = 1:size(parNames,2)
     parNames2{n} = string(parNames{n}(1,:));
@@ -31,49 +30,49 @@ for n = 1:size(parNames,2)
             string(parNames{n}(m,:));
     end
 end
-size(parNames,2)
-% Bootstrapping quartile mean of first order Sensitivity index for score
-% per Experimental Output
-[plots{1,1},plots{1,2}] = f_generate_plot(rst,stg,outputNames,parNames2,...
-    "Si seo bm",...
+
+plot_sections = {
+    % Bootstrapping quartile mean of first order Sensitivity index for
+    % score per Experimental Output
+    "Si seo bm", ...
     ["First order Sensitivities","calculated using the Score of each Experimental Output","(Bootstrapping Mean)"],...
     "outputNames.sd",...
-    "transpose(reshape(mean(rst.SiQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))",font_settings);
-
-% Bootstrapping quartile mean of total order Sensitivity index for score
-% per Experimental Output
-[plots{2,1},plots{2,2}] = f_generate_plot(rst,stg,outputNames,parNames2,"SiT seo bm",...
+    "transpose(reshape(mean(rst.SiQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))";
+    % Bootstrapping quartile mean of total order Sensitivity index for
+    % score per Experimental Output
+    "SiT seo bm",...
     ["Total order Sensitivities"," calculated using the Score of each Experimental Output "," (Bootstrapping Mean)"],...
     "outputNames.sd",...
-    "transpose(reshape(mean(rst.SiTQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))",font_settings);
-
-% Bootstrapping quartile mean of first order Sensitivity index for score
-% per Experiments
-[plots{3,1},plots{3,2}] = f_generate_plot(rst,stg,outputNames,parNames2,"Si se bm",...
+    "transpose(reshape(mean(rst.SiTQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))";
+    % Bootstrapping quartile mean of first order Sensitivity index for
+    % score per Experiments
+    "Si se bm",...
     ["First order Sensitivities"," calculated using the Score of each Experiment","(Bootstrapping Mean)"],...
     "outputNames.se",...
-    "transpose(reshape(mean(rst.SiQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))",font_settings);
-
-% Bootstrapping quartile mean of total order Sensitivity index for score
-% per Experiments
-[plots{4,1},plots{4,2}] = f_generate_plot(rst,stg,outputNames,parNames2,"SiT se bm",...
+    "transpose(reshape(mean(rst.SiQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))";
+    % Bootstrapping quartile mean of total order Sensitivity index for
+    % score per Experiments
+    "SiT se bm",...
     ["Total order Sensitivities"," calculated using the Score of each Experiment","(Bootstrapping Mean)"],...
     "outputNames.se",...
-    "transpose(reshape(mean(rst.SiTQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))",font_settings);
-
-% Bootstrapping quartile mean of first order Sensitivity index for the
-% final points of the simulations for the output beeing measured
-[plots{5,1},plots{5,2}] = f_generate_plot(rst,stg,outputNames,parNames2,"Si xfinal bm",...
+    "transpose(reshape(mean(rst.SiTQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))";
+    % Bootstrapping quartile mean of first order Sensitivity index for the
+    % final points of the simulations for the output beeing measured
+    "Si xfinal bm",...
     ["First order Sensitivities"," calculated using the final value of each Experimental Output","(Bootstrapping Mean)"],...
     "outputNames.xfinal",...
-    "transpose(reshape(mean(rst.SiQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))",font_settings);
-
-% Bootstrapping quartile mean of total order Sensitivity index for the
-% final points of the simulations for the output beeing measured
-[plots{6,1},plots{6,2}] = f_generate_plot(rst,stg,outputNames,parNames2,"SiT xfinal bm",...
+    "transpose(reshape(mean(rst.SiQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))";
+    % Bootstrapping quartile mean of total order Sensitivity index for the
+    % final points of the simulations for the output beeing measured
+    "SiT xfinal bm",...
     ["Total order Sensitivities"," calculated using the final value of each Experimental Output","(Bootstrapping Mean)"],...
     "outputNames.xfinal",...
-    "transpose(reshape(mean(rst.SiTQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))",font_settings);
+    "transpose(reshape(mean(rst.SiTQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))"
+    };
+
+for i = 1:size(plot_sections, 1)
+    [plots{i,1},plots{i,2}] = f_generate_plot(rst, stg, outputNames, parNames2, plot_sections{i, 1}, plot_sections{i, 2}, plot_sections{i, 3}, plot_sections{i, 4},font_settings);
+end
 
 figHandles = findobj('type', 'figure', 'name', 'Si,SiT');
 close(figHandles);
@@ -96,7 +95,7 @@ xlabel('Parameters','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 ylabel('Sensitivity','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 title(layout,['Sensitivities calculated using the sum of the Score of all Experiments'],'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 leg = legend({'Si','SiT'},'Location','best',...
-            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
+    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
 leg.ItemTokenSize = Legend_ItemTokenSize;
 legend boxoff
 
@@ -112,12 +111,12 @@ T = [];
 
 for n = 1:size(a,2)
     for m = 1:size(rst.SiQ.st(:,n),1)
- T = [T;table(rst.SiQ.st(m,n),a(n),"Si")];
+        T = [T;table(rst.SiQ.st(m,n),a(n),"Si")];
     end
 end
 for n = 1:size(a,2)
     for m = 1:size(rst.SiTQ.st(:,n),1)
- T = [T;table(rst.SiTQ.st(m,n),a(n),"SiT")];
+        T = [T;table(rst.SiTQ.st(m,n),a(n),"SiT")];
     end
 end
 
@@ -127,7 +126,7 @@ xlabel('Parameters','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 ylabel('Sensitivity','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 title(layout,{'Sensitivities calculated using the sum of the Score of all Experiments ','(Bootstrapping)'},'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 leg = legend({'Si','SiT'},'Location','best',...
-            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
+    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
 leg.ItemTokenSize = Legend_ItemTokenSize;
 legend boxoff
 end
