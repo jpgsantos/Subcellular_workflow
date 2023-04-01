@@ -64,7 +64,7 @@ end
 % B_star = B_star.*(stg.ub-stg.lb)+stg.lb;
 % delta_scaled = delta * (stg.ub-stg.lb);
 
-B_star = stg.bestpa + B_star.*(range_from_best*2)-range_from_best;
+B_star = stg.bestpa(1:k) + B_star.*(range_from_best*2)-range_from_best;
 for n = 1:k
 delta_scaled(n) = delta * (range_from_best*2);
 end
