@@ -60,8 +60,8 @@ h.YLabel = '\fontsize{8} \bf Experimental Outputs';
 end
 
 function set_font_settings(font_settings)
-font_settings_fields = fieldnames(font_settings);
-for i = 1:numel(font_settings_fields)
-    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
+fields = fieldnames(font_settings);
+for i = 1:numel(fields)
+    assignin('caller', fields{i}, font_settings.(fields{i}))
 end
 end

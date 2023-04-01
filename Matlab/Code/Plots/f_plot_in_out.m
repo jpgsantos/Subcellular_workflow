@@ -1,24 +1,23 @@
-function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
+function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf,font_settings)
 % Generates a figure with input and Output of all experiments on the left
 % side it plots the inputs of the experiment and on the right side it plots
 % the outputs
 
-%Font settings
 %Font settings
 set_font_settings(font_settings)
 
 for n = stg.exprun
 
     helper = 1;
-    [layout,p1] = f_plot_in_out_left(rst,stg,sbtab,helper,...
-        size(sbtab.datasets(n).output,2) > 4);
+    [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,...
+        size(sbtab.datasets(n).output,2) > 4,n,font_settings);
 
     for j = 1:size(sbtab.datasets(n).output,2)
 
         if j/4 > helper
             helper = helper +1;
-            [layout,p1] = f_plot_in_out_left(rst,stg,sbtab,helper,...
-                size(sbtab.datasets(n).output,2) > 4);
+            [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,...
+                size(sbtab.datasets(n).output,2) > 4,n,font_settings);
         end
 
         nexttile(layout,[1 1]);
@@ -106,57 +105,59 @@ for n = stg.exprun
         set(leg,'Box','off')
     end
 end
+end
 
-    function [layout,p1] = f_plot_in_out_left(rst,stg,sbtab,helper,reuse)
+function [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,reuse,n,font_settings)
 
-        if reuse
-            name_short = "E " + (n-1) + " " + helper;
-            name_long = "Experiment " + (n-1) + " " + helper + "  (E " +...
-                (n-1) + " " + helper +")";
-        else
-            name_short = "E " + (n-1);
-            name_long = "Experiment " + (n-1) + "  (E " + (n-1) +")";
+set_font_settings(font_settings)
+
+if reuse
+    name_short = "E " + (n-1) + " " + helper;
+    name_long = "Experiment " + (n-1) + " " + helper + "  (E " +...
+        (n-1) + " " + helper +")";
+else
+    name_short = "E " + (n-1);
+    name_long = "Experiment " + (n-1) + "  (E " + (n-1) +")";
+end
+
+figHandles = findobj('type', 'figure', 'name', name_short);
+close(figHandles);
+plots{n-1+helper,1} = name_short;
+plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
+    'NumberTitle', 'off');
+
+layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
+nexttile(layout,[2 1]);
+
+title(layout,name_long,...
+    'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
+hold on
+for o = 1:size(sbtab.datasets(n).input,2)
+    for p = stg.pat
+
+        % (Until a non broken simulation is found)
+        if rst(p).simd{1,n} ~= 0
+            % Plot the inputs to each experiment
+            p1 = plot(rst(p).simd{1,n}.Time,rst(p).simd{1,n}.Data(1:end,...
+                str2double(strrep(sbtab.datasets(n).input(o),'S','')...
+                )+1),'DisplayName',string(rst(p).simd{1,n}.DataNames(str2double(...
+                strrep(sbtab.datasets(n).input(o),'S',''))+1)),'LineWidth',line_width);
+
+            ylabel(string(rst(p).simd{1,n}.DataInfo{...
+                str2double(strrep(sbtab.datasets(n).input(o),'S',''))+1,1}.Units),...
+                'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+            break
         end
-
-        figHandles = findobj('type', 'figure', 'name', name_short);
-        close(figHandles);
-        plots{n-1+helper,1} = name_short;
-        plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
-            'NumberTitle', 'off');
-
-        layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
-        nexttile(layout,[2 1]);
-
-        title(layout,name_long,...
-            'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
-        hold on
-        for o = 1:size(sbtab.datasets(n).input,2)
-            for p = stg.pat
-
-                % (Until a non broken simulation is found)
-                if rst(p).simd{1,n} ~= 0
-                    % Plot the inputs to each experiment
-                    p1 = plot(rst(p).simd{1,n}.Time,rst(p).simd{1,n}.Data(1:end,...
-                        str2double(strrep(sbtab.datasets(n).input(o),'S','')...
-                        )+1),'DisplayName',string(rst(p).simd{1,n}.DataNames(str2double(...
-                        strrep(sbtab.datasets(n).input(o),'S',''))+1)),'LineWidth',line_width);
-
-                    ylabel(string(rst(p).simd{1,n}.DataInfo{...
-                        str2double(strrep(sbtab.datasets(n).input(o),'S',''))+1,1}.Units),...
-                        'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-                    break
-                end
-            end
-        end
-
-        xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        ylim([0 inf])
-        ytickformat('%-3.1f')
-        % Add a title to each plot
-        [t3,t4] = title("Inputs"," ",'FontSize', Minor_title_FontSize,'Fontweight',Minor_title_Fontweight);
-        t4.FontSize = Minor_Title_Spacing;
-        hold off
     end
+end
+
+xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+ylim([0 inf])
+ytickformat('%-3.1f')
+% Add a title to each plot
+[t3,t4] = title("Inputs"," ",'FontSize', Minor_title_FontSize,'Fontweight',Minor_title_Fontweight);
+t4.FontSize = Minor_Title_Spacing;
+hold off
 end
 
 function set_font_settings(font_settings)

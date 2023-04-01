@@ -1,4 +1,4 @@
-function plots = f_plot_PL(rst,stg,mmf)
+function plots = f_plot_PL(rst,stg,mmf,font_settings)
 
 % Inform the user that fig4 is being ploted
 disp("Plotting PL")
@@ -147,8 +147,8 @@ end
 end
 
 function set_font_settings(font_settings)
-font_settings_fields = fieldnames(font_settings);
-for i = 1:numel(font_settings_fields)
-    assignin('caller', font_settings_fields{i}, font_settings.(font_settings_fields{i}))
+fields = fieldnames(font_settings);
+for i = 1:numel(fields)
+    assignin('caller', fields{i}, font_settings.(fields{i}))
 end
 end

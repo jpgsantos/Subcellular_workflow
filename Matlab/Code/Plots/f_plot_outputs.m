@@ -60,6 +60,7 @@ for n = stg.exprun
                 end
 
                 [sim_results,~] = f_normalize(rst(m),stg,n,j,mmf);
+                sim_results_detailed =[];
                 if stg.simdetail
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
                     [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
