@@ -36,7 +36,6 @@ if isfield(rst,'diag')
     % Generate figure with input and Output of all experiments
     plots4 = f_plot_in_out(rst.diag,stg,sbtab,Data,mmf,font_settings);
     plots = [plots1;plots2;plots3;plots4];
-    
 end
 
 % Generate figure with optimization results
@@ -48,18 +47,15 @@ end
 % Generate figures for Local Sensitivity Analysis
 if isfield(rst,'lsa')
     plots = f_plot_lsa(rst.lsa,stg,font_settings);
-
 end
 
 % Generate figures for Global Sensitivity Analysis
 if isfield(rst,'gsa')
     plots = f_plot_gsa_sensitivities(rst.gsa,stg,sbtab,font_settings);
-
 end
 
 % Generate figure for Profile Likelihood Analysis
 if isfield(rst,'PLA')
     plots = f_plot_PL(rst,stg,mmf,font_settings);
-%     plots = [];
 end
 end

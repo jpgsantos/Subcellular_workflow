@@ -68,4 +68,3 @@ fid = fopen(filename,'wt');
 fprintf(fid,frmt,modCell{:});
 fclose(fid);
 end
-

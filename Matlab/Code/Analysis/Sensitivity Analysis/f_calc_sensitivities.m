@@ -18,7 +18,7 @@ if (isempty(stg.gsabootstrapsize))
 end%if
 
 scores_list = ["sd","se","st","xfinal"];
-stg.gsabootstrapsize
+
 for j=1:stg.gsabootstrapsize
     rng(j*stg.rseed)
     I(j,:)=ceil(rand(size(fM1.sd,1),1)*size(fM1.sd,1));
@@ -49,6 +49,7 @@ for n = 1:size(scores_list,2)
         eval("SiTQ." + scores_list(n) + "(j,:,:) = SiTQh{j};")
     end
 end
+
 end%function
 
 function [Si,SiT] = bootstrap_q(fM1,fM2,fN,stg,j,I)

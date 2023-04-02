@@ -20,8 +20,6 @@ function [stg,sb,rst,mmf,plots] = Run_main(Folder,Analysis,settings)
 % 3) Settings - The name of the file present at
 % "Repository_name"/Matlab/Model/"Folder"/Matlab/Settings
 
-% clear functions
-
 user_choices = {Folder,Analysis,settings};
 
 %Get the date and time
@@ -71,11 +69,6 @@ end
 
 % Runs the Analysis chosen by the user input
     [rst,stg] = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
-
-% % Save Analysis results if chosen in settings
-% if stg.save_results
-%     f_save_analysis(stg,sb,rst,mmf,plots)
-% end
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis

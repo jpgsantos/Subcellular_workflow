@@ -16,18 +16,18 @@ end
 
 outputNames.xfinal = outputNames.sd;
 
-parNames = cell(1,stg.parnum);
+par_names = cell(1,stg.parnum);
 parNames2 = cell(1,stg.parnum);
 
 for n = 1:stg.parnum
-    parNames{n} = char("\theta_{" + find(stg.partest==n) + "}");
+    par_names{n} = char("\theta_{" + find(stg.partest==n) + "}");
 end
 
-for n = 1:size(parNames,2)
-    parNames2{n} = string(parNames{n}(1,:));
-    for m = 2:size(parNames{n},1)
+for n = 1:size(par_names,2)
+    parNames2{n} = string(par_names{n}(1,:));
+    for m = 2:size(par_names{n},1)
         parNames2{n} = string(parNames2{n}) + ", " +...
-            string(parNames{n}(m,:));
+            string(par_names{n}(m,:));
     end
 end
 
@@ -71,7 +71,9 @@ plot_sections = {
     };
 
 for i = 1:size(plot_sections, 1)
-    [plots{i,1},plots{i,2}] = f_generate_plot(rst, stg, outputNames, parNames2, plot_sections{i, 1}, plot_sections{i, 2}, plot_sections{i, 3}, plot_sections{i, 4},font_settings);
+    [plots{i,1},plots{i,2}] = f_generate_plot(rst, stg, outputNames,...
+        parNames2, plot_sections{i, 1}, plot_sections{i, 2},...
+        plot_sections{i, 3}, plot_sections{i, 4},font_settings);
 end
 
 figHandles = findobj('type', 'figure', 'name', 'Si,SiT');
@@ -93,7 +95,8 @@ bar(a,[transpose(rst.Si.st(:,1:stg.parnum)),...
 set(gca,'FontSize', Axis_FontSize);
 xlabel('Parameters','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 ylabel('Sensitivity','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
-title(layout,['Sensitivities calculated using the sum of the Score of all Experiments'],'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
+title(layout,['Sensitivities calculated using the sum of the Score of all Experiments'],...
+    'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 leg = legend({'Si','SiT'},'Location','best',...
     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
 leg.ItemTokenSize = Legend_ItemTokenSize;
@@ -124,7 +127,8 @@ boxchart(T.Var2,T.Var1,'GroupByColor',T.Var3,'MarkerStyle','.','JitterOutliers',
 set(gca,'FontSize', Axis_FontSize);
 xlabel('Parameters','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
 ylabel('Sensitivity','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight);
-title(layout,{'Sensitivities calculated using the sum of the Score of all Experiments ','(Bootstrapping)'},'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
+title(layout,{'Sensitivities calculated using the sum of the Score of all Experiments ',...
+    '(Bootstrapping)'},'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 leg = legend({'Si','SiT'},'Location','best',...
     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
 leg.ItemTokenSize = Legend_ItemTokenSize;
@@ -132,7 +136,7 @@ legend boxoff
 end
 
 function [plots1,plots2] = f_generate_plot(rst,stg,outputNames,parNames2,name,major_title,...
-    helprer1,helprer2,font_settings)
+    output_names,heatmap_values,font_settings)
 set_font_settings(font_settings)
 figHandles = findobj('type', 'figure', 'name', name);
 close(figHandles);
@@ -142,13 +146,13 @@ plots2 = figure('WindowStyle', 'docked','Name',name,'NumberTitle', 'off');
 layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
 nexttile(layout)
 
-heatmap_fixer = eval(helprer1);
-heatmap_fixer=heatmap_fixer(~cellfun('isempty',heatmap_fixer));
+fixed_output_names = eval(output_names);
+fixed_output_names = fixed_output_names(~cellfun('isempty',fixed_output_names));
 
-heatmap_fixer2 = eval(helprer2);
-heatmap_fixer2 = heatmap_fixer2(:,all(~isnan(heatmap_fixer2)));
+fixed_heatmap_values = eval(heatmap_values);
+fixed_heatmap_values = fixed_heatmap_values(:,all(~isnan(fixed_heatmap_values)));
 
-h = heatmap(heatmap_fixer,parNames2,heatmap_fixer2,'Colormap',turbo,...
+h = heatmap(fixed_output_names,parNames2,fixed_heatmap_values,'Colormap',turbo,...
     'ColorLimits',[0 1],'GridVisible','off',FontSize=Axis_FontSize);
 h.CellLabelFormat = '%.2f';
 
