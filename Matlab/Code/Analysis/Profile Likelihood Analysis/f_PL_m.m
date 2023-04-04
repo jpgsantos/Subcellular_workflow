@@ -1,87 +1,124 @@
 function rst = f_PL_m(settings,model_folder)
+% This function performs profile likelihood (PL) optimization for a given
+% model using two optimization algorithms: simulated annealing and fmincon.
+% The function first finds the index of the starting point for PL
+% calculation, prepares indices for parallel execution, and runs the
+% optimization for each parameter in parallel. After the optimization, the
+% results are assigned to the correct struct entries.
+%
+% INPUTS:
+%   settings - A struct containing various settings for the
+%   optimization process, such as pltest, plsa, plfm, lb, ub, and more.
+%   model_folder  - A folder containing the model to be optimized.
+%
+% OUTPUTS:
+%   rst - A struct containing the optimization results for both simulated
+%   annealing and fmincon, including the optimized parameter values,
+%   objective function values, and simulated data.
+%
+% FUNCTIONS CALLED:
+%   get_PL_iter_start - Calculates the index closest to the best parameter
+%   value.
+%   f_PL_s - Runs the optimization for the given parameter index.
+%   assign_struct_values - Assigns the values of x, fval, and simd to the
+%   corresponding struct entries.
+%   sim_a  - Runs simulated annealing optimization.
+%   fmin_con - Runs fmincon optimization.
+%   f_sim_score - Calculates the objective function score for a given set
+%   of parameters.
+%
+% LOADED VARIABLES:
+%   PL_iter_start - A vector containing the indices of the starting points
+%   for PL calculation.
+%   parfor_indices - A vector containing the indices for parallel
+%   execution.
+%   x, fval, simd - Cell arrays containing the optimization results for
+%   each parameter.
 
-% Iterate over the parameters for which PL is going to be calculated
-for par_indx = settings.pltest
 
-    % Find the index of the starting point for PL taking into consideration
-    % the lower bound and upper bound of the parameter and number of points
-    % to be calculated
-    [~,PL_iter_start{par_indx}] = min(abs(settings.bestpa(par_indx) -...
-        (settings.lb(par_indx):(settings.ub(par_indx) - settings.lb(par_indx))/settings.plres:settings.ub(par_indx))));
-end
+% Find the index of the starting point for profile likelihood (PL)
+% calculation
+PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
 
-% Iterate over the parameters for which PL is going to be calculated
-if settings.plsa
-a = 1:length(settings.pltest)*2;
-else
-a =[];
-end
-if settings.plfm
-b = length(settings.pltest)*2+1:length(settings.pltest)*4;
-else
-b = [];
-end
+% Prepare parfor loop indices
+a = settings.plsa * (1:length(settings.pltest)*2);
+b = settings.plfm * (length(settings.pltest)*2+1:length(settings.pltest)*4);
+parfor_indices = [a,b];
 
-parfor par_indx = [a,b]
+% Run the optimization for each parameter in parallel
+parfor par_indx = parfor_indices
     [x{par_indx},fval{par_indx},simd{par_indx}] = f_PL_s(par_indx,PL_iter_start,settings,model_folder);
 end
 
-leng =length(settings.pltest);
 
-for par_indx = 1:leng
-if settings.plsa
-    x{1,par_indx}{1}(PL_iter_start{par_indx}-1:-1:1) = x{1,par_indx+leng}{1}(PL_iter_start{par_indx}-1:-1:1);
-    fval{1,par_indx}{1}(PL_iter_start{par_indx}-1:-1:1) = fval{1,par_indx+leng}{1}(PL_iter_start{par_indx}-1:-1:1);
-    simd{1,par_indx}{1}(PL_iter_start{par_indx}-1:-1:1) = simd{1,par_indx+leng}{1}(PL_iter_start{par_indx}-1:-1:1);
-end
-if settings.plfm
-    x{1,par_indx}{2}(PL_iter_start{par_indx}:settings.plres+1) = x{1,par_indx+leng*2}{2}(PL_iter_start{par_indx}:settings.plres+1);
-    x{1,par_indx}{2}(PL_iter_start{par_indx}-1:-1:1) = x{1,par_indx+leng*2}{2}(PL_iter_start{par_indx}-1:-1:1);
-    fval{1,par_indx}{2}(PL_iter_start{par_indx}:settings.plres+1) = fval{1,par_indx+leng*2}{2}(PL_iter_start{par_indx}:settings.plres+1);
-    fval{1,par_indx}{2}(PL_iter_start{par_indx}-1:-1:1) = fval{1,par_indx+leng*3}{2}(PL_iter_start{par_indx}-1:-1:1);
-    simd{1,par_indx}{2}(PL_iter_start{par_indx}:settings.plres+1) = simd{1,par_indx+leng*2}{2}(PL_iter_start{par_indx}:settings.plres+1);
-    simd{1,par_indx}{2}(PL_iter_start{par_indx}-1:-1:1) = simd{1,par_indx+leng*2}{2}(PL_iter_start{par_indx}-1:-1:1);
-end
+% Assign the values of x and fval to the correct struct entries
+param_length = length(settings.pltest);
+rst = assign_struct_values(PL_iter_start, settings, x, fval, simd, param_length);
 end
 
-% Assign the values of x and fval to the correct struct entries, this needs
-% to be done because struct assignemnts don't work inside parfor loop
-for n = settings.pltest
+function idx = get_PL_iter_start(x, settings)
+% Calculate the index closest to the best parameter value
+range = linspace(settings.lb(x), settings.ub(x), settings.plres + 1);
+[~,idx] = min(abs(settings.bestpa(x) - range));
+end
+
+function rst = assign_struct_values(PL_iter_start, settings, x, fval, simd, param_length)
+% Assign the values of x, fval, and simd to the corresponding struct
+% entries
+
+for par_indx = settings.pltest
+    % Prepare array indices
+    array1 = PL_iter_start(par_indx)-1:-1:1;
+    array2 = PL_iter_start(par_indx):settings.plres+1;
+    old_index1 = par_indx+param_length;
+    old_index2 = par_indx+param_length*2;
+    old_index3 = par_indx+param_length*3;
+
+    % Assign values for simulated annealing
     if settings.plsa
-        rst.sa.xt(n) = x{n}(1);
-        rst.sa.fvalt(n) = fval{n}(1);
-        rst.sa.simdt(n) = simd{n}(1);
+
+        x{1,par_indx}{1}(array1) = x{1,old_index1}{1}(array1);
+        fval{1,par_indx}{1}(array1) = fval{1,old_index1}{1}(array1);
+        simd{1,par_indx}{1}(array1) = simd{1,old_index1}{1}(array1);
+        rst.sa.xt(par_indx) = x{par_indx}(1);
+        rst.sa.fvalt(par_indx) = fval{par_indx}(1);
+        rst.sa.simdt(par_indx) = simd{par_indx}(1);
     end
+    % Assign values for fmincon
     if settings.plfm
-        rst.fm.xt(n) = x{n}(2);
-        rst.fm.fvalt(n) = fval{n}(2);
-        rst.fm.simdt(n) = simd{n}(2);
+
+        x{1,par_indx}{2}(array1) = x{1,old_index3}{2}(array1);
+        x{1,par_indx}{2}(array2) = x{1,old_index2}{2}(array2);
+        fval{1,par_indx}{2}(array1) = fval{1,old_index3}{2}(array1);
+        fval{1,par_indx}{2}(array2) = fval{1,old_index2}{2}(array2);
+        simd{1,par_indx}{2}(array1) = simd{1,old_index3}{2}(array1);
+        simd{1,par_indx}{2}(array2) = simd{1,old_index2}{2}(array2);
+
+        rst.fm.xt(par_indx) = x{par_indx}(2);
+        rst.fm.fvalt(par_indx) = fval{par_indx}(2);
+        rst.fm.simdt(par_indx) = simd{par_indx}(2);
     end
 end
 end
 
 function [x,fval,simd] = f_PL_s(par_indx,PL_iter_start,settings,model_folders)
+% Run the optimization for the given parameter index
 par_indx_helper = par_indx;
 
+par_indx = mod(par_indx_helper-1, length(settings.pltest)) + 1;
+PL_iter_start = PL_iter_start(par_indx);
+
 if par_indx_helper <= length(settings.pltest)
-    PL_iter_start = PL_iter_start{par_indx};
     PL_iter(:) = PL_iter_start:settings.plres+1;
 elseif par_indx_helper <= length(settings.pltest)*2
-    par_indx = par_indx-length(settings.pltest);
-    PL_iter_start = PL_iter_start{par_indx};
     PL_iter(:) = PL_iter_start-1:-1:1;
 elseif par_indx_helper <= length(settings.pltest)*3
-    par_indx = par_indx-length(settings.pltest)*2;
-    PL_iter_start = PL_iter_start{par_indx};
     PL_iter(:) = PL_iter_start:settings.plres+1;
 else
-    par_indx = par_indx-length(settings.pltest)*3;
-    PL_iter_start = PL_iter_start{par_indx};
     PL_iter(:) = PL_iter_start-1:-1:1;
 end
 
-%Set the parameter for which we are going to perform the profile Likelihood
-%calculations to the correct one
+% Set the parameter for profile likelihood calculations
 settings.PLind = par_indx;
 
 temp_array = settings.bestpa;
@@ -107,11 +144,7 @@ if settings.plfm
     x{2}{PL_iter_start} = temp_array;
 end
 
-
-
-%  Iterate over the values for which PL is going to be calculated starting
-%  at the best value going up until the upper bound is reached, going back
-%  to the best and going down until the lower bound is reached
+% Iterate over the PL values
 for PL_iter_current = PL_iter
 
     % Set the value of the parameter that is being worked on
@@ -128,35 +161,30 @@ for PL_iter_current = PL_iter
         offset = 1;
     end
 
-    if par_indx_helper <= length(settings.pltest)*2
-        % Run simulated annealing if chosen in settings
-        if settings.plsa
-            [x{1}{PL_iter_current},fval{1}(PL_iter_current),simd{1}{PL_iter_current}] =...
-                sim_a(PL_iter_current,PL_iter_start,x{1}{PL_iter_current+offset},temp_lb,temp_up,settings,model_folders);
-            name = "simulated annealing";
-            fval_show = fval{1}(PL_iter_current);
-        end
-    else
+    % Run simulated annealing if chosen in settings
+    if par_indx_helper <= length(settings.pltest)*2 && settings.plsa
+        [x{1}{PL_iter_current},fval{1}(PL_iter_current),simd{1}{PL_iter_current}] =...
+            sim_a(PL_iter_current,PL_iter_start,x{1}{PL_iter_current+offset},temp_lb,temp_up,settings,model_folders);
+        name = "simulated annealing";
+        fval_show = fval{1}(PL_iter_current);
         % Run fmincon if chosen in settings
-        if settings.plfm
-            [x{2}{PL_iter_current},fval{2}(PL_iter_current),simd{2}{PL_iter_current}] =...
-                fmin_con(PL_iter_current,PL_iter_start,x{2}{PL_iter_current+offset},temp_lb,temp_up,settings,model_folders);
-            name = "fmincon";
-            fval_show = fval{2}(PL_iter_current);
-        end
+    elseif settings.plfm
+        [x{2}{PL_iter_current},fval{2}(PL_iter_current),simd{2}{PL_iter_current}] =...
+            fmin_con(PL_iter_current,PL_iter_start,x{2}{PL_iter_current+offset},temp_lb,temp_up,settings,model_folders);
+        name = "fmincon";
+        fval_show = fval{2}(PL_iter_current);
     end
     % Display console messages if chosen in settings
     if settings.placsl
         disp(name + "m: " + settings.PLind + "  n: " + PL_iter_current +...
             "  PLval: " + settings.PLval + "  fval: " + fval_show)
     end
-
 end
 end
 
 function [x,fval,simd] =...
     sim_a(PL_iter_current,PL_iter_start,x,temp_lb,temp_up,settings,model_folders)
-% Get the optimization options from settings
+% Run simulated annealing optimizations
 
 if PL_iter_current == PL_iter_start
     options = optimoptions(@simulannealbnd,'Display','off', ...
@@ -178,6 +206,8 @@ end
 
 function [x,fval,simd] =...
     fmin_con(PL_iter_current,PL_iter_start,x,temp_lb,temp_up,settings,model_folders)
+% Run fmincon optimization
+
 if PL_iter_current == PL_iter_start
     options = optimoptions('fmincon','Display','off',...
         'Algorithm','interior-point',...
@@ -194,6 +224,4 @@ end
 
 [~,rst,~] = f_sim_score(x,settings,model_folders);
 simd = rst.simd{1,1};
-
 end
-
