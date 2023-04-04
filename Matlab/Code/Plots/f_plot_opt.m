@@ -37,9 +37,9 @@ for n = 1:size(rst.opt,2)
     end
 end
 
-scatter([1:stg.parnum],stg.bestpa,20,'k','filled','MarkerFaceAlpha',0.5)
-scatter([1:stg.parnum],stg.lb,50,'x','k','MarkerFaceAlpha',0.75)
-scatter([1:stg.parnum],stg.ub,50,'x','k','MarkerFaceAlpha',0.75)
+scatter([1:stg.parnum],stg.bestpa(1:stg.parnum),20,'k','filled','MarkerFaceAlpha',0.5)
+scatter([1:stg.parnum],stg.lb(1:stg.parnum),50,'x','k','MarkerFaceAlpha',0.75)
+scatter([1:stg.parnum],stg.ub(1:stg.parnum),50,'x','k','MarkerFaceAlpha',0.75)
 for n = 2:stg.parnum
     plot([n-0.5 n-0.5],[min(stg.lb) max(stg.ub)],'--k','Color', [0.5 0.5 0.5 0.5])
 end

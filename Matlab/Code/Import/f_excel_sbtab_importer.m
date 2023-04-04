@@ -1,7 +1,7 @@
-function f_excel_sbtab_importer(mmf)
+function f_excel_sbtab_importer(model_folders)
 
-Source_sbtab = mmf.model.sbtab;
-Matlab_sbtab = mmf.model.data.sbtab;
+Source_sbtab = model_folders.model.sbtab;
+Matlab_sbtab = model_folders.model.data.sbtab;
 
 % Get the total number of sheets in the SBTAB
 sheets = sheetnames(Source_sbtab);
@@ -10,11 +10,11 @@ sheets = sheetnames(Source_sbtab);
 % of excel this migth not work
 try
     parfor i = 1:size(sheets,1)
-        sbtab_excel{i} = impexp (i,mmf);
+        sbtab_excel{i} = impexp (i,model_folders);
     end
 catch
     for i = 1:size(sheets,1)
-        sbtab_excel{i} = impexp (i,mmf);
+        sbtab_excel{i} = impexp (i,model_folders);
     end
 end
 
@@ -23,10 +23,10 @@ save(Matlab_sbtab,'sbtab_excel');
 disp("SBtab with " + size(sheets,1) + " sheets parsed successfully")
 end
 
-function sbtab_excel = impexp (i,mmf)
+function sbtab_excel = impexp (i,model_folders)
 
-Source_sbtab = mmf.model.sbtab;
-tsv_name_folder = mmf.model.tsv.model_name;
+Source_sbtab = model_folders.model.sbtab;
+tsv_name_folder = model_folders.model.tsv.model_name;
 
 % Import the SBTAB to a cell with a sheet per cell
 sbtab_excel = readcell(Source_sbtab,'sheet',i);

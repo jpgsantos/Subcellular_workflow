@@ -1,4 +1,4 @@
-function [nOutputs,outputNames] = f_get_outputs(stg,sbtab)
+function [n_outputs,output_names] = f_get_outputs(stg,sbtab)
 
 persistent n_out
 persistent out_name
@@ -9,11 +9,12 @@ if isempty(n_out)
     for n = stg.exprun
         for j = 1:size(sbtab.datasets(n).output,2)
             n_out = n_out + 1;
-            out_name{n_out} = {"E" + (n-1) + " " + string(sbtab.datasets(n).output{1,j})};
+            out_name{n_out} =...
+                {"E" + (n-1) + " " + string(sbtab.datasets(n).output{1,j})};
         end
     end
 end
 
-nOutputs = n_out;
-outputNames = out_name;
+n_outputs = n_out;
+output_names = out_name;
 end
