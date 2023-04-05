@@ -1,121 +1,201 @@
 function rst = f_lsa(stg,mmf)
+% Performs a local sensitivity analysis (LSA) on a given model by
+% perturbing its parameters within a specified range and computing the
+% impact of these perturbations on the model's output. The LSA is performed
+% by generating a set of perturbed parameter sets (B_star) and evaluating
+% the model's score for each set. The results include various statistics
+% related to the sensitivity of each parameter, such as mean and standard
+% deviation.
+% 
+% Syntax: rst = f_lsa(stg, mmf)
+%
+% Inputs:
+%   stg - A structure containing settings for the LSA, including:
+%         - lsa_samples: number of LSA samples
+%         - lsa_range_from_best: range of perturbations around the best
+%         parameter
+%         - parnum: number of model parameters
+%         - ub: upper bounds for parameters
+%         - lb: lower bounds for parameters
+%         - bestpa: the best parameter set found so far
+%   mmf - A structure containing the model and model-related functions
+%
+% Outputs:
+%   rst - A structure containing the results of the LSA, including:
+%         - B_star: the perturbed parameter sets
+%         - score_B_star: scores for each perturbed parameter set
+%         - x1, x11, x22: intermediate variables from the B_star
+%         calculation
+%         - P_matrix: permutation matrices used in the B_star calculation
+%         - parameter_score: differences in scores for perturbed parameters
+%         - parameter_score_delta: parameter_score scaled by delta
+%         - sum_parameter_score, sum_parameter_score_delta: sum of absolute
+%         parameter_score(_delta) values
+%         - mean_parameter_score, mean_parameter_score_delta: mean of
+%         absolute parameter_score(_delta) values
+%         - sigma_parameter_score, sigma_parameter_score_delta: standard
+%         deviation of parameter_score(_delta) values
+%         - average_deviation: average deviation of sensitivity for each
+%         parameter
+%         - sigma_deviation: standard deviation of sensitivity for each
+%         parameter
+%
+% Functions called:
+%   f_sim_score - Computes the score for a given parameter set
+%
+% Loaded variables:
+%   number_samples, range_from_best, parameter_n, par_n_plus_1, B_star,
+%   B_matrix, J_matrix, P_matrix, x_pool, x_star, d, D_matrix, x11, x22,
+%   x1, score_B_star, parameter_score, parameter_score_delta
+%
+% Example:
+%   rst = f_lsa(stg, mmf)
 
+% Initialize variables and matrices for LSA
 number_samples = stg.lsa_samples;
 range_from_best = stg.lsa_range_from_best;
 
-pa = [];
-
-p = 21;% needs to go to settings file
-p_1 = 1;% an integer between 1 and p-1 // needs to go to settings file
+% Define parameters for the LSA
+p = 21;
+p_1 = 1;% integer between 1 and p-1
 delta = p_1/(p-1);
 
-k = stg.parnum;
-m = k+1;
-r = number_samples;% needs to go to settings file
+parameter_n = stg.parnum;
+par_n_plus_1 = parameter_n+1;
 B_star = [];
 
-P_matrix_1 = [];
-x1_1 = [];
-x11_1 = [];
-x22_1 = [];
-for l = 1:r
-    B_matrix = zeros(m,k);
+% Define B_matrix and J_matrix for LSA calculations
+B_matrix = tril(ones(par_n_plus_1, parameter_n), -1);
+J_matrix = ones(par_n_plus_1,parameter_n);
 
-    for j = 2:m
-        for n = 1:j-1
-            B_matrix(j,n) = 1;
-        end
-    end
+% Main loop for generating B_star matrix
+for i = 1:number_samples
 
-    for n = 1:k
-        d(n) = (floor(rand+0.5)*2)-1;
-    end
+    % Generate random direction vector
+    d = sign(rand(1, parameter_n) - 0.5);
 
     D_matrix= diag(d);
 
-    J_matrix = ones(m,k);
+    % Calculate x_star, a random value from x_pool
+    x_pool = (1:p - p_1) / (p - 1) - 1 / (p - 1);
+    x_star = x_pool(randi(length(x_pool), 1, parameter_n));
 
-    x_star = zeros (1,k);
+    % Initialize and fill P_matrix with permutation matrix
+    P_matrix = zeros(parameter_n,parameter_n);
 
-    for n = 1:p-p_1
-        x_pool(n) = n/(p-1)-1/(p-1);
-    end
+    x11 = randperm(parameter_n);
+    x22 = randperm(parameter_n);
 
-    for n = 1:k
-        x_star(n) = x_pool(randi(length(x_pool)));
-    end
-
-    P_matrix = zeros(k,k);
-
-    x11 = randperm(k);
-    x22 = randperm(k);
-
-    x1 = sub2ind(size(P_matrix), x11, x22); % Create Linear Indices For ‘1’
+    x1 = sub2ind([parameter_n,parameter_n], x11, x22);
     P_matrix(x1) = 1;
-    x11_1 = [x11_1;x11];
-    x22_1 = [x22_1;x22];
-    x1_1 = [x1_1;x1];
-    P_matrix_1 = [P_matrix_1;P_matrix];
 
-    B_star = [B_star;((J_matrix(m,1)*x_star)+(delta/2)*((((2*B_matrix)-J_matrix)*D_matrix)+J_matrix))*P_matrix];
+    % Store intermediate values for later use
+    x11_1(i,:) = x11;
+    x22_1(i,:) = x22;
+    x1_1(i,:) = x1;
+    P_matrix_1((i-1)*parameter_n+1:i*parameter_n,:) = P_matrix;
 
+B_star((i-1)*(par_n_plus_1)+1:i*par_n_plus_1,:) =...
+       ((J_matrix(par_n_plus_1,1)*x_star)+(delta/2)*((((2*B_matrix)-J_matrix)*D_matrix)+J_matrix))*P_matrix;
 end
 
-% B_star = B_star.*(stg.ub-stg.lb)+stg.lb;
+% B_star = B_star.*(stg.ub-stg.lb)+stg.lb; 
 % delta_scaled = delta * (stg.ub-stg.lb);
 
-B_star = stg.bestpa(1:k) + B_star.*(range_from_best*2)-range_from_best;
-for n = 1:k
-delta_scaled(n) = delta * (range_from_best*2);
-end
+% Update B_star with the scaled range from the best parameter
+B_star = stg.bestpa(1:parameter_n) + B_star.*(range_from_best*2)-range_from_best;
+
+% Scale delta by the range from the best parameter
+delta_scaled = delta * (range_from_best * 2) * ones(1, parameter_n);
+
+% Initialize progress tracking variables
 progress = 1;
 time_begin = datetime;
 D = parallel.pool.DataQueue;
 afterEach(D, @progress_track);
 
-parfor n = 1:r*m
+% Parallel loop for calculating score_B_star
+parfor n = 1:number_samples*par_n_plus_1
     [~,~,score_B_star(n)] = f_sim_score(B_star(n,:),stg,mmf);
-    send(D, "LSA ");
+    send(D, {"LSA",progress,time_begin,number_samples,par_n_plus_1});
 end
 
+% Store results in the output structure
 rst.B_star = B_star;
 rst.score_B_star = score_B_star;
 rst.x1 = x1_1;
 rst.x11 = x11_1;
 rst.x22 = x22_1;
 rst.P_matrix = P_matrix_1;
-for n = 1:r
-    for m = 1:k
-        parameter_score(n,x22_1(n,m)) = score_B_star(x11_1(n,m)+(n-1)*(k+1)).st -...
-            score_B_star(x11_1(n,m)+1+(n-1)*(k+1)).st;
+
+% Calculate and store parameter_score
+for n = 1:number_samples
+    for i = 1:parameter_n
+        parameter_score(n,x22_1(n,i)) =...
+            score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).st -...
+            score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st;
     end
 end
 
+% Store parameter_score and related statistics in the output structure
 rst.parameter_score = parameter_score;
-for n = 1:k
+for n = 1:parameter_n
     parameter_score_delta(:,n) = parameter_score(:,n)/delta_scaled(n);
 end
 rst.parameter_score_delta = parameter_score_delta;
 rst.sum_parameter_score = sum(abs(parameter_score));
 rst.sum_parameter_score_delta = sum(abs(parameter_score_delta));
-rst.mean_parameter_score = sum(abs(parameter_score))/r;
-rst.mean_parameter_score_delta = sum(abs(parameter_score_delta))/r;
-rst.sigma_parameter_score = sqrt((1/(r-1))*sum((parameter_score-sum(parameter_score)/r).^2));
-rst.sigma_parameter_score_delta = sqrt((1/(r-1))*sum((parameter_score_delta-sum(parameter_score_delta)/r).^2));
+rst.mean_parameter_score = sum(abs(parameter_score))/number_samples;
+rst.mean_parameter_score_delta = sum(abs(parameter_score_delta))/number_samples;
+rst.sigma_parameter_score =...
+    sqrt((1/(number_samples-1))*...
+    sum((parameter_score-sum(parameter_score)/number_samples).^2));
+rst.sigma_parameter_score_delta =...
+    sqrt((1/(number_samples-1))*...
+    sum((parameter_score_delta-sum(parameter_score_delta)/number_samples).^2));
 
-for m = 1:stg.parnum
-
-    rst.average_deviation(m) = rst.mean_parameter_score_delta(1,m);
-    rst.sigma_deviation(m) = rst.sigma_parameter_score_delta(m);
+% Store average and sigma deviations for each parameter
+rst.average_deviation = rst.mean_parameter_score_delta(1,:);
+rst.sigma_deviation = rst.sigma_parameter_score_delta;
 end
 
+% Function to track progress of the LSA
+function progress_track(arg)
+persistent current_sample
+persistent last_time
+task_name = arg{1};
 
-    function progress_track(name)
-        progress = progress + 1;
-        if mod(progress,ceil(r*m/m)) == 0 && progress ~= r*m
-            disp(name + "Runtime: " + string(datetime - time_begin) +...
-                "  Samples:" + progress + "/" + r*m)
-        end
+if isempty(current_sample)
+    current_sample = arg{2};
+end
+
+start_time = arg{3};
+num_samples = arg{4};
+par_n_plus_1 = arg{5};
+current_sample = current_sample + 1;
+
+% Print progress information at each step
+if mod(current_sample,ceil(num_samples*par_n_plus_1/par_n_plus_1)) == 0 &&...
+        current_sample ~= num_samples*par_n_plus_1
+    if (num_samples*par_n_plus_1-current_sample)/num_samples <=...
+            par_n_plus_1-2
+
+        dt = (datetime-last_time);
+        remaining_time = seconds(dt);
+        remaining_time =...
+            remaining_time*(num_samples*par_n_plus_1-current_sample)/num_samples;
+        remaining_time = seconds(remaining_time);
+        remaining_time.Format = 'hh:mm:ss';
+        
+        fprintf('%s Runtime: %s  Time to finish: %s  Samples: %d/%d\n', ...
+                    task_name, string(datetime - start_time), string(remaining_time), ...
+                    current_sample, num_samples * par_n_plus_1);
+    else
+        
+        fprintf('%s Runtime: %s  Samples: %d/%d\n', ...
+                    task_name, string(datetime - start_time), ...
+                    current_sample, num_samples * par_n_plus_1);
     end
-
+    last_time = datetime;
+end
 end
