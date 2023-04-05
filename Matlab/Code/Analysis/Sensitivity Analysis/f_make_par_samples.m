@@ -1,68 +1,96 @@
-function rst= f_make_par_samples(stg)
-% Code inspired by Geir Halnes et al. 2009 paper. (Halnes, Geir, et al. J.
-% comp. neuroscience 27.3 (2009): 471.)
+function results= f_make_par_samples(settings)
+% Creates sample matrices of model parameters according to specified
+% distributions and settings. This function is based on Geir Halnes et
+% al.'s 2009 paper (J. comp. neuroscience 27.3 (2009): 471). It generates
+% two sample matrices M1 and M2 and a 3D matrix N, where N(:,:,i) is M2
+% with its i:th column replaced by M1(:,i).
+%
+% Inputs:
+%   - settings: A structure containing the following fields:
+%     - sansamples: Number of samples to generate for each parameter.
+%     - parnum: Number of model parameters.
+%     - rseed: Seed for random number generator.
+%     - sasamplemode: Sampling mode (0: uniform distribution, 1: normal
+%     distribution with truncation, 2: normal distribution, 3: mean-based
+%     normal distribution with truncation, 4: mean-based normal
+%     distribution).
+%     - lb: Vector containing lower bounds for each parameter.
+%     - ub: Vector containing upper bounds for each parameter.
+%     - bestpa: Vector containing the best parameter values.
+%     - sasamplesigma: Standard deviation for normal distribution-based
+%     sampling modes.
+%
+% Outputs:
+%   - results: A structure containing the following fields:
+%     - M1: Sample matrix 1.
+%     - M2: Sample matrix 2.
+%     - N: A 3D matrix where N(:,:,i) is M2 with its i:th column replaced
+%     by M1(:,i).
+%
+% Functions called:
+%   - makedist: Create a probability distribution object.
+%   - truncate: Truncate a probability distribution.
+%   - random: Generate random numbers from a probability distribution.
+%
+% Loaded variables:
+%   - M1, M2: Pre-allocated sample matrices.
+%   - N: Pre-allocated 3D matrix for storing modified versions of M2.
+%   - pd: A vector storing probability distribution objects for each
+%   parameter.
 
-% MAKE SAMPLE MATRICES
-M1 = zeros(stg.sansamples, stg.parnum); % Pre-allocate memory for data
-M2 = zeros(stg.sansamples, stg.parnum);
-N = zeros(stg.sansamples, stg.parnum, stg.parnum);
-rng(stg.rseed)
+% Pre-allocate memory for sample matrices
+M1 = zeros(settings.sansamples, settings.parnum); % Pre-allocate memory for data
+M2 = zeros(settings.sansamples, settings.parnum);
+N = zeros(settings.sansamples, settings.parnum, settings.parnum);
+rng(settings.rseed)
 
-% Create a distribution for each parameter acording to settings(Note that
-% the sampling is being performed in log space as the parameters and its
-% bounds are in log space)
-for i=1:stg.parnum
-    % Uniform distribution truncated at the parameter bounds
-    if stg.sasamplemode == 0
-        M1(:,i) = stg.lb(i) +...
-            (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
-        M2(:,i) = stg.lb(i) +...
-            (stg.ub(i)-stg.lb(i)).*rand(1,stg.sansamples);
-        % Normal distribution with mu as the best value for a parameter and
-        % sigma as stg.sasamplesigma truncated at the parameter bounds
-    elseif stg.sasamplemode == 1
-        pd(i) = makedist('Normal','mu',stg.bestpa(i),...
-            'sigma',stg.sasamplesigma);
-        t(i) = truncate(pd(i),stg.lb(i),stg.ub(i));
-        r{i} = random(t(i),stg.sansamples,1);
-        r2{i} = random(t(i),stg.sansamples,1);
-        M1(:,i) = r{i};
-        M2(:,i) = r2{i};
-        % Same as 1 without truncation
-    elseif stg.sasamplemode == 2
-        pd(i) = makedist('Normal','mu',stg.bestpa(i),...
-            'sigma',stg.sasamplesigma);
-        r{i} = random(pd(i),stg.sansamples,1);
-        r2{i} = random(pd(i),stg.sansamples,1);
-        M1(:,i) = r{i};
-        M2(:,i) = r2{i};
-        % Normal distribution centered at the mean of the parameter bounds
-        % and sigma as stg.sasamplesigma truncated at the parameter bounds
-    elseif stg.sasamplemode == 3
-        pd(i) = makedist('Normal','mu',...
-            stg.lb(i) + (stg.ub(i)-stg.lb(i))/2,'sigma',stg.sasamplesigma);
-        t(i) = truncate(pd(i),stg.lb(i),stg.ub(i));
-        r{i} = random(t(i),stg.sansamples,1);
-        r2{i} = random(t(i),stg.sansamples,1);
-        M1(:,i) = r{i};
-        M2(:,i) = r2{i};
-        % Same as 3 without truncation.
-    elseif stg.sasamplemode == 4
-        pd(i) = makedist('Normal','mu',...
-            stg.lb(i) + (stg.ub(i)-stg.lb(i))/2,'sigma',stg.sasamplesigma);
-        r{i} = random(pd(i),stg.sansamples,1);
-        r2{i} = random(pd(i),stg.sansamples,1);
-        M1(:,i) = r{i};
-        M2(:,i) = r2{i};
+% Loop through each parameter and create a distribution based on the
+% specified settings(Note that the sampling is being performed in log space
+% as the parameters and its bounds are in log space)
+for i = 1:settings.parnum
+    % Initialize distribution parameters depending on the sample mode
+    switch settings.sasamplemode
+        case 0
+            % Uniform distribution with bounds defined by parameter limits
+            lb = settings.lb(i);
+            ub = settings.ub(i);
+        case {1, 2}
+            % Normal distribution centered at the best parameter value with
+            % specified standard deviation
+            mu = settings.bestpa(i);
+            sigma = settings.sasamplesigma;
+        case {3, 4}
+            % Normal distribution centered at the mean of parameter bounds
+            % with specified standard deviation
+            mu = settings.lb(i) + (settings.ub(i) - settings.lb(i)) / 2;
+            sigma = settings.sasamplesigma;
+    end
+    % Generate samples based on the distribution parameters
+    if settings.sasamplemode == 0
+        % Uniform distribution
+        M1(:, i) = lb + (ub - lb) .* rand(1, settings.sansamples);
+        M2(:, i) = lb + (ub - lb) .* rand(1, settings.sansamples);
+    else
+        % Normal distribution
+        pd(i) = makedist('Normal', 'mu', mu, 'sigma', sigma);
+
+        % Truncate the distribution if specified
+        if ismember(settings.sasamplemode, [1, 3])
+            pd(i) = truncate(pd(i), settings.lb(i), settings.ub(i));
+        end
+        M1(:, i) = random(pd(i), settings.sansamples, 1);
+        M2(:, i) = random(pd(i), settings.sansamples, 1);
     end
 end
-
-for i=1:stg.parnum
-    % Replace the i:th column in M2 by the i:th column from M1 to obtain Ni
+% Replace the i:th column in M2 by the i:th column from M1 to create N
+% matrices
+for i=1:settings.parnum
     N(:,:,i) = M2;
     N(:,i,i) = M1(:,i);
 end
 
-rst.M1=M1;
-rst.M2=M2;
-rst.N=N;
+% Store resulting matrices in the output structure
+results.M1=M1;
+results.M2=M2;
+results.N=N;
+end
