@@ -114,19 +114,19 @@ for n = stg.exprun
 end
 end
 
-function sim_par = update_simulation_parameters(sim_par, parameters, stg)
+function sim_par = update_simulation_parameters(sim_par, parameters, settings)
 % Iterate over all the parameters of the model
 for n = 1:size(sim_par,1)
 
     % Update tested parameters
-    if stg.partest(n) > 0
-        sim_par(n) = 10.^(parameters(stg.partest(n,1)));
+    if settings.partest(n) > 0
+        sim_par(n) = 10.^(parameters(settings.partest(n,1)));
     end
 
     % Update thermodynamic constrained parameters
-    if isfield(stg,'tci') && ~isempty(stg.tci) && ismember(n,stg.tci) && stg.partest(n) > 0
-        sim_par = update_thermo_constrained_multiplications(sim_par, parameters,stg, n);
-        sim_par = update_thermo_constrained_divisions(sim_par, parameters, stg, n);
+    if isfield(settings,'tci') && ~isempty(settings.tci) && ismember(n,settings.tci) && settings.partest(n) > 0
+        sim_par = update_thermo_constrained_multiplications(sim_par, parameters,settings, n);
+        sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n);
     end
 end
 end
@@ -154,25 +154,25 @@ for m = 1:size(settings.tcm, 2)
 end
 end
 
-function sim_par = update_thermo_constrained_divisions(sim_par, parameters, stg, n)
+function sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n)
 % Iterate over the parameters that need to be divided for calculating the
 % parameter that depends on the thermodynamic constraints
-for m = 1:size(stg.tcd, 2)
+for m = 1:size(settings.tcd, 2)
     % Check that the parameter that is going to be used to calculate the
     % parameter dependent on thermodynamic constraintsis is not the default
-    if stg.partest(stg.tcd(n, m), 1) > 0
+    if settings.partest(settings.tcd(n, m), 1) > 0
         % Check if the parametrer needs to be set to the value relevant for
         % Profile Likelihood
-        if isfield(stg, "PLind") && stg.partest(stg.tcd(n, m), 1) == stg.PLind
-            parameters(stg.partest(stg.tcd(n, m), 1)) = stg.PLval;
+        if isfield(settings, "PLind") && settings.partest(settings.tcd(n, m), 1) == settings.PLind
+            parameters(settings.partest(settings.tcd(n, m), 1)) = settings.PLval;
         end
         % Make the appropriate divisions to get the thermodinamicly
         % constrained parameter
-        sim_par(n) = sim_par(n) / (10 ^ (parameters(stg.partest(stg.tcd(n, m), 1))));
+        sim_par(n) = sim_par(n) / (10 ^ (parameters(settings.partest(settings.tcd(n, m), 1))));
     else
         % Make the appropriate divisions to get the thermodinamicly
         % constrained parameter
-        sim_par(n) = sim_par(n) / (sbtab.defpar{stg.tcd(n, m), 2});
+        sim_par(n) = sim_par(n) / (sbtab.defpar{settings.tcd(n, m), 2});
     end
 end
 end
