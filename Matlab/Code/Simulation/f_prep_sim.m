@@ -28,7 +28,7 @@ if isfield(stg,"PLind") && isfield(stg,"PLval")
 end
 
 % Update simulation parameters
-sim_par = update_simulation_parameters(sim_par, parameters, stg);
+sim_par = update_simulation_parameters(sim_par, parameters, stg,sbtab);
 
 %  Set the start amount for the species in the model to 0
 ssa = zeros(size(sbtab.species,1),max(stg.exprun));
@@ -42,7 +42,7 @@ for n = stg.exprun
     
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-
+try
     % Display progress message if appropriate
     if stg.simcsl
         disp("Running dataset number " + n + " of " + stg.exprun(end))
@@ -111,10 +111,15 @@ for n = stg.exprun
     if ~simulation_times_match
         result.simd{n} = 0;
     end
+
+catch
+result.simd{n} = 0;
+end
+
 end
 end
 
-function sim_par = update_simulation_parameters(sim_par, parameters, settings)
+function sim_par = update_simulation_parameters(sim_par, parameters, settings,sbtab)
 % Iterate over all the parameters of the model
 for n = 1:size(sim_par,1)
 
@@ -125,13 +130,13 @@ for n = 1:size(sim_par,1)
 
     % Update thermodynamic constrained parameters
     if isfield(settings,'tci') && ~isempty(settings.tci) && ismember(n,settings.tci) && settings.partest(n) > 0
-        sim_par = update_thermo_constrained_multiplications(sim_par, parameters,settings, n);
-        sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n);
+        sim_par = update_thermo_constrained_multiplications(sim_par, parameters,settings, n,sbtab);
+        sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab);
     end
 end
 end
 
-function sim_par = update_thermo_constrained_multiplications(sim_par, parameters, settings, n)
+function sim_par = update_thermo_constrained_multiplications(sim_par, parameters, settings, n,sbtab)
 % Iterate over the parameters that need to be mutiplied for calculating the
 % parameter that depends on the thermodynamic constraints
 for m = 1:size(settings.tcm, 2)
@@ -154,7 +159,7 @@ for m = 1:size(settings.tcm, 2)
 end
 end
 
-function sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n)
+function sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab)
 % Iterate over the parameters that need to be divided for calculating the
 % parameter that depends on the thermodynamic constraints
 for m = 1:size(settings.tcd, 2)

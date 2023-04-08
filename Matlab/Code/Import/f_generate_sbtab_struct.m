@@ -6,28 +6,27 @@ function [stg,sb] = f_generate_sbtab_struct(stg,mmf)
 % calls the helper function convert_sbtab_to_struct to convert the SBtab
 % data into a structure. The SBtab data file is loaded into the variable
 % sbtab_excel.
-% 
+%
 % Inputs:
 % stg: An existing structure that will be updated with the number
 % of experiments and outputs.
 % mmf: A structure containing the model
 % information, including the SBtab data file name.
-% 
-% Outputs: 
+%
+% Outputs:
 % stg: The updated structure containing the number of experiments
 % and outputs.
 % sb: A structure generated from the SBtab data.
-% 
-% Called functions: 
+%
+% Called functions:
 % convert_sbtab_to_struct: A helper function that converts
 % SBtab data into a structure.
-% 
+%
 % Loaded variables:
 % sbtab_excel: A variable that holds the loaded SBtab data from the
 % specified file.
 
-% Extract the sbtab file name from the mmf
-% structure
+% Extract the sbtab file name from the mmf structure
 Matlab_sbtab = mmf.model.data.sbtab;
 
 % Check if the sbtab file exists
@@ -58,8 +57,10 @@ for col = 1:size(sbtab_excel,2)
     if ~isempty(sbtab_excel{1,col}{1,2})
 
         % Extract the table name from the first row of the column
-        field = regexp(sbtab_excel{1,col}{1,2},"TableName='[^']*'",'match');
-        field = string(replace(field,["TableName='","'"," "],["","","_"]));
+        field =...
+            regexp(sbtab_excel{1,col}{1,2},...
+            "TableName='([^']*)'", 'tokens');
+        field = string(replace(field{1}, " ", "_"));
 
         % Loop through all rows in the column
         for row = 1:size(sbtab_excel{1,col},2)
@@ -68,7 +69,8 @@ for col = 1:size(sbtab_excel,2)
             if ~isempty(sbtab_excel{1,col}{2,row})
                 % Extract the subfield name from the current row
                 subfield = sbtab_excel{1,col}{2,row};
-                subfield = string(replace(subfield,["!",">",":"," "],["","","_","_"]));
+                subfield = regexprep(subfield, '[!>]', '');
+                subfield = regexprep(subfield, '[:\s]', '_');
 
                 % Extract the subfield values from the column
                 sb.(field).(subfield)(:,1) = sbtab_excel{1,col}(3:end,row)';

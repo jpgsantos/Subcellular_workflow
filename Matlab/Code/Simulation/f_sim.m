@@ -26,7 +26,11 @@ persistent configs
 if isempty(models)
 
     % Turn off warning messages
-    warning('off','SimBiology:InvalidSpeciesInitAmtUnits')
+    warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
+    warning('off', 'SimBiology:SolodeSolverIntegrationError');
+    warning('off', 'SimBiology:Solver:IntegrationTolNotMet');
+    warning('off', 'SimBiology:Solver:InfOrNaN');
+    warning('off', 'SimBiology:solver');
 
     %Generate an empty array to be populated with the model suited for each
     %equilibration and experiment%
@@ -86,7 +90,7 @@ try
     results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
         configs{experiment_idx});
 catch ME
-    disp(ME.identifier + " " + n)
+    % disp(ME.identifier)
 
     % Set the simulation output to be 0, this is a non function
     % value that the score function expects in simulations that did

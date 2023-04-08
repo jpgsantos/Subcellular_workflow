@@ -29,17 +29,16 @@ date_stamp = string(year(datetime)) + "_" + ...
     + "_" + string(round(second(datetime)));
 
 % Get the folder where the MATLAB code and models are located
-Matlab_main_folder = fileparts(mfilename('fullpath'))+"/";
+Matlab_main_folder = fileparts(mfilename('fullpath')) + "/";
 Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
 
-if exist(Matlab_main_folder, 'dir') ~= 7
+if ~contains(strrep(path,"\","/"),...
+        extractAfter(Matlab_main_folder,strlength(Matlab_main_folder)-1))
     % If the folder is not in the path, add it
     addpath(genpath(Matlab_main_folder));
 end
 
-% addpath(genpath(Matlab_main_folder));
-
-mmf.main = Matlab_main_folder;
+mmf.main = Matlab_main_folder ;
 
 % Name of the various analysis that can be run with this code
 analysis_options = ["Diagnostics","Parameter Estimation",...
@@ -49,8 +48,6 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
 
 % Code for choosing the model and loading the settings files
 [stg,rst,sb] = f_user_input(mmf,analysis_options,user_choices);
-
-% stg.import
 
 % Get the folder structure used for the model files
 [mmf] = default_folders(stg,mmf,date_stamp);
@@ -74,7 +71,7 @@ end
 % loading the results of a previously run analysis
 plots = [];
 if stg.plot
-    plots = f_plot(rst,stg,mmf);
+    % plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
 %     if stg.save_results
 %          f_save_plots(mmf)

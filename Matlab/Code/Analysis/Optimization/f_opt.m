@@ -60,13 +60,23 @@ rng(settings.rseed);
 % Initialize the cell array containing optimization algorithm names and
 % corresponding settings flags
 optimization_algorithms = {
+    'Genetic algorithm', 'ga';
     'fmincon', 'fmincon';
     'Simulated annealing', 'sa';
     'Pattern search', 'psearch';
-    'Genetic algorithm', 'ga';
-    'Particle swarm', 'pswarm';
+   'Particle swarm', 'pswarm';
     'Surrogate optimization', 'sopt'
     };
+
+p = gcp(); % If no pool, do not create new one.
+poolsize = p.NumWorkers;
+settings.pat = 1:poolsize;
+for n = 1:poolsize
+settings.pa(n,:) = settings.pa(1,:);
+end
+parfor n = 1:poolsize
+[~] = f_diagnostics(settings,model_folders);
+end
 
 % Iterate through the optimization_algorithms cell array and call the
 % corresponding algorithms if their flag is set in the settings
@@ -100,7 +110,16 @@ end
 
 function result_opt = optimize_algorithm(algorithm_name,...
     settings, objective_function)
-
+p = gcp(); % If no pool, do not create new one.
+poolsize = p.NumWorkers;
+mst = settings.mst;
+if contains(algorithm_name,{'fmincon','Simulated annealing','Pattern search'})
+settings.mst = true;
+settings.msts = poolsize;
+else
+settings.mst = mst;
+settings.msts = poolsize;
+end
 % Determine the starting point for the optimization
 [startpoint, ~] = f_opt_start(settings);
 

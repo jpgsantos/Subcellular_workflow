@@ -85,6 +85,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         'RelativeTolerance', stg.reltol);
     set(configsetObj{number_exp}.SolverOptions,...
         'AbsoluteTolerance', stg.abstol);
+    set(configsetObj{number_exp}.SolverOptions,...
+        'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
     set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstepeq);
@@ -102,7 +104,6 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     
     % Process output species. Adds output species and rules
     for n = 1:size(output,2)
-
         % Check if output species exist in the model
         m = 0;
         for k = 1:size(model_run{number_exp}.species,1)
@@ -111,7 +112,6 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 m = 1;
             end
         end
-
         % If output species does not exist, add it to the model
         if m == 0
             if strcmp( output_unit{1,n},'dimensionless' )
@@ -123,7 +123,6 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                 char(output{1,n}),0,...
                 'InitialAmountUnits',output_unit{1,n});
         end
-
         % Add repeated assignment rule for output species
         addrule(model_run{number_exp}, char(output_value{1,n}),...
             'repeatedAssignment');
@@ -160,11 +159,9 @@ for number_exp = 1:size(sb.Experiments.ID,1)
                         char("time>=time_event_t_" + j + "_" +  n),...
                         cellstr(sbtab.datasets(number_exp).output_location{1} +...
                         "." + input_name + " = time_event_r_" + j + "_" +  n));
-
                 end
             end
         else
-            
             % If the input time is greater than or equal to 100, add repeated assignment rule
             addrule(model_run{number_exp}, char(sbtab.datasets(...
                 number_exp).output_location{1} + "." + input_name +...

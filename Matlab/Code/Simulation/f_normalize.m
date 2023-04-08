@@ -22,10 +22,11 @@ function [sim_results,sim_results_detailed] = f_normalize(rst, stg, exp_number, 
 
 persistent sbtab
 persistent Data
+persistent sb
 
 % Load Data and sbtab if empty
 if isempty(Data)
-    load(mmf.model.data.data_model, 'Data', 'sbtab')
+    load(mmf.model.data.data_model, 'Data', 'sbtab','sb')
 end
 
 % Extract the data from the simulation results

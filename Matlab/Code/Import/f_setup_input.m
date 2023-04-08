@@ -121,13 +121,7 @@ for Exp_n = 1:size(sbtab.datasets,2)
 end
 fprintf(fileID, "end\n");
 fclose(fileID);
-% Add the path to the model folder and evaluate the input creator function:
 
-if exist(Model_folder, 'dir') ~= 7
-    % If the folder is not in the path, add it
-    addpath(Model_folder);
-end
-% addpath(genpath(Model_folder));
 eval(stg.name + "_input_creator()");
 end
 

@@ -43,7 +43,7 @@ PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.p
 % Prepare parfor loop indices
 a = settings.plsa * (1:length(settings.pltest)*2);
 b = settings.plfm * (length(settings.pltest)*2+1:length(settings.pltest)*4);
-parfor_indices = [a,b];
+parfor_indices = [a(a ~= 0),b(b ~= 0)];
 
 % Run the optimization for each parameter in parallel
 parfor par_indx = parfor_indices

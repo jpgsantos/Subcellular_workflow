@@ -4,6 +4,7 @@ function plots = f_plot_PL(rst,stg,mmf,font_settings)
 disp("Plotting PL")
 
 if isfield(stg,'bestpa')
+    stg.sbioacc = false;
     [best_score,~] = f_sim_score(stg.bestpa,stg,mmf);
 end
 

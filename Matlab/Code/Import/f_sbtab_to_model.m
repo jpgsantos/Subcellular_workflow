@@ -399,6 +399,8 @@ for n = 1:size(sb.Compound.ID, 1)
         % If the assignment field is the number 1, set the boundary
         % condition to 1
         Boundary_Condition = 1;
+    elseif assignment
+        Boundary_Condition = 1;
     elseif ischar(interpolation) && contains(lower(interpolation), "true")
         % If the interpolation field is the string "true", set the boundary
         % condition to 1
@@ -406,6 +408,8 @@ for n = 1:size(sb.Compound.ID, 1)
     elseif isnumeric(interpolation) && interpolation == 1
         % If the interpolation field is the number 1, set the boundary
         % condition to 1
+        Boundary_Condition = 1;
+    elseif interpolation
         Boundary_Condition = 1;
     elseif ischar(is_constant) && contains(lower(is_constant), "true")
         % If the is_constant field is the string "true", set the boundary
@@ -415,14 +419,14 @@ for n = 1:size(sb.Compound.ID, 1)
         % If the is_constant field is the number 1, set the boundary
         % condition to 1
         Boundary_Condition = 1;
+    elseif is_constant
+        Boundary_Condition = 1;
     else
         % If none of the fields indicate a boundary condition, set the
         % boundary condition to 0
         Boundary_Condition = 0;
     end
-
-    % Set the BoundaryCondition property of the corresponding species in
-    % the model object to the value of Boundary_Condition
+   
     model_obj.species(n).BoundaryCondition = Boundary_Condition;
 end
 end

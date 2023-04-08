@@ -2,29 +2,36 @@ function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf,font_settings)
 % Generates a figure with input and Output of all experiments on the left
 % side it plots the inputs of the experiment and on the right side it plots
 % the outputs
+% plots = cell(1,2);
 
 %Font settings
 set_font_settings(font_settings)
 
+fig_number = 0;
+plots = cell(1,2);
 for n = stg.exprun
 
     helper = 1;
+    fig_number =+ 1;
     [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,...
-        size(sbtab.datasets(n).output,2) > 4,n,font_settings);
+        size(sbtab.datasets(n).output,2) > 4,n,font_settings,plots,fig_number);
 
     for j = 1:size(sbtab.datasets(n).output,2)
 
         if j/4 > helper
-            helper = helper +1;
+            helper = +1;
+            fig_number =+ 1;
             [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,...
-                size(sbtab.datasets(n).output,2) > 4,n,font_settings);
+                size(sbtab.datasets(n).output,2) > 4,n,font_settings,plots,fig_number);
         end
 
         nexttile(layout,[1 1]);
         hold on
-
+        helper = [];
         % Iterate over the number of parameter arrays to test
-        for m = stg.pat
+        % for m = stg.pat
+        for m = 1:size([rst.st],2)
+
             % (Until a non broken simulation is found)
             if rst(m).simd{1,n} ~= 0
 
@@ -42,6 +49,9 @@ for n = stg.exprun
             end
         end
         % Iterate over the number of parameter arrays to test
+        % for m = stg.pat
+        % [rst.st]
+        % size([rst.st],2)
         for m = stg.pat
 
             % Plot only if the simulation was successful
@@ -49,7 +59,7 @@ for n = stg.exprun
 
                 time = rst(m).simd{1,n}.Time;
                 [sim_results] = f_normalize(rst(m),stg,n,j,mmf);
-
+                
                 if stg.simdetail
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
                     [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
@@ -72,7 +82,9 @@ for n = stg.exprun
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units),...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+                helper = [helper,m];
             end
+            
         end
 
         hold off
@@ -98,16 +110,17 @@ for n = stg.exprun
         % Choose number of decimal places for y axis
         ytickformat('%-3.1f')
         % Add a legend for te entire image
-        leg = legend([p1,p2(:,stg.pat),plot_data,plot_data_SD],...
+        leg = legend([p1,p2(:,helper),plot_data,plot_data_SD],...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,'Location','layout',"Orientation","Horizontal");
         leg.Layout.Tile = 'South';
         leg.ItemTokenSize = Legend_ItemTokenSize;
         set(leg,'Box','off')
+        
     end
 end
 end
 
-function [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,reuse,n,font_settings)
+function [layout,p1,plots] = f_plot_in_out_left(rst,stg,sbtab,helper,reuse,n,font_settings,plots,fig_number)
 
 set_font_settings(font_settings)
 
@@ -122,8 +135,8 @@ end
 
 figHandles = findobj('type', 'figure', 'name', name_short);
 close(figHandles);
-plots{n-1+helper,1} = name_short;
-plots{n-1+helper,2} = figure('WindowStyle','docked','Name', name_short,...
+plots{n-1+fig_number,1} = name_short;
+plots{n-1+fig_number,2} = figure('WindowStyle','docked','Name', name_short,...
     'NumberTitle', 'off');
 
 layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');

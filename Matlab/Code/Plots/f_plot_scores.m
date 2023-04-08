@@ -17,8 +17,13 @@ layout = tiledlayout(5,1,'Padding','tight','TileSpacing','tight');
 
 % Generate top plot of Scores figure
 nexttile(layout,[1 1]);
+
+
+diag_idx = 1:numel(stg.pat);
+score_diag = [rst(stg.pat).st];
+
 % Plot the total scores of each parameter array to test
-scatter(stg.pat,[rst(stg.pat).st],20,'filled')
+scatter(diag_idx,score_diag,20,'filled')
 ylabel('Total Score (s_t)', 'FontSize', Axis_FontSize, 'FontWeight', Axis_Fontweight)
 set(gca,'xtick',[])
 % set(gca,'FontSize',10,'Fontweight','bold')
@@ -33,7 +38,7 @@ title(title_text,...
     "FontSize",Minor_title_FontSize,"FontWeight",Minor_title_Fontweight)
 
 % Choose the bounds for the x axis so it aligns with the bottom plot
-xlim([min(stg.pat)-0.5 max(stg.pat)+0.5])
+xlim([min(diag_idx)-0.5 max(diag_idx)+0.5])
 
 % Generate bottom plot of figure 1
 nexttile(layout,[4 1]);
