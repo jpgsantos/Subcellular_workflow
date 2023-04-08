@@ -86,8 +86,12 @@ modCell = origCell;
 % Find the indices of numeric cells
 iNum = cellfun(@isnumeric,origCell);
 
-% Replace numeric cells with cell strings
-modCell(iNum) = cellfun(@num2str, origCell(iNum), 'UniformOutput', false);
+% % Replace numeric cells with cell strings
+for n = 1:size(iNum,1)
+    for m = 1:size(iNum,2)
+        modCell(n,m) = cellstr(num2str(origCell{n,m}));
+    end
+end
 
 % Transpose the cell array to have the correct orientation
 modCell = transpose(modCell);
