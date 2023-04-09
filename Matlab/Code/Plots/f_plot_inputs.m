@@ -1,7 +1,7 @@
 function plots = f_plot_inputs(rst,stg,sbtab,font_settings)
 % Generates a figure with Inputs, one subplot per experiment
 
-% Inform the user that fig2 is being ploted
+% Inform the user that diagnosis inputs are beeing ploted
 disp("Plotting Inputs")
 
 plot_n = 0;
@@ -9,7 +9,7 @@ fig_n = 0;
 layout = [];
 plots_1 = [];
 
-%Font settings
+% Set font settings
 set_font_settings(font_settings)
 
 % Iterate over the number of experiments
@@ -22,6 +22,7 @@ for n = stg.exprun
         plots{fig_n,1} = plots_1{1};
         plots{fig_n,2} = plots_1{2};
 
+        % Set figure name based on its order
         if fig_n > 1
             fig_name = "Inputs " + fig_n;
         else
@@ -54,6 +55,7 @@ for n = stg.exprun
                 labelfig2(j) = rst(m).simd{1,n}.DataNames(str2double(...
                     strrep(sbtab.datasets(n).input(j),'S',''))+1);
 
+                % Set y-axis label
                 ylabel(layout,string(rst(m).simd{1,n}.DataInfo{...
                     str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1,1}.Units),...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
@@ -63,10 +65,12 @@ for n = stg.exprun
         end
     end
 
+    % Set x-axis label for the first plot in a row
     if mod(plot_n,12) == 1
 
         xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
+        % Create legend
         Lgnd = legend(labelfig2,'Orientation','vertical', ...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
             'Location','layout','Box','off');
@@ -74,8 +78,10 @@ for n = stg.exprun
         Lgnd.ItemTokenSize = Legend_ItemTokenSize;
     end
 
+    % Set y-axis limit and format
     ylim([0 inf])
     ytickformat('%-4.1f')
+
     % Add a title to each plot
     title("E"+(n-1))
 
@@ -84,6 +90,7 @@ end
 end
 
 function set_font_settings(font_settings)
+% Apply font settings to the current function scope
 fields = fieldnames(font_settings);
 for i = 1:numel(fields)
     assignin('caller', fields{i}, font_settings.(fields{i}))
