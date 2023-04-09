@@ -1,5 +1,32 @@
 function [figure_number,layout,plots] =...
     f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,layout,plots)
+% Determines the layout for subplots, creates a new figure when needed, and
+% closes previous instances of the figure.
+% 
+% Inputs:
+%   plot_total_n    - Total number of plots to display
+%   plot_n          - Current plot number
+%   figure_number   - Current figure number
+%   fig_name        - Figure name as a string
+%   layout          - Layout object to be updated with new configuration
+%   plots           - Cell array containing figure handles and names
+%
+% Outputs:
+%   figure_number   - Updated figure number
+%   layout          - Updated layout object
+%   plots           - Updated cell array with figure handles and names
+%
+% Functions called:
+%   create_new_figure  - Closes any existing figure with the same name,
+%   then creates a new docked figure with the given name
+%   calculate_layout   - Calculates the layout for the current figure based
+%   on the figure number, total number of plots, maximum size, and subplot
+%   dimensions
+%
+% Loaded variables:
+%   size_total      - Maximum number of plots per figure
+%   size_x          - Array of subplot layout column counts
+%   size_y          - Array of subplot layout row counts
 
 size_total = 12;
 
@@ -8,14 +35,17 @@ size_y = [1,2,3,2,2,2,2,2,3,3,3,3];
 
 if mod(plot_n,size_total) == 0
     figure_number = figure_number + 1;
-    % If the amount of plots is bigger than the maximum amount of plots per
-    % figure subdivide the plots to more than one figure
+    % If the total number of plots exceeds the maximum per figure, create
+    % additional figures and update the figure name.
     if plot_total_n > size_total
         fig_name = fig_name + " " + figure_number;
     end
-    %Close previous instances of the figure and generates a new one
+
+    % Close previous instances of the figure and create a new one.
     [plots{2}, plots{1}] = create_new_figure(fig_name);
 
+    % Calculate the layout for the current figure based on the total number
+    % of plots, maximum size, and the dimensions of the subplot.
     layout =...
         calculate_layout(figure_number, plot_total_n,...
         size_total, size_x, size_y);
@@ -23,6 +53,8 @@ end
 end
 
 function [fig_handle, fig_name] = create_new_figure(fig_name)
+% This function closes any existing figure with the same name, then creates
+% a new docked figure with the given name.
 figHandles = findobj('type', 'figure', 'name', fig_name);
 close(figHandles);
 fig_handle = ...
@@ -33,13 +65,18 @@ end
 function layout = ...
     calculate_layout(figure_number, plot_total_n,...
     size_total, size_x, size_y)
+% This function calculates the layout for the current figure based on the
+% figure number, total number of plots, maximum size, and subplot
+% dimensions.
 
 if figure_number <= floor(plot_total_n/size_total)
-
+    % If the current figure is not the last one, use the maximum size
+    % dimensions for the layout.
     layout = tiledlayout(size_x(size_total), size_y(size_total),...
         'Padding', 'none', 'TileSpacing', 'tight');
 else
-
+    % If the current figure is the last one, calculate the remaining number
+    % of plots and use the corresponding dimensions for the layout.
     remaining_plots =...
         plot_total_n - (floor(plot_total_n/size_total) * size_total);
     

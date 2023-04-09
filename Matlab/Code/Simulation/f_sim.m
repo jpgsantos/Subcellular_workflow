@@ -1,21 +1,40 @@
-function results = f_sim(experiment_idx,settings,simulation_parameters,species_start_amount,results,main_model_folders)
+function results = f_sim(experiment_idx,settings,simulation_parameters,...
+    species_start_amount,results,main_model_folders)
 % This function runs simulations using SimBiology models for a set of
 % experiments. It loads the appropriate models and compiles the code for
 % simulation run, then substitutes the start amounts of species and
-% parameter values based on the real-time results and runs the simulation.
-% The results of the simulation are saved in the output variable. The
-% function can be called multiple times for different experiments, and it
-% maintains the state of the loaded models between calls using persistent
-% variables.
+% parameter values based on real-time results and runs the simulation. The
+% results of the simulation are saved in the output variable. The function
+% can be called multiple times for different experiments, and it maintains
+% the state of the loaded models between calls using persistent variables.
+%
 % Inputs:
-%   - experiment_idx: indices of experiments to run
-%   - settings: simulation settings
-%   - simulation_parameters: parameter values for simulations
-%   - species_start_amount: start amounts for species in simulations
-%   - results: output variable to save simulation results
-%   - main_model_folders: paths for model files
+%   - experiment_idx: Indices of experiments to run
+%   - settings: Simulation settings (e.g., sbioaccelerate, simdetail, expn,
+%   exprun)
+%   - simulation_parameters: Parameter values for simulations
+%   - species_start_amount: Start amounts for species in simulations
+%   - results: Output variable to save simulation results
+%   - main_model_folders: Paths for model files (e.g., model_exp_default,
+%   model_exp_eq, model_exp_detail)
+%
 % Outputs:
-%   - results: simulation results
+%   - results: Simulation results (e.g., simd)
+%
+% Functions called:
+%   - sbioaccelerate: Compile model code for faster simulation run
+%   - sbiosimulate: Run simulation of SimBiology model with specified
+%   configuration
+%
+% Loaded variables:
+%   - model_exp: SimBiology model for each experiment
+%   - config_exp: SimBiology model configuration for each experiment
+%
+% Persistent variables:
+%   - models: Cell array containing the SimBiology models for each
+%   experiment
+%   - configs: Cell array containing the configurations for each SimBiology
+%   model
 
 % Save variables that need to be mantained over multiple function calls
 persistent models

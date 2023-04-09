@@ -1,5 +1,32 @@
 function plots = f_plot_inputs(rst,stg,sbtab,font_settings)
-% Generates a figure with Inputs, one subplot per experiment
+% This function generates a figure containing a series of subplots, with
+% each subplot representing the inputs of an individual experiment. The
+% function also adjusts the layout and formatting of the figure according
+% to the given font settings.
+%
+% Inputs:
+% - rst: A structure containing the results of the experiments
+% - stg: A structure containing experiment settings (e.g., exprun, pat)
+% - sbtab: A structure containing datasets and their associated information
+% - font_settings: A structure containing font settings for the plots
+%
+% Outputs:
+% - plots: A cell array containing the generated plots
+%
+% Functions called:
+% - set_font_settings: Apply font settings to the current function scope
+% - f_get_subplot: Calculate subplot positions and generate figures
+%
+% Loaded variables:
+% - plot_n: Counter for the number of plots
+% - fig_n: Counter for the number of figures
+% - layout: The layout of the plots in the figure
+% - plots_1: Temporary storage for the generated plots
+% - labelfig2: Labels for each input in the experiment
+% - Lgnd: Legend for the plots
+%
+% Example:
+%   plots = f_plot_inputs(rst, stg, sbtab, font_settings);
 
 % Inform the user that diagnosis inputs are beeing ploted
 disp("Plotting Inputs")

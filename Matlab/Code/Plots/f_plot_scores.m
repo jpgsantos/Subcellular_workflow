@@ -18,7 +18,6 @@ layout = tiledlayout(5,1,'Padding','tight','TileSpacing','tight');
 % Generate top plot of Scores figure
 nexttile(layout,[1 1]);
 
-
 diag_idx = 1:numel(stg.pat);
 score_diag = [rst(stg.pat).st];
 

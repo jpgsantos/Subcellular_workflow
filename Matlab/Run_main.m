@@ -1,24 +1,41 @@
 function [stg,sb,rst,mmf,plots] = Run_main(Folder,Analysis,settings)
-% Function that runs one of the selected analysis on the selected model
-% given a settings file.
+% Main function to perform various analyses on a selected model
+% using a given settings file.
 %
-% It takes three inputs, in order:
-% 
-% 1) Folder - The name of the folder present at
-% "Repository_name"/Matlab/Model/
-% 
-% 2) Analysis - One of the numbered codes
-%   1 = Diagnostics 
-%   2 = Parameter Estimation 
-%   3 = Local Sensitivity Analysis
-%   4 = Global Sensitivity Analysis 
-%   5 = Profile Likelihood Analysis 
-%   6 = Reproduce a previous analysis 
-%   7 = Reproduce the plots of a previous analysis 
-%   8 = Import model files
-% 
-% 3) Settings - The name of the file present at
-% "Repository_name"/Matlab/Model/"Folder"/Matlab/Settings
+% Syntax: [stg, sb, rst, mmf, plots] = Run_main(Folder, Analysis, settings)
+%
+% Inputs:
+%   - Folder: Name of the model folder located at
+%       "Repository_name"/Matlab/Model/
+%   - Analysis: Integer code representing the desired analysis to run:
+%       1 = Diagnostics
+%       2 = Parameter Estimation
+%       3 = Local Sensitivity Analysis
+%       4 = Global Sensitivity Analysis
+%       5 = Profile Likelihood Analysis
+%       6 = Reproduce a previous analysis
+%       7 = Reproduce the plots of a previous analysis
+%       8 = Import model files
+%   - Settings: Name of the settings file located at
+%       "Repository_name"/Matlab/Model/"Folder"/Matlab/Settings
+%
+% Outputs:
+%   - stg: Structure containing the settings used for the analysis
+%   - sb: Structure containing the sbtab data
+%   - rst: Structure containing the results of the analysis
+%   - mmf: Structure containing folder paths
+%   - plots: Structure containing plot data (if applicable)
+%
+% This function performs the following steps:
+%   1. Collect user inputs and create a timestamp
+%   2. Get the main MATLAB folder and add it to the path if needed
+%   3. Load settings and data based on user choices
+%   4. Create the folder structure for model files
+%   5. Import or generate sbtab data if needed
+%   6. Run the selected analysis
+%   7. Plot results (if applicable)
+%   8. Save analysis results and plots (if specified in settings)
+
 
 user_choices = {Folder,Analysis,settings};
 
