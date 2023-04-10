@@ -1,4 +1,4 @@
-function plots = f_plot_inputs(rst,stg,sbtab,font_settings)
+function plots = f_plot_inputs(rst,stg,sbtab)
 % This function generates a figure containing a series of subplots, with
 % each subplot representing the inputs of an individual experiment. The
 % function also adjusts the layout and formatting of the figure according
@@ -17,7 +17,11 @@ function plots = f_plot_inputs(rst,stg,sbtab,font_settings)
 % - set_font_settings: Apply font settings to the current function scope
 % - f_get_subplot: Calculate subplot positions and generate figures
 %
-% Loaded variables:
+% Variables
+% Loaded:
+% None
+% 
+% Initialized:
 % - plot_n: Counter for the number of plots
 % - fig_n: Counter for the number of figures
 % - layout: The layout of the plots in the figure
@@ -25,8 +29,9 @@ function plots = f_plot_inputs(rst,stg,sbtab,font_settings)
 % - labelfig2: Labels for each input in the experiment
 % - Lgnd: Legend for the plots
 %
-% Example:
-%   plots = f_plot_inputs(rst, stg, sbtab, font_settings);
+% Persistent:
+% None
+
 
 % Inform the user that diagnosis inputs are beeing ploted
 disp("Plotting Inputs")
@@ -34,10 +39,10 @@ disp("Plotting Inputs")
 plot_n = 0;
 fig_n = 0;
 layout = [];
-plots_1 = [];
+% plots_1 = [];
 
 % Set font settings
-set_font_settings(font_settings)
+f_set_font_settings()
 
 % Iterate over the number of experiments
 for n = stg.exprun
@@ -45,9 +50,7 @@ for n = stg.exprun
     % Generate the right amount of figures for all plots and calculates
     % proper subploting position
     if mod(plot_n,12) == 0
-        [fig_n,layout,plots_1] = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs",layout,plots_1);
-        plots{fig_n,1} = plots_1{1};
-        plots{fig_n,2} = plots_1{2};
+        [fig_n,layout,plots(fig_n,:)] = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs",layout);
 
         % Set figure name based on its order
         if fig_n > 1
@@ -113,13 +116,5 @@ for n = stg.exprun
     title("E"+(n-1))
 
     hold off
-end
-end
-
-function set_font_settings(font_settings)
-% Apply font settings to the current function scope
-fields = fieldnames(font_settings);
-for i = 1:numel(fields)
-    assignin('caller', fields{i}, font_settings.(fields{i}))
 end
 end

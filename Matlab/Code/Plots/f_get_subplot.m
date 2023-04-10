@@ -4,29 +4,39 @@ function [figure_number,layout,plots] =...
 % closes previous instances of the figure.
 % 
 % Inputs:
-%   plot_total_n    - Total number of plots to display
-%   plot_n          - Current plot number
-%   figure_number   - Current figure number
-%   fig_name        - Figure name as a string
-%   layout          - Layout object to be updated with new configuration
-%   plots           - Cell array containing figure handles and names
+% - plot_total_n: Total number of plots to display
+% - plot_n: Current plot number
+% - figure_number: Current figure number
+% - fig_name: Figure name as a string
+% - layout: Layout object to be updated with new configuration
+% - plots: Cell array containing figure handles and names
 %
 % Outputs:
-%   figure_number   - Updated figure number
-%   layout          - Updated layout object
-%   plots           - Updated cell array with figure handles and names
+% - figure_number: Updated figure number
+% - layout: Updated layout object
+% - plots: Updated cell array with figure handles and names
 %
 % Functions called:
-%   create_new_figure  - Closes any existing figure with the same name,
-%   then creates a new docked figure with the given name
-%   calculate_layout   - Calculates the layout for the current figure based
-%   on the figure number, total number of plots, maximum size, and subplot
-%   dimensions
+% - create_new_figure: Closes any existing figure with the same name,
+% then creates a new docked figure with the given name
+% - calculate_layout: Calculates the layout for the current figure based
+% on the figure number, total number of plots, maximum size, and subplot
+% dimensions
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
+% 
+% Variables:
+% Loaded:
+% None
 %
-% Loaded variables:
-%   size_total      - Maximum number of plots per figure
-%   size_x          - Array of subplot layout column counts
-%   size_y          - Array of subplot layout row counts
+% Initialized:
+% - size_total: Maximum number of plots per figure
+% - size_x: Array of subplot layout column counts
+% - size_y: Array of subplot layout row counts
+%
+% Persistent:
+% None
 
 size_total = 12;
 
@@ -42,7 +52,7 @@ if mod(plot_n,size_total) == 0
     end
 
     % Close previous instances of the figure and create a new one.
-    [plots{2}, plots{1}] = create_new_figure(fig_name);
+    plots = f_renew_plot(fig_name);
 
     % Calculate the layout for the current figure based on the total number
     % of plots, maximum size, and the dimensions of the subplot.
@@ -50,16 +60,6 @@ if mod(plot_n,size_total) == 0
         calculate_layout(figure_number, plot_total_n,...
         size_total, size_x, size_y);
 end
-end
-
-function [fig_handle, fig_name] = create_new_figure(fig_name)
-% This function closes any existing figure with the same name, then creates
-% a new docked figure with the given name.
-figHandles = findobj('type', 'figure', 'name', fig_name);
-close(figHandles);
-fig_handle = ...
-    figure('WindowStyle', 'docked', 'Name', fig_name, 'NumberTitle', 'off');
-sgtitle(fig_name);
 end
 
 function layout = ...

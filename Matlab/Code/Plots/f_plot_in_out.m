@@ -1,47 +1,60 @@
-function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf,font_settings)
+function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % This function generates a figure displaying input and output data for all
 % experiments. The left side of the figure shows the inputs of the
 % experiment, and the right side shows the outputs.
-% 
+%
 % Inputs:
-%   - rst: A structure containing the results of the simulations.
-%   - stg: A structure containing various settings for the experiments and
-%   simulations.
-%   - sbtab: A structure containing information about the input and output
-%   datasets.
-%   - Data: A structure containing experimental data and standard
-%   deviations.
-%   - mmf: A structure containing information about the model. -
-%   font_settings: A structure containing font settings for the plot.
-% 
+% - rst: A structure containing the results of the simulations.
+% - stg: A structure containing various settings for the experiments and
+% simulations.
+% - sbtab: A structure containing information about the input and output
+% datasets.
+% - Data: A structure containing experimental data and standard
+% deviations.
+% - mmf: A structure containing information about the model.
+%
 % Outputs:
-%   - plots: A cell array storing the names and figure handles of the
-%   generated plots.
+% - plots: A cell array storing the names and figure handles of the
+% generated plots.
 %
-% The function calls three other functions:
-%   - f_plot_in_out_left: Plots the input data on the left side of the
-%   figure.
-%   - f_normalize: Normalizes the simulation results.
-%   - f_error_area: Plots the standard deviation of the output data as an
-%   error area.
+% Used Functions :
+% - f_plot_in_out_left: Plots the input data on the left side of the
+% figure.
+% - f_normalize: Normalizes the simulation results.
+% - f_error_area: Plots the standard deviation of the output data as an
+% error area.
+% - f_set_font_settings: Sets font settings for the plot.
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
 %
-% The function also initializes and uses several variables throughout the
-% code:
-%   - fig_number: Keeps track of the total number of figures generated.
-%   - fig_number_same_exp: Keeps track of the number of figures generated
-%   for the same experiment.
-%   - n_outputs_exp: The number of outputs for the current experiment.
-%   - layout: A tiled layout for the figure.
-%   - input_plot: A plot object for input data.
-%   - valid_outputs: A list of valid outputs.
-%   - valid_outputs_plots: A list of valid output plots.
-%   - line_width, Axis_FontSize, Axis_Fontweight, Minor_title_FontSize,
-%   Minor_title_Fontweight, Major_title_FontSize, Major_title_Fontweight,
-%   Minor_Title_Spacing, Legend_FontSize, Legend_Fontweight,
-%   Legend_ItemTokenSize: Font settings variables.
+% Variables
+% Loaded:
+% - time: Time array for simulations.
+% - data: Experimental data array.
+% - data_SD: Standard deviation array for experimental data.
+%
+% Initialized:
+% - fig_number: Keeps track of the total number of figures generated.
+% - fig_number_same_exp: Keeps track of the number of figures generated
+% for the same experiment.
+% - n_outputs_exp: The number of outputs for the current experiment.
+% - layout: A tiled layout for the figure.
+% - input_plot: A plot object for input data.
+% - valid_outputs: A list of valid outputs.
+% - valid_outputs_plots: A list of valid output plots.
+% - line_width, Axis_FontSize, Axis_Fontweight, Minor_title_FontSize,
+% Minor_title_Fontweight, Major_title_FontSize, Major_title_Fontweight,
+% Minor_Title_Spacing, Legend_FontSize, Legend_Fontweight,
+% Legend_ItemTokenSize: Font settings variables.
+
+
+
+% Display a message indicating that the inputs outputs are being plotted
+disp("Plotting Inputs Outputs")
 
 % Set font settings for the plot
-set_font_settings(font_settings)
+f_set_font_settings()
 
 % Initialize variables for plot management
 fig_number = 0;
@@ -60,7 +73,7 @@ for n = stg.exprun
     % Plot the left side of the figure with input data
     [layout,input_plot,plots] = ...
         f_plot_in_out_left(rst, stg, sbtab, fig_number_same_exp,...
-        n_outputs_exp > 4, n, font_settings, plots, fig_number);
+        n_outputs_exp > 4, n, plots, fig_number);
 
     % Loop through each output of the current experiment
     for j = 1:n_outputs_exp
@@ -74,7 +87,7 @@ for n = stg.exprun
             % Plot the left side of the figure with input data
             [layout,input_plot,plots] = ...
                 f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
-                n_outputs_exp > 4, n, font_settings, plots, fig_number);
+                n_outputs_exp > 4, n, plots, fig_number);
         end
 
         % Set up the layout for output data
@@ -196,11 +209,11 @@ end
 
 function [layout,input_plot,plots] = ...
     f_plot_in_out_left(rst,stg,sbtab,fig_number_same_exp,reuse,n,...
-    font_settings,plots,fig_number)
+    plots,fig_number)
 % Function to plot input data on the left side of the figure
 
 % Set font settings for the plot
-set_font_settings(font_settings)
+f_set_font_settings()
 
 % Set figure names based on whether the same figure is reused or not
 if reuse
@@ -213,14 +226,7 @@ else
     name_long = "Experiment " + (n-1) + "  (E " + (n-1) +")";
 end
 
-% Close any existing figures with the same name
-figHandles = findobj('type', 'figure', 'name', name_short);
-close(figHandles);
-
-% Set up the figure for the current experiment
-plots{n-1+fig_number,1} = name_short;
-plots{n-1+fig_number,2} = ...
-    figure('WindowStyle','docked','Name', name_short,'NumberTitle', 'off');
+plots(fig_number,:) = f_renew_plot(name_short);
 
 % Create a tiled layout for the figure
 layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
@@ -269,12 +275,4 @@ ytickformat('%-3.1f')
     'Fontweight',Minor_title_Fontweight);
 t4.FontSize = Minor_Title_Spacing;
 hold off
-end
-
-function set_font_settings(font_settings)
-% Function to apply font settings to the plot
-fields = fieldnames(font_settings);
-for i = 1:numel(fields)
-    assignin('caller', fields{i}, font_settings.(fields{i}))
-end
 end

@@ -1,4 +1,4 @@
-function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf,font_settings)
+function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf)
 % Generates a figure containing multiple subplots representing experimental
 % outputs for each experiment and dataset. The function loops through each
 % experiment and dataset and plots the results based on specified settings.
@@ -28,13 +28,19 @@ function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf,font_settings)
 % - f_error_area: Plot the error area
 % - f_normalize: Normalize simulation results
 %
-% Loaded variables:
+% Variables:
+% Loaded:
+% None
+%
+% Initialized:
 % - plot_tn: Total number of plots
 % - plot_n: Current plot number
 % - fig_n: Current figure number
 % - layout: TiledLayout object for subplots
 % - plots_1: Cell array to store figures and layouts temporarily
-
+%
+% Persistent:
+% None
 
 % Display a message indicating that the outputs are being plotted
 disp("Plotting Outputs")
@@ -44,11 +50,11 @@ disp("Plotting Outputs")
 plot_n = 0;
 fig_n = 0;
 layout = [];
-plots_1 = [];
+% plots_1 = [];
 plots = cell(1,2);
 
 % Set font settings using the provided font_settings
-set_font_settings(font_settings)
+f_set_font_settings()
 
 % Loop through each experiment
 for n = stg.exprun
@@ -56,10 +62,9 @@ for n = stg.exprun
     % Generate the required number of figures for all plots and calculate
     % proper subplot positioning
     if mod(plot_n,12) == 0
-        [fig_n,layout,plots_1] =...
+        [fig_n,layout,plots(fig_n,:)] =...
             f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
-        plots{fig_n,1} = plots_1{1};
-        plots{fig_n,2} = plots_1{2};
+
         if fig_n > 1
             fig_name = "Outputs " + fig_n;
         else
@@ -158,13 +163,5 @@ for n = stg.exprun
             set(Lgnd,'Box','off')
         end
     end
-end
-end
-
-function set_font_settings(font_settings)
-% Set font settings using the provided font_settings
-fields = fieldnames(font_settings);
-for i = 1:numel(fields)
-    assignin('caller', fields{i}, font_settings.(fields{i}))
 end
 end
