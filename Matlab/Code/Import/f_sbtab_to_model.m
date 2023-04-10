@@ -7,44 +7,42 @@ function f_sbtab_to_model(stg,sb,mmf)
 % constants, and boundary conditions to the model.
 % 
 % Inputs:
-% 
-% stg: A structure containing the settings for the model conversion.
-% sb: An SBtab data structure containing the model data.
-% mmf: A structure containing the file names for saving the model in
-% different formats.
+% - stg: Settings structure containing configuration information
+% - sb: SBtab data structure containing information about species,
+% reactions, compartments, and parameters
+% - mmf: Model management files structure containing the paths to save the
+% model
 %
 % Outputs:
-% 
-% The function saves the generated model in .mat, .sbproj, and .xml 
-% formats.
+% - No direct outputs, but the function saves the model in .mat, .sbproj,
+% and .xml formats
 %
-% Functions called:
-% 
-% addcompartment
-% addspecies
-% addparameter
-% find_compartment_number
-% add_reactions_to_model
-% set_boundary_Condition
-% add_expressions_to_model
-% add_inputs_to_model
-% add_constants_to_model
-% process_experiments
-% sbiosaveproject
-% save
-% sbmlexport
+% Used Functions:
+% - add_reactions_to_model: Adds reactions from the SBtab data structure to
+% the model object
+% - set_boundary_Condition: Sets boundary conditions for the model
+% - add_expressions_to_model: Adds expressions from the SBtab data
+% structure to the model object
+% - add_inputs_to_model: Adds inputs from the SBtab data structure to the
+% model object
+% - add_constants_to_model: Adds constants from the SBtab data structure to
+% the model object
+% - process_experiments: Processes experimental data from the SBtab data
+% structure
 %
-% Loaded variables:
-% 
-% modelobj: A SimBiology model object.
-% compobj: A cell array containing compartment objects.
-% sbtab.species: A table containing species-related data.
-% sbtab.defpar: A table containing default parameter-related data.
-% sbtab.sim_time: A table containing simulation time data.
-% Data: A structure containing processed experimental data.
-% sbproj_model, matlab_model, data_model, xml_model: Variables for saving
-% the model in .sbproj, .mat, .xml formats, and the experimental data,
-% respectively.
+% Variables
+% Loaded:
+% - sbtab.species: Species related data from the SBtab data structure
+% - sbtab.defpar: Default parameter related data from the SBtab data
+% structure
+% - sbtab.sim_time: Simulation time extracted from the SBtab data structure
+%
+% Initialized:
+% - modelobj: Initialized model object
+% - compobj: Initialized compartment object
+%
+% Persistent:
+% - None
 
 % Initialize the model object and compartment object
 modelobj = sbiomodel(stg.name);
@@ -91,7 +89,6 @@ sbtab.sim_time = [sb.Experiments.Sim_Time{:}];
 % Process experimental data from the SBtab data structure
 [sbtab,Data] = process_experiments(sb,sbtab);
 
-
 % Save the model in .mat, .sbproj, and .xml formats
 sbproj_model = mmf.model.data.sbproj_model;
 matlab_model = mmf.model.data.mat_model;
@@ -104,11 +101,12 @@ save(data_model,'Data','sbtab','sb')
 sbmlexport(modelobj,xml_model)
 end
 
-% Function: add_constants_to_model
-% Adds constants from sb to the given model object. This function checks if
-% the sb structure has a "Constant" field, and if so, iterates through the
-% constants and adds them as parameters to the model object.
 function modelobj = add_constants_to_model(sb,modelobj)
+% This function adds constants from sb to the given model object. This
+% function checks if the sb structure has a "Constant" field, and if so,
+% iterates through the constants and adds them as parameters to the model
+% object.
+
 % Check if the sb object has a "Constant" field
 if isfield(sb,"Constant")
     % Iterate through the constants and add them to the model object
@@ -120,12 +118,12 @@ if isfield(sb,"Constant")
 end
 end
 
-% Function: add_inputs_to_model
-% Adds inputs from sb to the given model object. This function checks if
-% the sb structure has an "Input" field, and if so, iterates through the
-% inputs and adds them as parameters, species, and rules to the model
-% object according to the input properties.
 function modelobj = add_inputs_to_model(sb,modelobj)
+% This function adds inputs from sb to the given model object. This
+% function checks if the sb structure has an "Input" field, and if so,
+% iterates through the inputs and adds them as parameters, species, and
+% rules to the model object according to the input properties.
+
 % Check if the sb structure contains the 'Input' field
 if isfield(sb,"Input")
     % Iterate through all inputs
@@ -162,12 +160,12 @@ if isfield(sb,"Input")
 end
 end
 
-% Function: find_compartment_number
-% Finds the compartment number in compobj corresponding to the given
-% location. This function iterates through all compartments in compobj and
-% returns the index of the compartment whose name matches the given
-% location.
 function compartment_number = find_compartment_number(compobj, location)
+% This function finds the compartment number in compobj corresponding to
+% the given location. This function iterates through all compartments in
+% compobj and returns the index of the compartment whose name matches the
+% given location.
+
 % Iterate through all compartments
 for m = 1:size(compobj,2)
     % Check if the current compartment's name matches the given location
@@ -179,13 +177,12 @@ for m = 1:size(compobj,2)
 end
 end
 
-% Function: process_experiments
-% Processes experiments from sb and stores data in sbtab and Data. This
-% function extracts relevant data from sb, a structured representation of
-% an SBML model, and stores it in sbtab, a structured representation of an
-% SBtab file, and Data structures, used for further analysis and
-% processing.
 function [sbtab,Data] = process_experiments(sb,sbtab)
+% This function processes experiments from sb and stores data in sbtab and
+% Data. This function extracts relevant data from sb, a structured
+% representation of an SBML model, and stores it in sbtab, a structured
+% representation of an SBtab file, and Data structures, used for further
+% analysis and processing.
 
 % Initialize species_inp_indices to store the indices of species present in
 % sb.Experiments
@@ -277,11 +274,12 @@ for n = 1:size(sb.Experiments.ID,1)
 end
 end
 
-% Function: add_expressions_to_model Adds expressions to the given model
-% object by iterating through sb.Expression fields and populating the model
-% object with parameters, species, and rules according to the expression
-% properties
+
 function model_obj = add_expressions_to_model(sb,model_obj)
+% This function adds expressions to the given model object by iterating
+% through sb.Expression fields and populating the model object with
+% parameters, species, and rules according to the expression properties
+
 % Check if the sb structure contains the 'Expression' field
 if isfield(sb,"Expression")
     % Iterate through all expressions
@@ -426,7 +424,7 @@ for n = 1:size(sb.Compound.ID, 1)
         % boundary condition to 0
         Boundary_Condition = 0;
     end
-   
+
     model_obj.species(n).BoundaryCondition = Boundary_Condition;
 end
 end

@@ -1,46 +1,63 @@
 function f_build_model_exp(stg,sb,mmf)
-% Function: f_build_model_exp
-% Description: This function creates two .mat files for each experiment,
-% one for the equilibrium simulation run and one for the proper run. The
-% .mat files contain necessary rules, species, and parameters based on the
-% inputs and outputs specified in the sbtab. The function also configures
-% simulation settings for the equilibrium and proper simulation runs,
-% processes output and input species, and saves the .mat files for each
-% experiment.
+% This function generates .mat files for equilibrium and proper simulation
+% runs for a set of experiments. It reads experiment settings from an sbtab
+% structure, configures the simulation settings, processes input and output
+% species, and saves the resulting .mat files.
 %
 % Inputs:
-%   stg - A structure containing settings for the simulations
-%   sb  - An sbtab structure containing information about experiments
-%   mmf - A model management framework structure containing the data and
-%   mat models
+% - stg: A structure containing settings for the simulations, including
+% maximum wall clock time, stop times, dimensional analysis, unit
+% conversion, tolerances, step sizes, and time units.
+% - sb: An sbtab structure containing information about experiments, such
+% as output values, output species, output units, input times, input
+% values, and input species.
+% - mmf: A model management framework structure containing the data and mat
+% models, which include data_model, mat_model, model_exp_eq,
+% model_exp_default, and model_exp_detail.
 %
 % Outputs:
-%   .mat files for equilibrium and proper runs for each experiment
+% - Equilibrium and proper simulation run .mat files for each experiment,
+% saved with filenames based on model_exp_eq, model_exp_default, and
+% model_exp_detail.
 %
 % Called Functions:
-%   - getconfigset
-%   - copyobj
-%   - set
-%   - load
-%   - save
-%   - addspecies
-%   - addrule
-%   - addparameter
-%   - addevent
+% - getconfigset: Retrieves the configuration set object from a SimBiology
+% model.
+% - copyobj: Creates a copy of a SimBiology model object.
+% - set: Sets properties of a SimBiology object.
+% - load: Loads variables from .mat files.
+% - save: Saves variables to .mat files.
+% - addspecies: Adds species to a SimBiology model compartment.
+% - addrule: Adds rules to a SimBiology model.
+% - addparameter: Adds parameters to a SimBiology model.
+% - addevent: Adds events to a SimBiology model.
+% 
+% Variables:
+% Loaded:
+% - data_model: File path of the data_model .mat file containing Data and
+% sbtab.
+% - mat_model: File path of the mat_model .mat file containing the
+% SimBiology model object.
+% - model_exp_eq: File path prefix for saving equilibrium simulation run
+% .mat files.
+% - model_exp_default: File path prefix for saving proper simulation run
+% .mat files.
+% - model_exp_detail: File path prefix for saving detailed simulation run
+% .mat files.
+% - Data: Data structure containing experiment time points.
+% - sbtab: sbtab structure containing experiment settings and information.
+% - modelobj: SimBiology model object loaded from the mat_model file.
 %
-% Loaded Variables:
-%   - data_model
-%   - mat_model
-%   - model_exp_eq
-%   - model_exp_default
-%   - model_exp_detail
-%   - Data
-%   - sbtab
-%   - modelobj
+% Initialized:
+% - None
+%
+% Persistent:
+% - None
 %
 % Notes:
-%   - The function has a loop that iterates through all experiments and
-%   saves the corresponding .mat files.
+% - The function iterates through all experiments, configuring simulation
+% settings and processing species for each experiment, then saves the
+% corresponding .mat files.
 
 % Load data_model and mat_model files
 data_model = mmf.model.data.data_model;

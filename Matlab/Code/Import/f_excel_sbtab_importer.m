@@ -23,12 +23,21 @@ function f_excel_sbtab_importer(model_folders)
 % - cell_write_tsv: This function writes the data in a cell array to a TSV
 % file, taking care of transposing the array and converting numeric values
 % to strings.
-%
-% Loaded variables:
+% 
+% Variables:
+% Loaded:
 % - Source_sbtab: Path to the source Excel SBtab file.
 % - Matlab_sbtab: Path to the destination folder for the parsed .mat file.
-% - sheets: Cell array containing the names of sheets in the Excel SBtab file.
+% - sheets: Cell array containing the names of sheets in the Excel SBtab
+% file.
 % - sbtab_excel: A cell array containing the processed data for each sheet.
+%
+% Initialized:
+% - None
+%
+% Persistent:
+% - None
+
 
 % Get the folders for the model SBtab file and the destination for the
 % parsed data

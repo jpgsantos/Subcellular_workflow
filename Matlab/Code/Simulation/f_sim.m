@@ -9,32 +9,35 @@ function results = f_sim(experiment_idx,settings,simulation_parameters,...
 % the state of the loaded models between calls using persistent variables.
 %
 % Inputs:
-%   - experiment_idx: Indices of experiments to run
-%   - settings: Simulation settings (e.g., sbioaccelerate, simdetail, expn,
-%   exprun)
-%   - simulation_parameters: Parameter values for simulations
-%   - species_start_amount: Start amounts for species in simulations
-%   - results: Output variable to save simulation results
-%   - main_model_folders: Paths for model files (e.g., model_exp_default,
-%   model_exp_eq, model_exp_detail)
+% - experiment_idx: Indices of experiments to run
+% - settings: Simulation settings (e.g., sbioaccelerate, simdetail, expn,
+% exprun)
+% - simulation_parameters: Parameter values for simulations
+% - species_start_amount: Start amounts for species in simulations
+% - results: Output variable to save simulation results
+% - main_model_folders: Paths for model files (e.g., model_exp_default,
+% model_exp_eq, model_exp_detail)
 %
 % Outputs:
-%   - results: Simulation results (e.g., simd)
+% - results: Simulation results (e.g., simd)
 %
 % Functions called:
-%   - sbioaccelerate: Compile model code for faster simulation run
-%   - sbiosimulate: Run simulation of SimBiology model with specified
-%   configuration
+% - sbioaccelerate: Compile model code for faster simulation run
+% - sbiosimulate: Run simulation of SimBiology model with specified
+% configuration
 %
-% Loaded variables:
-%   - model_exp: SimBiology model for each experiment
-%   - config_exp: SimBiology model configuration for each experiment
+% Variables:
+% Loaded:
+% - model_exp: SimBiology model for each experiment
+% - config_exp: SimBiology model configuration for each experiment
 %
-% Persistent variables:
-%   - models: Cell array containing the SimBiology models for each
-%   experiment
-%   - configs: Cell array containing the configurations for each SimBiology
-%   model
+% Initialized:
+% None
+% 
+% Persistent:
+% - models: Cell array containing the SimBiology models for each experiment
+% - configs: Cell array containing the configurations for each SimBiology
+% model
 
 % Save variables that need to be mantained over multiple function calls
 persistent models

@@ -1,31 +1,35 @@
 function rst = f_score(rst, stg, mmf)
-% F_SCORE computes the score for a given set of simulated results by comparing
-% them with the experimental data. The function calculates the score for each 
-% dataset and experiment, and then computes the total score based on the selected
-% scoring strategy. The score serves as a metric for comparing the accuracy of
-% different simulations or models.
+% This function calculates the score for a set of simulated results by
+% comparing them to experimental data. It computes the score for each
+% dataset and experiment and then calculates the total score based on the
+% selected scoring strategy. The score serves as a metric for comparing the
+% accuracy of different simulations or models.
 %
 % Inputs:
-%   rst  - Structure containing the simulation results and scores.
-%   stg  - Structure containing the settings for the scoring strategy, such as
-%          the option to use log10 scaling, error score, and other options.
-%   mmf  - Structure containing the model directory information.
+% - rst: Structure containing the simulation results and scores.
+% - stg: Structure containing the settings for the scoring strategy, such
+% as the option to use log10 scaling, error score, and other options.
+% - mmf: Structure containing the model directory information.
 %
 % Outputs:
-%   rst  - Updated structure containing the calculated scores for each dataset,
-%          experiment, and the total score.
+% - rst: Updated structure containing the calculated scores for each
+% dataset, experiment, and the total score.
 %
-% Usage:
-%   rst = f_score(rst, stg, mmf)
+% Used Functions:
+% - calculate_score_per_experiment: Calculates the score for each
+% experiment.
+% - calculate_score_per_dataset: Calculates the score for each dataset in
+% an experiment.
+% - f_normalize: Normalizes the simulation results for a dataset.
 %
-% Example:
-%   stg.useLog = 1;
-%   stg.errorscore = 1e10;
-%   stg.exprun = 1:4;
-%   mmf.model.data.data_model = matlab model file
-%   rst.simd = matlab output from f_prep_sim
-%   rst = f_score(rst, stg, mmf);
-
+% Variables:
+% Loaded:
+% - Data: Experimental data.
+% - sbtab: sbtab structure containing dataset information.
+%
+% Persistent:
+% - sbtab: sbtab structure containing dataset information (persistent).
+% - Data: Experimental data (persistent).
 
 persistent sbtab
 persistent Data

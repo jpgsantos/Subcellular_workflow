@@ -8,23 +8,31 @@ function [stg,sb] = f_generate_sbtab_struct(stg,mmf)
 % sbtab_excel.
 %
 % Inputs:
-% stg: An existing structure that will be updated with the number
-% of experiments and outputs.
-% mmf: A structure containing the model
-% information, including the SBtab data file name.
+% - stg: An existing structure that will be updated with the number of
+% experiments and outputs.
+% - mmf: A structure containing the model information, including the SBtab
+% data file name.
 %
 % Outputs:
-% stg: The updated structure containing the number of experiments
+% - stg: The updated structure containing the number of experiments
 % and outputs.
-% sb: A structure generated from the SBtab data.
+% - sb: A structure generated from the SBtab data.
 %
 % Called functions:
-% convert_sbtab_to_struct: A helper function that converts
-% SBtab data into a structure.
+% - convert_sbtab_to_struct: A helper function that converts SBtab data
+% into a structure.
 %
-% Loaded variables:
+% Variables:
+% Loaded:
 % sbtab_excel: A variable that holds the loaded SBtab data from the
 % specified file.
+%
+% Initialized:
+% - None
+%
+% Persistent:
+% - None
+
 
 % Extract the sbtab file name from the mmf structure
 Matlab_sbtab = mmf.model.data.sbtab;

@@ -1,10 +1,35 @@
 function result = f_prep_sim(parameters,stg,model_folders)
-%   F_PREP_SIM Prepare parameters for simulation This function prepares the
-%   parameters for a simulation by setting them to the default values
-%   defined in the SBTAB and then updating any parameters that are being
-%   tested. The parameters are also adjusted according to any thermodynamic
-%   constraints. Inputs parameters: parameters stg: settings mmf: main
-%   model folders Outputs rst: results
+% This function prepares the parameters for a simulation by setting them
+% to the default values defined in the SBTAB and then updating any
+% parameters that are being tested. The parameters are also adjusted
+% according to any thermodynamic constraints.
+%
+% Inputs:
+% - parameters: Array of parameter values that need to be tested
+% - stg: Settings structure containing various settings for the simulation
+% - model_folders: Structure containing folder paths for the model data
+%
+% Outputs:
+% - result: Structure containing simulation results and parameter values
+%
+% Used Functions:
+% - update_simulation_parameters: Function to update simulation parameters
+% - f_sim: Function to run the simulation
+%
+% Variables:
+% Loaded:
+% - Data: Array of structures containing experimental data
+% - sbtab: SBTAB structure containing default parameters and species
+% information
+%
+% Initialized:
+% - sim_par: Array of simulation parameters
+% - ssa: Array of species start amounts
+%
+% Persistent:
+% - sbtab: SBTAB structure containing default parameters and species
+% information
+% - Data: Array of structures containing experimental data
 
 % Save variables that need to be mantained over multiple function calls
 persistent sbtab
