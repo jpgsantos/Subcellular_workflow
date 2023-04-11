@@ -1,6 +1,50 @@
-function [settings, results, sbTab] = f_user_input(mmf, analysis_options, user_choices)
-% Main function to obtain user input, process it, and return the necessary
-% settings, results and sbTab data.
+function [settings, results, sbTab] = f_user_input(model_folders, analysis_options, user_choices)
+% This function processes user input for model, analysis options, and
+% settings files, and returns settings, results, and sbTab data structures.
+% It utilizes helper functions to validate user input, apply settings, and
+% manage persistent variables.
+%
+% Inputs:
+% - model_folders: Model folders structure
+% - analysis_options: Array of available analysis options
+% - user_choices: Cell array of user input choices for model folder,
+% analysis, and settings
+%
+% Outputs:
+% - settings: Struct containing all settings for the chosen analysis
+% - results: Struct containing the results of the analysis
+% - sbTab: Struct containing SBtab data
+%
+% Used Functions:
+% - getValidInput: Validates user input for model folder, analysis option,
+% and settings file
+% - apply_settings: Updates settings based on chosen settings file and
+% checks for changes
+% - choose_options: Helps user choose valid options from available choices
+% - parse_choices: Presents list of choices to user and validates input
+% - compare_and_update: Checks if current and previous values are different
+% and clears functions if necessary
+%
+% Variables:
+% Loaded:
+% - None
+%
+% Initialized:
+% - results: Empty struct for storing analysis results
+% - settings: Empty struct for storing analysis settings
+% - sbTab: Empty struct for storing SBtab data
+%
+% Persistent:
+% - last_settings_file_text: Stores the last settings file text
+% - last_settings_file_date: Stores the last settings file date
+% - last_model_folder: Stores the last chosen model folder
+% - last_analysis_text: Stores the last chosen analysis option
+% - last_settings_file_text: Stores the last chosen settings file text
+% - last_SBtab_date: Stores the last SBtab date
+% - functions_cleared: Flag indicating if functions have been cleared or
+% not
+
+
 
 % Define persistent variables to store the last settings file text and
 % date.
@@ -14,7 +58,7 @@ sbTab = [];
 functions_cleared = 0;
 
 % Set model folder paths
-general_model_folder = mmf.main + "Model/";
+general_model_folder = model_folders.main + "Model/";
 
 % Get the valid model folder based on user input.
 model_folder =...

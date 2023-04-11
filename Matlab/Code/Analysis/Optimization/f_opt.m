@@ -1,35 +1,22 @@
 function [result,parameter_array] = f_opt(settings,model_folders)
-% This function, f_opt, is responsible for performing optimization on a
-% given objective function using different optimization algorithms. 
-% 
-% The function takes two inputs:
-% - 'settings': A struct containing settings for the optimization
-% algorithms.
-% - 'model_folders': An array containing information about the models to be
+% This function performs optimization on a given objective function using
+% different optimization algorithms. The available algorithms include
+% fmincon, Simulated annealing, Pattern search, Genetic algorithm, Particle
+% swarm, and Surrogate optimization. It iterates through the
+% optimization_algorithms cell array and calls the appropriate optimization
+% algorithm if its flag is set in the 'settings'.
+%
+% Inputs:
+% - settings: A struct containing settings for the optimization algorithms.
+% - model_folders: An array containing information about the models to be
 % optimized.
 %
-%
-% The function returns:
-% - 'result': A vector containing the results of each optimization
-% algorithm.
-% - 'parameter_array': A matrix containing the parameters for each
+% Outputs:
+% - result: A vector containing the results of each optimization algorithm.
+% - parameter_array: A matrix containing the parameters for each
 % optimization algorithm result.
 %
-% The optimization algorithms available are:
-% 1. fmincon
-% 2. Simulated annealing
-% 3. Pattern search
-% 4. Genetic algorithm
-% 5. Particle swarm
-% 6. Surrogate optimization
-%
-% The optimization_algorithms cell array contains the names and flags of
-% these optimization algorithms. The function iterates through this array
-% and calls the appropriate optimization algorithm if its flag is set in
-% the 'settings'.
-%
-% The nested functions are:
-% 
+% Used Functions:
 % - run_algorithm: Handles the execution of a specific optimization
 % algorithm.
 % - optimize_algorithm: Sets up the optimization algorithm and executes it.
@@ -42,9 +29,8 @@ function [result,parameter_array] = f_opt(settings,model_folders)
 % optimization algorithm.
 % - f_opt_start: Returns the starting point and the starting population for
 % optimization algorithms.
-%
-% Loaded variables within the function are:
 % 
+% Loaded Variables:
 % - optimization_algorithms: A cell array containing optimization algorithm
 % names and flags.
 % - algorithm_flag: The flag corresponding to the optimization algorithm.
@@ -53,6 +39,7 @@ function [result,parameter_array] = f_opt(settings,model_folders)
 % - options: A struct containing options for the optimization algorithm.
 % - plot_functions: A cell array containing plot functions specific to each
 % optimization algorithm.
+
 
 % Set the random seed for reproducibility
 rng(settings.rseed);

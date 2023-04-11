@@ -10,8 +10,6 @@ function results = f_gsa(settings,model_folders)
 % 'results', a structure containing the GSA results, including sensitivity
 % indices (Si) and total sensitivity indices (SiT) for each score type.
 %
-% Syntax:  results = f_gsa(settings,model_folders)
-%
 % Inputs:
 % - settings: A structure containing settings for the GSA, such as
 % parameter bounds, sampling mode, and random seed.
@@ -22,21 +20,13 @@ function results = f_gsa(settings,model_folders)
 % indices (Si) and total sensitivity indices (SiT) for each score type.
 %
 % Functions called:
-% 1. f_make_par_samples(settings): Generates sample matrices of model
+% - f_make_par_samples(settings): Generates sample matrices of model
 % parameters.
-% 2. f_make_output_sample(results, settings, model_folders): Calculates the
+% - f_make_output_sample(results, settings, model_folders): Calculates the
 % outputs for three different matrices (GSA M1, GSA M2, and GSA N) based on
 % the input parameters, settings, and mathematical model.
-% 3. f_calc_sensitivities(results, settings): Removes simulation errors
+% - f_calc_sensitivities(results, settings): Removes simulation errors
 % from the data and calculates Si and SiT using the bootstrap method.
-%
-% Loaded variables:
-% - M1, M2, and N: Matrices containing samples of model parameters.
-% - fM1, fM2, and fN: Matrices containing model outputs for GSA M1, GSA M2,
-% and GSA N methods.
-% - Si and SiT: Sensitivity indices (Si) and total sensitivity indices
-% (SiT) for each score type.
-
 
 results = f_make_par_samples(settings);
 

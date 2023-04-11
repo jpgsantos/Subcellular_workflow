@@ -6,19 +6,29 @@ function [n_outputs,output_names] = f_get_outputs(stg,sbtab)
 % array, 'out_name', with a prefix indicating the experiment run number.
 % Finally, it returns the total number of outputs and the cell array of
 % output names.
+% 
+% Inputs:
+% - stg: A structure containing experiment run indices
+% - sbtab: A structure containing datasets with output information for each
+% experiment run
 %
-% INPUTS:
-%   stg: A structure containing experiment run indices.
-%   sbtab: A structure containing datasets with output information for each
-%   experiment run.
+% Outputs:
+% - n_outputs: The total number of outputs across all experiment runs
+% - output_names: A cell array containing the output names, prefixed with
+% the experiment run number
 %
-% OUTPUTS:
-%   n_outputs: The total number of outputs across all experiment runs.
-%   output_names: A cell array containing the output names, prefixed with
-%   the experiment run number.
+% Used Functions:
+% (none)
 %
-% DEPENDENCIES:
-%   None.
+% Variables:
+% Loaded:
+% (none)
+%
+% Initialized:
+% - out_name: A cell array to store output names
+%
+% Persistent:
+% (none)
 
 % Initialize an empty cell array to store output names
 out_name = [];

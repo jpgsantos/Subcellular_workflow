@@ -6,35 +6,34 @@ function rst = f_PL_m(settings,model_folder)
 % optimization for each parameter in parallel. After the optimization, the
 % results are assigned to the correct struct entries.
 %
-% INPUTS:
-%   settings - A struct containing various settings for the
-%   optimization process, such as pltest, plsa, plfm, lb, ub, and more.
-%   model_folder  - A folder containing the model to be optimized.
+% Inputs:
+% - settings: A struct containing various settings for the
+% optimization process, such as pltest, plsa, plfm, lb, ub, and more.
+% - model_folder: A folder containing the model to be optimized.
 %
-% OUTPUTS:
-%   rst - A struct containing the optimization results for both simulated
-%   annealing and fmincon, including the optimized parameter values,
-%   objective function values, and simulated data.
+% Outputs:
+% - rst: A struct containing the optimization results for both simulated
+% annealing and fmincon, including the optimized parameter values,
+% objective function values, and simulated data.
 %
-% FUNCTIONS CALLED:
-%   get_PL_iter_start - Calculates the index closest to the best parameter
-%   value.
-%   f_PL_s - Runs the optimization for the given parameter index.
-%   assign_struct_values - Assigns the values of x, fval, and simd to the
-%   corresponding struct entries.
-%   sim_a  - Runs simulated annealing optimization.
-%   fmin_con - Runs fmincon optimization.
-%   f_sim_score - Calculates the objective function score for a given set
-%   of parameters.
+% Used Functions:
+% - get_PL_iter_start: Calculates the index closest to the best parameter
+% value.
+% - f_PL_s: Runs the optimization for the given parameter index.
+% - assign_struct_values: Assigns the values of x, fval, and simd to the
+% corresponding struct entries.
+% - sim_a: Runs simulated annealing optimization.
+% - fmin_con: Runs fmincon optimization.
+% - f_sim_score: Calculates the objective function score for a given set
+% of parameters.
 %
-% LOADED VARIABLES:
-%   PL_iter_start - A vector containing the indices of the starting points
-%   for PL calculation.
-%   parfor_indices - A vector containing the indices for parallel
-%   execution.
-%   x, fval, simd - Cell arrays containing the optimization results for
-%   each parameter.
-
+% Loaded Variables:
+% - PL_iter_start: A vector containing the indices of the starting points
+% for PL calculation.
+% - parfor_indices: A vector containing the indices for parallel
+% execution.
+% - x, fval, simd: Cell arrays containing the optimization results for
+% each parameter.
 
 % Find the index of the starting point for profile likelihood (PL)
 % calculation

@@ -1,45 +1,48 @@
 function results= f_make_par_samples(settings)
-% Creates sample matrices of model parameters according to specified
-% distributions and settings. This function is based on Geir Halnes et
-% al.'s 2009 paper (J. comp. neuroscience 27.3 (2009): 471). It generates
-% two sample matrices M1 and M2 and a 3D matrix N, where N(:,:,i) is M2
-% with its i:th column replaced by M1(:,i).
+% This function creates sample matrices of model parameters according to
+% specified distributions and settings, based on Geir Halnes et al.'s 2009
+% paper (J. comp. neuroscience 27.3 (2009): 471). It generates two sample
+% matrices M1 and M2, and a 3D matrix N, where N(:,:,i) is M2 with its i:th
+% column replaced by M1(:,i).
 %
 % Inputs:
-%   - settings: A structure containing the following fields:
-%     - sansamples: Number of samples to generate for each parameter.
-%     - parnum: Number of model parameters.
-%     - rseed: Seed for random number generator.
-%     - sasamplemode: Sampling mode (0: uniform distribution, 1: normal
-%     distribution with truncation, 2: normal distribution, 3: mean-based
-%     normal distribution with truncation, 4: mean-based normal
-%     distribution).
-%     - lb: Vector containing lower bounds for each parameter.
-%     - ub: Vector containing upper bounds for each parameter.
-%     - bestpa: Vector containing the best parameter values.
-%     - sasamplesigma: Standard deviation for normal distribution-based
-%     sampling modes.
+% - settings: A structure containing fields for generating samples,
+% including sansamples, parnum, rseed, sasamplemode, lb, ub, bestpa, and
+% sasamplesigma.
 %
 % Outputs:
-%   - results: A structure containing the following fields:
-%     - M1: Sample matrix 1.
-%     - M2: Sample matrix 2.
-%     - N: A 3D matrix where N(:,:,i) is M2 with its i:th column replaced
-%     by M1(:,i).
+% - results: A structure containing the following fields:
+% - M1: Sample matrix 1.
+% - M2: Sample matrix 2.
+% - N: A 3D matrix where N(:,:,i) is M2 with its i:th column replaced by
+% M1(:,i).
 %
 % Functions called:
-%   - makedist: Create a probability distribution object.
-%   - truncate: Truncate a probability distribution.
-%   - random: Generate random numbers from a probability distribution.
+% - makedist: Create a probability distribution object.
+% - truncate: Truncate a probability distribution.
+% - random: Generate random numbers from a probability distribution.
 %
-% Loaded variables:
-%   - M1, M2: Pre-allocated sample matrices.
-%   - N: Pre-allocated 3D matrix for storing modified versions of M2.
-%   - pd: A vector storing probability distribution objects for each
-%   parameter.
+% Variables:
+% Initialized:
+% - M1: Sample matrix 1.
+% - M2: Sample matrix 2.
+% - N: A 3D matrix where N(:,:,i) is M2 with its i:th column replaced by
+% M1(:,i).
+% - pd: An array of probability distribution objects for each parameter.
+%
+% Loaded (from settings structure):
+% - sansamples: Number of samples to generate for each parameter.
+% - parnum: Number of model parameters.
+% - rseed: Seed for the random number generator.
+% - sasamplemode: Sampling mode.
+% - lb: Vector containing lower bounds for each parameter.
+% - ub: Vector containing upper bounds for each parameter.
+% - bestpa: Vector containing the best parameter values.
+% - sasamplesigma: Standard deviation for normal distribution-based
+% sampling modes.
 
 % Pre-allocate memory for sample matrices
-M1 = zeros(settings.sansamples, settings.parnum); % Pre-allocate memory for data
+M1 = zeros(settings.sansamples, settings.parnum);
 M2 = zeros(settings.sansamples, settings.parnum);
 N = zeros(settings.sansamples, settings.parnum, settings.parnum);
 rng(settings.rseed)

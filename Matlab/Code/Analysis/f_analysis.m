@@ -1,23 +1,36 @@
 function [rst,stg] = f_analysis(stg,analysis,mmf,analysis_options,rst)
-% Function: f_analysis
-% Description: This function performs a specific analysis based on the
-% given analysis options. It takes settings, analysis type, main model
-% files, a list of possible analysis options, and a structure for storing
-% analysis results as input arguments. It outputs the results of the
-% analysis and updates the settings as needed. The function calls the
-% appropriate analysis functions (f_diagnostics, f_opt, f_sim_score, f_lsa,
-% f_gsa, f_PL_m) depending on the selected analysis type.
+% This function performs a specific analysis based on the given analysis
+% options. The function calls the appropriate analysis functions
+% (f_diagnostics, f_opt, f_sim_score, f_lsa, f_gsa, f_PL_m) depending on
+% the selected analysis type. The analysis results are stored in an updated
+% 'rst' structure, and the settings are updated as needed.
 %
 % Inputs:
-%   - stg: settings to use in the analysis
-%   - analysis: type of analysis to be performed
-%   - mmf: main model files
-%   - analysis_options: list of possible analysis options
-%   - rst: structure for storing analysis results
+% - stg: Settings to use in the analysis
+% - analysis: Type of analysis to be performed
+% - mmf: Main model files
+% - analysis_options: List of possible analysis options
+% - rst: Structure for storing analysis results
 %
 % Outputs:
-%   - rst: updated structure containing the results of the analysis
-%   - stg: updated settings after the analysis
+% - rst: Updated structure containing the results of the analysis
+% - stg: Updated settings after the analysis
+%
+% Used Functions:
+% - f_diagnostics: Performs diagnostic analysis
+% - f_opt: Performs optimization analysis
+% - f_sim_score: Runs simulation for a given option
+% - f_lsa: Performs Local sensititivity Analysis (LSA)
+% - f_gsa: Performs Global ensititivity Analysis (GSA)
+% - f_PL_m: Performs Profile Likelihood Analysisa (PLA)
+%
+% Variables:
+% Initialized:
+% - matching_option_idx: Index of the selected analysis option
+% - sim_results: Cell array for storing simulation results
+% - valid_options: Array of valid optimization options
+%
+% Persistent: None
 
 matching_option_idx = find(contains(analysis_options, analysis), 1);
 

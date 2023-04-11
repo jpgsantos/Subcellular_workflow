@@ -1,27 +1,36 @@
 function results = f_make_output_sample(results,settings,model_folders)
-% Calculates the outputs for three different matrices (GSA M1,
-% GSA M2, and GSA N) based on the input parameters, settings, and a
+% This function calculates the outputs for three different matrices (GSA
+% M1, GSA M2, and GSA N) based on the input parameters, settings, and a
 % mathematical model. This code is inspired by Geir Halnes et al. 2009
 % paper.
 %
 % Inputs:
-%   - results: A structure containing M1, M2, and N matrices
-%   - settings: A structure with settings, including sansamples and parnum
-%   - model_folders: A variable containing folders for the models
+% - results: A structure containing M1, M2, and N matrices
+% - settings: A structure with settings, including sansamples and parnum
+% - model_folders: A variable containing folders for the models
 %
 % Outputs:
-%   - results: A structure containing fM1, fM2, and fN fields, each
-%     containing computed outputs for corresponding GSA methods
+% - results: A structure containing fM1, fM2, and fN fields, each
+% containing computed outputs for corresponding GSA methods
 %
-% Functions called:
-%   - compute_f: Compute the results for GSA M1, GSA M2, and GSA N methods
-%   - f_sim_score: Simulation score calculation function
-%   - progress_track: Track progress of the calculations
+% Used Functions :
+% - compute_f: Compute the results for GSA M1, GSA M2, and GSA N methods
+% - f_sim_score: Simulation score calculation function
+% - progress_track: Track progress of the calculations
 %
-% Loaded variables:
-%   - nSamples: Number of samples
-%   - nPars: Number of parameters
-%   - time_begin: Start time of the function
+% Variables
+% Loaded:
+% - nSamples: Number of samples (loaded from settings.sansamples)
+% - nPars: Number of parameters (loaded from settings.parnum)
+%
+% Initialized:
+% - time_begin: The start time of the function
+% - f_out: Structure holding the computed values for fM1, fM2, and fN
+%
+% Persistent:
+% - current_sample: Keeps track of the current sample number for progress
+% tracking
+% - last_time: Keeps track of the last time progress was printed
 
 % Number of samples
 nSamples = settings.sansamples;

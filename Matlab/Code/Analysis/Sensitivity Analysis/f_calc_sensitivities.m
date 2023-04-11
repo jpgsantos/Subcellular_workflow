@@ -22,18 +22,22 @@ function results = f_calc_sensitivities(results,settings)
 % the bootstrapped samples
 % - calcSobolSaltelli: calculates Si and SiT using the Sobol-Saltelli
 % method
-%
-% Loaded variables:
-% -  settings.gsabootstrapsize: the number of resamples for bootstrapping
 % 
-% - settings.rseed: random seed for the bootstrapping process
-% - settings.sasubmean: a flag indicating whether to subtract the mean to
-% stabilize the model
-% - settings.errorscore: a value representing the simulation error
-
+% Loaded variables:
+% - None
+%
+% Initialized variables:
+% - fM1: a structure containing the first-order score data for each score type
+% - fM2: a structure containing the total-order score data for each score type
+% - fN: a structure containing the score data for each score type and parameter
+% - settings: a structure containing settings for the calculation
+%
+% Persistent variables:
+% - None
 
 % Remove simulation errors from the input data
 results = remove_sim_error(results,settings);
+
 % Calculate Si and SiT using the bootstrap method and store them in the results
 % structure
 [results.SiQ,results.SiTQ,results.Si,results.SiT] = bootstrap(results,settings);

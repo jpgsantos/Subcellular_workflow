@@ -5,35 +5,32 @@ function f_setup_input(stg,mmf)
 % the "Input_functions" folder.
 % 
 % Inputs:
-% 
-% stg: A structure containing information about the simulation settings.
-% mmf: A structure containing information about the model, including the
+% - stg: A structure containing information about the simulation settings.
+% - mmf: A structure containing information about the model, including the
 % model data, main folder, and input functions.
-% 
-% Outputs: This function
-% creates input function files and an input creator function file in the
-% "Input_functions" folder. The input functions are used to calculate input
-% values based on the simulation time, while the input creator function is
-% used to create input data from the sbtab.datasets.
-% 
-% Functions called:
-% 
-% template1: Generates code for input functions.
-% template2: Generates code for the first input of the first experiment in
+%
+% Outputs:
+% - This function creates input function files and an input creator function
+% file in the "Input_functions" folder. The input functions are used to
+% calculate input values based on the simulation time, while the input
+% creator function is used to create input data from the sbtab.datasets.
+%
+% Used Functions :
+% - template1: Generates code for input functions.
+% - template2: Generates code for the first input of the first experiment in
 % the input creator function.
-% template3: Generates code for the rest of the inputs in the input creator
+% - template3: Generates code for the rest of the inputs in the input creator
 % function.
-% 
-% Loaded variables:
-% 
-% matlab_model: Loaded from mmf.model.data.mat_model.
-% data_model: Loaded from mmf.model.data.data_model.
-% inp_model_data: Loaded from mmf.model.data.input_model_data.
-% Model_folder: Loaded from mmf.model.main. model_input: Loaded from
-% mmf.model.input_functions.input.
-% sbtab: Loaded from the data_model file.
-% modelobj: Loaded from the
-% matlab_model file.
+%
+% Loaded Variables:
+% - matlab_model: Loaded from mmf.model.data.mat_model.
+% - data_model: Loaded from mmf.model.data.data_model.
+% - inp_model_data: Loaded from mmf.model.data.input_model_data.
+% - Model_folder: Loaded from mmf.model.main.
+% - model_input: Loaded from mmf.model.input_functions.input.
+% - sbtab: Loaded from the data_model file.
+% - modelobj: Loaded from the matlab_model file.
+
 
 % Load required data from mmf.model.data:
 matlab_model = mmf.model.data.mat_model;
