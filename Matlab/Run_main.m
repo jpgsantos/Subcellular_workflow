@@ -1,4 +1,4 @@
-function [stg,sb,rst,mmf,plots] = Run_main(Folder,Analysis,settings)
+function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,settings)
 % Main function to perform various analyses on a selected model
 % using a given settings file.
 %
@@ -55,7 +55,7 @@ if ~contains(strrep(path,"\","/"),...
     addpath(genpath(Matlab_main_folder));
 end
 
-mmf.main = Matlab_main_folder ;
+model_folders.main = Matlab_main_folder ;
 
 % Name of the various analysis that can be run with this code
 analysis_options = ["Diagnostics","Parameter Estimation",...
@@ -64,30 +64,30 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
     "Reproduce the plots of a previous analysis","Import model files"];
 
 % Code for choosing the model and loading the settings files
-[stg,rst,sb] = f_user_input(mmf,analysis_options,user_choices);
+[settings,results,sb] = f_user_input(model_folders,analysis_options,user_choices);
 
 % Get the folder structure used for the model files
-[mmf] = default_folders(stg,mmf,date_stamp);
+[model_folders] = default_folders(settings,model_folders,date_stamp);
 
 % Runs the import scripts if chosen in settings
-if stg.import
-    [stg,sb] = f_import(stg,mmf);
+if settings.import
+    [settings,sb] = f_import(settings,model_folders);
 else
     % Creates a struct based on the sbtab that is used elswhere in the code
     % and also adds the number of experiments and outputs to the settings
     % variable
     if isempty(sb)% check needed for plot reproduction
-        [stg,sb] = f_generate_sbtab_struct(stg,mmf);
+        [settings,sb] = f_generate_sbtab_struct(settings,model_folders);
     end
 end
 
 % Runs the Analysis chosen by the user input
-    [rst,stg] = f_analysis(stg,stg.analysis,mmf,analysis_options,rst);
+    [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 plots = [];
-if stg.plot
+if settings.plot
     % plots = f_plot(rst,stg,mmf);
     % Save plots results if chosen in settings
 %     if stg.save_results
@@ -96,8 +96,8 @@ if stg.plot
 end
 
 % Save Analysis results if chosen in settings
-if stg.save_results
-    f_save_analysis(stg,sb,rst,mmf,plots)
+if settings.save_results
+    f_save_analysis(settings,sb,results,model_folders,plots)
 end
 
 end
