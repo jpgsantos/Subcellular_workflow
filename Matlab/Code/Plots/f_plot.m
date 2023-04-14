@@ -53,36 +53,36 @@ plots = [];
 % Check if the 'diag' field exists in the rst structure
 if isfield(rst, 'diag')
     % Generate and store figure with Scores
-    plots{end+1} = f_plot_scores(rst.diag, stg, sbtab);
+    plots = [plots;f_plot_scores(rst.diag, stg, sbtab)];
     % Generate and store figure with Inputs
-    plots{end+1} = f_plot_inputs(rst.diag, stg, sbtab);
+    plots = [plots;f_plot_inputs(rst.diag, stg, sbtab)];
     % Generate and store figure with Outputs
-    plots{end+1} = f_plot_outputs(rst.diag, stg, sbtab, Data, mmf);
+    plots = [plots;f_plot_outputs(rst.diag, stg, sbtab, Data, mmf)];
     % Generate and store figure with Input and Output for all experiments
-    plots{end+1} = f_plot_in_out(rst.diag, stg, sbtab, Data, mmf);
+    plots = [plots;f_plot_in_out(rst.diag, stg, sbtab, Data, mmf)];
 end
 
 % Check if the 'opt' field exists in the rst structure
 if isfield(rst, 'opt')
     % Generate and store figure with optimization results
-    plots{end+1} = f_plot_opt(rst, stg);
+    plots = [plots;f_plot_opt(rst, stg)];
 end
 
 % Check if the 'lsa' field exists in the rst structure
 if isfield(rst, 'lsa')
     % Generate and store figures for Local Sensitivity Analysis
-    plots{end+1} = f_plot_lsa(rst.lsa, stg);
+    plots = [plots;f_plot_lsa(rst.lsa, stg)];
 end
 
 % Check if the 'gsa' field exists in the rst structure
 if isfield(rst, 'gsa')
     % Generate and store figures for Global Sensitivity Analysis
-    plots{end+1} = f_plot_gsa_sensitivities(rst.gsa, stg, sbtab);
+    plots = [plots;f_plot_gsa_sensitivities(rst.gsa, stg, sbtab)];
 end
 
 % Check if the 'PLA' field exists in the rst structure
 if isfield(rst, 'PLA')
     % Generate and store figure for Profile Likelihood Analysis
-    plots{end+1} = f_plot_PL(rst, stg, mmf);
+    plots = [plots;f_plot_PL(rst, stg, mmf)];
 end
 end
