@@ -77,10 +77,12 @@ try
     % equal to the previous experiment, and the previous simulation
     % was valid
     is_not_first_experiment = n ~= stg.exprun(1);
+    
     start_values_equal = min([sbtab.datasets(n).start_amount{:,2}] ==...
         [sbtab.datasets(stg.exprun(...
-        max(find(stg.exprun==n)-1,stg.exprun(1)))).start_amount{:,2}]);
-    previous_simulation_valid = result.simd{stg.exprun(max(find(stg.exprun==n)-1,1))} ~= 0;
+        max(find(stg.exprun==n)-1,1))).start_amount{:,2}]);
+    previous_simulation_valid = ...
+        result.simd{stg.exprun(max(find(stg.exprun==n)-1,1))} ~= 0;
     
     if is_not_first_experiment && start_values_equal && previous_simulation_valid
         % Set the start amounts based on the previous experiment
