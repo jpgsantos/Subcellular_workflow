@@ -1,4 +1,4 @@
-function plots = f_plot_PL(rst,stg,mmf)
+function plots = f_plot_PL(results,settings,model_folder)
 % F_PLOT_PL This function creates plots of Parameter Profile Likelihood
 % (PL) for given results (rst), settings (stg), and model (mmf), using
 % specified font settings (font_settings). The function iterates through
@@ -9,7 +9,7 @@ function plots = f_plot_PL(rst,stg,mmf)
 % if they exist, and also plots the 95% confidence threshold, best
 % parameter values, and diagnostic results. The x-axis limits are set based
 % on the lower and upper bounds of the parameters.
-% 
+%
 % Inputs:
 %   - rst: A structure containing the results from the optimization and
 %   diagnostic processes.
@@ -26,7 +26,7 @@ function plots = f_plot_PL(rst,stg,mmf)
 %   - f_get_subplot: Generates the required number of figures and
 %   calculates subplot positions.
 %   - set_font_settings: Sets the font settings for the plot.
-% 
+%
 % Variables:
 % Loaded:
 % None
@@ -38,7 +38,7 @@ function plots = f_plot_PL(rst,stg,mmf)
 %   - best_score: The best score calculated using the best parameter set.
 %   - minfval: The minimum fval for the plot.
 %   - Lgnd: The legend object for the plot.
-% 
+%
 % Persistent:
 % None
 
@@ -48,11 +48,11 @@ disp("Plotting PL")
 
 % Check if 'bestpa' field exists in stg and calculate the best score if it
 % does
-if isfield(stg,'bestpa')
-    stg.sbioacc = false;
-    [best_score,~] = f_sim_score(stg.bestpa,stg,mmf);
+if isfield(settings,'bestpa')
+    settings.sbioacc = false;
+    [best_score,~] = f_sim_score(settings.bestpa,settings,model_folder);
 end
-
+% best_score
 % Set the font settings
 f_set_font_settings()
 
@@ -63,10 +63,10 @@ layout = [];
 plots = [];
 
 % Iterate through the pltest values
-for m = stg.pltest
+for m = settings.pltest
 
     % Generate the required number of figures and calculate the subplot positions
-    [fig_n,layout,plots] = f_get_subplot(size(stg.pltest,2),plot_n,...
+    [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
         fig_n,"Parameter Profile Likelihood",layout,plots);
 
     % Set the next tile in the layout
@@ -95,21 +95,46 @@ for m = stg.pltest
     hold on
 
     % Check if there are results from PL function
-    if isfield(rst,'PLA')
-        % Plot the PL results from simulated annealing if they exist
-        if isfield(rst.PLA,'sa')
-            plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
-                [rst.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
-                'LineWidth',1.5,'color',[0, 0, 1, 0.5])
-            minfval = min(rst.PLA.sa.fvalt{m});
-        end
+    if isfield(results,'PLA')
 
-        % Plot the PL results from fmincon if they exist
-        if isfield(rst.PLA,'fm')
-            plot(stg.lb(m):(stg.ub(m)-stg.lb(m))/stg.plres:stg.ub(m),...
-                [rst.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
+        % if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
+        %     plot(max([length(results.PLA.sa.fvalt{m})]),...
+        %         min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
+        %         'DisplayName','Total score sa and fmincon',...
+        %         'LineWidth',1.5,'color',[0, 0, 0, 0.5])
+        %     % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+        %     %     min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
+        %     %     'DisplayName','Total score sa and fmincon',...
+        %     %     'LineWidth',1.5,'color',[0, 0, 0, 0.5])
+        %     minfval = min(results.PLA.fm.fvalt{m});
+        %
+        %     % Plot the PL results from simulated annealing if they exist
+        % else
+
+        if isfield(results.PLA,'sa')
+            % [results.PLA.sa.Pval{m}]
+            plot([results.PLA.sa.Pval{m}],...
+                [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+                'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+
+
+            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+            %     [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+            %     'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+            minfval = min(results.PLA.sa.fvalt{m});
+
+
+            % Plot the PL results from fmincon if they exist
+        end
+        % else
+        if isfield(results.PLA,'fm')
+            plot([results.PLA.fm.Pval{m}],...
+                [results.PLA.fm.fvalt{m}],'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
-            minfval = min(rst.PLA.fm.fvalt{m});
+            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+            %     [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
+            %     'LineWidth',1.5,'color',[1, 0, 0, 0.5])
+            minfval = min(results.PLA.fm.fvalt{m});
         end
     end
 
@@ -118,26 +143,126 @@ for m = stg.pltest
         'DisplayName','Total score icdf(\chi^2,0.95)')
 
     % If the best parameter value exists in the settings, plot it
-    if isfield(stg,'bestpa')
-        scatter(stg.bestpa(m),best_score,20,'filled',...
+    if isfield(settings,'bestpa')
+        scatter(settings.bestpa(m),best_score,20,'filled',...
             'DisplayName','best \theta','MarkerFaceColor','k')
     end
 
     % If the diagnostic results exist, plot the parameters used in the
     % diagnostics
-    if isfield(rst,'diag')
-        scatter(stg.pa(stg.pat,m),[rst.diag(stg.pat).st],...
+    if isfield(results,'diag')
+        scatter(settings.pa(settings.pat,m),[results.diag(settings.pat).st],...
             10,'filled','DisplayName','\theta test')
     end
 
     hold off
 
     % Set the x-axis limits
-    xlim([stg.lb(m) stg.ub(m)])
+    xlim([settings.lb(m) settings.ub(m)])
     % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
 
     % Set the title for each plot
-    titlestring = "\theta_{" + find(stg.partest==m)+"}";
+    titlestring = "\theta_{" + find(settings.partest==m)+"}";
+    title(titlestring(1),'FontSize',Minor_title_FontSize,...
+        'Fontweight',Minor_title_Fontweight)
+end
+
+% Iterate through the pltest values
+for m = settings.pltest
+
+    % Generate the required number of figures and calculate the subplot positions
+    [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
+        fig_n,"Parameter Profile Likelihood",layout,plots);
+
+    % Set the next tile in the layout
+    nexttile(layout);
+
+    % Add a legend, labels, and title to the figure if it's the first plot
+    % in a set of 12
+    if mod(plot_n,12) == 1
+
+        % Add a legend to the figure
+        Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
+        Lgnd.Layout.Tile = 'North';
+        legend boxoff
+        xlabel(layout,"log_{10} \theta",...
+            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+        ylabel(layout,"-2 PL",...
+            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+        title(layout,"Parameter Profile Likelihood",...
+            'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
+
+    end
+
+    % Increment the plot counter
+    plot_n = plot_n +1;
+
+    hold on
+
+    % Check if there are results from PL function
+    if isfield(results,'PLA')
+        % if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
+        %
+        %
+        %     plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+        %         min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
+        %         'DisplayName','Total score sa',...
+        %         'LineWidth',1.5,'color',[0, 0, 0, 0.5])
+        %     minfval = min(results.PLA.sa.fvalt{m});
+        %     % Plot the PL results from simulated annealing if they exist
+        % else
+
+        if isfield(results.PLA,'sa')
+            % [results.PLA.sa.Pval{m}]
+            plot([results.PLA.sa.Pval{m}],...
+                [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+                'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+
+
+            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+            %     [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+            %     'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+            minfval = min(results.PLA.sa.fvalt{m});
+            % Plot the PL results from fmincon if they exist
+        end
+        % else
+        if isfield(results.PLA,'fm')
+            plot([results.PLA.fm.Pval{m}],...
+                [results.PLA.fm.fvalt{m}],'DisplayName','Total score sa',...
+                'LineWidth',1.5,'color',[1, 0, 0, 0.5])
+
+            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
+            %     [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
+            %     'LineWidth',1.5,'color',[1, 0, 0, 0.5])
+            minfval = min(results.PLA.fm.fvalt{m});
+        end
+    end
+
+    % Add a line indicating the 95% confidence threshold
+    yline(icdf('chi2',0.95,1)+minfval,...
+        'DisplayName','Total score icdf(\chi^2,0.95)')
+
+    % If the best parameter value exists in the settings, plot it
+    if isfield(settings,'bestpa')
+        scatter(settings.bestpa(m),best_score,20,'filled',...
+            'DisplayName','best \theta','MarkerFaceColor','k')
+    end
+
+    % If the diagnostic results exist, plot the parameters used in the
+    % diagnostics
+    if isfield(results,'diag')
+        scatter(settings.pa(settings.pat,m),[results.diag(settings.pat).st],...
+            10,'filled','DisplayName','\theta test')
+    end
+
+    hold off
+
+    % Set the x-axis limits
+    xlim([settings.lb(m) settings.ub(m)])
+    ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
+
+    % Set the title for each plot
+    titlestring = "\theta_{" + find(settings.partest==m)+"}";
     title(titlestring(1),'FontSize',Minor_title_FontSize,...
         'Fontweight',Minor_title_Fontweight)
 end
