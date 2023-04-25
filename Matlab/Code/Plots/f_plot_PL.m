@@ -97,43 +97,36 @@ for m = settings.pltest
     % Check if there are results from PL function
     if isfield(results,'PLA')
 
-        % if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
-        %     plot(max([length(results.PLA.sa.fvalt{m})]),...
-        %         min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
-        %         'DisplayName','Total score sa and fmincon',...
-        %         'LineWidth',1.5,'color',[0, 0, 0, 0.5])
-        %     % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-        %     %     min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
-        %     %     'DisplayName','Total score sa and fmincon',...
-        %     %     'LineWidth',1.5,'color',[0, 0, 0, 0.5])
-        %     minfval = min(results.PLA.fm.fvalt{m});
-        %
-        %     % Plot the PL results from simulated annealing if they exist
-        % else
+        if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
+            common_PVal = [];
+            common_fval = [];
+            for n = 1:length([results.PLA.sa.Pval{m}])
+                k = find(results.PLA.sa.Pval{m}(n)==[results.PLA.fm.Pval{m}]);
+                if ~isempty(k)
+                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
+                    common_fval(n) = ...
+                        min(results.PLA.sa.fvalt{m}(n),results.PLA.fm.fvalt{m}(k));
+                else
+                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
+                    common_fval(n) = results.PLA.sa.fvalt{m}(n);
+                end
+            end
+            plot(common_PVal,...
+                common_fval,'DisplayName','Total score sa and fmincon',...
+                'LineWidth',1.5,'color',[0, 0, 0, 1])
+            minfval = min(common_fval);
 
-        if isfield(results.PLA,'sa')
-            % [results.PLA.sa.Pval{m}]
+        elseif isfield(results.PLA,'sa')
             plot([results.PLA.sa.Pval{m}],...
                 [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
-
-
-            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-            %     [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
-            %     'LineWidth',1.5,'color',[0, 0, 1, 0.5])
             minfval = min(results.PLA.sa.fvalt{m});
 
-
             % Plot the PL results from fmincon if they exist
-        end
-        % else
-        if isfield(results.PLA,'fm')
+        elseif isfield(results.PLA,'fm')
             plot([results.PLA.fm.Pval{m}],...
-                [results.PLA.fm.fvalt{m}],'DisplayName','Total score sa',...
+                [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
-            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-            %     [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
-            %     'LineWidth',1.5,'color',[1, 0, 0, 0.5])
             minfval = min(results.PLA.fm.fvalt{m});
         end
     end
@@ -182,7 +175,8 @@ for m = settings.pltest
     if mod(plot_n,12) == 1
 
         % Add a legend to the figure
-        Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
+        Lgnd = legend('show','Orientation','Horizontal',...
+            'fontsize',Legend_FontSize);
         Lgnd.Layout.Tile = 'North';
         legend boxoff
         xlabel(layout,"log_{10} \theta",...
@@ -190,7 +184,8 @@ for m = settings.pltest
         ylabel(layout,"-2 PL",...
             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
         title(layout,"Parameter Profile Likelihood",...
-            'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
+            'FontSize', Major_title_FontSize,...
+            'Fontweight',Major_title_Fontweight)
 
     end
 
@@ -201,39 +196,41 @@ for m = settings.pltest
 
     % Check if there are results from PL function
     if isfield(results,'PLA')
-        % if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
-        %
-        %
-        %     plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-        %         min([results.PLA.sa.fvalt{m}],[results.PLA.fm.fvalt{m}]),...
-        %         'DisplayName','Total score sa',...
-        %         'LineWidth',1.5,'color',[0, 0, 0, 0.5])
-        %     minfval = min(results.PLA.sa.fvalt{m});
-        %     % Plot the PL results from simulated annealing if they exist
-        % else
 
-        if isfield(results.PLA,'sa')
-            % [results.PLA.sa.Pval{m}]
+        if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
+            common_PVal = [];
+            common_fval = [];
+
+            for n = 1:length([results.PLA.sa.Pval{m}])
+                k = find(results.PLA.sa.Pval{m}(n)==[results.PLA.fm.Pval{m}]);
+                if ~isempty(k)
+                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
+                    common_fval(n) = ...
+                        min(results.PLA.sa.fvalt{m}(n),...
+                        results.PLA.fm.fvalt{m}(k));
+                else
+                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
+                    common_fval(n) = results.PLA.sa.fvalt{m}(n);
+                end
+            end
+
+            plot(common_PVal,...
+                common_fval,'DisplayName','Total score sa',...
+                'LineWidth',1.5,'color',[0, 0, 0, 1])
+            minfval = min(common_fval);
+        elseif isfield(results.PLA,'sa')
+
             plot([results.PLA.sa.Pval{m}],...
                 [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
 
-
-            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-            %     [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
-            %     'LineWidth',1.5,'color',[0, 0, 1, 0.5])
             minfval = min(results.PLA.sa.fvalt{m});
             % Plot the PL results from fmincon if they exist
-        end
-        % else
-        if isfield(results.PLA,'fm')
+        elseif isfield(results.PLA,'fm')
             plot([results.PLA.fm.Pval{m}],...
                 [results.PLA.fm.fvalt{m}],'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
 
-            % plot(settings.lb(m):(settings.ub(m)-settings.lb(m))/settings.plres:settings.ub(m),...
-            %     [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
-            %     'LineWidth',1.5,'color',[1, 0, 0, 0.5])
             minfval = min(results.PLA.fm.fvalt{m});
         end
     end
