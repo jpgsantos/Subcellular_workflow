@@ -72,15 +72,19 @@ delta = p_1/(p-1);
 
 parameter_n = stg.parnum;
 par_n_plus_1 = parameter_n+1;
-B_star = [];
+B_star = zeros(number_samples*par_n_plus_1,parameter_n);
 
 % Define B_matrix and J_matrix for LSA calculations
 B_matrix = tril(ones(par_n_plus_1, parameter_n), -1);
 J_matrix = ones(par_n_plus_1,parameter_n);
+P_matrix_1 = zeros(number_samples*parameter_n,parameter_n);
+
+x11_1 = zeros(number_samples,parameter_n);
+x22_1 = zeros(number_samples,parameter_n);
+x1_1 = zeros(number_samples,parameter_n);
 
 % Main loop for generating B_star matrix
 for i = 1:number_samples
-
     % Generate random direction vector
     d = sign(rand(1, parameter_n) - 0.5);
 
@@ -132,6 +136,8 @@ parfor n = 1:number_samples*par_n_plus_1
     send(D, {"LSA",progress,time_begin,number_samples,par_n_plus_1});
 end
 
+
+
 % Store results in the output structure
 rst.B_star = B_star;
 rst.score_B_star = score_B_star;
@@ -143,9 +149,16 @@ rst.P_matrix = P_matrix_1;
 % Calculate and store parameter_score
 for n = 1:number_samples
     for i = 1:parameter_n
+        if any(any(score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).sd == stg.errorscore)) ||...
+                any(any(score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st == stg.errorscore))
+            parameter_score(n,x22_1(n,:)) = [];
+            break
+        else
+           
         parameter_score(n,x22_1(n,i)) =...
             score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).st -...
             score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st;
+        end
     end
 end
 
@@ -158,7 +171,7 @@ rst.parameter_score_delta = parameter_score_delta;
 rst.sum_parameter_score = sum(abs(parameter_score));
 rst.sum_parameter_score_delta = sum(abs(parameter_score_delta));
 rst.mean_parameter_score = sum(abs(parameter_score))/number_samples;
-rst.mean_parameter_score_delta = 
+rst.mean_parameter_score_delta = ...
 sum(abs(parameter_score_delta))/number_samples;
 rst.sigma_parameter_score =...
     sqrt((1/(number_samples-1))*...
@@ -196,7 +209,7 @@ if mod(current_sample,ceil(num_samples*par_n_plus_1/par_n_plus_1)) == 0 &&...
         dt = (datetime-last_time);
         remaining_time = seconds(dt);
         remaining_time =...
-            remaining_time*(num_samples*par_n_plus_1-current_sample)/
+            remaining_time*(num_samples*par_n_plus_1-current_sample)/...
         num_samples;
         remaining_time = seconds(remaining_time);
         remaining_time.Format = 'hh:mm:ss';
@@ -212,5 +225,8 @@ if mod(current_sample,ceil(num_samples*par_n_plus_1/par_n_plus_1)) == 0 &&...
                     current_sample, num_samples * par_n_plus_1);
     end
     last_time = datetime;
+elseif current_sample == num_samples*par_n_plus_1
+    current_sample = 1;
+
 end
 end

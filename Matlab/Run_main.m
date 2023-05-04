@@ -32,9 +32,9 @@ function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,se
 %   3. Load settings and data based on user choices
 %   4. Create the folder structure for model files
 %   5. Import or generate sbtab data if needed
-%   6. Run the selected analysis
+%   6. Re-Run the selected analysis
 %   7. Plot results (if applicable)
-%   8. Save analysis results and plots (if specified in settings)
+%   ?? 8. Save analysis results and plots (if specified in settings)
 
 
 user_choices = {Folder,Analysis,settings};
@@ -81,14 +81,15 @@ else
     end
 end
 
+% analysis_options
 % Runs the Analysis chosen by the user input
-    [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
+%     [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 plots = [];
 if settings.plot
-    % plots = f_plot(rst,stg,mmf);
+    plots = f_plot(results,settings,model_folders);
     % Save plots results if chosen in settings
 %     if stg.save_results
 %          f_save_plots(mmf)

@@ -14,7 +14,7 @@ function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf)
 % - mmf: A flag to determine whether to normalize the simulation results
 % - font_settings: A structure containing font properties for plot elements
 %
-% Outputs: 
+% Outputs:
 % - plots: A cell array containing figures and layouts generated
 % by the function
 %
@@ -59,24 +59,27 @@ f_set_font_settings()
 % Loop through each experiment
 for n = stg.exprun
 
-    % Generate the required number of figures for all plots and calculate
-    % proper subplot positioning
-    if mod(plot_n,12) == 0
-        [fig_n,layout,plots(fig_n,:)] =...
-            f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout,plots_1);
+    
 
-        if fig_n > 1
-            fig_name = "Outputs " + fig_n;
-        else
-            fig_name = "Outputs";
-        end
-        title(layout,fig_name,...
-            'FontSize', Major_title_FontSize,...
-            'Fontweight',Major_title_Fontweight)
-    end
 
     % Loop through each dataset in the current experiment
     for j = 1:size(sbtab.datasets(n).output,2)
+
+        % Generate the required number of figures for all plots and calculate
+        % proper subplot positioning
+        if mod(plot_n,12) == 0
+            [fig_n,layout,plots(fig_n,:)] =...
+                f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
+
+            if fig_n > 1
+                fig_name = "Outputs " + fig_n;
+            else
+                fig_name = "Outputs";
+            end
+            title(layout,fig_name,...
+                'FontSize', Major_title_FontSize,...
+                'Fontweight',Major_title_Fontweight)
+        end
 
         nexttile(layout);
         plot_n = plot_n + 1;

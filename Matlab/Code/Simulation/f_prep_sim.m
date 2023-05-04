@@ -62,6 +62,7 @@ ssa = zeros(size(sbtab.species,1),max(stg.exprun));
 result = [];
 result.parameters = sim_par;
 result.simd{stg.exprun(1)} = [];
+
 % Run simulations for each experiment
 for n = stg.exprun
     

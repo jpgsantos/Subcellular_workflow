@@ -44,16 +44,16 @@ function plots = f_plot_gsa_sensitivities(results,settings,sbtab)
 f_set_font_settings()
 
 % Get the total number of outputs
-[~,output_names2.sd] = f_get_outputs(settings,sbtab);
+[~,output_names.sd] = f_get_outputs(settings,sbtab);
 
 % Set output_names2 values
-for n = 1:size(output_names2.sd,2)
-    output_names2.sd{n}{:} = strrep(output_names2.sd{n}{:},"_","\_");
+for n = 1:size(output_names.sd,2)
+    output_names.sd{n}{:} = strrep(output_names.sd{n}{:},"_","\_");
 end
 for n = settings.exprun
-    output_names2.se{n} = "E " + string(n-1);
+    output_names.se{n} = "E " + string(n-1);
 end
-output_names2.xfinal = output_names2.sd;
+output_names.xfinal = output_names.sd;
 
 % Set parameter names
 par_names = cell(1,settings.parnum);
@@ -76,42 +76,42 @@ plot_sections = {
     ["First order Sensitivities",...
     "calculated using the Score of each Experimental Output",...
     "(Bootstrapping Mean)"],...
-    "output_names2.sd", "get_mean_values(results.SiQ.sd,settings)";
+    "output_names.sd", "get_mean_values(results.SiQ.sd,settings)";
     % Bootstrapping quartile mean of total order Sensitivity index for
     % score per Experimental Output
     "SiT seo bm",...
     ["Total order Sensitivities",...
     " calculated using the Score of each Experimental Output ",...
     " (Bootstrapping Mean)"],...
-    "output_names2.sd", "get_mean_values(results.SiTQ.sd,settings)";
+    "output_names.sd", "get_mean_values(results.SiTQ.sd,settings)";
     % Bootstrapping quartile mean of first order Sensitivity index for
     % score per Experiments
     "Si se bm",...
     ["First order Sensitivities",...
     " calculated using the Score of each Experiment",...
     "(Bootstrapping Mean)"],...
-    "output_names2.se", "get_mean_values(results.SiQ.se,settings)";
+    "output_names.se", "get_mean_values(results.SiQ.se,settings)";
     % Bootstrapping quartile mean of total order Sensitivity index for
     % score per Experiments
     "SiT se bm",...
     ["Total order Sensitivities",...
     " calculated using the Score of each Experiment",...
     "(Bootstrapping Mean)"],...
-    "output_names2.se", "get_mean_values(results.SiTQ.se,settings)";
+    "output_names.se", "get_mean_values(results.SiTQ.se,settings)";
     % Bootstrapping quartile mean of first order Sensitivity index for the
     % final points of the simulations for the output beeing measured
     "Si xfinal bm",...
     ["First order Sensitivities",...
     " calculated using the final value of each Experimental Output",...
     "(Bootstrapping Mean)"],...
-    "output_names2.xfinal", "get_mean_values(results.SiQ.xfinal,settings)"
+    "output_names.xfinal", "get_mean_values(results.SiQ.xfinal,settings)"
     % Bootstrapping quartile mean of total order Sensitivity index for the
     % final points of the simulations for the output beeing measured
     "SiT xfinal bm",...
     ["Total order Sensitivities",...
     " calculated using the final value of each Experimental Output",...
     "(Bootstrapping Mean)"],...
-    "output_names2.xfinal", "get_mean_values(results.SiTQ.xfinal,settings)"
+    "output_names.xfinal", "get_mean_values(results.SiTQ.xfinal,settings)"
     };
 
 % Generate plots for each section
@@ -187,7 +187,7 @@ end
 
 function [plots] =...
     f_generate_plot(results,settings,output_names,par_names2,name,major_title,...
-    output_names2,heatmap_values)
+    output_names_2,heatmap_values)
 % Function to generate heatmap plot for the given parameters
 
 % Set font settings
@@ -198,7 +198,7 @@ plots = f_renew_plot(name);
 layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
 nexttile(layout)
 
-fixed_output_names2 = eval(output_names2);
+fixed_output_names2 = eval(output_names_2);
 fixed_output_names2 =...
     fixed_output_names2(~cellfun('isempty',fixed_output_names2));
 

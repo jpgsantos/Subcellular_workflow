@@ -1,4 +1,4 @@
-function plots = f_plot(rst, stg, mmf)
+function plots = f_plot(results, settings, model_folder)
 % This function generates plots for various analysis results based on the
 % provided data and settings.
 % 
@@ -42,7 +42,7 @@ set(0, 'defaultAxesFontSize', 10)
 disp("Plotting ...")
 
 % Retrieve data model from mmf
-data_model = mmf.model.data.data_model;
+data_model = model_folder.model.data.data_model;
 
 % Load data and sbtab from the data model
 load(data_model, 'Data', 'sbtab')
@@ -51,38 +51,38 @@ load(data_model, 'Data', 'sbtab')
 plots = [];
 
 % Check if the 'diag' field exists in the rst structure
-if isfield(rst, 'diag')
+if isfield(results, 'diag')
     % Generate and store figure with Scores
-    plots = [plots;f_plot_scores(rst.diag, stg, sbtab)];
+    plots = [plots;f_plot_scores(results.diag, settings, sbtab)];
     % Generate and store figure with Inputs
-    plots = [plots;f_plot_inputs(rst.diag, stg, sbtab)];
+    plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
     % Generate and store figure with Outputs
-    plots = [plots;f_plot_outputs(rst.diag, stg, sbtab, Data, mmf)];
+    plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
     % Generate and store figure with Input and Output for all experiments
-    plots = [plots;f_plot_in_out(rst.diag, stg, sbtab, Data, mmf)];
+    plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
 end
 
 % Check if the 'opt' field exists in the rst structure
-if isfield(rst, 'opt')
+if isfield(results, 'opt')
     % Generate and store figure with optimization results
-    plots = [plots;f_plot_opt(rst, stg)];
+    plots = [plots;f_plot_opt(results, settings)];
 end
 
 % Check if the 'lsa' field exists in the rst structure
-if isfield(rst, 'lsa')
+if isfield(results, 'lsa')
     % Generate and store figures for Local Sensitivity Analysis
-    plots = [plots;f_plot_lsa(rst.lsa, stg)];
+    plots = [plots;f_plot_lsa(results.lsa, settings)];
 end
 
 % Check if the 'gsa' field exists in the rst structure
-if isfield(rst, 'gsa')
+if isfield(results, 'gsa')
     % Generate and store figures for Global Sensitivity Analysis
-    plots = [plots;f_plot_gsa_sensitivities(rst.gsa, stg, sbtab)];
+    plots = [plots;f_plot_gsa_sensitivities(results.gsa, settings, sbtab)];
 end
 
 % Check if the 'PLA' field exists in the rst structure
-if isfield(rst, 'PLA')
+if isfield(results, 'PLA')
     % Generate and store figure for Profile Likelihood Analysis
-    plots = [plots;f_plot_PL(rst, stg, mmf)];
+    plots = [plots;f_plot_PL(results, settings, model_folder)];
 end
 end

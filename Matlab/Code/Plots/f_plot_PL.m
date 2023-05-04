@@ -63,108 +63,108 @@ layout = [];
 plots = [];
 
 % Iterate through the pltest values
-for m = settings.pltest
-
-    % Generate the required number of figures and calculate the subplot positions
-    [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
-        fig_n,"Parameter Profile Likelihood",layout,plots);
-
-    % Set the next tile in the layout
-    nexttile(layout);
-
-    % Add a legend, labels, and title to the figure if it's the first plot
-    % in a set of 12
-    if mod(plot_n,12) == 1
-
-        % Add a legend to the figure
-        Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
-        Lgnd.Layout.Tile = 'North';
-        legend boxoff
-        xlabel(layout,"log_{10} \theta",...
-            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        ylabel(layout,"-2 PL",...
-            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        title(layout,"Parameter Profile Likelihood",...
-            'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
-
-    end
-
-    % Increment the plot counter
-    plot_n = plot_n +1;
-
-    hold on
-
-    % Check if there are results from PL function
-    if isfield(results,'PLA')
-
-        if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
-            common_PVal = [];
-            common_fval = [];
-            for n = 1:length([results.PLA.sa.Pval{m}])
-                k = find(results.PLA.sa.Pval{m}(n)==[results.PLA.fm.Pval{m}]);
-                if ~isempty(k)
-                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
-                    common_fval(n) = ...
-                        min(results.PLA.sa.fvalt{m}(n),results.PLA.fm.fvalt{m}(k));
-                else
-                    common_PVal(n) = results.PLA.sa.Pval{m}(n);
-                    common_fval(n) = results.PLA.sa.fvalt{m}(n);
-                end
-            end
-            plot(common_PVal,...
-                common_fval,'DisplayName','Total score sa and fmincon',...
-                'LineWidth',1.5,'color',[0, 0, 0, 1])
-            minfval = min(common_fval);
-
-        elseif isfield(results.PLA,'sa')
-            plot([results.PLA.sa.Pval{m}],...
-                [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
-                'LineWidth',1.5,'color',[0, 0, 1, 0.5])
-            minfval = min(results.PLA.sa.fvalt{m});
-
-            % Plot the PL results from fmincon if they exist
-        elseif isfield(results.PLA,'fm')
-            plot([results.PLA.fm.Pval{m}],...
-                [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
-                'LineWidth',1.5,'color',[1, 0, 0, 0.5])
-            minfval = min(results.PLA.fm.fvalt{m});
-        end
-    end
-
-    % Add a line indicating the 95% confidence threshold
-    yline(icdf('chi2',0.95,1)+minfval,...
-        'DisplayName','Total score icdf(\chi^2,0.95)')
-
-    % If the best parameter value exists in the settings, plot it
-    if isfield(settings,'bestpa')
-        scatter(settings.bestpa(m),best_score,20,'filled',...
-            'DisplayName','best \theta','MarkerFaceColor','k')
-    end
-
-    % If the diagnostic results exist, plot the parameters used in the
-    % diagnostics
-    if isfield(results,'diag')
-        scatter(settings.pa(settings.pat,m),[results.diag(settings.pat).st],...
-            10,'filled','DisplayName','\theta test')
-    end
-
-    hold off
-
-    % Set the x-axis limits
-    xlim([settings.lb(m) settings.ub(m)])
-    % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
-
-    % Set the title for each plot
-    titlestring = "\theta_{" + find(settings.partest==m)+"}";
-    title(titlestring(1),'FontSize',Minor_title_FontSize,...
-        'Fontweight',Minor_title_Fontweight)
-end
+% for m = settings.pltest
+% 
+%     % Generate the required number of figures and calculate the subplot positions
+%     [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
+%         fig_n,"Parameter Profile Likelihood",layout,plots);
+% 
+%     % Set the next tile in the layout
+%     nexttile(layout);
+% 
+%     % Add a legend, labels, and title to the figure if it's the first plot
+%     % in a set of 12
+%     if mod(plot_n,12) == 1
+% 
+%         % Add a legend to the figure
+%         Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
+%         Lgnd.Layout.Tile = 'North';
+%         legend boxoff
+%         xlabel(layout,"log_{10} \theta",...
+%             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%         ylabel(layout,"-2 PL",...
+%             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%         title(layout,"Parameter Profile Likelihood",...
+%             'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
+% 
+%     end
+% 
+%     % Increment the plot counter
+%     plot_n = plot_n +1;
+% 
+%     hold on
+% 
+%     % Check if there are results from PL function
+%     if isfield(results,'PLA')
+% 
+%         if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
+%             common_PVal = [];
+%             common_fval = [];
+%             for n = 1:length([results.PLA.sa.Pval{m}])
+%                 k = find(results.PLA.sa.Pval{m}(n)==[results.PLA.fm.Pval{m}]);
+%                 if ~isempty(k)
+%                     common_PVal(n) = results.PLA.sa.Pval{m}(n);
+%                     common_fval(n) = ...
+%                         min(results.PLA.sa.fvalt{m}(n),results.PLA.fm.fvalt{m}(k));
+%                 else
+%                     common_PVal(n) = results.PLA.sa.Pval{m}(n);
+%                     common_fval(n) = results.PLA.sa.fvalt{m}(n);
+%                 end
+%             end
+%             plot(common_PVal,...
+%                 common_fval,'DisplayName','Total score sa and fmincon',...
+%                 'LineWidth',1.5,'color',[0, 0, 0, 1])
+%             minfval = min(common_fval);
+% 
+%         elseif isfield(results.PLA,'sa')
+%             plot([results.PLA.sa.Pval{m}],...
+%                 [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+%                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+%             minfval = min(results.PLA.sa.fvalt{m});
+% 
+%             % Plot the PL results from fmincon if they exist
+%         elseif isfield(results.PLA,'fm')
+%             plot([results.PLA.fm.Pval{m}],...
+%                 [results.PLA.fm.fvalt{m}],'DisplayName','Total score fmincon',...
+%                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
+%             minfval = min(results.PLA.fm.fvalt{m});
+%         end
+%     end
+% 
+%     % Add a line indicating the 95% confidence threshold
+%     yline(icdf('chi2',0.95,1)+minfval,...
+%         'DisplayName','Total score icdf(\chi^2,0.95)')
+% 
+%     % If the best parameter value exists in the settings, plot it
+%     if isfield(settings,'bestpa')
+%         scatter(settings.bestpa(m),best_score,20,'filled',...
+%             'DisplayName','best \theta','MarkerFaceColor','k')
+%     end
+% 
+%     % If the diagnostic results exist, plot the parameters used in the
+%     % diagnostics
+%     if isfield(results,'diag')
+%         scatter(settings.pa(settings.pat,m),[results.diag(settings.pat).st],...
+%             10,'filled','DisplayName','\theta test')
+%     end
+% 
+%     hold off
+% 
+%     % Set the x-axis limits
+%     xlim([settings.lb(m) settings.ub(m)])
+%     % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
+% 
+%     % Set the title for each plot
+%     titlestring = "\theta_{" + find(settings.partest==m)+"}";
+%     title(titlestring(1),'FontSize',Minor_title_FontSize,...
+%         'Fontweight',Minor_title_Fontweight)
+% end
 
 % Iterate through the pltest values
 for m = settings.pltest
 
     % Generate the required number of figures and calculate the subplot positions
-    [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
+    [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2),plot_n,...
         fig_n,"Parameter Profile Likelihood",layout,plots);
 
     % Set the next tile in the layout

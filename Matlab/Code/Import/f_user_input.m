@@ -1,4 +1,4 @@
-function [settings, results, sbTab] = f_user_input(model_folders, analysis_options, user_choices)
+function [settings, results, sb] = f_user_input(model_folders, analysis_options, user_choices)
 % This function processes user input for model, analysis options, and
 % settings files, and returns settings, results, and sbTab data structures.
 % It utilizes helper functions to validate user input, apply settings, and
@@ -54,7 +54,7 @@ persistent last_settings_file_date
 % Initialize the results, settings and sbTab variables.
 results = [];
 settings = [];
-sbTab = [];
+sb = [];
 functions_cleared = 0;
 
 % Set model folder paths
@@ -68,6 +68,9 @@ specific_model_folder = general_model_folder + model_folder;
 % Get the valid analysis option based on user input.
 analysis_text =...
     getValidInput(analysis_options, user_choices{2}, "analysis option");
+
+% Store the name of the chosen analysis in the settings struct
+settings.analysis = analysis_text;
 
 % Process user input for analysis options 1-5 and 8
 if any(contains(analysis_options([1:5, 8]), analysis_text))
@@ -110,25 +113,29 @@ elseif any(contains(analysis_options(6:7), analysis_text))
         r_analysis_date_text;
 
     % Load the settings file and the SBtab struct
-    load(specific_results_folder_date + "/Analysis.mat","settings","sbTab")
+    load(specific_results_folder_date + "/Analysis.mat","settings","sb")
 
     % Set inport to false since we don't want to overwrite anything
     settings.import = false;
 
     % If the reproduction of an analysis is chosen, clear the functions
     % because the settings most likely changed.
-    if contains(analysis_options(6),analysis_text)
         f_functions_to_clear()
-    end
 
     % If the reproduction of the plots of an analysis is chosen, set the
     % code to produce plots and load the results that were previously
     % obtained.
     if contains(analysis_options(7),analysis_text)
+        % Store the name of the chosen analysis in the settings struct
+        settings.analysis = analysis_text;
+
         settings.plot = true;
         load(specific_results_folder_date + "/Analysis.mat","results")
     end
 end
+
+% % Store the name of the chosen analysis in the settings struct
+% settings.analysis = analysis_text;
 
 % Set the chosen model folder in the settings struct
 settings.folder_model = model_folder;
@@ -199,9 +206,6 @@ end
 
 [last_SBtab_date, functions_cleared] = ...
     compare_and_update(sbtab_date, last_SBtab_date, functions_cleared);
-
-% Store the name of the chosen analysis in the settings struct
-settings.analysis = analysis_text;
 
 if functions_cleared == 1
     settings.import = true;
