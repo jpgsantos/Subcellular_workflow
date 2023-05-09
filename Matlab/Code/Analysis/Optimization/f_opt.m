@@ -279,11 +279,11 @@ elseif stg.osm == 2
     
     % Get a random starting point or group of starting points, if using
     % multistart, near the best point
-    spoint = stg.bestpa - stg.dbpa +...
-        (stg.dbpa*2*lhsdesign(stg.msts,stg.parnum));
+    spoint = stg.bestpa - stg.dbs +...
+        (stg.dbs*2*lhsdesign(stg.msts,stg.parnum));
     
     % Get a group of ramdom starting points near the best point
-    spop = stg.bestpa - stg.dbpa +...
-        (stg.dbpa*2*lhsdesign(stg.popsize,stg.parnum));
+    spop = stg.bestpa - stg.dbs +...
+        (stg.dbs*2*lhsdesign(stg.popsize,stg.parnum));
 end
 end

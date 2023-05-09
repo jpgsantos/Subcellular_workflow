@@ -31,7 +31,9 @@ function [rst,stg] = f_analysis(stg,analysis,mmf,analysis_options,rst)
 % - valid_options: Array of valid optimization options
 %
 % Persistent: None
-
+% analysis
+% analysis_options
+% matching_option_idx
 matching_option_idx = find(contains(analysis_options, analysis), 1);
 
 % display start message

@@ -81,7 +81,7 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
         mmf.model.input_functions.main =...
             mmf.model.main + "Matlab/" + "Input_functions/";
         create_and_add_to_path(mmf.model.input_functions.main)
-        
+
             % model_input
             % Matlab/"Model Folder name"/Input_functions/"model name"_input
             mmf.model.input_functions.input =...
@@ -116,7 +116,6 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
                 mmf.model.results.analysis.date.main =...
                     mmf.model.results.analysis.main +...
                     string(date_stamp) + "/";
-
 end
 
 function create_and_add_to_path(folder)

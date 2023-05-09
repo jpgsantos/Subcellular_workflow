@@ -2,23 +2,34 @@ function [stg] = Example_model()
 
 %% Import
 
-% True or false to decide whether to run import functions (Import)
+% True or false to decide whether to run import functions
+% (Import)
 stg.import = true;
 
-% Name of the excel file with the sbtab (SBtab excel name)
-stg.sbtab_excel_name = "SBTAB example.xlsx";
+% Name of the folder where everything related to the model is stored
+% (Folder Model)
+stg.folder_model = "Model_Example";
 
-% Name of the model (Name)
+% Name of the excel file with the sbtab
+% (SBtab excel name)
+stg.sbtab_excel_name = "SBTAB_Example.xlsx";
+
+% Name of the model
+% (Name)
 stg.name = "Example";
 
-% Name of the default model compartment (Compartment name)
+% Name of the default model compartment
+% (Compartment name)
 stg.cname = "Compartment";
+
+% Name of the sbtab saved in .mat format
+% (SBtab name)
+stg.sbtab_name = "SBtab_" + stg.name;
 
 %% Analysis
 
 % Experiments to run
-stg.exprun = [1,2];
-% stg.exprun = [1,2,3];
+stg.exprun = [1:4];
 
 % Choice between 0,1,2 and 3 to change either and how to apply log10 to the
 % scores (check documentation) (Use logarithm)
@@ -31,7 +42,7 @@ stg.optmc = false;
 % Choice of ramdom seed (Ramdom seed)
 stg.rseed = 1;
 
-% True or false to decide whether to use display simulation diagnostics in
+% True or false to decide whether to use display simulation diagnostics i
 % the console (Simulation Console)
 stg.simcsl = false;
 
@@ -51,41 +62,46 @@ stg.simdetail = false;
 
 %% Simulation
 
-% Maximum time for each individual function to run in seconds (Maximum
-% time)
+% Maximum time for each individual function to run in seconds
+% (Maximum time)
 stg.maxt = 2;
 
-% Equilibration time (Equilibration time)
-stg.eqt  = 50000;
+% Equilibration time
+% (Equilibration time)
+stg.eqt  = 500000;
 
-% True or false to decide whether to do Dimensional Analysis (Dimensional
-% Analysis)
+% True or false to decide whether to do Dimensional Analysis
+% (Dimensional Analysis)
 stg.dimenanal = true;
 
-% True or false to decide whether to do Unit conversion (Unit conversion)
+% True or false to decide whether to do Unit conversion
+% (Unit conversion)
 stg.UnitConversion = true;
 
 % True or false to decide whether to do Absolute Tolerance Scaling
 % (Absolute Tolerance Scaling)
 stg.abstolscale = true;
 
-% Value of Relative tolerance (Relative tolerance)
+% Value of Relative tolerance
+% (Relative tolerance)
 stg.reltol = 1.0E-4;
 
-% Value of Absolute tolerance (Absolute tolerance)
+% Value of Absolute tolerance
+% (Absolute tolerance)
 stg.abstol = 1.0E-7;
 
-% Time units for simulation (Simulation time)
+% Time units for simulation
+% (Simulation time)
 stg.simtime = "second";
 
-% True or false to decide whether to run sbioaccelerate (after changing
-% this value you need to run "clear functions" to see an effect)
+% True or false to decide whether to run sbioaccelerate (after changing this value
+% you need to run "clear functions" to see an effect)
 % (sbioaccelerate)
 stg.sbioacc = false;
 
 % Max step size in the simulation (if empty matlab decides whats best)
 % (Maximum step)
-stg.maxstep = [];
+stg.maxstep = 0.1;
 
 % Max step size in the equilibration (if empty matlab decides whats best)
 % (Maximum step)
@@ -93,7 +109,7 @@ stg.maxstepeq = [];
 
 % Max step size in the detailed plots (if empty matlab decides whats best)
 % (Maximum step)
-stg.maxstepdetail = [0.001];
+stg.maxstepdetail = [2];
 
 % Default score when there is a simulation error, this is needed to keep
 % the optimizations working. (error score)
@@ -149,22 +165,6 @@ stg.pa(3,:) = stg.pa(1,:)+1;
 % Best parameter array found so far for the model (Best parameter array)
 stg.bestpa = stg.pa(1,:);
 
-% stg.lb = stg.bestpa-2;
-% stg.ub = stg.bestpa+2;
-% for n = 1:stg.parnum
-%     if stg.lb(n)<-4
-%         stg.ub(n) = stg.ub(n) - stg.lb(n)-4;
-%         stg.lb(n) = -4;
-% 
-%     end
-%     if stg.ub(n)>4
-%         stg.lb(n) = stg.lb(n) - stg.ub(n)+4;
-%         stg.ub(n) = 4;
-% 
-%     end
-% end
-% disp(stg.lb)
-% disp(stg.ub)
 %% Plots
 
 % True or false to decide whether to plot results (Plots)

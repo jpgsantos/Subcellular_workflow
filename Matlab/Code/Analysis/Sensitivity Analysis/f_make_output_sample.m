@@ -119,7 +119,7 @@ if mod(current_sample,ceil(num_samples/10)) == 0 && current_sample ~= num_sample
         dt = (datetime-last_time);
         remaining_time = seconds(dt);
         remaining_time =...
-            remaining_time*(num_samples*par_n-current_sample)/num_samples;
+            remaining_time*(num_samples-current_sample)/num_samples;
         remaining_time = seconds(remaining_time);
         remaining_time.Format = 'hh:mm:ss';
 

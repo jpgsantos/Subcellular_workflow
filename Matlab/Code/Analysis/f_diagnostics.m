@@ -32,7 +32,6 @@ function rst = f_diagnostics(stg,mmf)
 % Persistent:
 % (None)
 
-
 % Run the model and obtain scores for fitness Multi Core
 if stg.optmc
     disp("Running the model and obtaining Scores (Multicore)")

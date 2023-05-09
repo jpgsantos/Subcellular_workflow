@@ -83,13 +83,13 @@ end
 
 % analysis_options
 % Runs the Analysis chosen by the user input
-%     [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
+     [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
 
 % Plots the results of the analysis, this can be done independently after
 % loading the results of a previously run analysis
 plots = [];
 if settings.plot
-    plots = f_plot(results,settings,model_folders);
+     plots = f_plot(results,settings,model_folders);
     % Save plots results if chosen in settings
 %     if stg.save_results
 %          f_save_plots(mmf)
