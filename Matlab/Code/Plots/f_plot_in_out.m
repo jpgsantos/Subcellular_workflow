@@ -270,9 +270,16 @@ ylim([0 inf])
 ytickformat('%-3.1f')
 
 % Add a title to the plot
+if size(sbtab.datasets(n).input,2) == 1
+[~,t4] = ...
+    title("Input"," ",'FontSize', Minor_title_FontSize,...
+    'Fontweight',Minor_title_Fontweight);
+else
 [~,t4] = ...
     title("Inputs"," ",'FontSize', Minor_title_FontSize,...
     'Fontweight',Minor_title_Fontweight);
+end
 t4.FontSize = Minor_Title_Spacing;
+
 hold off
 end
