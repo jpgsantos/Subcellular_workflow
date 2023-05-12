@@ -100,7 +100,7 @@ function result_opt = optimize_algorithm(algorithm_name,...
 p = gcp(); % If no pool, do not create new one.
 poolsize = p.NumWorkers;
 mst = settings.mst;
-if contains(algorithm_name,{'fmincon','Simulated annealing','Pattern search'})
+if contains(algorithm_name,{'fmincon','Simulated annealing','Pattern search','Surrogate optimization'})
 settings.mst = true;
 settings.msts = poolsize;
 else
@@ -108,14 +108,14 @@ settings.mst = mst;
 settings.msts = poolsize;
 end
 % Determine the starting point for the optimization
-[startpoint, ~] = f_opt_start(settings);
+[startpoint, ~, spop] = f_opt_start(settings);
 
 % Prepare optimization options based on settings and algorithm_name
 options = prepare_optimization_options(settings, algorithm_name);
 
 % Execute the optimization algorithm
 [x, fval, exitflag, output] = run_optimization(settings, algorithm_name,...
-    objective_function, startpoint, settings.lb,...
+    objective_function, startpoint, spop, settings.lb,...
     settings.ub, options);
 
 % Save optimization results
@@ -127,7 +127,7 @@ result_opt.output = output;
 end
 
 function [x, fval, exitflag, output] = run_optimization(settings,...
-    algorithm_name, objective_function, startpoint, lb, ub,...
+    algorithm_name, objective_function, startpoint, spop, lb, ub,...
     options)
 
 % Run the optimization algorithm using either multiple starting points (mst)
@@ -137,17 +137,17 @@ if settings.mst
         disp(string(n))
         [x(n,:), fval(n), exitflag(n), output(n)] = ...
             run_optimizer(algorithm_name, objective_function,...
-            startpoint(n,:), lb, ub, options);
+            startpoint(n,:), spop{n}, lb, ub, options);
     end
 else
     [x(1,:), fval(1), exitflag(1), output(1)] = ...
         run_optimizer(algorithm_name, objective_function,...
-        (lb + ub) / 2, lb, ub, options);
+        (lb + ub) / 2, spop, lb, ub, options);
 end
 end
 
 function [x, fval, exitflag, output] = ...
-    run_optimizer(algorithm_name, objective_function, startpoint,...
+    run_optimizer(algorithm_name, objective_function, startpoint, spop,...
     lb, ub, options)
 
 % Execute the appropriate optimization algorithm based on algorithm_name
@@ -173,6 +173,7 @@ switch algorithm_name
         [x, fval, exitflag, output] = ...
             particleswarm(objective_function, parnum, lb, ub, options);
     case 'Surrogate optimization'
+        options.InitialPoints = spop;
         [x, fval, exitflag, output] = ...
         surrogateopt(objective_function, lb, ub, options);
     otherwise
@@ -200,21 +201,19 @@ switch algorithm_name
         options.MaxTime = settings.optt;
         options.PopulationSize = settings.popsize;
         options.UseParallel = settings.optmc;
-        [~,startpop] = f_opt_start(settings);
+        [~,startpop,~] = f_opt_start(settings);
         options.InitialPopulationMatrix = startpop;
     case 'Particle swarm'
         options = settings.pswarm_options;
         options.MaxTime = settings.optt;
         options.SwarmSize = settings.popsize;
         options.UseParallel = settings.optmc;
-        [~,startpop] = f_opt_start(settings);
+        [~,startpop,~] = f_opt_start(settings);
         options.InitialSwarmMatrix = startpop;
     case 'Surrogate optimization'
         options = settings.sopt_options;
         options.MaxTime = settings.optt;
         options.UseParallel = settings.optmc;
-        [~,startpop] = f_opt_start(settings);
-        options.InitialPoints = startpop;
     otherwise
         error('Unsupported optimization algorithm.');
 end
@@ -260,7 +259,7 @@ switch algorithm_name
 end
 end
 
-function [spoint,spop] = f_opt_start(stg)
+function [spoint,spop_mc,spop_sc] = f_opt_start(stg)
 % Set the randomm seed for reproducibility
 rng(stg.rseed);
 
@@ -270,10 +269,14 @@ if stg.osm == 1
     % Get a random starting point or group of starting points, if using
     % multistart, inside the bounds
     spoint = lhsdesign(stg.msts,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
-    
+
     % Get a group of ramdom starting points inside the bounds
-    spop = lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
-    
+    spop_mc = lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+
+    % Get a group of ramdom starting points inside the bounds
+    for n = 1:stg.msts
+    spop_sc{n} = lhsdesign(stg.popsize/36,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+    end
     % Optimization Start method 2
 elseif stg.osm == 2
     
@@ -283,7 +286,12 @@ elseif stg.osm == 2
         (stg.dbs*2*lhsdesign(stg.msts,stg.parnum));
     
     % Get a group of ramdom starting points near the best point
-    spop = stg.bestpa - stg.dbs +...
+    spop_mc = stg.bestpa - stg.dbs +...
         (stg.dbs*2*lhsdesign(stg.popsize,stg.parnum));
+
+    for n = 1:stg.msts
+    spop_sc{n} = stg.bestpa - stg.dbs +...
+        (stg.dbs*2*lhsdesign(stg.popsize/36,stg.parnum));
+    end
 end
 end
