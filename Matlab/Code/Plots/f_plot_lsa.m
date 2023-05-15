@@ -46,8 +46,8 @@ nexttile(layout)
 
 % Create a bar plot with different line styles for average and sigma
 % deviations
-X = categorical(convertStringsToChars("\theta_{" + [1:stg.parnum] + "}"));
-X = reordercats(X,convertStringsToChars("\theta_{" + [1:stg.parnum] + "}"));
+X = categorical(convertStringsToChars("P_{" + [1:stg.parnum] + "}"));
+X = reordercats(X,convertStringsToChars("P_{" + [1:stg.parnum] + "}"));
 h = bar(X,transpose([[rst.average_deviation];[rst.sigma_deviation]]) ...
     ,'EdgeColor','k','LineWidth',1,'FaceColor','w');
 LineArray={ '-' , ':' };

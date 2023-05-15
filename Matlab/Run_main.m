@@ -55,7 +55,7 @@ if ~contains(strrep(path,"\","/"),...
     addpath(genpath(Matlab_main_folder));
 end
 
-model_folders.main = Matlab_main_folder ;
+model_folders.main = Matlab_main_folder;
 
 % Name of the various analysis that can be run with this code
 analysis_options = ["Diagnostics","Parameter Estimation",...
@@ -81,7 +81,6 @@ else
     end
 end
 
-% analysis_options
 % Runs the Analysis chosen by the user input
      [results,settings] = f_analysis(settings,settings.analysis,model_folders,analysis_options,results);
 
