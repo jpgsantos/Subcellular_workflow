@@ -1,4 +1,4 @@
-function plots = f_plot_lsa(rst,stg)
+function plots = f_plot_lsa(results,settings)
 % This function takes in two input arguments, rst and stg, and generates a
 % bar plot displaying the average deviation and sigma deviation with
 % different line styles. It applies the desired font settings, closes any
@@ -46,9 +46,9 @@ nexttile(layout)
 
 % Create a bar plot with different line styles for average and sigma
 % deviations
-X = categorical(convertStringsToChars("P_{" + [1:stg.parnum] + "}"));
-X = reordercats(X,convertStringsToChars("P_{" + [1:stg.parnum] + "}"));
-h = bar(X,transpose([[rst.average_deviation];[rst.sigma_deviation]]) ...
+X = categorical(convertStringsToChars("P_{" + [1:settings.parnum] + "}"));
+X = reordercats(X,convertStringsToChars("P_{" + [1:settings.parnum] + "}"));
+h = bar(X,transpose([[results.average_deviation];[results.sigma_deviation]]) ...
     ,'EdgeColor','k','LineWidth',1,'FaceColor','w');
 LineArray={ '-' , ':' };
 

@@ -56,10 +56,12 @@ end
 output_names.xfinal = output_names.sd;
 
 % Set parameter names
-par_names = cell(1,settings.parnum);
+% par_names = cell(1,settings.parnum);
 par_names2 = cell(1,settings.parnum);
+par_names = "P_{" + [1:settings.parnum] + "}";
 for n = 1:settings.parnum
-    par_names{n} = char("P_{" + find(settings.partest==n) + "}");
+    % par_names = n
+    % par_names{n} = char("P_{" + find(settings.partest==n) + "}");
     par_names2{n} = string(par_names{n}(1,:));
     % Confirm if can be deleted
     % for m = 2:size(par_names{n},1)

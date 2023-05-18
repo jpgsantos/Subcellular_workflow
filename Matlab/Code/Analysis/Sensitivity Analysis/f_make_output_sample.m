@@ -56,40 +56,65 @@ D = parallel.pool.DataQueue;
 % Set up the progress tracker for the DataQueue
 afterEach(D, @progress_track);
 
+clear R RN
+
 % Choose the matrix type and perform the calculations accordingly
 switch matrix_type
     case 'fM'
+        R = cell(nSamples,1);
+      
         % Parallel loop for computing the output
         parfor i = 1:nSamples
-            [~,~,R(i)] = f_sim_score(parameter_array(i,:), settings, model_folders);
+            [~,~,R{i}] = f_sim_score(parameter_array(i,:), settings, model_folders);
             send(D, {task_name, 1, time_begin, nSamples, nPars});
         end
         % Extract the computed values
+
+        sd = zeros(nSamples,size(R{1}.sd,1)*size(R{1}.sd,2));
+        se = zeros(nSamples,size(R{1}.se,1));
+        st = zeros(nSamples,size(R{1}.st,1));
+        xfinal = zeros(nSamples,size(R{1}.sd,1)*size(R{1}.sd,2));
+
         for i = 1:nSamples
-            f_out.sd(i,:) = reshape(R(i).sd(:,:), 1, []);
-            f_out.se(i,:) = R(i).se(:);
-            f_out.st(i,:) = R(i).st;
-            f_out.xfinal(i,:) = [R(i).xfinal{:}];
+            sd(i,:) = reshape(R{i}.sd(:,:), 1, []);
+            se(i,:) = R{i}.se(:);
+            st(i,:) = R{i}.st;
+            xfinal(i,:) = [R{i}.xfinal{:}];
         end
+
     case 'fN'
         % Nested parallel loop for computing the output
+        RN = cell(nSamples,nPars);
+        
         parfor i = 1:nSamples
             for j = 1:nPars
                 [~,~,RN{i,j}] = f_sim_score(parameter_array(i,:,j), settings, model_folders);
+                
             end
             send(D, {task_name, 1, time_begin, nSamples, nPars});
+          
         end
 
-        % Extract the computed values
+        sd = zeros(nSamples,size(RN{1,1}.sd,1)*size(RN{1,1}.sd,2),nPars);
+        se = zeros(nSamples,size(RN{1,1}.se,1),nPars);
+        st = zeros(nSamples,size(RN{1,1}.st,1),nPars);
+        xfinal = zeros(nSamples,size(RN{1,1}.sd,1)*size(RN{1,1}.sd,2),nPars);
+
         for i = 1:nSamples
             for j = 1:nPars
-                f_out.sd(i,:,j) = reshape(RN{i,j}.sd(:,:), 1, []);
-                f_out.se(i,:,j) = RN{i,j}.se(:);
-                f_out.st(i,:,j) = RN{i,j}.st;
-                f_out.xfinal(i,:,j) = [RN{i,j}.xfinal{:}];
+                sd(i,:,j) = reshape(RN{i,j}.sd, 1, []);
+                se(i,:,j) = RN{i,j}.se;
+                st(i,:,j) = RN{i,j}.st;
+                xfinal(i,:,j) = [RN{i,j}.xfinal{:}];
             end
         end
 end
+
+f_out.sd = sd;
+f_out.se = se;
+f_out.st = st;
+f_out.xfinal = xfinal;
+
 % Display the runtime information for the task
 disp(task_name + " Runtime: " + string(datetime - time_begin) +...
     "  All " + nSamples + " samples executed")
@@ -113,26 +138,32 @@ par_n = arg{5};
 current_sample = current_sample + 1;
 
 % Print progress information at each step
-if mod(current_sample,ceil(num_samples/10)) == 0 && current_sample ~= num_samples
-    if (num_samples-current_sample)/num_samples*10 < num_samples/10-1
+if mod(current_sample,ceil(num_samples/10)) == 0 &&...
+        current_sample ~= num_samples
+    
+    if ((num_samples-current_sample)/num_samples)*10 <...
+            ((num_samples-(num_samples/10))/num_samples)*10
         % Calculate the remaining time
         dt = (datetime-last_time);
+       
         remaining_time = seconds(dt);
         remaining_time =...
-            remaining_time*(num_samples-current_sample)/num_samples;
+            remaining_time*(num_samples-current_sample)/num_samples*10;
         remaining_time = seconds(remaining_time);
         remaining_time.Format = 'hh:mm:ss';
-
+     
         % Print the progress and remaining time
         fprintf('%s Runtime: %s  Time to finish: %s  Samples: %d/%d\n', ...
             task_name, string(datetime - start_time), string(remaining_time), ...
             current_sample, num_samples);
     else
+
         % Print the progress without remaining time
         fprintf('%s Runtime: %s  Samples: %d/%d\n', ...
             task_name, string(datetime - start_time), ...
             current_sample, num_samples);
     end
+
     last_time = datetime;
 end
 end

@@ -50,7 +50,7 @@ disp("Plotting PL")
 % does
 if isfield(settings,'bestpa')
     settings.sbioacc = false;
-    [best_score,~] = f_sim_score(settings.bestpa,settings,model_folder);
+    [best_score,~,~] = f_sim_score(settings.bestpa,settings,model_folder);
 end
 % best_score
 % Set the font settings
@@ -80,7 +80,7 @@ plots = [];
 %         Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
 %         Lgnd.Layout.Tile = 'North';
 %         legend boxoff
-%         xlabel(layout,"log_{10} \theta",...
+%         xlabel(layout,"log_{10} Parameter",...
 %             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 %         ylabel(layout,"-2 PL",...
 %             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
@@ -179,7 +179,7 @@ for m = settings.pltest
             'fontsize',Legend_FontSize);
         Lgnd.Layout.Tile = 'North';
         legend boxoff
-        xlabel(layout,"log_{10} \theta",...
+        xlabel(layout,"log_{10} P",...
             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
         ylabel(layout,"-2 PL",...
             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
@@ -259,7 +259,8 @@ for m = settings.pltest
     ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
 
     % Set the title for each plot
-    titlestring = "\theta_{" + find(settings.partest==m)+"}";
+    % titlestring = "P_{" + find(settings.partest==m)+"}";
+    titlestring = "P_{" + m +"}";
     title(titlestring(1),'FontSize',Minor_title_FontSize,...
         'Fontweight',Minor_title_Fontweight)
 end

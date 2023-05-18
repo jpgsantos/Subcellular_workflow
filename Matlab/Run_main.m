@@ -36,7 +36,6 @@ function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,se
 %   7. Plot results (if applicable)
 %   ?? 8. Save analysis results and plots (if specified in settings)
 
-
 user_choices = {Folder,Analysis,settings};
 
 %Get the date and time
