@@ -275,7 +275,7 @@ if stg.osm == 1
 
     % Get a group of ramdom starting points inside the bounds
     for n = 1:stg.msts
-    spop_sc{n} = lhsdesign(stg.popsize/36,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+    spop_sc{n} = lhsdesign(ceil(stg.popsize/36),stg.parnum).*(stg.ub-stg.lb)+stg.lb;
     end
     % Optimization Start method 2
 elseif stg.osm == 2
@@ -291,7 +291,7 @@ elseif stg.osm == 2
 
     for n = 1:stg.msts
     spop_sc{n} = stg.bestpa - stg.dbs +...
-        (stg.dbs*2*lhsdesign(stg.popsize/36,stg.parnum));
+        (stg.dbs*2*lhsdesign(ceil(stg.popsize/36),stg.parnum));
     end
 end
 end

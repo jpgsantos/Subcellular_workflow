@@ -401,5 +401,5 @@ stg.sopt = false;
 % options)
 stg.sopt_options = optimoptions('surrogateopt', 'MaxTime', stg.optt,...
     'UseVectorized', stg.optmc, 'MaxFunctionEvaluations', 5000,...
-    'MinSampleDistance', 0.2, 'MinSurrogatePoints', 32*2+1,'BatchUpdateInterval',360);
+    'MinSampleDistance', 0.2, 'MinSurrogatePoints', 32*2+1);
 end
