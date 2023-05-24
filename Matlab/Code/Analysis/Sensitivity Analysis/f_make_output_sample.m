@@ -73,7 +73,7 @@ switch matrix_type
         sd = zeros(nSamples,size(R{1}.sd,1)*size(R{1}.sd,2));
         se = zeros(nSamples,size(R{1}.se,1));
         st = zeros(nSamples,size(R{1}.st,1));
-        xfinal = zeros(nSamples,size(R{1}.sd,1)*size(R{1}.sd,2));
+        xfinal = zeros(nSamples,size(R{1}.sd,1)*(max(settings.exprun)-min(settings.exprun)+1));
 
         for i = 1:nSamples
             sd(i,:) = reshape(R{i}.sd(:,:), 1, []);
@@ -98,7 +98,7 @@ switch matrix_type
         sd = zeros(nSamples,size(RN{1,1}.sd,1)*size(RN{1,1}.sd,2),nPars);
         se = zeros(nSamples,size(RN{1,1}.se,1),nPars);
         st = zeros(nSamples,size(RN{1,1}.st,1),nPars);
-        xfinal = zeros(nSamples,size(RN{1,1}.sd,1)*size(RN{1,1}.sd,2),nPars);
+        xfinal = zeros(nSamples,size(RN{1,1}.sd,1)*(max(settings.exprun)-min(settings.exprun)+1),nPars);
 
         for i = 1:nSamples
             for j = 1:nPars
