@@ -150,7 +150,7 @@ end
 offset = 0;
 prev_fval = inf;
 offset_2 = 0;
-ratio = 1.25;
+ratio = 1.5;
 
 % Check if Simulated Annealing (SA) or Fmincon optimization methods should
 % be used
@@ -280,6 +280,16 @@ for PL_iter_current = PL_iter
         end
     end
 end
+
+if par_indx_helper <= length(settings.pltest)
+    disp("P" + par_indx_helper + " end    sa finished")
+elseif par_indx_helper <= length(settings.pltest)*2
+    disp("P" + (par_indx_helper - length(settings.pltest)) + " start  sa finished")
+elseif par_indx_helper <= length(settings.pltest)*3
+    disp("P" + (par_indx_helper - length(settings.pltest)*2) + " end    fm finished")
+else
+    disp("P" + (par_indx_helper - length(settings.pltest)*3) + " start  fm finished")
+end
 end
 
 function [x, fval, simd,Pval, prev_fval] =...
@@ -315,8 +325,9 @@ end
 
 % Display optimization method, model index, iteration, parameter value, and
 % function value
-disp(name + " m: " + settings.PLind + "  n: " + PL_iter_current + "." + ...
-    inter_step + "  PLval: " + settings.PLval + "  fval: " + prev_fval)
+
+% disp(name + " m: " + settings.PLind + "  n: " + PL_iter_current + "." + ...
+%     inter_step + "  PLval: " + settings.PLval + "  fval: " + prev_fval)
 end
 
 function [x,fval,simd] =...
@@ -325,7 +336,7 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions(@simulannealbnd,'Display','off', ...
         'InitialTemperature',...
-        ones(1,settings.parnum-1)*1,'MaxTime',120,'ReannealInterval',40);
+        ones(1,settings.parnum-1)*1,'MaxTime',30,'ReannealInterval',40);
 else
     options = settings.plsao;
 
@@ -346,7 +357,7 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions('fmincon','Display','off',...
         'Algorithm','interior-point',...
-        'MaxIterations',20,'OptimalityTolerance',0,...
+        'MaxIterations',50,'OptimalityTolerance',0,...
         'StepTolerance',1e-6,'FiniteDifferenceType','central');
 else
     % Get the optimization options from settings
