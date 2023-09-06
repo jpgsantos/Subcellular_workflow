@@ -32,9 +32,15 @@ function rst = f_PL_m(settings,model_folder)
 PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
 
 % Prepare parfor loop indices
-a = settings.plsa * (1:length(settings.pltest)*2);
-b = settings.plfm * (length(settings.pltest)*2+1:length(settings.pltest)*4);
-parfor_indices = [a(a ~= 0),b(b ~= 0)];
+indices_sa = settings.plsa * (1:length(settings.pltest)*2);
+% indices_sa
+indices_fm = settings.plfm * (length(settings.pltest)*2+1:length(settings.pltest)*4);
+% indices_fm
+indices_ps = settings.plps * (length(settings.pltest)*4+1:length(settings.pltest)*6);
+
+
+parfor_indices = [indices_sa(indices_sa ~= 0),indices_fm(indices_fm ~= 0),indices_ps(indices_ps ~= 0)];
+% parfor_indices
 
 % Run the optimization for each parameter in parallel parfor_indices
 parfor par_indx = parfor_indices
@@ -60,14 +66,14 @@ function rst = assign_struct_values(PL_iter_start, settings, x, fval, simd, Pval
 % entries
 for par_indx = settings.pltest
 
-
     % Prepare array indices
     array1 = PL_iter_start(par_indx)-1:-1:1;
     array2 = PL_iter_start(par_indx):settings.plres+1;
     old_index1 = par_indx+param_length;
     old_index2 = par_indx+param_length*2;
     old_index3 = par_indx+param_length*3;
-
+    old_index4 = par_indx+param_length*4;
+    old_index5 = par_indx+param_length*5;
     % Assign values for simulated annealing
     if settings.plsa
 
@@ -93,6 +99,18 @@ for par_indx = settings.pltest
         rst.fm.fvalt(par_indx) = fval{par_indx}(2);
         rst.fm.simdt(par_indx) = simd{par_indx}(2);
         rst.fm.Pval(par_indx) = Pval{par_indx}(2);
+    end
+    if settings.plps
+
+        x{1,par_indx}{3} = [flip(x{1,old_index5}{3}');x{1,old_index4}{3}'];
+        fval{1,par_indx}{3} = [flip(fval{1,old_index5}{3}');fval{1,old_index4}{3}'];
+        simd{1,par_indx}{3} = [flip(simd{1,old_index5}{3}');simd{1,old_index4}{3}'];
+        Pval{1,par_indx}{3} = [flip(Pval{1,old_index5}{3}');Pval{1,old_index4}{3}'];
+
+        rst.ps.xt(par_indx) = x{par_indx}(3);
+        rst.ps.fvalt(par_indx) = fval{par_indx}(3);
+        rst.ps.simdt(par_indx) = simd{par_indx}(3);
+        rst.ps.Pval(par_indx) = Pval{par_indx}(3);
     end
 end
 end
@@ -135,8 +153,8 @@ temp_up = settings.ub;
 temp_up(par_indx) = [];
 
 % Initialize variables for the optimization
-for i = 1:2
-    if (i == 1 && settings.plsa) || (i == 2 && settings.plfm)
+for i = 1:3
+    if (i == 1 && settings.plsa) || (i == 2 && settings.plfm) || (i == 3 && settings.plps)
         x{i} = [];
         fval{i} = [];
         simd{i} = [];
@@ -155,7 +173,10 @@ ratio = 1.5;
 % Check if Simulated Annealing (SA) or Fmincon optimization methods should
 % be used
 sa = par_indx_helper <= length(settings.pltest)*2 && settings.plsa;
-fmincon = settings.plfm;
+fmincon = par_indx_helper > length(settings.pltest)*2 &&...
+    par_indx_helper <= length(settings.pltest)*4 && settings.plfm;
+psearch = par_indx_helper > length(settings.pltest)*4 && settings.plps;
+
 
 % Iterate over the PL values
 for PL_iter_current = PL_iter
@@ -183,7 +204,7 @@ for PL_iter_current = PL_iter
                 run_optimization_method(x, fval, simd, Pval,...
                 PL_iter_start, PL_iter_current, inter_step,...
                 offset, offset_2, temp_lb, temp_up,...
-                settings, model_folders, sa, fmincon);
+                settings, model_folders, sa, fmincon,psearch);
 
             offset_2 = offset;
             offset = offset+1;
@@ -206,7 +227,10 @@ for PL_iter_current = PL_iter
                 x_score = x{1}{PL_iter_start+offset_2};
             elseif fmincon
                 x_score = x{2}{PL_iter_start+offset_2};
+            elseif psearch
+                x_score = x{3}{PL_iter_start+offset_2};
             end
+
             [score,~,~] = f_sim_score(x_score,settings, model_folders);
 
             % If the current score is less than the previous score
@@ -220,7 +244,7 @@ for PL_iter_current = PL_iter
                     run_optimization_method(x, fval, simd, Pval,...
                     PL_iter_start, PL_iter_current, inter_step,...
                     offset, offset_2, temp_lb, temp_up,...
-                    settings, model_folders, sa, fmincon);
+                    settings, model_folders, sa, fmincon,psearch);
 
                 offset_2 = offset;
                 offset = offset+1;
@@ -247,7 +271,10 @@ for PL_iter_current = PL_iter
                 x_score = x{1}{PL_iter_start+offset_2};
             elseif fmincon
                 x_score = x{2}{PL_iter_start+offset_2};
+            elseif psearch
+                x_score = x{3}{PL_iter_start+offset_2};
             end
+
             [score,~,~] = f_sim_score(x_score,settings, model_folders);
 
             % If the current score is less than the previous score
@@ -261,7 +288,7 @@ for PL_iter_current = PL_iter
                     run_optimization_method(x, fval, simd, Pval,...
                     PL_iter_start, PL_iter_current, inter_step,...
                     offset, offset_2, temp_lb, temp_up,...
-                    settings, model_folders, sa, fmincon);
+                    settings, model_folders, sa, fmincon,psearch);
 
                 offset_2 = offset;
                 offset = offset+1;
@@ -287,15 +314,19 @@ elseif par_indx_helper <= length(settings.pltest)*2
     disp("P" + (par_indx_helper - length(settings.pltest)) + " start  sa finished")
 elseif par_indx_helper <= length(settings.pltest)*3
     disp("P" + (par_indx_helper - length(settings.pltest)*2) + " end    fm finished")
-else
+elseif par_indx_helper <= length(settings.pltest)*4
     disp("P" + (par_indx_helper - length(settings.pltest)*3) + " start  fm finished")
+elseif par_indx_helper <= length(settings.pltest)*5
+    disp("P" + (par_indx_helper - length(settings.pltest)*4) + " end    ps finished")
+else
+    disp("P" + (par_indx_helper - length(settings.pltest)*5) + " start  ps finished")
 end
 end
 
 function [x, fval, simd,Pval, prev_fval] =...
     run_optimization_method(x, fval, simd,Pval,PL_iter_start,...
     PL_iter_current,inter_step,offset, offset_2,temp_lb, temp_up,...
-    settings, model_folders,sa,fmincon)
+    settings, model_folders,sa,fmincon,psearch)
 % This function runs an optimization method (either simulated annealing or
 % fmincon) and returns the optimized variables (x), function values (fval),
 % simulation data (simd), parameter values (Pval), and previous function
@@ -321,6 +352,17 @@ elseif fmincon
     name = "fmincon";
     Pval{2}(PL_iter_start+offset) = settings.PLval;
     prev_fval = fval{2}(PL_iter_start+offset);
+elseif psearch
+    % Run psearch optimization
+    [x{3}{PL_iter_start+offset}, fval{3}(PL_iter_start+offset),...
+        simd{3}{PL_iter_start+offset}] =...
+        p_search(PL_iter_start+offset, PL_iter_start,...
+        x{3}{PL_iter_start+offset_2}, temp_lb, temp_up, settings,...
+        model_folders);
+    name = "pattern search";
+    Pval{3}(PL_iter_start+offset) = settings.PLval;
+    prev_fval = fval{3}(PL_iter_start+offset);
+
 end
 
 % Display optimization method, model index, iteration, parameter value, and
@@ -336,7 +378,7 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions(@simulannealbnd,'Display','off', ...
         'InitialTemperature',...
-        ones(1,settings.parnum-1)*1,'MaxTime',30,'ReannealInterval',40);
+        ones(1,settings.parnum-1)*1,'MaxTime',20,'ReannealInterval',40);
 else
     options = settings.plsao;
 
@@ -357,7 +399,7 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions('fmincon','Display','off',...
         'Algorithm','interior-point',...
-        'MaxIterations',50,'OptimalityTolerance',0,...
+        'MaxIterations',5,'OptimalityTolerance',0,...
         'StepTolerance',1e-6,'FiniteDifferenceType','central');
 else
     % Get the optimization options from settings
@@ -367,6 +409,28 @@ end
 % Optimize the model
 [x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
     x,[],[],[],[],temp_lb,temp_up,[],options);
+
+[~,rst,~] = f_sim_score(x,settings,model_folders);
+simd = rst.simd{1,1};
+end
+
+function [x,fval,simd] =...
+    p_search(PL_iter_current,PL_iter_start,x,temp_lb,temp_up,settings,model_folders)
+% Run fmincon optimization
+if PL_iter_current == PL_iter_start
+    options = optimoptions(@patternsearch,'Display','off',...
+    'MaxTime',20,...
+    'UseCompletePoll',true,'UseCompleteSearch',true,...
+    'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
+else
+    % Get the optimization options from settings
+    options = settings.plpso;
+end
+
+% Optimize the model
+[x, fval] = ...
+            patternsearch(@(x)f_sim_score(x,settings,model_folders), x, ...
+            [], [], [], [], temp_lb,temp_up, [], options);
 
 [~,rst,~] = f_sim_score(x,settings,model_folders);
 simd = rst.simd{1,1};

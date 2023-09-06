@@ -43,5 +43,14 @@ Analysis_date_folder = model_folders.model.results.analysis.date.main;
 addpath(Analysis_date_folder)
 
 % Save the analysis data to the Analysis.mat file
-save (Analysis_date_folder + "Analysis.mat",'settings','sb','results','plots');
+try
+    save (Analysis_date_folder + "Analysis.mat",'settings','sb','results');
+catch
+    disp("failed to save analysis");
+end
+try
+    save (Analysis_date_folder + "Plots.mat",'plots');
+catch
+    disp("failed to save plots");
+end
 end
