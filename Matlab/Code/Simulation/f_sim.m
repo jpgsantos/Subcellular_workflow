@@ -48,6 +48,7 @@ persistent configs
 if isempty(models)
 
     % Turn off warning messages
+    warning('off','all')
     warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
     warning('off', 'SimBiology:SolodeSolverIntegrationError');
     warning('off', 'SimBiology:Solver:IntegrationTolNotMet');

@@ -218,7 +218,8 @@ for m = settings.pltest
         %         common_fval,'DisplayName','Total score sa',...
         %         'LineWidth',1.5,'color',[0, 0, 0, 1])
         %     minfval = min(common_fval);
-        % elseif isfield(results.PLA,'sa')
+        % else
+        if isfield(results.PLA,'sa')
 
             plot([results.PLA.sa.Pval{m}],...
                 [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
@@ -226,17 +227,18 @@ for m = settings.pltest
 
             minfval = min(results.PLA.sa.fvalt{m});
             % Plot the PL results from fmincon if they exist
-        % elseif isfield(results.PLA,'fm')
+        elseif isfield(results.PLA,'fm')
             plot([results.PLA.fm.Pval{m}],...
                 [results.PLA.fm.fvalt{m}],'DisplayName','Total score fm',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
 
             minfval = min(results.PLA.fm.fvalt{m});
-        % end
+            elseif isfield(results.PLA,'ps')
+        
             plot([results.PLA.ps.Pval{m}],...
                 [results.PLA.ps.fvalt{m}],'DisplayName','Total score ps',...
                 'LineWidth',1.5,'color',[0, 1, 0, 0.5])
-
+end
 
     end
 
@@ -261,7 +263,7 @@ for m = settings.pltest
 
     % Set the x-axis limits
     xlim([settings.lb(m) settings.ub(m)])
-    % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
+    ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
 
     % Set the title for each plot
     % titlestring = "P_{" + find(settings.partest==m)+"}";

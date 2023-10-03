@@ -77,6 +77,11 @@ function rst = calculate_score_per_dataset(rst, stg, n, j, mmf, Data)
 if rst.simd{n} ~= 0
     data = Data(n).Experiment.x(:, j);
     data_sd = Data(n).Experiment.x_SD(:, j);
+
+
+    % data = data /(max(data)-min(data));
+
+
     number_points = size(Data(n).Experiment.x(:, j), 1);
     sim_results = f_normalize(rst, stg, n, j, mmf);
     rst.xfinal{n, 1}(j) = sim_results(end);

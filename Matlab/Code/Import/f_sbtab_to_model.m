@@ -330,7 +330,7 @@ for reaction_idx = 1:num_reactions
 
     % Determine reaction reversibility and modify reaction_name accordingly
     if ischar(is_reversible)
-        if contains(is_reversible, "true")
+        if contains(is_reversible, "true",'IgnoreCase',true)
             arrow = ' <-> ';
         else
             arrow = ' -> ';
@@ -343,7 +343,6 @@ for reaction_idx = 1:num_reactions
         end
     end
     reaction = strrep(reaction_formula, '<=>', arrow);
-
     % Add compartment location to the reaction name
     for compound_idx = 1:num_compounds
         compound_name = string(sb.Compound.Name{compound_idx});

@@ -52,6 +52,7 @@ fig_n = 0;
 layout = [];
 % plots_1 = [];
 plots = cell(1,2);
+plot_tn = plot_tn *2;
 
 % Set font settings using the provided font_settings
 f_set_font_settings()
@@ -64,7 +65,8 @@ for n = stg.exprun
 
     % Loop through each dataset in the current experiment
     for j = 1:size(sbtab.datasets(n).output,2)
-
+ 
+        for k = 1:2
         % Generate the required number of figures for all plots and calculate
         % proper subplot positioning
         if mod(plot_n,12) == 0
@@ -100,15 +102,24 @@ for n = stg.exprun
 
                 time = rst(m).simd{1,n}.Time;
 
+                if k == 1
                 % Plot the error area if it hasn't been plotted yet
                 if ~error_area_plotted
                     f_error_area(transpose(time), transpose([data-data_SD, data+data_SD]));
                     error_area_plotted = true;
                 end
-
+                end
                 % Normalize simulation results
-                [sim_results,~] = f_normalize(rst(m),stg,n,j,mmf);
-                sim_results_detailed =[];
+                % [sim_results,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+                % sim_results_detailed =[];
+                if k == 1
+                    [sim_results,~,~] = f_normalize(rst(m),stg,n,j,mmf);
+                    sim_results_detailed =[];
+                else
+                    [~,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+                    sim_results_detailed =[];
+                end
+                
 
                 % Plot detailed simulation results if enabled in settings
                 if stg.simdetail
@@ -164,6 +175,7 @@ for n = stg.exprun
                 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
             % Remove the legend box
             set(Lgnd,'Box','off')
+        end
         end
     end
 end

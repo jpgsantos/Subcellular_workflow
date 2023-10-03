@@ -323,6 +323,64 @@ stg.sasamplemode = 2;
 % perform Sensitivity Analysis (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
 
+%% Profile Likelihood
+
+% Parameter(optimization array) that is being worked on in a specific
+% iteration of PL (if -1 no parameter is being worked in PL)
+% (Profile Likelihood Index)
+stg.PLind = -1;
+
+% Which parameters to do PL on, it should be all parameters but can also be
+% a subset for testing purposes
+% (Profile Likelihood parameters to Test)
+stg.pltest = (1:6);
+
+% How many points to do for each parameter in the PL
+% (Profile Likelihood Resolution)
+stg.plres = 50;
+
+% True or false to decide whether to do plots after calculating PL
+% (Profile Likelihood Plots)
+stg.plplot = true;
+
+% True or false to decide whether to run simulated annealing
+% (Profile Likelihood Simulated Annealing)
+stg.plsa = false;
+
+% Options for simulated annealing
+stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum-1)*1,'MaxTime',7,'ReannealInterval',40);
+
+% stg.plsao = optimoptions(@patternsearch,...
+%     'MaxTime',25,'UseParallel',false,...
+%     'UseCompletePoll',true,'UseCompleteSearch',true,...
+%     'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
+
+% True or false to decide whether to run fmincon
+% (Profile Likelihood FMincon)
+stg.plfm = false;
+
+% Options for fmincon
+stg.plfmo = optimoptions('fmincon','Display','off',...
+    'Algorithm','interior-point',...
+    'MaxIterations',2,'OptimalityTolerance',0,...
+    'StepTolerance',1e-6,'FiniteDifferenceType','central');
+
+
+% True or false to decide whether to run Pattern search
+% (Pattern search)
+stg.plps = false;
+
+% Options for Pattern search
+% (Pattern search options)
+stg.plpso = optimoptions(@patternsearch,'Display','off',...
+    'MaxTime',7,...
+    'UseCompletePoll',true,'UseCompleteSearch',true,...
+    'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
+
+
+
 %% Optimization
 
 % Sets the time for the optimization in seconds (fmincon does not respect

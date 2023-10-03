@@ -87,7 +87,7 @@ end
 % loading the results of a previously run analysis
 plots = [];
 if settings.plot
-     plots = f_plot(results,settings,model_folders);
+     % plots = f_plot(results,settings,model_folders);
     % Save plots results if chosen in settings
 %     if stg.save_results
 %          f_save_plots(mmf)
@@ -97,7 +97,7 @@ end
 % Save Analysis results if chosen in settings
 if settings.save_results
     % try
-    f_save_analysis(settings,sb,results,model_folders,plots)
+    % f_save_analysis(settings,sb,results,model_folders,plots)
     % catch
     % end
 end
