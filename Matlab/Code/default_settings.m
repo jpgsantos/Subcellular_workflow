@@ -253,7 +253,7 @@ stg.maxstepdetail = 2;
 
 % Specifies the default score when there is a simulation error, required to
 % keep optimizations working (error score)
-stg.errorscore = 10^5;
+stg.errorscore = 10^10;
 %% Model
 
 % Specifies the number of parameters to optimize (Parameter number)
@@ -441,8 +441,8 @@ stg.ga = false;
 % Options for Genetic algorithm (Genetic algorithm options)
 stg.ga_options = optimoptions(@ga, 'MaxGenerations', 200, ...
     'MaxTime', stg.optt,'UseParallel', stg.optmc, ...
-    'PopulationSize', stg.popsize,'MutationFcn', 'mutationadaptfeasible');
-    
+    'PopulationSize', stg.popsize,'MutationFcn', 'mutationadaptfeasible', ...
+    'HybridFcn',{@patternsearch,stg.psearch_options});
 
 % Specifies whether to run Particle swarm (Particle swarm)
 stg.pswarm = false;

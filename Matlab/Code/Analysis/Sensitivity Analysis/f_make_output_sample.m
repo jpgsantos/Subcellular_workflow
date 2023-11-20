@@ -120,7 +120,7 @@ disp(task_name + " Runtime: " + string(datetime - time_begin) +...
     "  All " + nSamples + " samples executed")
 end
 
-% Function to track progress of the LSA
+% Function to track progress of the GSA
 function progress_track(arg)
 persistent current_sample
 persistent last_time

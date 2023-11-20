@@ -1,5 +1,5 @@
 function results = f_sim(experiment_idx,settings,simulation_parameters,...
-    species_start_amount,results,main_model_folders)
+    species_start_amount,results,main_model_folders,success)
 % This function runs simulations using SimBiology models for a set of
 % experiments. It loads the appropriate models and compiles the code for
 % simulation run, then substitutes the start amounts of species and
@@ -49,11 +49,11 @@ if isempty(models)
 
     % Turn off warning messages
     warning('off','all')
-    warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
-    warning('off', 'SimBiology:SolodeSolverIntegrationError');
-    warning('off', 'SimBiology:Solver:IntegrationTolNotMet');
-    warning('off', 'SimBiology:Solver:InfOrNaN');
-    warning('off', 'SimBiology:solver');
+    % warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
+    % warning('off', 'SimBiology:SolodeSolverIntegrationError');
+    % warning('off', 'SimBiology:Solver:IntegrationTolNotMet');
+    % warning('off', 'SimBiology:Solver:InfOrNaN');
+    % warning('off', 'SimBiology:solver');
 
     %Generate an empty array to be populated with the model suited for each
     %equilibration and experiment%
@@ -108,17 +108,17 @@ set(models{experiment_idx}.species(1:size(species_start_amount(:,experiment_idx)
 set(models{experiment_idx}.parameters(1:size(simulation_parameters,1)),...
     {'Value'},num2cell(simulation_parameters));
 
-try
+if ~ success
+    configs_fail = configs{experiment_idx};
+    % configs_fail.SolverOptions
+    configs_fail.SolverOptions.AbsoluteTolerance = settings.abstol;
+    configs_fail.SolverOptions.RelativeTolerance = settings.reltol;
+    configs_fail.SolverOptions.MaxStep = settings.maxstep;
+    results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
+        configs_fail);
+else
     %simulate the model using matlab built in function
     results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
         configs{experiment_idx});
-catch ME
-    % disp(ME.identifier)
-
-    % Set the simulation output to be 0, this is a non function
-    % value that the score function expects in simulations that did
-    % not worked properly
-    results.simd{experiment_idx} = 0;
 end
-
 end

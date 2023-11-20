@@ -127,7 +127,7 @@ for n = stg.exprun
 
                 % Retrieve time and normalized simulation results
                 time = rst(m).simd{1,n}.Time;
-                [sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+                [~,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
 
                 % If simdetail is enabled, retrieve detailed time and
                 % simulation results
@@ -192,7 +192,10 @@ for n = stg.exprun
 
         t2.FontSize = Minor_Title_Spacing;
         % Set the number of decimal places for the y-axis
-        ytickformat('%-3.1f')
+        % ytickformat('%-3.1f')
+
+        
+
         % Add a legend for the entire image
         leg = ...
             legend([input_plot,valid_outputs_plots(:,valid_outputs),...
@@ -267,7 +270,7 @@ end
 % Set xlabel with correct font settings
 xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 ylim([0 inf])
-ytickformat('%-3.1f')
+% ytickformat('%-3.1f')
 
 % Add a title to the plot
 if size(sbtab.datasets(n).input,2) == 1

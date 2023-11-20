@@ -44,7 +44,7 @@ addpath(Analysis_date_folder)
 
 % Save the analysis data to the Analysis.mat file
 try
-    save (Analysis_date_folder + "Analysis.mat",'settings','sb','results');
+    save (Analysis_date_folder + "Analysis.mat",'settings','sb','results','model_folders');
 catch
     disp("failed to save analysis");
 end

@@ -33,6 +33,8 @@ persistent sbtab
 persistent Data
 persistent sb
 
+sim_results_norm = [];
+
 % Load Data and sbtab if empty
 if isempty(Data)
     load(model_folders.model.data.data_model, 'Data', 'sbtab','sb')
@@ -51,16 +53,11 @@ end
 
 % Get the normalization method
 normalize = sbtab.datasets(exp_number).Normalize;
-% exp_number
-% normalize
 
 % Perform normalization if a method is specified
 if ~isempty(normalize)
     output_ID = sbtab.datasets(exp_number).output_ID{output_number}{:};
     norm_factor = extract_data(results, exp_number, output_number, sbtab);
-%     output_ID
-% contains(normalize, 'Max')
-% contains(normalize, output_ID)
 
 sim_results_norm = sim_results;
 
@@ -73,10 +70,6 @@ sim_results_norm = sim_results;
         end
     end
 
-    % normalize
-    % contains(normalize, 'Norm')
-    % output_ID
-    % contains(normalize, output_ID)
     % Normalize to a value between 0 and 1
     if contains(normalize, 'Norm') && contains(normalize, output_ID)
         max_norm = max(norm_factor);

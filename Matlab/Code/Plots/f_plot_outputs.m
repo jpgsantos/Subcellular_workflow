@@ -60,13 +60,13 @@ f_set_font_settings()
 % Loop through each experiment
 for n = stg.exprun
 
-    
-
-
     % Loop through each dataset in the current experiment
     for j = 1:size(sbtab.datasets(n).output,2)
- 
-        for k = 1:2
+        do_norm = 1;
+        if ~isempty(sbtab.datasets(n).Normalize)
+            do_norm = 2;
+        end
+        for k = 1:do_norm
         % Generate the required number of figures for all plots and calculate
         % proper subplot positioning
         if mod(plot_n,12) == 0
@@ -89,18 +89,36 @@ for n = stg.exprun
         hold on
 
         error_area_plotted = false;
+        valid_outputs = [];
+
+        % Loop through each parameter array to test
+        for m = stg.pat
+
+            % Plot output data only if the simulation was successful
+            if rst(m).simd{1,n} ~= 0
+
+                % Retrieve time, data and standard deviation from the
+                % experiment
+                time = rst(m).simd{1,n}.Time;
+                data = Data(n).Experiment.x(:,j);
+                data_SD = Data(n).Experiment.x_SD(:,j);
+
+                % Plot the output data
+                plot_data = plot(time,data,'LineWidth',0.5,...
+                    'DisplayName','data','Color','k');
+
+                % Plot the standard deviation of the output data
+                plot_data_SD = f_error_area(transpose(time),...
+                    transpose([data-data_SD,data+data_SD]));
+                break
+            end
+        end
 
         % Loop through each parameter array to test
         for m = stg.pat
 
             % Plot only if the simulation was successful
             if rst(m).simd{1,n} ~= 0
-
-                data = Data(n).Experiment.x(:,j);
-
-                data_SD = Data(n).Experiment.x_SD(:,j);
-
-                time = rst(m).simd{1,n}.Time;
 
                 if k == 1
                 % Plot the error area if it hasn't been plotted yet
@@ -113,10 +131,10 @@ for n = stg.exprun
                 % [sim_results,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
                 % sim_results_detailed =[];
                 if k == 1
-                    [sim_results,~,~] = f_normalize(rst(m),stg,n,j,mmf);
+                    [~,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
                     sim_results_detailed =[];
                 else
-                    [~,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+                    [sim_results,~,~] = f_normalize(rst(m),stg,n,j,mmf);
                     sim_results_detailed =[];
                 end
                 
@@ -126,18 +144,19 @@ for n = stg.exprun
                     time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
                     [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
 
-                    plot(time_detailed,sim_results_detailed,'DisplayName',...
-                        string("\theta_"+m),'LineWidth',line_width)
+                    valid_outputs_plots(:,m) = plot(time_detailed,sim_results_detailed,'DisplayName',...
+                        string("\theta_"+m),'LineWidth',line_width);
 
                 else
-                    plot(time,sim_results,'DisplayName',...
-                        string("\theta_"+m),'LineWidth',line_width)
+                    valid_outputs_plots(:,m) = plot(time,sim_results,'DisplayName',...
+                        string("\theta_"+m),'LineWidth',line_width);
                 end
 
                 % Set the y-axis label
                 ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
                     size(sbtab.datasets(n).output,2)+j,1}.Units),...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+                valid_outputs = [valid_outputs,m];
             end
         end
 
@@ -157,16 +176,38 @@ for n = stg.exprun
                 string(sbtab.datasets(n).output{1,j});
         end
 
+        % if stg.simdetail
+            output_max = max([max(sim_results_detailed),max(sim_results),...
+                max(data-data_SD),max(data)]);
+        % else
+        %     output_max = max([max(sim_results),...
+        %         max(data-data_SD),max(data)]);
+        % end
+
+        % if output_max <= 10
+        %     ytickformat('%-3.1f')
+        % else
+        %     ytickformat('%-4.0f')
+        % end
+
+if output_max < 10000
         % Set the title for the subplot
         title(title_text, 'FontSize', Minor_title_FontSize,...
             'Fontweight', Minor_title_Fontweight);
+else
+        title("      " + title_text, 'FontSize', Minor_title_FontSize,...
+            'Fontweight', Minor_title_Fontweight);
+end
+
+
 
         % Set the number of decimal places for the y-axis
-        ytickformat('%-4.1f')
+        % ytickformat('%-4.1f')
         % Add a legend to the plot
         if mod(plot_n,12) == 1
 
-            Lgnd = legend('show','Orientation','vertical',...
+            Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
+            plot_data,plot_data_SD],'Orientation','vertical',...
                 'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
                 'Location','layout');
             Lgnd.Layout.Tile = 'East';

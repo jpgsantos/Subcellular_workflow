@@ -63,12 +63,13 @@ result = [];
 result.parameters = sim_par;
 result.simd{stg.exprun(1)} = [];
 
+m=1;
 % Run simulations for each experiment
-for n = stg.exprun
-    
+while m <= size(stg.exprun,2)
+n=stg.exprun(m);
     % Try catch used because iterations errors can happen unexectedly and
     % we want to be able to continue simulations
-try
+    % try
     % Display progress message if appropriate
     if stg.simcsl
         disp("Running dataset number " + n + " of " + stg.exprun(end))
@@ -78,13 +79,13 @@ try
     % equal to the previous experiment, and the previous simulation
     % was valid
     is_not_first_experiment = n ~= stg.exprun(1);
-    
+
     start_values_equal = min([sbtab.datasets(n).start_amount{:,2}] ==...
         [sbtab.datasets(stg.exprun(...
         max(find(stg.exprun==n)-1,1))).start_amount{:,2}]);
     previous_simulation_valid = ...
         result.simd{stg.exprun(max(find(stg.exprun==n)-1,1))} ~= 0;
-    
+
     if is_not_first_experiment && start_values_equal && previous_simulation_valid
         % Set the start amounts based on the previous experiment
         ssa(:,n) = ssa(:,stg.exprun(find(stg.exprun==n)-1));
@@ -101,49 +102,67 @@ try
                 sbtab.datasets(n).start_amount{j,2};
         end
 
-        % Equilibrate the model
-            result = f_sim(n+stg.expn,stg,sim_par,ssa,result,model_folders);
-
-            % Update the start amounts based on equilibrium results
-        for j = 1:size(sbtab.species,1)
-
-            final_amount = result.simd{n+stg.expn}.Data(end,j);
-
-            if final_amount < 1.0e-15
-                ssa(j,n) = 0;
-                if stg.simdetail
-                    ssa(j,n+2*stg.expn) = 0;
+        try
+            success = true;
+                
+            while stg.reltol >= 1.0E-6
+                while stg.abstol >= 1.0E-9
+                    try
+                        ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
+                        success = true;
+                    catch
+                        success = false;
+                    end
+                    if success
+                        break
+                    end
+                    stg.abstol = stg.abstol/10;
                 end
-            else
-                ssa(j,n) = final_amount;
-                if stg.simdetail
-                    ssa(j,n+2*stg.expn) = final_amount;
+                if success
+                    break
                 end
+                stg.abstol = 1.0E-6;
+                stg.reltol = stg.reltol/10;
+            end
+        catch
+            % disp("fail_eq")
+            m=size(stg.exprun,2)+1;
+            for fail = stg.exprun
+                result.simd{fail} = 0;
             end
         end
+
     end
+
     % Run the main simulation
-        result = f_sim(n,stg,sim_par,ssa,result,model_folders);
-    % Run detailed simulation if required
+            
+    try
+        result = f_sim(n,stg,sim_par,ssa,result,model_folders,success);
+
+        % Run detailed simulation if required
         if stg.simdetail
-            result = f_sim(n+2*stg.expn,stg,sim_par,ssa,result,model_folders);
+            result = f_sim(n+2*stg.expn,stg,sim_par,ssa,result,model_folders,success);
         end
 
-    % Check if the simulation output times match the SBTAB data times, if
-    % they don't it means that the simulator didn't had enough time to run
-    % the model (happens in some unfavorable configurations of parameters,
-    % controlled by stg.maxt)
-    simulation_times_match = size(Data(n).Experiment.t,1) == size(result.simd{n}.Data(:,end),1);
+        % Check if the simulation output times match the SBTAB data times, if
+        % they don't it means that the simulator didn't had enough time to run
+        % the model (happens in some unfavorable configurations of parameters,
+        % controlled by stg.maxt)
+        simulation_times_match = size(Data(n).Experiment.t,1) == size(result.simd{n}.Data(:,end),1);
 
-    % Handle cases where the simulation did not run properly
-    if ~simulation_times_match
-        result.simd{n} = 0;
+        % Handle cases where the simulation did not run properly
+        if ~simulation_times_match
+            result.simd{n} = 0;
+        end
+
+    catch 
+        % disp("fail_sim")
+        m=size(stg.exprun,2)+1;
+        for fail = stg.exprun
+            result.simd{fail} = 0;
+        end
     end
-
-catch
-result.simd{n} = 0;
-end
-
+m=m+1;
 end
 end
 
@@ -206,6 +225,30 @@ for m = 1:size(settings.tcd, 2)
         % Make the appropriate divisions to get the thermodinamicly
         % constrained parameter
         sim_par(n) = sim_par(n) / (sbtab.defpar{settings.tcd(n, m), 2});
+    end
+end
+end
+
+function ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success)
+
+% Equilibrate the model 1
+result = f_sim(n+stg.expn,stg,sim_par,ssa,result,model_folders,success);
+
+% Update the start amounts based on equilibrium results
+for j = 1:size(sbtab.species,1)
+
+    final_amount = result.simd{n+stg.expn}.Data(end,j);
+
+    if final_amount < 1.0e-15
+        ssa(j,n) = 0;
+        if stg.simdetail
+            ssa(j,n+2*stg.expn) = 0;
+        end
+    else
+        ssa(j,n) = final_amount;
+        if stg.simdetail
+            ssa(j,n+2*stg.expn) = final_amount;
+        end
     end
 end
 end

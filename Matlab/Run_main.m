@@ -96,10 +96,10 @@ end
 
 % Save Analysis results if chosen in settings
 if settings.save_results
-    % try
-    % f_save_analysis(settings,sb,results,model_folders,plots)
-    % catch
-    % end
+    try
+    f_save_analysis(settings,sb,results,model_folders,plots)
+    catch
+    end
 end
 
 end

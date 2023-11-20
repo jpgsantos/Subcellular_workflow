@@ -110,7 +110,7 @@ for n = stg.exprun
 
     % Set y-axis limit and format
     ylim([0 inf])
-    ytickformat('%-4.1f')
+    % ytickformat('%-4.1f')
 
     % Add a title to each plot
     title("E"+(n-1))
