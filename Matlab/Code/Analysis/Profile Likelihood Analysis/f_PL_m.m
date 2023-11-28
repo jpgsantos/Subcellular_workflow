@@ -1,6 +1,6 @@
 function rst = f_PL_m(settings,model_folder)
 % This function performs profile likelihood (PL) optimization for a given
-% model using two optimization algorithms: simulated annealing and fmincon.
+% model using three optimization algorithms: fmincon, simulated annealing and pattern search.
 % The function first finds the index of the starting point for PL
 % calculation, prepares indices for parallel execution, and runs the
 % optimization for each parameter in parallel. After the optimization, the
@@ -52,7 +52,7 @@ end
 % Assign the values of x and fval to the correct struct entries
 
 param_length = length(settings.pltest);
-rst = assign_struct_values(PL_iter_start, settings, x, fval, simd, Pval, param_length);
+rst = assign_struct_values(settings, x, fval, simd, Pval, param_length);
 end
 
 function idx = get_PL_iter_start(x, settings)
@@ -61,56 +61,29 @@ range = linspace(settings.lb(x), settings.ub(x), settings.plres + 1);
 [~,idx] = min(abs(settings.bestpa(x) - range));
 end
 
-function rst = assign_struct_values(PL_iter_start, settings, x, fval, simd, Pval, param_length)
-% Assign the values of x, fval, and simd to the corresponding struct
-% entries
+function rst = assign_struct_values(settings, x, fval, simd, Pval, param_length)
+% Assign the values of x, fval, and simd to the corresponding struct entries
+
+% Define method index mapping
+algIndex = struct('sa', 1, 'fm', 2, 'ps', 3);
+Out_name = ["xt", "fvalt", "simdt", "Pval"];
+Out_array = {x, fval, simd, Pval};
+
+% Loop over each parameter in the settings and each optimization method
 for par_indx = settings.pltest
-
-    % Prepare array indices
-    array1 = PL_iter_start(par_indx)-1:-1:1;
-    array2 = PL_iter_start(par_indx):settings.plres+1;
-    old_index1 = par_indx+param_length;
-    old_index2 = par_indx+param_length*2;
-    old_index3 = par_indx+param_length*3;
-    old_index4 = par_indx+param_length*4;
-    old_index5 = par_indx+param_length*5;
-    % Assign values for simulated annealing
-    if settings.plsa
-
-        x{1,par_indx}{1} = [flip(x{1,old_index1}{1}');x{1,par_indx}{1}'];
-        fval{1,par_indx}{1} = [flip(fval{1,old_index1}{1}');fval{1,par_indx}{1}'];
-        simd{1,par_indx}{1} = [flip(simd{1,old_index1}{1}');simd{1,par_indx}{1}'];
-        Pval{1,par_indx}{1} = [flip(Pval{1,old_index1}{1}');Pval{1,par_indx}{1}'];
-
-        rst.sa.xt(par_indx) = x{par_indx}(1);
-        rst.sa.fvalt(par_indx) = fval{par_indx}(1);
-        rst.sa.simdt(par_indx) = simd{par_indx}(1);
-        rst.sa.Pval(par_indx) = Pval{par_indx}(1);
-    end
-    % Assign values for fmincon
-    if settings.plfm
-
-        x{1,par_indx}{2} = [flip(x{1,old_index3}{2}');x{1,old_index2}{2}'];
-        fval{1,par_indx}{2} = [flip(fval{1,old_index3}{2}');fval{1,old_index2}{2}'];
-        simd{1,par_indx}{2} = [flip(simd{1,old_index3}{2}');simd{1,old_index2}{2}'];
-        Pval{1,par_indx}{2} = [flip(Pval{1,old_index3}{2}');Pval{1,old_index2}{2}'];
-
-        rst.fm.xt(par_indx) = x{par_indx}(2);
-        rst.fm.fvalt(par_indx) = fval{par_indx}(2);
-        rst.fm.simdt(par_indx) = simd{par_indx}(2);
-        rst.fm.Pval(par_indx) = Pval{par_indx}(2);
-    end
-    if settings.plps
-
-        x{1,par_indx}{3} = [flip(x{1,old_index5}{3}');x{1,old_index4}{3}'];
-        fval{1,par_indx}{3} = [flip(fval{1,old_index5}{3}');fval{1,old_index4}{3}'];
-        simd{1,par_indx}{3} = [flip(simd{1,old_index5}{3}');simd{1,old_index4}{3}'];
-        Pval{1,par_indx}{3} = [flip(Pval{1,old_index5}{3}');Pval{1,old_index4}{3}'];
-
-        rst.ps.xt(par_indx) = x{par_indx}(3);
-        rst.ps.fvalt(par_indx) = fval{par_indx}(3);
-        rst.ps.simdt(par_indx) = simd{par_indx}(3);
-        rst.ps.Pval(par_indx) = Pval{par_indx}(3);
+    for alg = fieldnames(algIndex)'
+        alg_name = alg{1};
+        alg_number = algIndex.(alg_name);
+        if settings.(['pl' alg_name])
+            % Calculate old indices based on the method
+            old_indices1 = par_indx + param_length * (alg_number*2-2);
+            old_indices2 = par_indx + param_length * (alg_number*2-1);
+            for n = 1:length(Out_name)
+                rst.(alg_name).(Out_name(n)){par_indx} =...
+                    [flip(Out_array{n}{1,old_indices2}{alg_number}');...
+                    Out_array{n}{1,old_indices1}{alg_number}'];
+            end
+        end
     end
 end
 end
@@ -323,54 +296,50 @@ else
 end
 end
 
-function [x, fval, simd,Pval, prev_fval] =...
-    run_optimization_method(x, fval, simd,Pval,PL_iter_start,...
-    PL_iter_current,inter_step,offset, offset_2,temp_lb, temp_up,...
-    settings, model_folders,sa,fmincon,psearch)
-% This function runs an optimization method (either simulated annealing or
-% fmincon) and returns the optimized variables (x), function values (fval),
-% simulation data (simd), parameter values (Pval), and previous function
-% values (prev_fval).
+function [x, fval, simd, Pval, prev_fval] = ...
+run_optimization_method(x, fval, simd, Pval, PL_iter_start, ...
+    PL_iter_current, inter_step, offset, offset_2, temp_lb, temp_up, ...
+    settings, model_folders, sa, fmincon, psearch)
+% This function runs an optimization method (either simulated annealing,
+% fmincon, or pattern search) and returns the optimized variables (x),
+% function values (fval), simulation data (simd), parameter values (Pval),
+% and previous function values (prev_fval).
 
+% Determine which algorithm to run and its corresponding index
 if sa
-    % Run simulated annealing optimization
-    [x{1}{PL_iter_start+offset}, fval{1}(PL_iter_start+offset),...
-        simd{1}{PL_iter_start+offset}] =...
-        sim_a(PL_iter_start+offset, PL_iter_start,...
-        x{1}{PL_iter_start+offset_2}, temp_lb, temp_up, settings,...
-        model_folders);
+    alg = 1;
+    optimization_func = @sim_a;
     name = "simulated annealing";
-    Pval{1}(PL_iter_start+offset) = settings.PLval;
-    prev_fval = fval{1}(PL_iter_start+offset);
 elseif fmincon
-    % Run fmincon optimization
-    [x{2}{PL_iter_start+offset}, fval{2}(PL_iter_start+offset),...
-        simd{2}{PL_iter_start+offset}] =...
-        fmin_con(PL_iter_start+offset, PL_iter_start,...
-        x{2}{PL_iter_start+offset_2}, temp_lb, temp_up, settings,...
-        model_folders);
+    alg = 2;
+    optimization_func = @fmin_con;
     name = "fmincon";
-    Pval{2}(PL_iter_start+offset) = settings.PLval;
-    prev_fval = fval{2}(PL_iter_start+offset);
 elseif psearch
-    % Run psearch optimization
-    [x{3}{PL_iter_start+offset}, fval{3}(PL_iter_start+offset),...
-        simd{3}{PL_iter_start+offset}] =...
-        p_search(PL_iter_start+offset, PL_iter_start,...
-        x{3}{PL_iter_start+offset_2}, temp_lb, temp_up, settings,...
-        model_folders);
+    alg = 3;
+    optimization_func = @p_search;
     name = "pattern search";
-    Pval{3}(PL_iter_start+offset) = settings.PLval;
-    prev_fval = fval{3}(PL_iter_start+offset);
-
+else
+    error('No optimization method specified');
 end
 
-% Display optimization method, model index, iteration, parameter value, and
-% function value
+% Run the chosen optimization method
+    [x{alg}{PL_iter_start+offset}, fval{alg}(PL_iter_start+offset),...
+        simd{alg}{PL_iter_start+offset}] = ...
+    optimization_func(PL_iter_start+offset, PL_iter_start, ...
+    x{alg}{PL_iter_start+offset_2}, temp_lb, temp_up, settings, ...
+    model_folders);
+
+% Assign parameter value and previous function value
+Pval{alg}(PL_iter_start+offset) = settings.PLval;
+prev_fval = fval{alg}(PL_iter_start+offset);
+
+% Optional: Display optimization method, model index, iteration, parameter
+% value, and function value 
 
 % disp(name + " m: " + settings.PLind + "  n: " + PL_iter_current + "." + ...
-%     inter_step + "  PLval: " + settings.PLval + "  fval: " + prev_fval)
+% inter_step + "  PLval: " + settings.PLval + " fval: " + prev_fval);
 end
+
 
 function [x,fval,simd] =...
     sim_a(PL_iter_current,PL_iter_start,x,temp_lb,temp_up,settings,model_folders)
@@ -378,12 +347,9 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions(@simulannealbnd,'Display','off', ...
         'InitialTemperature',...
-        ones(1,settings.parnum-1)*1,'MaxTime',30,'ReannealInterval',40);
+        ones(1,settings.parnum-1)*1,'MaxTime',1,'ReannealInterval',40);
 else
     options = settings.plsao;
-
-    % number of parameters changed from defenition in settings
-    options.InitialTemperature = ones(1,settings.parnum-1)*1;
 end
 % Optimize the model
 [x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders),...
@@ -399,7 +365,7 @@ function [x,fval,simd] =...
 if PL_iter_current == PL_iter_start
     options = optimoptions('fmincon','Display','off',...
         'Algorithm','interior-point',...
-        'MaxIterations',20,'OptimalityTolerance',0,...
+        'MaxIterations',1,'OptimalityTolerance',0,...
         'StepTolerance',1e-6,'FiniteDifferenceType','central');
 else
     % Get the optimization options from settings
@@ -419,7 +385,7 @@ function [x,fval,simd] =...
 % Run fmincon optimization
 if PL_iter_current == PL_iter_start
     options = optimoptions(@patternsearch,'Display','off',...
-    'MaxTime',30,...
+    'MaxTime',1,...
     'UseCompletePoll',true,'UseCompleteSearch',true,...
     'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 else

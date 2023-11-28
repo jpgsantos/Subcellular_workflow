@@ -84,7 +84,7 @@ if any(contains(analysis_options([1:5, 8]), analysis_text))
     [settings,last_settings_file_text,last_settings_file_date] = ...
         apply_settings(settings, settings_folder, settings_file_text,...
         last_settings_file_date,last_settings_file_text, analysis_options,...
-        analysis_text, specific_model_folder, functions_cleared);
+        analysis_text, specific_model_folder, functions_cleared,model_folders);
 
     % Process user input for analysis options 6-7
 elseif any(contains(analysis_options(6:7), analysis_text))
@@ -144,7 +144,7 @@ end
 function [settings, last_settings_file_text, last_settings_file_date] = ...
     apply_settings(settings, settings_folder, settings_file_text, ...
     last_settings_file_date, last_settings_file_text, analysis_options, ...
-    analysis_text, specific_model_folder, functions_cleared)
+    analysis_text, specific_model_folder, functions_cleared,model_folders)
 % Function apply_settings updates the settings based on the chosen settings
 % file and checks if any changes have been made to the settings file or the
 % SBtab since the last analysis
@@ -152,7 +152,6 @@ function [settings, last_settings_file_text, last_settings_file_date] = ...
 persistent last_SBtab_date
 
 settings_file = strrep(settings_file_text, ".m", "");
-
 % Add the default settings to the struct
 stg_add_default = eval("default_settings()");
 

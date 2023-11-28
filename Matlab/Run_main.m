@@ -1,3 +1,4 @@
+% function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,settings)
 function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,settings)
 % Main function to perform various analyses on a selected model
 % using a given settings file.
@@ -45,9 +46,11 @@ date_stamp = string(year(datetime)) + "_" + ...
     + "_" + string(round(second(datetime)));
 
 % Get the folder where the MATLAB code and models are located
-Matlab_main_folder = fileparts(mfilename('fullpath')) + "/";
-Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
+% Matlab_main_folder = fileparts(mfilename('fullpath')) + "/";
+% Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
+Matlab_main_folder = "C:/Users/Santos/Documents/GitHub/Thesis_Code/Subcellular_workflow/Matlab/"
 
+addpath(genpath(Matlab_main_folder))
 if ~contains(strrep(path,"\","/"),...
         extractAfter(Matlab_main_folder,strlength(Matlab_main_folder)-1))
     % If the folder is not in the path, add it
@@ -61,6 +64,10 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
     "Local Sensitivity Analysis","Global Sensitivity Analysis",...
     "Profile Likelihood Analysis","Reproduce a previous analysis",...
     "Reproduce the plots of a previous analysis","Import model files"];
+
+% sb = [];
+% results = [];
+% plots = [];
 
 % Code for choosing the model and loading the settings files
 [settings,results,sb] = f_user_input(model_folders,analysis_options,user_choices);
