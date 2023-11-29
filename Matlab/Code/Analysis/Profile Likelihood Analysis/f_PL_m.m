@@ -31,28 +31,24 @@ function rst = f_PL_m(settings,model_folder)
 % calculation
 PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
 
+alg = {'sa','fm','ps'};
+
 % Prepare parfor loop indices
-indices_sa = settings.plsa * (1:length(settings.pltest)*2);
-% indices_sa
-indices_fm = settings.plfm * (length(settings.pltest)*2+1:length(settings.pltest)*4);
-% indices_fm
-indices_ps = settings.plps * (length(settings.pltest)*4+1:length(settings.pltest)*6);
-
-
-parfor_indices = [indices_sa(indices_sa ~= 0),indices_fm(indices_fm ~= 0),indices_ps(indices_ps ~= 0)];
-% parfor_indices
+parfor_indices = [];
+for i = 1:length(alg)
+parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
+end
 
 % Run the optimization for each parameter in parallel parfor_indices
-parfor par_indx = parfor_indices
-    % par_indx
-    [x{par_indx},fval{par_indx},simd{par_indx},Pval{par_indx}] = f_PL_s(par_indx,PL_iter_start,settings,model_folder);
-    % fval{par_indx}
+parfor parfor_indices = parfor_indices
+    [x{parfor_indices},fval{parfor_indices},...
+        simd{parfor_indices},Pval{parfor_indices}] = ...
+        f_PL_s(parfor_indices,PL_iter_start,settings,model_folder,alg);
 end
 
 % Assign the values of x and fval to the correct struct entries
-
 param_length = length(settings.pltest);
-rst = assign_struct_values(settings, x, fval, simd, Pval, param_length);
+rst = assign_struct_values(settings, x, fval, simd, Pval, param_length,alg);
 end
 
 function idx = get_PL_iter_start(x, settings)
@@ -61,45 +57,41 @@ range = linspace(settings.lb(x), settings.ub(x), settings.plres + 1);
 [~,idx] = min(abs(settings.bestpa(x) - range));
 end
 
-function rst = assign_struct_values(settings, x, fval, simd, Pval, param_length)
+function rst =...
+    assign_struct_values( settings, x, fval, simd, Pval, param_length, alg)
 % Assign the values of x, fval, and simd to the corresponding struct entries
 
 % Define method index mapping
-algIndex = struct('sa', 1, 'fm', 2, 'ps', 3);
 Out_name = ["xt", "fvalt", "simdt", "Pval"];
 Out_array = {x, fval, simd, Pval};
 
 % Loop over each parameter in the settings and each optimization method
 for par_indx = settings.pltest
-    for alg = fieldnames(algIndex)'
-        alg_name = alg{1};
-        alg_number = algIndex.(alg_name);
-        if settings.(['pl' alg_name])
-            % Calculate old indices based on the method
-            old_indices1 = par_indx + param_length * (alg_number*2-2);
-            old_indices2 = par_indx + param_length * (alg_number*2-1);
+    for i = 1:length(alg)
+        if settings.(['pl' alg{i}])
+            old_indices1 = par_indx + param_length * (i*2-2);
+            old_indices2 = par_indx + param_length * (i*2-1);
             for n = 1:length(Out_name)
-                rst.(alg_name).(Out_name(n)){par_indx} =...
-                    [flip(Out_array{n}{1,old_indices2}{alg_number}');...
-                    Out_array{n}{1,old_indices1}{alg_number}'];
+                rst.(alg{i}).(Out_name(n)){par_indx} =...
+                    [flip(Out_array{n}{1,old_indices2}{i}');...
+                    Out_array{n}{1,old_indices1}{i}'];
             end
         end
     end
 end
 end
 
-function [x,fval,simd,Pval] = f_PL_s(par_indx,PL_iter_start,settings,model_folders)
-
+function [x,fval,simd,Pval] =...
+    f_PL_s(parfor_indices, PL_iter_start, settings, model_folders, alg)
 % Run the optimization for the given parameter index
-par_indx_helper = par_indx;
 
 % Calculate the actual parameter index based on the input
-par_indx = mod(par_indx_helper-1, length(settings.pltest)) + 1;
+par_indx = mod(parfor_indices-1, length(settings.pltest)) + 1;
 PL_iter_start = PL_iter_start(par_indx);
 
 % Determine the direction of the parameter search and set the range for
 % PL_iter based on the current parameter index
-if mod(par_indx_helper - 1, length(settings.pltest)*2) < length(settings.pltest)
+if mod(parfor_indices - 1, length(settings.pltest)*2) < length(settings.pltest)
     % Calculate the step size for the search
     delta_par = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
     % Set the search range in the forward direction
@@ -126,16 +118,40 @@ temp_up = settings.ub;
 temp_up(par_indx) = [];
 
 % Initialize variables for the optimization
-for i = 1:3
-    if (i == 1 && settings.plsa) || (i == 2 && settings.plfm) || (i == 3 && settings.plps)
-        x{i} = [];
+    x = cell(1, 3);
+    fval = cell(1, 3);
+    simd = cell(1, 3);
+    Pval = cell(1, 3);
+for i = 1:length(alg)
+    if settings.(['pl' alg{i}])
+        % Set the starting point of PL to the best solution found so far
+        x{i}{PL_iter_start} = temp_array;
         fval{i} = [];
         simd{i} = [];
         Pval{i} = [];
-        % Set the starting point of PL to the best solution found so far
-        x{i}{PL_iter_start} = temp_array;
     end
 end
+
+% Run optimization iterations
+[x, fval, simd, Pval] =...
+    runOptimizationIterations(x, fval, simd, Pval, PL_iter, settings,...
+    model_folders, par_indx, delta_par, temp_lb, temp_up,...
+    parfor_indices, PL_iter_start);
+
+str_end_alg_names = {'end    sa', 'start  sa', 'end    fm',...
+    'start  fm', 'end    ps', 'start  ps'};
+for i = 1:length(str_end_alg_names)
+    if parfor_indices <= length(settings.pltest) * i
+        disp(['P' num2str(par_indx) ' ' str_end_alg_names{i} ' finished']);
+        break;
+    end
+end
+end
+
+function [x, fval, simd, Pval] =...
+    runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
+    settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
+    parfor_indices, PL_iter_start)
 
 % Initialize additional variables for optimization
 offset = 0;
@@ -145,11 +161,10 @@ ratio = 1.5;
 
 % Check if Simulated Annealing (SA) or Fmincon optimization methods should
 % be used
-sa = par_indx_helper <= length(settings.pltest)*2 && settings.plsa;
-fmincon = par_indx_helper > length(settings.pltest)*2 &&...
-    par_indx_helper <= length(settings.pltest)*4 && settings.plfm;
-psearch = par_indx_helper > length(settings.pltest)*4 && settings.plps;
-
+sa = parfor_indices <= length(settings.pltest)*2 && settings.plsa;
+fmincon = parfor_indices > length(settings.pltest)*2 &&...
+    parfor_indices <= length(settings.pltest)*4 && settings.plfm;
+psearch = parfor_indices > length(settings.pltest)*4 && settings.plps;
 
 % Iterate over the PL values
 for PL_iter_current = PL_iter
@@ -265,6 +280,7 @@ for PL_iter_current = PL_iter
 
                 offset_2 = offset;
                 offset = offset+1;
+
                 inter_step = 5;
 
             else
@@ -281,20 +297,9 @@ for PL_iter_current = PL_iter
     end
 end
 
-if par_indx_helper <= length(settings.pltest)
-    disp("P" + par_indx_helper + " end    sa finished")
-elseif par_indx_helper <= length(settings.pltest)*2
-    disp("P" + (par_indx_helper - length(settings.pltest)) + " start  sa finished")
-elseif par_indx_helper <= length(settings.pltest)*3
-    disp("P" + (par_indx_helper - length(settings.pltest)*2) + " end    fm finished")
-elseif par_indx_helper <= length(settings.pltest)*4
-    disp("P" + (par_indx_helper - length(settings.pltest)*3) + " start  fm finished")
-elseif par_indx_helper <= length(settings.pltest)*5
-    disp("P" + (par_indx_helper - length(settings.pltest)*4) + " end    ps finished")
-else
-    disp("P" + (par_indx_helper - length(settings.pltest)*5) + " start  ps finished")
 end
-end
+
+
 
 function [x, fval, simd, Pval, prev_fval] = ...
 run_optimization_method(x, fval, simd, Pval, PL_iter_start, ...
