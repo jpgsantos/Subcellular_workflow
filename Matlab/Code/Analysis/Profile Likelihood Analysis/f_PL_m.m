@@ -116,26 +116,30 @@ temp_lb(par_indx) = [];
 temp_up = settings.ub;
 temp_up(par_indx) = [];
 
+% Check if Simulated Annealing (SA) or Fmincon optimization methods should
+% be used
+if parfor_indices <= length(settings.pltest)*2 && settings.plsa
+    alg = {'sa',1};
+elseif parfor_indices > length(settings.pltest)*2 &&...
+    parfor_indices <= length(settings.pltest)*4 && settings.plfm
+    alg = {'fm',2};
+elseif parfor_indices > length(settings.pltest)*4 && settings.plps
+    alg = {'ps',3};
+end
 % Initialize variables for the optimization
-    x = cell(1, 3);
-    fval = cell(1, 3);
-    simd = cell(1, 3);
-    Pval = cell(1, 3);
-for i = 1:length(alg)
-    if settings.(['pl' alg{i}])
-        % Set the starting point of PL to the best solution found so far
-        x{i}{1} = temp_array;
-        fval{i} = [];
-        simd{i} = [];
-        Pval{i} = [];
-    end
+if settings.(['pl' alg{1}])
+    % Set the starting point of PL to the best solution found so far
+    x{alg{2}}{1} = temp_array;
+    fval{alg{2}} = [];
+    simd{alg{2}} = [];
+    Pval{alg{2}} = [];
 end
 
 % Run optimization iterations
 [x, fval, simd, Pval] =...
     runOptimizationIterations(x, fval, simd, Pval, PL_iter, settings,...
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    parfor_indices);
+    alg);
 
 str_end_alg_names = {'end    sa', 'start  sa', 'end    fm',...
     'start  fm', 'end    ps', 'start  ps'};
@@ -150,19 +154,12 @@ end
 function [x, fval, simd, Pval] =...
     runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
     settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    parfor_indices)
+    alg)
 
 % Initialize additional variables for optimization
 offset = 0;
 prev_fval = inf;
 ratio = 1.5;
-
-% Check if Simulated Annealing (SA) or Fmincon optimization methods should
-% be used
-sa = parfor_indices <= length(settings.pltest)*2 && settings.plsa;
-fmincon = parfor_indices > length(settings.pltest)*2 &&...
-    parfor_indices <= length(settings.pltest)*4 && settings.plfm;
-psearch = parfor_indices > length(settings.pltest)*4 && settings.plps;
 
 % Iterate over the PL values
 for PL_iter_current = PL_iter
@@ -189,7 +186,7 @@ for PL_iter_current = PL_iter
             [x, fval, simd, Pval, prev_fval, offset] =...
                 run_optimization_method(x, fval, simd, Pval,...
                 offset, temp_lb, temp_up,...
-                settings, model_folders, sa, fmincon,psearch);
+                settings, model_folders, alg,PL_iter_current,inter_step);
 
             % Set repeat flags depending on the current step
             if inter_step == 1
@@ -205,14 +202,7 @@ for PL_iter_current = PL_iter
         elseif inter_step == 2
 
             % Get the score for the current solution
-            if sa
-                x_score = x{1}{max(offset-1,1)};
-            elseif fmincon
-                x_score = x{2}{max(offset-1,1)};
-            elseif psearch
-                x_score = x{3}{max(offset-1,1)};
-            end
-
+            x_score = x{alg{2}}{max(offset-1,1)};
             [score,~,~] = f_sim_score(x_score,settings, model_folders);
 
             % If the current score is less than the previous score
@@ -225,7 +215,7 @@ for PL_iter_current = PL_iter
                 [x, fval, simd, Pval, prev_fval, offset] =...
                     run_optimization_method(x, fval, simd, Pval,...
                     offset, temp_lb, temp_up,...
-                    settings, model_folders, sa, fmincon,psearch);
+                    settings, model_folders, alg,PL_iter_current,inter_step);
 
                 repeat_2 = true;
                 inter_step = inter_step +2;
@@ -246,14 +236,7 @@ for PL_iter_current = PL_iter
         else
 
             % Get the score for the current solution
-            if sa
-                x_score = x{1}{max(offset-1,1)};
-            elseif fmincon
-                x_score = x{2}{max(offset-1,1)};
-            elseif psearch
-                x_score = x{3}{max(offset-1,1)};
-            end
-
+            x_score = x{alg{2}}{max(offset-1,1)};
             [score,~,~] = f_sim_score(x_score,settings, model_folders);
 
             % If the current score is less than the previous score
@@ -266,7 +249,7 @@ for PL_iter_current = PL_iter
                 [x, fval, simd, Pval, prev_fval, offset] =...
                     run_optimization_method(x, fval, simd, Pval,...
                     offset, temp_lb, temp_up,...
-                    settings, model_folders, sa, fmincon,psearch);
+                    settings, model_folders, alg,PL_iter_current,inter_step);
 
                 inter_step = 5;
 
@@ -287,47 +270,41 @@ end
 
 function [x, fval, simd, Pval, prev_fval, offset] = ...
 run_optimization_method(x, fval, simd, Pval, offset, temp_lb,...
-temp_up, settings, model_folders, sa, fmincon, psearch)
+temp_up, settings, model_folders, alg,PL_iter_current,inter_step)
 % This function runs an optimization method (either simulated annealing,
 % fmincon, or pattern search) and returns the optimized variables (x),
 % function values (fval), simulation data (simd), parameter values (Pval),
 % and previous function values (prev_fval).
 
-                offset = offset+1;
+offset = offset+1;
 
 % Determine which algorithm to run and its corresponding index
-if sa
-    alg = 1;
+if alg{2} == 1
     optimization_func = @sim_a;
-    name = "simulated annealing";
-elseif fmincon
-    alg = 2;
+elseif alg{2} == 2
     optimization_func = @fmin_con;
-    name = "fmincon";
-elseif psearch
-    alg = 3;
+elseif alg{2} == 3
     optimization_func = @p_search;
-    name = "pattern search";
 else
     error('No optimization method specified');
 end
 
 % Run the chosen optimization method
-    [x{alg}{offset}, fval{alg}(offset),...
-        simd{alg}{offset}] = ...
+    [x{alg{2}}{offset}, fval{alg{2}}(offset),...
+        simd{alg{2}}{offset}] = ...
     optimization_func(offset, ...
-    x{alg}{max(offset-1,1)}, temp_lb, temp_up, settings, ...
+    x{alg{2}}{max(offset-1,1)}, temp_lb, temp_up, settings, ...
     model_folders);
 
 % Assign parameter value and previous function value
-Pval{alg}(offset) = settings.PLval;
-prev_fval = fval{alg}(offset);
+Pval{alg{2}}(offset) = settings.PLval;
+prev_fval = fval{alg{2}}(offset);
 
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
-
-% disp(name + " m: " + settings.PLind + "  n: " + PL_iter_current + "." + ...
-% inter_step + "  PLval: " + settings.PLval + " fval: " + prev_fval);
+disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
+    PL_iter_current + "." + inter_step + "  PLval: " + settings.PLval +...
+    " fval: " + prev_fval);
 end
 
 
