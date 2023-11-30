@@ -46,9 +46,9 @@ date_stamp = string(year(datetime)) + "_" + ...
     + "_" + string(round(second(datetime)));
 
 % Get the folder where the MATLAB code and models are located
-% Matlab_main_folder = fileparts(mfilename('fullpath')) + "/";
-% Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
-Matlab_main_folder = "C:/Users/Santos/Documents/GitHub/Thesis_Code/Subcellular_workflow/Matlab/"
+Matlab_main_folder = fileparts(mfilename('fullpath')) + "/";
+Matlab_main_folder = strrep(Matlab_main_folder,"\","/");
+% Matlab_main_folder = "C:/Users/Santos/Documents/GitHub/Thesis_Code/Subcellular_workflow/Matlab/"
 
 addpath(genpath(Matlab_main_folder))
 if ~contains(strrep(path,"\","/"),...
