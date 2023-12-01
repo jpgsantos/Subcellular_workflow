@@ -40,10 +40,10 @@ parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.plt
 end
 
 % Run the optimization for each parameter in parallel parfor_indices
-for parfor_indices = parfor_indices
+parfor parfor_indices = parfor_indices
     [x{parfor_indices},fval{parfor_indices},...
         simd{parfor_indices},Pval{parfor_indices}] = ...
-        f_PL_s(parfor_indices,PL_iter_start,settings,model_folder,alg);
+        f_PL_s(parfor_indices,PL_iter_start,settings,model_folder);
 end
 
 % Assign the values of x and fval to the correct struct entries
@@ -72,9 +72,9 @@ for par_indx = settings.pltest
             old_indices1 = par_indx + param_length * (i*2-2);
             old_indices2 = par_indx + param_length * (i*2-1);
             for n = 1:length(Out_name)
-                rst.(alg{i}).(Out_name(n)){par_indx} =...
-                    [flip(Out_array{n}{1,old_indices2}{i}');...
-                    Out_array{n}{1,old_indices1}{i}'];
+                    rst.(alg{i}).(Out_name(n)){par_indx} =...
+                        [flip(Out_array{n}{1,old_indices2}{i}');...
+                        Out_array{n}{1,old_indices1}{i}'];
             end
         end
     end
@@ -82,7 +82,7 @@ end
 end
 
 function [x,fval,simd,Pval] =...
-    f_PL_s(parfor_indices, PL_iter_start, settings, model_folders, alg)
+    f_PL_s(parfor_indices, PL_iter_start, settings, model_folders)
 % Run the optimization for the given parameter index
 
 % Calculate the actual parameter index based on the input
@@ -126,10 +126,15 @@ elseif parfor_indices > length(settings.pltest)*2 &&...
 elseif parfor_indices > length(settings.pltest)*4 && settings.plps
     alg = {'ps',3};
 end
+
 % Initialize variables for the optimization
 if settings.(['pl' alg{1}])
     % Set the starting point of PL to the best solution found so far
-    x{alg{2}}{1} = temp_array;
+    if ~isempty(PL_iter(:))
+        x{alg{2}}{1} = temp_array;
+    else
+        x{alg{2}} = [];
+    end
     fval{alg{2}} = [];
     simd{alg{2}} = [];
     Pval{alg{2}} = [];
@@ -259,11 +264,7 @@ elseif alg{2} == 3
 else
     error('No optimization method specified');
 end
-% offset
-% max(offset-1,1)
-% x{alg{2}}{max(offset-1,1)}
 
-x{alg{2}}{max(offset-1,1)}
 % Run the chosen optimization method
     [x{alg{2}}{offset}, fval{alg{2}}(offset),...
         simd{alg{2}}{offset}] = ...
@@ -271,15 +272,9 @@ x{alg{2}}{max(offset-1,1)}
     x{alg{2}}{max(offset-1,1)}, temp_lb, temp_up, settings, ...
     model_folders);
 
-x{alg{2}}{offset}
-% x{alg{2}}{offset}
-% fval{alg{2}}(offset)
-
 % Assign parameter value and previous function value
 Pval{alg{2}}(offset) = settings.PLval;
 prev_fval = fval{alg{2}}(offset);
-
-Pval{alg{2}}(offset)
 
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
