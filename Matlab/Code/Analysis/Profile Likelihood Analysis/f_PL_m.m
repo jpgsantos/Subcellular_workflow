@@ -40,7 +40,7 @@ parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.plt
 end
 
 % Run the optimization for each parameter in parallel parfor_indices
-parfor parfor_indices = parfor_indices
+for parfor_indices = parfor_indices
     [x{parfor_indices},fval{parfor_indices},...
         simd{parfor_indices},Pval{parfor_indices}] = ...
         f_PL_s(parfor_indices,PL_iter_start,settings,model_folder,alg);
@@ -161,118 +161,80 @@ offset = 0;
 prev_fval = inf;
 ratio = 1.5;
 
-delta_par_2 =...
-        (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
-
 % Iterate over the PL values
 for PL_iter_current = PL_iter
 
     % Set the value of the parameter that is being worked on
     settings.PLval =...
-        settings.lb(par_indx) + delta_par_2 * (PL_iter_current - 1);
+        settings.lb(par_indx) + abs(delta_par) * (PL_iter_current - 1);
 
     current_pos = 4;
-    pass_pos1 = false;
-    pass_pos2 = false;
-    pass_pos3 = false;
+    pass_pos(1:4)=false;
 
     % Run optimization methods for different steps
     while current_pos <= 4
+        optimize = false;
+        step = 0;
+        if (current_pos == 2 && ~pass_pos(1)) || (current_pos == 4 && ~pass_pos(3))
 
-        % Run optimization methods for step 1 and step 3
+            % Get the score for the current solution
+            x_score = x{alg{2}}{max(offset-1,1)};
+            [score,~,~] = f_sim_score(x_score,settings, model_folders);
+        end
+        
+        % Run optimization methods for position 1 and position 3
         if current_pos == 1 || current_pos == 3
+            optimize = true;
 
-            % Call the optimization method with the current settings and
-            % step
+            % Set pass_pos depending on the current step
+            pass_pos(current_pos) = true;
+            step = 1;
+
+            % Run optimization methods for position 2
+        elseif current_pos == 2
+            % If the current score is less than the previous score
+            % multiplied by the ratio, run the optimization method again
+            if score < ratio * prev_fval || pass_pos(1)
+                optimize = true;
+                step = 2;
+
+                % Set pass_pos depending on the current step
+                pass_pos(current_pos) = true;
+            else
+                step = -1;
+            end
+
+            % Run optimization methods for position 4
+        else
+            % If the current score is less than the previous score
+            % multiplied by the ratio or repeat_3 flag is set, run the
+            % optimization method again
+            if score < ratio * prev_fval || pass_pos(3)
+                optimize = true;
+                pass_pos(current_pos) = true;
+            elseif pass_pos(2)
+                step = -1;
+            else
+                step = -2;
+            end
+        end
+
+        if optimize
+            % Call the optimization method with the current settings
+            % and step
             [x, fval, simd, Pval, prev_fval, offset] =...
                 run_optimization_method(x, fval, simd, Pval,...
                 offset, temp_lb, temp_up,...
                 settings, model_folders, alg,PL_iter_current,current_pos);
-
-            % Set repeat flags depending on the current step
-            if current_pos == 1
-                pass_pos1 = true;
-            else
-                pass_pos3 = true;
-            end
-
-            step = 1;
-%             inter_step = inter_step +give_name;
-%             settings.PLval = settings.PLval + delta_par * give_name/4;
-
-            % Run optimization methods for step 2
-        elseif current_pos == 2
-
-            % Get the score for the current solution
-            x_score = x{alg{2}}{max(offset-1,1)};
-            [score,~,~] = f_sim_score(x_score,settings, model_folders);
-
-            % If the current score is less than the previous score
-            % multiplied by the ratio, run the optimization method again
-            if score < ratio * prev_fval && ~pass_pos2 ||...
-                    pass_pos1 && ~pass_pos2
-
-                % Call the optimization method with the current settings
-                % and step
-                [x, fval, simd, Pval, prev_fval, offset] =...
-                    run_optimization_method(x, fval, simd, Pval,...
-                    offset, temp_lb, temp_up,...
-                    settings, model_folders, alg,PL_iter_current,current_pos);
-
-                pass_pos2 = true;
-                step = 2;
-
-            else
-                % Update PLval and inter_step based on the repeat flags
-                if pass_pos1 || pass_pos2
-                    step = 1;
-                else
-                    step = -1;
-                end
-            end
-
-%             inter_step = inter_step +give_name;
-%             settings.PLval = settings.PLval + delta_par * give_name/4;
-
-            % Run optimization methods for step 4
-        else
-
-            % Get the score for the current solution
-            x_score = x{alg{2}}{max(offset-1,1)};
-            [score,~,~] = f_sim_score(x_score,settings, model_folders);
-
-            % If the current score is less than the previous score
-            % multiplied by the ratio or repeat_3 flag is set, run the
-            % optimization method again
-            if score < ratio * prev_fval || pass_pos3
-
-                % Call the optimization method with the current settings
-                % and step
-                [x, fval, simd, Pval, prev_fval, offset] =...
-                    run_optimization_method(x, fval, simd, Pval,...
-                    offset, temp_lb, temp_up,...
-                    settings, model_folders, alg,PL_iter_current,current_pos);
-
-%                 inter_step = 5;
-                step = 5;
-            else
-                % Update PLval and inter_step based on the repeat flags
-                if pass_pos1
-                    step = -1;
-                else
-                    step = -2;
-                end
-%                 inter_step = inter_step + give_name;
-%                 settings.PLval = settings.PLval + delta_par * give_name/4;
-
-            end
         end
 
         current_pos = current_pos + step;
-        if current_pos <= 4
-        settings.PLval = settings.PLval + delta_par * step/4;
+        if ~pass_pos(4)
+            % Update PLval and inter_step based on the step
+            settings.PLval = settings.PLval + delta_par * step/4;
+        else
+            break
         end
-
     end
 end
 end
@@ -297,7 +259,11 @@ elseif alg{2} == 3
 else
     error('No optimization method specified');
 end
+% offset
+% max(offset-1,1)
+% x{alg{2}}{max(offset-1,1)}
 
+x{alg{2}}{max(offset-1,1)}
 % Run the chosen optimization method
     [x{alg{2}}{offset}, fval{alg{2}}(offset),...
         simd{alg{2}}{offset}] = ...
@@ -305,15 +271,21 @@ end
     x{alg{2}}{max(offset-1,1)}, temp_lb, temp_up, settings, ...
     model_folders);
 
+x{alg{2}}{offset}
+% x{alg{2}}{offset}
+% fval{alg{2}}(offset)
+
 % Assign parameter value and previous function value
 Pval{alg{2}}(offset) = settings.PLval;
 prev_fval = fval{alg{2}}(offset);
 
+Pval{alg{2}}(offset)
+
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
-disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
-    PL_iter_current + "." + inter_step + "  PLval: " + settings.PLval +...
-    " fval: " + prev_fval);
+% disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
+%     PL_iter_current + "." + inter_step + "  PLval: " + settings.PLval +...
+%     " fval: " + prev_fval);
 end
 
 
