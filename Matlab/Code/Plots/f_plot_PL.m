@@ -219,26 +219,39 @@ for m = settings.pltest
         %         'LineWidth',1.5,'color',[0, 0, 0, 1])
         %     minfval = min(common_fval);
         % else
-        if isfield(results.PLA,'sa')
+        % if isfield(results.PLA,'sa')
 
-            plot([results.PLA.sa.Pval{m}],...
-                [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
+            i = find([results.PLA.sa.fvalt{m}]);
+            plot(results.PLA.sa.Pval{m}(i),...
+                nonzeros([results.PLA.sa.fvalt{m}]),'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
 
             minfval = min(results.PLA.sa.fvalt{m});
             % Plot the PL results from fmincon if they exist
-        elseif isfield(results.PLA,'fm')
-            plot([results.PLA.fm.Pval{m}],...
-                [results.PLA.fm.fvalt{m}],'DisplayName','Total score fm',...
+        % elseif isfield(results.PLA,'fm')
+
+            i = find([results.PLA.fm.fvalt{m}]);
+            plot(results.PLA.fm.Pval{m}(i),...
+                nonzeros([results.PLA.fm.fvalt{m}]),'DisplayName','Total score fm',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
 
             minfval = min(results.PLA.fm.fvalt{m});
-            elseif isfield(results.PLA,'ps')
+            % elseif isfield(results.PLA,'ps')
         
-            plot([results.PLA.ps.Pval{m}],...
-                [results.PLA.ps.fvalt{m}],'DisplayName','Total score ps',...
+            i = find([results.PLA.ps.fvalt{m}]);
+            plot(results.PLA.ps.Pval{m}(i),...
+                nonzeros([results.PLA.ps.fvalt{m}]),'DisplayName','Total score ps',...
                 'LineWidth',1.5,'color',[0, 1, 0, 0.5])
-end
+
+            minfval = min(results.PLA.min.fvalt{m});
+
+
+            i = find([results.PLA.min.fvalt{m}]);
+            plot(results.PLA.min.Pval{m}(i),...
+                nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score ps',...
+                'LineWidth',1.5,'color',[0, 0, 0, 0.5])
+
+% end
 
     end
 

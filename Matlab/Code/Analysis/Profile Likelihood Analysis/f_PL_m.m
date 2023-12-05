@@ -36,7 +36,9 @@ alg = {'sa','fm','ps'};
 % Prepare parfor loop indices
 parfor_indices = [];
 for i = 1:length(alg)
-parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
+    if settings.(['pl' alg{i}])
+        parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
+    end
 end
 
 % Run the optimization for each parameter in parallel parfor_indices
@@ -67,15 +69,43 @@ Out_array = {x, fval, simd, Pval};
 
 % Loop over each parameter in the settings and each optimization method
 for par_indx = settings.pltest
+    % par_indx
     for i = 1:length(alg)
         if settings.(['pl' alg{i}])
+
             old_indices1 = par_indx + param_length * (i*2-2);
             old_indices2 = par_indx + param_length * (i*2-1);
+
             for n = 1:length(Out_name)
-                    rst.(alg{i}).(Out_name(n)){par_indx} =...
-                        [flip(Out_array{n}{1,old_indices2}{i}');...
-                        Out_array{n}{1,old_indices1}{i}'];
+                rst.(alg{i}).(Out_name(n)){par_indx}(:) = Out_array{n}{1,old_indices1}{i}';
+                rst.(alg{i}).(Out_name(n)){par_indx}(1:length(Out_array{n}{1,old_indices2}{i}')) = Out_array{n}{1,old_indices2}{i}';
             end
+
+        end
+    end
+
+    for n = 1:4:length(rst.(alg{i}).("fvalt"){par_indx})
+
+        % Assuming alg is a cell array of algorithm names and par_indx and n are defined
+        alg_count = numel(alg); % Number of algorithms
+        fvalt_values = zeros(alg_count, 1); % Pre-allocate array for fvalt values
+
+        % Collect fvalt values
+        for i = 1:alg_count
+            if rst.(alg{i}).("fvalt"){par_indx}(n) ~= 0
+                fvalt_values(i) = rst.(alg{i}).("fvalt"){par_indx}(n);
+            end
+        end
+
+        % Find minimum non-zero value
+        min_fvalt = min(fvalt_values(fvalt_values ~= 0));
+
+        % If there is a valid minimum, assign it and corresponding Pval
+        if ~isempty(min_fvalt)
+            rst.("min").("fvalt"){par_indx}(n) = min_fvalt;
+            % Find index of algorithm with min value
+            min_index = find(fvalt_values == min_fvalt, 1, 'first');
+            rst.("min").("Pval"){par_indx}(n) = rst.(alg{min_index}).("Pval"){par_indx}(n);
         end
     end
 end
@@ -98,11 +128,13 @@ if mod(parfor_indices - 1, length(settings.pltest)*2) < length(settings.pltest)
     % Set the search range in the forward direction
     delta_par = delta;
     PL_iter(:) = PL_iter_start(par_indx):settings.plres+1;
+    section = "end";
 else
     % Calculate the step size for the search in the reverse direction
     delta_par = -delta;
     % Set the search range in the reverse direction
     PL_iter(:) = PL_iter_start(par_indx)-1:-1:1;
+    section = "start";
 end
 
 % Set the parameter index for profile likelihood calculations
@@ -130,11 +162,11 @@ end
 % Initialize variables for the optimization
 if settings.(['pl' alg{1}])
     % Set the starting point of PL to the best solution found so far
-    if ~isempty(PL_iter(:))
-        x{alg{2}}{1} = temp_array;
-    else
+    % if ~isempty(PL_iter(:))
+        % x{alg{2}}{1} = temp_array;
+    % else
         x{alg{2}} = [];
-    end
+    % end
     fval{alg{2}} = [];
     simd{alg{2}} = [];
     Pval{alg{2}} = [];
@@ -144,7 +176,7 @@ end
 [x, fval, simd, Pval] =...
     runOptimizationIterations(x, fval, simd, Pval, PL_iter, settings,...
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    alg);
+    alg, section,temp_array);
 
 str_end_alg_names = {'end    sa', 'start  sa', 'end    fm',...
     'start  fm', 'end    ps', 'start  ps'};
@@ -159,7 +191,7 @@ end
 function [x, fval, simd, Pval] =...
     runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
     settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    alg)
+    alg, section,temp_array)
 
 % Initialize additional variables for optimization
 offset = 0;
@@ -168,13 +200,23 @@ ratio = 1.5;
 
 % Iterate over the PL values
 for PL_iter_current = PL_iter
+    if PL_iter_current == PL_iter(1)
+        if section == "end"
+            pos = ((PL_iter(1)-1)*4+4)-4+1;
+        else
+            pos = ((PL_iter(1)-1)*4+(4-4))+1;
+        end
+        pos_minus_1 = pos;
+        x{alg{2}}{pos_minus_1} = temp_array;
+        
+    end
 
     % Set the value of the parameter that is being worked on
     settings.PLval =...
         settings.lb(par_indx) + abs(delta_par) * (PL_iter_current - 1);
 
     current_pos = 4;
-    pass_pos(1:4)=false;
+    pass_pos(1:4) = false;
 
     % Run optimization methods for different steps
     while current_pos <= 4
@@ -183,8 +225,8 @@ for PL_iter_current = PL_iter
         if (current_pos == 2 && ~pass_pos(1)) || (current_pos == 4 && ~pass_pos(3))
 
             % Get the score for the current solution
-            x_score = x{alg{2}}{max(offset-1,1)};
-            [score,~,~] = f_sim_score(x_score,settings, model_folders);
+            x_score = x{alg{2}}{pos_minus_1};
+            [score,~,~] = f_sim_score(x_score, settings, model_folders);
         end
         
         % Run optimization methods for position 1 and position 3
@@ -227,10 +269,18 @@ for PL_iter_current = PL_iter
         if optimize
             % Call the optimization method with the current settings
             % and step
+            pos_minus_1 = pos;
+
+            if section == "end"
+                pos = ((PL_iter_current-1)*4+current_pos)-4+1;
+            else
+                pos = ((PL_iter_current-1)*4+(4-current_pos))+1;
+            end
+
             [x, fval, simd, Pval, prev_fval, offset] =...
                 run_optimization_method(x, fval, simd, Pval,...
                 offset, temp_lb, temp_up,...
-                settings, model_folders, alg,PL_iter_current,current_pos);
+                settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus_1);
         end
 
         current_pos = current_pos + step;
@@ -246,11 +296,17 @@ end
 
 function [x, fval, simd, Pval, prev_fval, offset] = ...
 run_optimization_method(x, fval, simd, Pval, offset, temp_lb,...
-temp_up, settings, model_folders, alg,PL_iter_current,inter_step)
+temp_up, settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus_1)
 % This function runs an optimization method (either simulated annealing,
 % fmincon, or pattern search) and returns the optimized variables (x),
 % function values (fval), simulation data (simd), parameter values (Pval),
 % and previous function values (prev_fval).
+
+% if section == "end"
+% pos=((PL_iter_current-1)*4+current_pos)-4+1
+% else
+% pos=((PL_iter_current-1)*4+(4-current_pos))+1
+% end
 
 offset = offset+1;
 
@@ -266,20 +322,21 @@ else
 end
 
 % Run the chosen optimization method
-    [x{alg{2}}{offset}, fval{alg{2}}(offset),...
-        simd{alg{2}}{offset}] = ...
+    [x{alg{2}}{pos}, fval{alg{2}}(pos),...
+        simd{alg{2}}{pos}] = ...
     optimization_func(offset, ...
-    x{alg{2}}{max(offset-1,1)}, temp_lb, temp_up, settings, ...
+    x{alg{2}}{pos_minus_1}, temp_lb, temp_up, settings, ...
     model_folders);
 
 % Assign parameter value and previous function value
-Pval{alg{2}}(offset) = settings.PLval;
-prev_fval = fval{alg{2}}(offset);
+Pval{alg{2}}(pos) = settings.PLval;
+prev_fval = fval{alg{2}}(pos);
 
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
 % disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
-%     PL_iter_current + "." + inter_step + "  PLval: " + settings.PLval +...
+
+%     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
 %     " fval: " + prev_fval);
 end
 
