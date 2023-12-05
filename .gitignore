@@ -2,3 +2,7 @@
 *.pdf
 *.tiff
 *.png
+*.dmr
+*.summary
+*.prj
+.gitattributes

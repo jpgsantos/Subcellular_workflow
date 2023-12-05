@@ -1,0 +1,7 @@
+Matlab/Data/
+Matlab/Input_functions/
+Matlab/Results/Diagnostics/
+Matlab/Results/Sensitivity Analysis/
+Matlab/Results/Optimization/
+Matlab/Settings/**
+!Matlab/Settings/Example_model.m

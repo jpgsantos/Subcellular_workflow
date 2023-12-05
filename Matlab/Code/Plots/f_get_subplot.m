@@ -1,65 +1,87 @@
-function [fig_n,layout] = f_get_subplot(plot_tn,plot_n,fig_n,fig_name,layout)
+function [figure_number,layout,plots] =...
+    f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,layout,plots)
+% Determines the layout for subplots, creates a new figure when needed, and
+% closes previous instances of the figure.
+% 
+% Inputs:
+% - plot_total_n: Total number of plots to display
+% - plot_n: Current plot number
+% - figure_number: Current figure number
+% - fig_name: Figure name as a string
+% - layout: Layout object to be updated with new configuration
+% - plots: Cell array containing figure handles and names
+%
+% Outputs:
+% - figure_number: Updated figure number
+% - layout: Updated layout object
+% - plots: Updated cell array with figure handles and names
+%
+% Functions called:
+% - create_new_figure: Closes any existing figure with the same name,
+% then creates a new docked figure with the given name
+% - calculate_layout: Calculates the layout for the current figure based
+% on the figure number, total number of plots, maximum size, and subplot
+% dimensions
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
+% 
+% Variables:
+% Loaded:
+% None
+%
+% Initialized:
+% - size_total: Maximum number of plots per figure
+% - size_x: Array of subplot layout column counts
+% - size_y: Array of subplot layout row counts
+%
+% Persistent:
+% None
 
-% size_x = 4;
-% size_y = 6;
-size_t = 24;
-% ratio_1 = 3;
-% ratio_2 = 4;
+size_total = 12;
 
+size_x = [1,1,1,2,3,3,4,4,3,4,4,4];
+size_y = [1,2,3,2,2,2,2,2,3,3,3,3];
 
-size_x = [1,1,1,2,3,3,4,4,3,4,4,4,5,5,5,4,5,5,5,5,6,6,6,6];
-size_y = [1,2,3,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4];
-
-% If the amount of plots is bigger thatn the maximum amount of plots per
-% figure subdivide the plots to more than one figure
-% if plot_tn > 24
-%     % Generate a new figure for the first plot and each time the number of
-%     % plots is greater than figure number divided by max plot number per
-%     % figure
-%     if mod(plot_n-1,24) == 0
-%         
-%         fig_n = fig_n + 1;
-%         
-%         %Close previous instances of the figure and generates a new one
-%         figHandles = findobj('type', 'figure', 'name', fig_name + " " + fig_n);
-%         close(figHandles);
-%         figure('WindowStyle', 'docked','Name', fig_name + " " + fig_n,'NumberTitle', 'off');
-%         sgtitle(fig_name + " " + fig_n);
-%         layout = tiledlayout(ceil(sqrt(24/6)*2),ceil(sqrt(24/6)*3),'Padding','none','TileSpacing','compact');
-%     end
-%     
-%     % Get the correct subploting position for each plot
-% %     if plot_tn/24 < fig_n
-% %         subplot(ceil(sqrt((plot_tn-(fig_n-1)*24)/6)*2),ceil(sqrt((plot_tn-(fig_n-1)*24)/6)*3),plot_n-(fig_n-1)*24)
-% %     else
-% %         subplot(ceil(sqrt(24/6)*2),ceil(sqrt(24/6)*3),plot_n-(fig_n-1)*24)
-% %     end
-% else
-    
-    % Generate a new figure for the first plot
-    if mod(plot_n-1,size_t) == 0
-        
-        %Close previous instances of the figure and generates a new one
-        figHandles = findobj('type', 'figure', 'name', fig_name);
-        close(figHandles);
-        figure('WindowStyle', 'docked','Name', fig_name, 'NumberTitle', 'off');
-        sgtitle(fig_name);
-%         layout = tiledlayout(...
-%             ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_1),...
-%             ceil(sqrt((plot_tn-fig_n*size_t)/(ratio_1*ratio_2))*ratio_2),...
-%             'Padding','none','TileSpacing','compact');
-        layout = tiledlayout(...
-            size_x(plot_tn-(floor(plot_tn/size_t)*size_t)),...
-            size_y(plot_tn-(floor(plot_tn/size_t)*size_t)),...
-            'Padding','none','TileSpacing','compact');
-        
-%         title(layout,fig_name, 'FontSize', 16,'Fontweight','bold')
-        fig_n = fig_n + 1;
-         
+if mod(plot_n,size_total) == 0
+    figure_number = figure_number + 1;
+    % If the total number of plots exceeds the maximum per figure, create
+    % additional figures and update the figure name.
+    if plot_total_n > size_total
+        fig_name = fig_name + " " + figure_number;
     end
+
+    % Close previous instances of the figure and create a new one.
+    plots = f_renew_plot(fig_name);
+
+    % Calculate the layout for the current figure based on the total number
+    % of plots, maximum size, and the dimensions of the subplot.
+    layout =...
+        calculate_layout(figure_number, plot_total_n,...
+        size_total, size_x, size_y);
+end
+end
+
+function layout = ...
+    calculate_layout(figure_number, plot_total_n,...
+    size_total, size_x, size_y)
+% This function calculates the layout for the current figure based on the
+% figure number, total number of plots, maximum size, and subplot
+% dimensions.
+
+if figure_number <= floor(plot_total_n/size_total)
+    % If the current figure is not the last one, use the maximum size
+    % dimensions for the layout.
+    layout = tiledlayout(size_x(size_total), size_y(size_total),...
+        'Padding', 'none', 'TileSpacing', 'tight');
+else
+    % If the current figure is the last one, calculate the remaining number
+    % of plots and use the corresponding dimensions for the layout.
+    remaining_plots =...
+        plot_total_n - (floor(plot_total_n/size_total) * size_total);
     
-    % Get the correct subploting position for each plot
-%     subplot(ceil(sqrt(plot_tn/6)*2),ceil(sqrt(plot_tn/6)*3),plot_n)
-    
-% end
+    layout =...
+        tiledlayout(size_x(remaining_plots), size_y(remaining_plots),...
+        'Padding', 'none', 'TileSpacing', 'tight');
+end
 end

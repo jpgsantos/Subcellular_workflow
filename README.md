@@ -1,40 +1,30 @@
 [![View Subcellular_workflow on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/89293-subcellular_workflow) [![Documentation Status](https://readthedocs.org/projects/subcellular-workflow/badge/?version=latest)](https://subcellular-workflow.readthedocs.io/en/latest/?badge=latest)
+# Subcellular Workflow
 
-Subcellular workflow
-====================
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Implemented models](#implemented-models)
+- [Usage](#usage)
+- [Sections of the workflow in external repositories](#sections-of-the-workflow-in-external-repositories)
+- [Compatibility](#compatibility)
+- [Documentation](#documentation)
+- [References](#references)
 
-This workflow has been developed to tackle the challenge of building and analyzing biochemical pathway models, combining pre-existing tools and custom-made software.<sup>1</sup>
+## Introduction
 
-At the root of our implementation is the SBtab format<sup>2</sup>, a file format that can store biochemical models and associated data in an easily readable and expandable way.
+This workflow was created to address the challenge of constructing and analyzing biochemical pathway models by combining pre-existing tools with custom-made software.<sup>1</sup> The foundation of our implementation is the SBtab format<sup>2</sup>,, which is a file format that can store biochemical models and related data in a way that is easy to read and expand.
 
-We have also developed tools to convert the SBtab format into several formats that can be used in MATLAB&reg;, NEURON, STEPS and COPASI.
+We have also created tools to convert the SBtab format into several formats that can be used with MATLAB®, NEURON, STEPS, and COPASI. Using MATLAB®, we have developed custom scripts for parameter estimation, global sensitivity analysis, and diagnostic tools for model development. The global sensitivity analysis algorithm has been adapted from Halnes et al 2009<sup>3</sup>.
 
-Using MATLAB&reg; we have developed custom scripts for parameter estimation, global sensitivitiy analysis, and diagnostics tools that can be used for model development. The global sensitivity analysis algorithm is modified from Halnes et al 2009<sup>3</sup>.
+We showcase all these features using three example models. The primary model is a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016.<sup>4</sup>
 
-We demonstrate all these features using three example models, the main one being a modified version of the D1 MSN subcellular cascade model from Nair et al. 2016<sup>4</sup>.
-
-Code and files to run these models in different simulators:
-* For MATLAB&reg;  
-  [Matlab/](https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab);
-  [Model_Fujita_2010](https://github.com/jpgsantos/Model_Fujita_2010);
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
-* For Neuron  
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/NEURON);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/NEURON)  
-* For the Subcellular application (STEPS)
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS)  
-* Copasi  
-  [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016);
-  [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)  
-
-Features:
+## Features
 
 * Wrapper for model simulation in MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
 * Analysis of selected parameter sets, using MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
 * Parameter optimization, using MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
-* Global Sensitivity analysis, using MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
+* Global Sensitivity analysis algorithm modified from Halnes et al 2009.<sup>3</sup>, using MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
 * Conversion tools:
 
   * SBtab (.xlsx,.xls) to SBtab (.tsv), using MATLAB&reg; ([Matlab/Run_main.m](https://github.com/jpgsantos/Subcellular_workflow/blob/master/Matlab/Run_main.m))
@@ -44,21 +34,34 @@ Features:
   * SBtab (.tsv) to VFGEN (.vf), using R (https://github.com/a-kramer/SBtabVFGEN)
   * SBtab (.tsv) to Mod (.mod), using R (https://github.com/a-kramer/SBtabVFGEN)
   * SBtab (.tsv) to SBML (.xml), using R (https://github.com/a-kramer/SBtabVFGEN)
+
+## Implemented models
+We demonstrate all these features using three models:
+1. [Model_Fujita_2010](https://github.com/jpgsantos/Model_Fujita_2010)
+2. [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016) (modified version of the D1 MSN subcellular cascade model from Nair et al. 2016)<sup>4</sup>
+3. [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)
+
+## Usage
+Code and files to run these models in different simulators can be found in the following repositories:
+* For MATLAB®: [Matlab/](https://github.com/jpgsantos/Subcellular_workflow/tree/master/Matlab),[Model_Fujita_2010](https://github.com/jpgsantos/Model_Fujita_2010),[Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016),[Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)
+* For Neuron: [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/NEURON), [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/NEURON)
+* For the Subcellular application (STEPS): [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016/tree/master/BioNetGen%20and%20STEPS), [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018/tree/master/BioNetGen%20and%20STEPS)
+* For Copasi: [Model_Nair_2016](https://github.com/jpgsantos/Model_Nair_2016), [Model_Viswan_2018](https://github.com/jpgsantos/Model_Viswan_2018)
   
-# Sections of the workflow in external repositories
+## Sections of the workflow in external repositories
 
 Conversion tools
 
 * https://github.com/a-kramer/SBtabVFGEN
 * https://github.com/a-kramer/simbiology-sbml-fix
 
-# Implemented models
+## Implemented models
 
 * https://github.com/jpgsantos/Model_Nair_2016
 * https://github.com/jpgsantos/Model_Fujita_2010
 * https://github.com/jpgsantos/Model_Viswan_2018
 
-# Compatibility
+## Compatibility
 
 Subcellular workflow MATLAB&reg; code is compatible with MATLAB&reg; 2020a or above running on Microsoft Windows, macOS and Linux.
 
@@ -72,7 +75,7 @@ Matlab&reg; packages needed:
   * SimBiology&reg;
   * Parallel Computing Toolbox&trade;
 
-# Documentation
+## Documentation
 
 To check the online documentation please go to: https://subcellular-workflow.readthedocs.io/
 
@@ -87,7 +90,7 @@ After installing sphinx, install the following extra extensions to sphinx;
 
 Get your console in the Doc folder and run `sphinx-build . "documentation folder name"`, this should generate html files in the "documentation folder name" folder that you can use with your browser to open and browse the documentation.
 
-# References
+## References
 
 (1) Santos, J.P., Pajo, K., Trpevski, D., Stepaniuk, A., Eriksson, O., Nair, A.G., Keller, D., Kotaleski, J.H. and Kramer, A., 2020. A Modular Workflow for Model Building, Analysis, and Parameter Estimation in Systems Biology and Neuroscience. bioRxiv.
 

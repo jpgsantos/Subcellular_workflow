@@ -8,6 +8,9 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
     % Matlab/"Model Folder name"
     mmf.model.main = mmf.main + "Model/" + stg.folder_model + "/";
 
+    create_and_add_to_path(mmf.model.main)
+    create_and_add_to_path(mmf.model.main+ "Matlab/")
+        
         % Source_sbtab
         % Matlab/"Model Folder name"/"Source_sbtab_name"
         mmf.model.sbtab = mmf.model.main + stg.sbtab_excel_name;
@@ -15,6 +18,8 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
         % Data_folder
         % Matlab/"Model Folder name"/Data/
         mmf.model.data.main = mmf.model.main + "Matlab/" + "Data/";
+
+        create_and_add_to_path(mmf.model.data.main)
 
             % sbproj_model
             % Matlab/"Model Folder name"/Data/model_"model name".sbproj
@@ -51,6 +56,8 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
             mmf.model.data.model_exp.main =...
                 mmf.model.data.main + "Exp/";
 
+                create_and_add_to_path(mmf.model.data.model_exp.main)
+
                 % model_exp_default
                 % Matlab/"Model Folder name"/Data/Exp/Model_"model name"_
                 mmf.model.data.model_exp.default =...
@@ -73,6 +80,7 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
         % Matlab/"Model Folder name"/Input_functions/
         mmf.model.input_functions.main =...
             mmf.model.main + "Matlab/" + "Input_functions/";
+        create_and_add_to_path(mmf.model.input_functions.main)
 
             % model_input
             % Matlab/"Model Folder name"/Input_functions/"model name"_input
@@ -83,14 +91,20 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
         % Matlab/"Model Folder name"/tsv/
         mmf.model.tsv.main = mmf.model.main + "tsv/"; 
 
+        create_and_add_to_path(mmf.model.tsv.main)
+
             % tsv_name_folder
             % Matlab/"Model Folder name"/tsv/"model name"
             mmf.model.tsv.model_name = mmf.model.tsv.main + stg.name + "/";
+            create_and_add_to_path(mmf.model.tsv.model_name)
+
 
         % Results_Folder
         % Matlab/"Model Folder name"/Results/
         mmf.model.results.main =  mmf.model.main + "Matlab/" + "Results/";
 
+        create_and_add_to_path(mmf.model.results.main)
+       
             % Analysis_folder
             % Matlab/"Model Folder name"/Results/"Analysis name"/
             mmf.model.results.analysis.main =...
@@ -102,5 +116,15 @@ function [mmf] = default_folders(stg,mmf,date_stamp)
                 mmf.model.results.analysis.date.main =...
                     mmf.model.results.analysis.main +...
                     string(date_stamp) + "/";
+end
 
+function create_and_add_to_path(folder)
+
+if exist(folder, 'dir') ~= 7
+    mkdir(folder);
+end
+
+if ~contains(strrep(path,"\","/"), extractAfter(folder,strlength(folder)-1),'IgnoreCase',true)
+    addpath(folder);
+end
 end

@@ -1,94 +1,94 @@
-function f_plot_scores(rst,stg,sbtab)
-set(0,'defaultTextFontName', 'Helvetica')
-set(0,'defaultAxesFontName', 'Helvetica')
+function plots =f_plot_scores(rst,stg,sbtab)
+% Generates a figure with scores for different experimental outputs and
+% parameter sets
+%
+% Inputs:
+% - rst: A struct array containing results of the simulations
+% - stg: A struct containing settings for the simulations
+% - sbtab: A struct containing information about the datasets used
+% 
+% Outputs:
+% - plots: A cell array containing the generated plots
+%
+% Functions Called:
+% - f_set_font_settings: A function to set the font settings for the plot
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
+%
+% Variables
+% Loaded:
+% - None
+%
+% Initialized:
+% - layout: A tiled layout object for arranging plots within the figure
+% - diag_idx: Indices for the different parameter sets
+% - score_diag: Total scores for each parameter set
+% - title_texts: Different title texts based on the settings
+% - title_text: The chosen title text for the top plot
+% - label: Labels for the heatmap rows
+% - heatline: Data matrix for the heatmap
+% - h: A heatmap object
+%
+% Persistent:
+% - None
 
-% Generates a figure with Scores
+%Font settings
+f_set_font_settings()
 
 % Inform the user that fig1 is being ploted
 disp("Plotting Scores")
 
-%Closes previous instances of the figure and generates a new one
-figHandles = findobj('type', 'figure', 'name', 'Scores');
-close(figHandles);
-figure('WindowStyle', 'docked','Name','Scores','NumberTitle', 'off');
+% Closes previous instances of the figure and generates a new one
+plots = f_renew_plot('Scores');
 
-% Generate top plot of figure 1
-subplot(4,1,1)
+layout = tiledlayout(5,1,'Padding','tight','TileSpacing','tight');
+
+% Generate top plot of Scores figure
+nexttile(layout,[1 1]);
+
+diag_idx = 1:numel(stg.pat);
+score_diag = [rst(stg.pat).st];
 
 % Plot the total scores of each parameter array to test
-scatter(stg.pat,[rst(stg.pat).st],20,'filled')
-ylabel('Total Score ($s_t$)')
+scatter(diag_idx,score_diag,20,'filled')
+ylabel('Total Score (s_t)', 'FontSize', Axis_FontSize, 'FontWeight', Axis_Fontweight)
 set(gca,'xtick',[])
-set(gca,'FontSize',10,'Fontweight','bold')
+% set(gca,'FontSize',10,'Fontweight','bold')
 
 % Choose correct title according to settings
-if stg.useLog == 1
-    title("Sum of the Log base 10 of the Score of each Experimental Output")
-elseif stg.useLog == 2
-    title("Sum of the Log base 10 of the Score of each Experiment")
-elseif stg.useLog == 3
-    title("Log base 10 of sum of the Score of all Experiments")
-elseif stg.useLog == 4 || stg.useLog == 0
-    title("Sum of the Score of all Experiments")
-end
+title_texts = ["Sum of the Score of all Experiments (s_t)",...
+    "Sum of the Log base 10 of the Score of each Experimental Output", ...
+    "Sum of the Log base 10 of the Score of each Experiment", ...
+    "Log base 10 of sum of the Score of all Experiments", ...
+    "Sum of the Score of all Experiments (s_t)"];
+title_text = title_texts(stg.useLog+1);
+title(title_text,...
+    "FontSize",Minor_title_FontSize,"FontWeight",Minor_title_Fontweight)
 
 % Choose the bounds for the x axis so it aligns with the bottom plot
-xlim([min(stg.pat)-0.5 max(stg.pat)+0.5])
+xlim([min(diag_idx)-0.5 max(diag_idx)+0.5])
 
 % Generate bottom plot of figure 1
-subplot(4,1,[2,3,4])
+nexttile(layout,[4 1]);
 
 % Generate labels for left of heatmap (Experiment number Dataset number)
-label = [];
+label = arrayfun(@(n) strcat("E", num2str(n-1), " ", ...
+    strrep(string(sbtab.datasets(n).output_name), "_", "\_")), ...
+    stg.exprun, 'UniformOutput', false);
+label = horzcat(label{:});
 
-% Iterate over the number of experiments
-for n = stg.exprun
-    
-    % Iterate over the number of datasets in each experiment
-    for j = 1:size(sbtab.datasets(n).output,2)
-        
-        label{size(label,2)+1} = {strrep("E" + (n-1) + " " + ...
-            string(sbtab.datasets(n).output_name{j}),"_","\_")};
-    end
-end
-% Choose wether to use the score of each dataset or its log base 10
-% according to settings
-% if stg.useLog == 1 || stg.useLog == 4
-heatline = [];
+heatline = cell2mat(arrayfun(@(k) cell2mat(arrayfun(@(n) rst(k).sd(:, n)', ...
+    stg.exprun, 'UniformOutput', false))', stg.pat, 'UniformOutput', false));
 
-% Iterate over the number of parameter arrays to test
-for k = stg.pat
-    heatpoint{k} = [];
-    
-    % Iterate over the number of experiments
-    for n = stg.exprun
-
-        % Get the score of each dataset
-        heatpoint{k} = [heatpoint{k};rst(k).sd(:,n)];
-        
-    end
-    % Combine heatpoints in order to correctly display heatmap
-    heatline = [heatline,heatpoint{k}];
-end
 heatline( ~any(heatline,2), : ) = [];
 
 % Plot the heatmap
 h = heatmap(heatline,'Colormap',turbo,'YDisplayLabels',label,...
-    'GridVisible','off','FontSize',10);
+    'GridVisible','off','FontSize',7);
 h.CellLabelFormat = '%.2e';
 
-h.Title = "Score of each Experimental Output ($s_e$)";
-h.XLabel = 'Parameter arrays ($\theta$)';
-h.YLabel = 'Experimental Outputs';
-
-h.NodeChildren(3).XAxis.Label.Interpreter = 'latex';
-h.NodeChildren(3).YAxis.Label.Interpreter = 'latex';
-% h.NodeChildren(3).ZAxis.Label.Interpreter = 'latex';
-h.NodeChildren(3).Title.Interpreter = 'latex';
-h.NodeChildren(3).TickLabelInterpreter = 'latex';
-h.NodeChildren(2).TickLabelInterpreter = 'latex';
-% h.NodeChildren(1).TickLabelInterpreter = 'latex';
-% h.NodeChildren(1).Label.Interpreter = 'Latex';
-% h.NodeChildren(2).Label.Interpreter = 'Latex';
-
+h.Title = "\fontsize{10} \bf Score of each Experimental Output (s_d)";
+h.XLabel = '\fontsize{8} \bf Parameter sets (\theta)';
+h.YLabel = '\fontsize{8} \bf Experimental Outputs';
 end

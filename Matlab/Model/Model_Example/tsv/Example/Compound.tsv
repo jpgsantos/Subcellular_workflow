@@ -1,9 +1,9 @@
 !!SBtab	SBtabVersion='1.0' Document='Example' TableName='Compound' TableTitle='Compound' TableType = 'Compound'								
 !ID	!Name	!Unit	!InitialValue	!IsConstant	!Assignment	!Interpolation	!Type	!Location	!ReferenceDOI
-S0	iReceptor	nanomolarity	1	0	0	0	kinetic	Compartment	
-S1	aReceptor	nanomolarity	0	0	0	0	kinetic	Compartment	
+S0	iReceptor	nanomolarity	4	0	0	0	kinetic	Compartment	
+S1	aReceptor	nanomolarity	4	0	0	0	kinetic	Compartment	
 S2	iReceptor_Ligand	nanomolarity	0	0	0	0	kinetic	Compartment	
 S3	aReceptor_Ligand	nanomolarity	0	0	0	0	kinetic	Compartment	
 S4	Ligand	nanomolarity	0	1	0	1	kinetic	Compartment	
-S5	ieffector	nanomolarity	1	0	0	0	kinetic	Compartment	
+S5	ieffector	nanomolarity	2	0	0	0	kinetic	Compartment	
 S6	aeffector	nanomolarity	0	0	0	0	kinetic	Compartment	
