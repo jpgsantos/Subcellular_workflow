@@ -219,37 +219,40 @@ for m = settings.pltest
         %         'LineWidth',1.5,'color',[0, 0, 0, 1])
         %     minfval = min(common_fval);
         % else
-        % if isfield(results.PLA,'sa')
+         if isfield(results.PLA,'sa')
 
             i = find([results.PLA.sa.fvalt{m}]);
             plot(results.PLA.sa.Pval{m}(i),...
                 nonzeros([results.PLA.sa.fvalt{m}]),'DisplayName','Total score sa',...
                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
 
-            minfval = min(results.PLA.sa.fvalt{m});
+            % minfval = min(results.PLA.sa.fvalt{m});
+         end
             % Plot the PL results from fmincon if they exist
-        % elseif isfield(results.PLA,'fm')
+        if isfield(results.PLA,'fm')
 
             i = find([results.PLA.fm.fvalt{m}]);
             plot(results.PLA.fm.Pval{m}(i),...
                 nonzeros([results.PLA.fm.fvalt{m}]),'DisplayName','Total score fm',...
                 'LineWidth',1.5,'color',[1, 0, 0, 0.5])
 
-            minfval = min(results.PLA.fm.fvalt{m});
+            % minfval = min(results.PLA.fm.fvalt{m});
             % elseif isfield(results.PLA,'ps')
-        
+        end
+        if isfield(results.PLA,'ps')
             i = find([results.PLA.ps.fvalt{m}]);
             plot(results.PLA.ps.Pval{m}(i),...
                 nonzeros([results.PLA.ps.fvalt{m}]),'DisplayName','Total score ps',...
                 'LineWidth',1.5,'color',[0, 1, 0, 0.5])
 
-            minfval = min(results.PLA.min.fvalt{m});
-
+            % minfval = min(results.PLA.min.fvalt{m});
+        end
 
             i = find([results.PLA.min.fvalt{m}]);
             plot(results.PLA.min.Pval{m}(i),...
                 nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score ps',...
                 'LineWidth',1.5,'color',[0, 0, 0, 0.5])
+            minfval = min(results.PLA.min.fvalt{m});
 
 % end
 
@@ -276,7 +279,7 @@ for m = settings.pltest
 
     % Set the x-axis limits
     xlim([settings.lb(m) settings.ub(m)])
-    ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
+    % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
 
     % Set the title for each plot
     % titlestring = "P_{" + find(settings.partest==m)+"}";

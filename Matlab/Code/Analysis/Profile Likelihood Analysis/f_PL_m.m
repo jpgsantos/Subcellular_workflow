@@ -29,9 +29,13 @@ function rst = f_PL_m(settings,model_folder)
 
 % Find the index of the starting point for profile likelihood (PL)
 % calculation
-PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
-
-alg = {'sa','fm','ps'};
+for n = settings.pltest
+% Calculate the index closest to the best parameter value
+range = linspace(settings.lb(n), settings.ub(n), settings.plres + 1);
+[~,PL_iter_start(n)] = min(abs(settings.bestpa(n) - range));
+end
+% PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
+alg = {'sa','ps','fm'};
 
 % Prepare parfor loop indices
 parfor_indices = [];
@@ -40,18 +44,50 @@ for i = 1:length(alg)
         parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
     end
 end
-
 % Run the optimization for each parameter in parallel parfor_indices
 parfor parfor_indices = parfor_indices
     [x{parfor_indices},fval{parfor_indices},...
         simd{parfor_indices},Pval{parfor_indices}] = ...
         f_PL_s(parfor_indices,PL_iter_start,settings,model_folder);
 end
+% for parfor_indices = parfor_indices
+% 
+% x{settings.pltest(parfor_indices)} = x_temp{parfor_indices};
+% fval{settings.pltest(parfor_indices)} = fval_temp{parfor_indices};
+% simd{settings.pltest(parfor_indices)} = simd_temp{parfor_indices};
+% Pval{settings.pltest(parfor_indices)} = Pval_temp{parfor_indices};
+% end
 
 % Assign the values of x and fval to the correct struct entries
 param_length = length(settings.pltest);
 rst = assign_struct_values(settings, x, fval, simd, Pval, param_length,alg);
+
+
+    % local_minimuns(rst,settings,PL_iter_start)
+
+
 end
+
+% function local_minimuns(rst,settings,PL_iter_start)
+% 
+% for par_indx = settings.pltest
+% 
+% 
+% PL_iter_start(par_indx)
+% rst.("min").("fvalt"){par_indx}
+% current = rst.("min").("fvalt"){par_indx}(PL_iter_start(par_indx))
+% local_min = [];
+% for n = PL_iter_start(par_indx):settings.plres*4+1
+% rst.("min").("fvalt"){par_indx}(n)
+% 
+% if current > rst.("min").("fvalt"){par_indx}(n)
+%     local_min = [local_min,n]
+% end
+% current = rst.("min").("fvalt"){par_indx}(n)
+% 
+% end
+% end
+% end
 
 function idx = get_PL_iter_start(x, settings)
 % Calculate the index closest to the best parameter value
@@ -68,8 +104,8 @@ Out_name = ["xt", "fvalt", "simdt", "Pval"];
 Out_array = {x, fval, simd, Pval};
 
 % Loop over each parameter in the settings and each optimization method
-for par_indx = settings.pltest
-    % par_indx
+for par_indx = 1:length(settings.pltest)
+    fvalt_values = [];
     for i = 1:length(alg)
         if settings.(['pl' alg{i}])
 
@@ -77,35 +113,60 @@ for par_indx = settings.pltest
             old_indices2 = par_indx + param_length * (i*2-1);
 
             for n = 1:length(Out_name)
-                rst.(alg{i}).(Out_name(n)){par_indx}(:) = Out_array{n}{1,old_indices1}{i}';
-                rst.(alg{i}).(Out_name(n)){par_indx}(1:length(Out_array{n}{1,old_indices2}{i}')) = Out_array{n}{1,old_indices2}{i}';
+                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(:) = Out_array{n}{1,old_indices1}{i}';
+                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(1:length(Out_array{n}{1,old_indices2}{i}')) = Out_array{n}{1,old_indices2}{i}';
             end
-
         end
     end
 
-    for n = 1:4:length(rst.(alg{i}).("fvalt"){par_indx})
-
-        % Assuming alg is a cell array of algorithm names and par_indx and n are defined
-        alg_count = numel(alg); % Number of algorithms
-        fvalt_values = zeros(alg_count, 1); % Pre-allocate array for fvalt values
-
-        % Collect fvalt values
-        for i = 1:alg_count
-            if rst.(alg{i}).("fvalt"){par_indx}(n) ~= 0
-                fvalt_values(i) = rst.(alg{i}).("fvalt"){par_indx}(n);
+    for n = 1:settings.plres*4+1
+        for i = 1:length(alg)
+            if settings.(['pl' alg{i}])
+                if rst.(alg{i}).("fvalt"){settings.pltest(par_indx)}(n) ~= 0
+                    fvalt_values{n}(i) = rst.(alg{i}).("fvalt"){settings.pltest(par_indx)}(n);
+                end
             end
         end
 
-        % Find minimum non-zero value
-        min_fvalt = min(fvalt_values(fvalt_values ~= 0));
+        if length(fvalt_values) == n
+            % Find minimum non-zero value
+            min_fvalt = min(fvalt_values{n}(fvalt_values{n} ~= 0));
 
-        % If there is a valid minimum, assign it and corresponding Pval
-        if ~isempty(min_fvalt)
-            rst.("min").("fvalt"){par_indx}(n) = min_fvalt;
-            % Find index of algorithm with min value
-            min_index = find(fvalt_values == min_fvalt, 1, 'first');
-            rst.("min").("Pval"){par_indx}(n) = rst.(alg{min_index}).("Pval"){par_indx}(n);
+            % If there is a valid minimum, assign it and corresponding Pval
+            if ~isempty(min_fvalt)
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = min_fvalt;
+                % Find index of algorithm with min value
+                min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
+                rst.("min").("Pval"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
+            end
+        end
+    end
+
+    for n = 1:settings.plres*4+1
+
+        if mod(n,4) == 3
+            if rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n-2) &&...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n+2)
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = 0;
+            end
+        end
+
+        if mod(n,4) == 2
+            if rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n-1) &&...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n+3) ||...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n-1) &&...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n+1)
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = 0;
+            end
+        end
+
+        if mod(n,4) == 0
+            if rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n-3) &&...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n+1) ||...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n-1) &&...
+                    rst.("min").("fvalt"){settings.pltest(par_indx)}(n) > rst.("min").("fvalt"){settings.pltest(par_indx)}(n+1)
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = 0;
+            end
         end
     end
 end
@@ -116,7 +177,7 @@ function [x,fval,simd,Pval] =...
 % Run the optimization for the given parameter index
 
 % Calculate the actual parameter index based on the input
-par_indx = mod(parfor_indices-1, length(settings.pltest)) + 1;
+par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
 
 % Determine the direction of the parameter search and set the range for
 % PL_iter based on the current parameter index
@@ -153,10 +214,10 @@ temp_up(par_indx) = [];
 if parfor_indices <= length(settings.pltest)*2 && settings.plsa
     alg = {'sa',1};
 elseif parfor_indices > length(settings.pltest)*2 &&...
-    parfor_indices <= length(settings.pltest)*4 && settings.plfm
-    alg = {'fm',2};
-elseif parfor_indices > length(settings.pltest)*4 && settings.plps
-    alg = {'ps',3};
+    parfor_indices <= length(settings.pltest)*4 && settings.plps
+    alg = {'ps',2};
+elseif parfor_indices > length(settings.pltest)*4 && settings.plfm
+    alg = {'fm',3};
 end
 
 % Initialize variables for the optimization
@@ -178,8 +239,8 @@ end
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
     alg, section,temp_array);
 
-str_end_alg_names = {'end    sa', 'start  sa', 'end    fm',...
-    'start  fm', 'end    ps', 'start  ps'};
+str_end_alg_names = {'end    sa', 'start  sa', 'end    ps',...
+    'start  ps', 'end    fm', 'start  fm'};
 for i = 1:length(str_end_alg_names)
     if parfor_indices <= length(settings.pltest) * i
         disp(['P' num2str(par_indx) ' ' str_end_alg_names{i} ' finished']);
@@ -302,12 +363,6 @@ temp_up, settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus
 % function values (fval), simulation data (simd), parameter values (Pval),
 % and previous function values (prev_fval).
 
-% if section == "end"
-% pos=((PL_iter_current-1)*4+current_pos)-4+1
-% else
-% pos=((PL_iter_current-1)*4+(4-current_pos))+1
-% end
-
 offset = offset+1;
 
 % Determine which algorithm to run and its corresponding index
@@ -335,7 +390,6 @@ prev_fval = fval{alg{2}}(pos);
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
 % disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
-
 %     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
 %     " fval: " + prev_fval);
 end
