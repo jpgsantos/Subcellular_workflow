@@ -63,31 +63,83 @@ param_length = length(settings.pltest);
 rst = assign_struct_values(settings, x, fval, simd, Pval, param_length,alg);
 
 
-    % local_minimuns(rst,settings,PL_iter_start)
+     [local_min_up,local_min_down,local_min_number] =...
+         local_minimuns(rst,settings,PL_iter_start)
+parfor parfor_index_2 = 1:local_min_number
+
+optimize_again(parfor_index_2,local_min_up,local_min_down)
+
+end
+
+end
+
+function optimize_again(parfor_index_2,local_min_up,local_min_down)
+
+counter = 0;
+for i = 1:length(local_min_up)
+    for m = 1:length(local_min_up{i})
+        counter = counter +1;
+        if counter == parfor_index_2
+            par_indx = i;
+            pos_to_opt = local_min_up{i}(m);
+            is_up = true;
+        end
+    end
+end
+
+for i = 1:length(local_min_down)
+    for m = 1:length(local_min_down{i})
+        counter = counter +1;
+        if counter == parfor_index_2
+            par_indx = i;
+            pos_to_opt = local_min_down{i}(m);
+            is_up = false;
+        end
+    end
+end
+par_indx
+pos_to_opt
+is_up
+
+[x, fval, simd, Pval] =...
+    runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
+    settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
+    alg, section,temp_array)
 
 
 end
 
-% function local_minimuns(rst,settings,PL_iter_start)
-% 
-% for par_indx = settings.pltest
-% 
-% 
-% PL_iter_start(par_indx)
-% rst.("min").("fvalt"){par_indx}
-% current = rst.("min").("fvalt"){par_indx}(PL_iter_start(par_indx))
-% local_min = [];
-% for n = PL_iter_start(par_indx):settings.plres*4+1
-% rst.("min").("fvalt"){par_indx}(n)
-% 
-% if current > rst.("min").("fvalt"){par_indx}(n)
-%     local_min = [local_min,n]
-% end
-% current = rst.("min").("fvalt"){par_indx}(n)
-% 
-% end
-% end
-% end
+function [local_min_up,local_min_down,local_min_number] = local_minimuns(rst,settings,PL_iter_start)
+local_min_up = cell(max(settings.pltest),1);
+local_min_down = cell(max(settings.pltest),1);
+local_min_number = 0;
+for par_indx = settings.pltest
+
+    current = rst.("min").("fvalt"){par_indx}((PL_iter_start(par_indx)-1)*4+1);
+
+    for n = (PL_iter_start(par_indx)-1)*4+1:settings.plres*4+1
+        if rst.("min").("fvalt"){par_indx}(n) ~= 0
+            if current*0.95 > rst.("min").("fvalt"){par_indx}(n)
+                local_min_up{par_indx} = [local_min_up{par_indx},n];
+                local_min_number = local_min_number +1;
+            end
+            current = rst.("min").("fvalt"){par_indx}(n);
+        end
+    end
+
+    current = rst.("min").("fvalt"){par_indx}((PL_iter_start(par_indx)-1)*4+1);
+
+    for n = (PL_iter_start(par_indx)-1)*4+1:-1:1
+        if rst.("min").("fvalt"){par_indx}(n) ~= 0
+            if current*0.95 > rst.("min").("fvalt"){par_indx}(n)
+                local_min_down{par_indx} = [local_min_down{par_indx},n];
+                local_min_number = local_min_number +1;
+            end
+            current = rst.("min").("fvalt"){par_indx}(n);
+        end
+    end
+end
+end
 
 function idx = get_PL_iter_start(x, settings)
 % Calculate the index closest to the best parameter value
