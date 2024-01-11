@@ -67,17 +67,20 @@ rst = assign_struct_values(settings, x, fval, simd, Pval, param_length,alg);
          local_minimuns(rst,settings,PL_iter_start)
 parfor parfor_index_2 = 1:local_min_number
 
-optimize_again(parfor_index_2,local_min_up,local_min_down)
+[x{parfor_index_2},fval{parfor_index_2},...
+        simd{parfor_index_2},Pval{parfor_index_2}] = optimize_again(parfor_index_2,local_min_up,local_min_down)
 
 end
 
 end
 
-function optimize_again(parfor_index_2,local_min_up,local_min_down)
+function [x, fval, simd, Pval] = optimize_again(parfor_index_2,local_min_up,local_min_down)
 
 counter = 0;
 for i = 1:length(local_min_up)
+    i
     for m = 1:length(local_min_up{i})
+        m
         counter = counter +1;
         if counter == parfor_index_2
             par_indx = i;
@@ -88,7 +91,9 @@ for i = 1:length(local_min_up)
 end
 
 for i = 1:length(local_min_down)
+    i
     for m = 1:length(local_min_down{i})
+        m
         counter = counter +1;
         if counter == parfor_index_2
             par_indx = i;
@@ -100,11 +105,14 @@ end
 par_indx
 pos_to_opt
 is_up
-
-[x, fval, simd, Pval] =...
-    runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
-    settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    alg, section,temp_array)
+% x = [];
+% fval = [];
+% simd = [];
+% Pval = [];
+% 
+%  [x, fval, simd, Pval] = runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
+%      settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
+%      alg, section,temp_array);
 
 
 end
@@ -441,9 +449,9 @@ prev_fval = fval{alg{2}}(pos);
 
 % Optional: Display optimization method, model index, iteration, parameter
 % value, and function value 
-% disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
-%     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
-%     " fval: " + prev_fval);
+disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
+    PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
+    " fval: " + prev_fval);
 end
 
 
@@ -492,7 +500,7 @@ function [x,fval,simd] =...
 if PL_iter_current == 1
     options = optimoptions(@patternsearch,'Display','off',...
     'MaxTime',1,...
-    'UseCompletePoll',true,'UseCompleteSearch',true,...
+    'UseCompletePoll',false,'UseCompleteSearch',false,...
     'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 else
     % Get the optimization options from settings

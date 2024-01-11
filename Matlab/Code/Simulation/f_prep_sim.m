@@ -105,8 +105,8 @@ n=stg.exprun(m);
         try
             success = true;
                 
-            while stg.reltol >= 1.0E-6
-                while stg.abstol >= 1.0E-9
+            while stg.reltol >= 1.0E-3
+                while stg.abstol >= 1.0E-6
                     try
                         ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
                         success = true;
