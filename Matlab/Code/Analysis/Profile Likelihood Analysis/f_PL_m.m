@@ -14,14 +14,14 @@ function rst = f_PL_m(settings,model_folder)
 % simulated annealing and fmincon, including the optimized parameter
 % values, objective function values, and simulated data.
 %
-% Used Functions: 
+% Used Functions:
 % - get_PL_iter_start: Calculates the index closest to the best parameter
-% value. 
-% - f_PL_s: Runs the optimization for the given parameter index. 
-% - assign_struct_values: Assigns the values of x, fval, and simd to the 
-% corresponding struct entries. 
-% - sim_a: Runs simulated annealing optimization. 
-% - fmin_con: Runs fmincon optimization. 
+% value.
+% - f_PL_s: Runs the optimization for the given parameter index.
+% - assign_struct_values: Assigns the values of x, fval, and simd to the
+% corresponding struct entries.
+% - sim_a: Runs simulated annealing optimization.
+% - fmin_con: Runs fmincon optimization.
 % - f_sim_score: Calculates the objective function score for a given set of
 % parameters.
 %
@@ -33,9 +33,9 @@ function rst = f_PL_m(settings,model_folder)
 % Find the index of the starting point for profile likelihood (PL)
 % calculation
 for n = settings.pltest
-% Calculate the index closest to the best parameter value
-range = linspace(settings.lb(n), settings.ub(n), settings.plres + 1);
-[~,PL_iter_start(n)] = min(abs(settings.bestpa(n) - range));
+    % Calculate the index closest to the best parameter value
+    range = linspace(settings.lb(n), settings.ub(n), settings.plres + 1);
+    [~,PL_iter_start(n)] = min(abs(settings.bestpa(n) - range));
 end
 % PL_iter_start = cellfun(@(x) get_PL_iter_start(x, settings), num2cell(settings.pltest));
 alg = {'sa','ps','fm'};
@@ -44,7 +44,9 @@ alg = {'sa','ps','fm'};
 parfor_indices = [];
 for i = 1:length(alg)
     if settings.(['pl' alg{i}])
-        parfor_indices = [parfor_indices,settings.(['pl' alg{i}]) * (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
+        parfor_indices = ...
+            [parfor_indices,settings.(['pl' alg{i}]) * ...
+            (length(settings.pltest)*((i-1)*2)+1:length(settings.pltest)*(i*2))];
     end
 end
 
@@ -52,10 +54,10 @@ end
 parfor parfor_indices = parfor_indices
     [x{parfor_indices},fval{parfor_indices},...
         simd{parfor_indices},Pval{parfor_indices}] = ...
-        f_PL_s(parfor_indices,PL_iter_start,settings,model_folder);
+        run_PLA_on_parameter(parfor_indices,PL_iter_start,settings,model_folder);
 end
 % for parfor_indices = parfor_indices
-% 
+%
 % x{settings.pltest(parfor_indices)} = x_temp{parfor_indices};
 % fval{settings.pltest(parfor_indices)} = fval_temp{parfor_indices};
 % simd{settings.pltest(parfor_indices)} = simd_temp{parfor_indices};
@@ -64,270 +66,235 @@ end
 
 % Assign the values of x and fval to the correct struct entries
 param_length = length(settings.pltest);
-rst = assign_struct_values(settings, x, fval, simd, Pval, param_length,alg);
+rst = assign_optimization_results(settings, x, fval, simd, Pval, param_length,alg);
 
 
-     [local_min_up,local_min_down,local_min_number] =...
-         local_minimuns(rst,settings,PL_iter_start);
+[local_min_up,local_min_down,local_min_number] =...
+    identify_local_minima(rst,settings,PL_iter_start);
+
+local_min_up{1}
+local_min_down{1}
+local_min_up{2}
+local_min_down{2}
+local_min_number
 
 for parfor_index_2 = 1:local_min_number
-disp("parfor_index_2: " + parfor_index_2)
-[x_temp{parfor_index_2},fval_temp{parfor_index_2},...
-        simd_temp{parfor_index_2},Pval_temp{parfor_index_2}] = optimize_again(x, fval, simd, Pval,parfor_index_2, local_min_up, local_min_down, settings, model_folder, PL_iter_start, alg);
-    
 
+    disp("parfor_index_2: " + parfor_index_2)
+
+    [x_temp{parfor_index_2},fval_temp{parfor_index_2},...
+        simd_temp{parfor_index_2},Pval_temp{parfor_index_2}] = ...
+    optimize_towards_start(x, fval, simd, Pval, parfor_index_2, ...
+    local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
+    alg);
+
+    % x_temp{parfor_index_2}{1}
+    % fval_temp{parfor_index_2}{1}
+    % simd_temp{parfor_index_2}{1}
+    % Pval_temp{parfor_index_2}{1}
+    % 
+    % x_temp{parfor_index_2}{2}
+    % fval_temp{parfor_index_2}{2}
+    % simd_temp{parfor_index_2}{2}
+    % Pval_temp{parfor_index_2}{2}
 end
 
 end
-
-% function [x, fval, simd, Pval] = optimize_again(parfor_index_2,local_min_up,local_min_down)
-% 
-% counter = 0;
-% for i = 1:length(local_min_up)
-%     i
-%     for m = 1:length(local_min_up{i})
-%         m
-%         counter = counter +1;
-%         if counter == parfor_index_2
-%             par_indx = i;
-%             pos_to_opt = local_min_up{i}(m);
-%             is_up = true;
-%         end
-%     end
-% end
-% 
-% for i = 1:length(local_min_down)
-%     i
-%     for m = 1:length(local_min_down{i})
-%         m
-%         counter = counter +1;
-%         if counter == parfor_index_2
-%             par_indx = i;
-%             pos_to_opt = local_min_down{i}(m);
-%             is_up = false;
-%         end
-%     end
-% end
-% par_indx
-% pos_to_opt
-% is_up
-% % x = [];
-% % fval = [];
-% % simd = [];
-% % Pval = [];
-% % 
-% %  [x, fval, simd, Pval] = runOptimizationIterations(x, fval, simd, Pval, PL_iter,...
-% %      settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
-% %      alg, section,temp_array);
-% end
 
 function [x, fval, simd, Pval] = ...
-optimize_again(x, fval, simd, Pval,parfor_index_2, local_min_up, local_min_down, settings, ...
-    model_folder, PL_iter_start, alg)
-    x{1}{:}
-    x{2}{:}
-    % % Initialize output variables
-    % x_optimized = {};
-    % fval_optimized = {};
-    % simd_optimized = {};
-    % Pval_optimized = {};
-    
-% Initialize variables for the optimization
-% if settings.(['pl' alg{1}])
-    % Set the starting point of PL to the best solution found so far
-    % if ~isempty(PL_iter(:))
-        % x{alg{2}}{1} = temp_array;
-    % else
-        % x{1} = [];
-    % end
-    % fval{1} = [];
-    % simd{1} = [];
-    % Pval{1} = [];
-% end
+    optimize_towards_start(x, fval, simd, Pval,parfor_index_2, ...
+    local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
+    alg)
+% This function optimizes parameters in the direction of the starting point
+% to mitigate abrupt drops in the profile likelihood analysis (PLA) graphs.
+% It aims to optimize until it reaches the starting point or until the
+% function value doesn't significantly improve (less than 5% increase).
+%
+% Inputs:
+% - parfor_index_2: Index for parallel execution.
+% - local_min_up: Indices of local minima in the upward direction.
+% - local_min_down: Indices of local minima in the downward direction.
+% - settings: A structure containing various settings for the optimization
+% process.
+% - model_folder: Directory containing the model files.
+% - PL_iter_start: Indices of the starting points for profile likelihood 
+% calculation.
+% - alg: The optimization algorithm to use ('sa', 'ps', or 'fm').
+%
+% Outputs:
+% - x_optimized: Optimized parameter values.
+% - fval_optimized: Objective function values at the optimized parameters.
+% - simd_optimized: Simulated data corresponding to the optimized
+% parameters.
+% - Pval_optimized: Parameter values at which the function was optimized.
+
 alg = {'sa',1};
-    % Determine the parameter index, position to optimize, and direction
-    [param_index, pos_to_opt, is_up] = ...
-    identify_position_to_optimize(parfor_index_2, local_min_up, local_min_down);
-    
-    % Determine the direction towards the starting point
-    if is_up
-        direction = -1;   % Move upwards towards the starting point
-    else
-        direction = 1;  % Move downwards towards the starting point
-    end
+% Determine the parameter index, position to optimize, and direction
+[param_index, pos_to_opt, is_up] = ...
+    locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
+param_index
+pos_to_opt
+is_up
+% Determine the direction towards the starting point
+if is_up
+    direction = -1;   % Move downwards towards the starting point
+else
+    direction = 1;  % Move upwards towards the starting point
+end
 
-    % Set initial values for the optimization
+% Set initial values for the optimization
 
-    % par_indx
-    % param_index = settings.pltest(par_indx);
-    current_pos = pos_to_opt;
-    isFirstIteration = true;
-    prev_fval{1+~is_up} = Inf; % Initialize previous fval to Inf
-    offset = 0; % Initialize offset
-
- disp("current_pos: " + current_pos)
- x{1+~is_up}
- x{1+~is_up}{1}
- x{1+~is_up}{1}{1}
- x{1+~is_up}{1}{2}
- x{1+~is_up}{1}{current_pos}
-% Pval{1+~is_up}
-% Pval{1+~is_up}{current_pos}
-
+current_pos = pos_to_opt;
+isFirstIteration = true;
+prev_fval{1+~is_up} = Inf; % Initialize previous fval to Inf
+offset = 0; % Initialize offset
 
 par_indx = 2;
 % Set the parameter index for profile likelihood calculations
 settings.PLind = par_indx;
 
 % Remove the current parameter from the bestpa, lb, and ub arrays
-% temp_array = settings.bestpa;
-% temp_array(par_indx) = [];
 temp_lb = settings.lb;
 temp_lb(par_indx) = [];
 temp_up = settings.ub;
 temp_up(par_indx) = [];
 
-    % Optimization loop: Continue until the starting point is reached
-    % or the new value is less than 5% more than the previous value
-    while current_pos ~= PL_iter_start(param_index)
-        disp("bombo")
-        % Update current position
-        current_pos = current_pos + direction;
-        
-        % Calculate the parameter value at the current position
+% Optimization loop: Continue until the starting point is reached
+% or the new value is less than 5% more than the previous value
+while current_pos ~= PL_iter_start(param_index)
 
-settings.lb(param_index)
-settings.ub(param_index)
-(settings.ub(param_index) - settings.lb(param_index))
-disp("current_pos: " + current_pos)
-settings.plres*4
-(current_pos / settings.plres)
-        param_value = settings.lb(param_index) + (settings.ub(param_index) - settings.lb(param_index)) * (current_pos / (settings.plres*4));
-        param_value
-        % Prepare inputs for run_optimization_method
-        settings.PLval = param_value;
-        % x_current = []; % Initialize x_current, as it will be updated by the optimization method
-        
+    disp("current_pos: " + current_pos)
+    disp("direction: " + direction)
 
-        % Perform optimization using the selected method
-        % if any(strcmp(alg, {'sa', 'ps', 'fm'}))
-            % [x_current, fval_current, simd_current] = run_selected_optimization_method(alg, param_value, settings, model_folder);
+    % Pval
+    % Pval{:}
+    % 
+     Pval{1}{:}
+     Pval{2}{:}
+     Pval{3}{:}
+     Pval{4}{:}
+    % 
+    settings.pltest(param_index)
+    param_index
 
-            x{1+~is_up}
-            x{1+~is_up}{1}
-            "sortes"
-            [temp_x, temp_fval, temp_simd, temp_Pval, prev_fval{1+~is_up}, offset] =...
-                run_optimization_method(x{1+~is_up}, fval{1+~is_up}, simd{1+~is_up}, Pval{1+~is_up}, offset, temp_lb, temp_up, settings, model_folder, {alg, 1}, 1, 1, current_pos, current_pos-direction,1);
-            temp_x
-            x{1+~is_up} = temp_x;
-            fval{1+~is_up}= temp_fval;
-            simd{1+~is_up}= temp_simd;
-            Pval{1+~is_up}= temp_Pval;
-            x{1+~is_up}
-            x{1+~is_up}{1}
+    sortes_plas = settings.pltest(param_index)+~is_up*settings.pltest(param_index);
 
+    % Pval{sortes_plas}{:}(current_pos+direction)
+    % fval{sortes_plas}{:}(current_pos)
+    % x{sortes_plas}{:}{current_pos}
 
+    % Calculate the parameter value at the current position
+    settings.PLval = Pval{sortes_plas}{:}(current_pos+direction);
 
-            % x_temp
-% fval_temp
-% simd_temp
-% Pval_temp
-% prev_fval
-% offset
-%             disp(class(x_temp));
-% disp(class(fval_temp));
-% disp(class(simd_temp));
-% disp(class(Pval_temp));
+    % x{1+~is_up}
+    disp ("x: " + x{sortes_plas}{:}{current_pos})
+    disp ("fval: " + fval{sortes_plas}{:}(current_pos))
+    % disp ("pval: " + param_value)
+    disp ("Pval: " + Pval{sortes_plas}{:}(current_pos))
+    disp ("x+dir: " + x{sortes_plas}{:}{current_pos+direction})
+    disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
+    disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
+    disp ("settings.PLval: " + settings.PLval)
 
+    old_fval = fval{sortes_plas}{:}(current_pos+direction);
 
-            % Store the results
-            % x_optimized{end+1} = x_temp{1};
-            % fval_optimized{end+1} = fval_temp(1);
-            % simd_optimized{end+1} = simd_temp{1};
-            % Pval_optimized{end+1} = Pval_temp(1);
+    % Perform optimization using the selected method
+    % if any(strcmp(alg, {'sa', 'ps', 'fm'}))
+    [temp_x, temp_fval, temp_simd, temp_Pval, prev_fval{sortes_plas}, offset] =...
+        run_optimization_method(x{sortes_plas}, fval{sortes_plas}, simd{sortes_plas}, ...
+        Pval{sortes_plas}, offset, temp_lb, temp_up, settings, model_folder, ...
+        {alg, 1}, 1, 1, current_pos+direction, current_pos,1);
 
+    % temp_x
+    x{sortes_plas} = temp_x;
+    fval{sortes_plas} = temp_fval;
+    simd{sortes_plas} = temp_simd;
 
-% fval{1+~is_up}
-% fval{1+~is_up}{1}
-fval{1+~is_up}{1}(current_pos)
-prev_fval{1+~is_up}
+    disp ("x: " + x{sortes_plas}{:}{current_pos})
+    disp ("fval: " + fval{sortes_plas}{:}(current_pos))
+    disp ("Pval: " + Pval{sortes_plas}{:}(current_pos))
+    disp ("x+dir: " + x{sortes_plas}{:}{current_pos+direction})
+    disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
+    disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
+    disp ("settings.PLval: " + settings.PLval)
 
-             % Check if the new value is less than 5% more than the previous value
-            if ~isFirstIteration && fval{1+~is_up}{1}(current_pos) < prev_fval{1+~is_up} * 1.05
-                break; % Exit the loop if the condition is met
-            end
-            
-            % After the first iteration, set isFirstIteration to false
-            isFirstIteration = false;
-
-            % fval{1}
-            % Update the previous value for the next iteration
-            % prev_fval = fval(1);
-            
-        % else
-        %     error('Invalid optimization algorithm specified');
-        % end
+    % Check if the new value is less than 5% more than the previous value
+    if ~isFirstIteration && ...
+        fval{sortes_plas}{:}(current_pos+direction) > old_fval * 1.05
+        break; % Exit the loop if the condition is met
     end
+
+    % After the first iteration, set isFirstIteration to false
+    isFirstIteration = false;
+
+    % else
+    %     error('Invalid optimization algorithm specified');
+    % end
+    current_pos = current_pos + direction;
+end
 end
 
-function [par_indx, pos_to_opt, is_up] = identify_position_to_optimize(parfor_index_2, local_min_up, local_min_down)
-    % Initialize the variables
-    par_indx = NaN;
-    pos_to_opt = NaN;
-    is_up = false;
-    
-    % Calculate total number of local minima in local_min_up
-    total_up = sum(cellfun(@length, local_min_up));
-    
-    % If the index is within the range of upward local minima
-    if parfor_index_2 <= total_up
-        % Find which parameter and which position this index corresponds to
-        counter = 0;
-        for i = 1:length(local_min_up)
-            for m = 1:length(local_min_up{i})
-                counter = counter + 1;
-                if counter == parfor_index_2
-                    par_indx = i;
-                    pos_to_opt = local_min_up{i}(m);
-                    is_up = true;
-                    return;
-                end
-            end
-        end
-    else
-        % Adjust the index for downward local minima
-        parfor_index_2 = parfor_index_2 - total_up;
-        % Find which parameter and which position this index corresponds to
-        counter = 0;
-        for i = 1:length(local_min_down)
-            for m = 1:length(local_min_down{i})
-                counter = counter + 1;
-                if counter == parfor_index_2
-                    par_indx = i;
-                    pos_to_opt = local_min_down{i}(m);
-                    is_up = false;
-                    return;
-                end
+function [par_indx, pos_to_opt, is_up] = ...
+    locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down)
+% This function identifies the parameter index, the position to optimize,
+% and the direction (up or down) for the optimize_again function. It
+% determines these values based on the parallel index provided.
+%
+% Inputs:
+% - parfor_index_2: Index for parallel execution.
+% - local_min_up: Indices of local minima in the upward direction.
+% - local_min_down: Indices of local minima in the downward direction.
+%
+% Outputs:
+% - par_indx: Index of the parameter to be optimized.
+% - pos_to_opt: Position of the parameter to be optimized.
+% - is_up: Boolean indicating the direction of optimization (true for up,
+% false for down).
+
+% Initialize the variables
+par_indx = NaN;
+pos_to_opt = NaN;
+is_up = false;
+
+% Calculate total number of local minima in local_min_up
+total_up = sum(cellfun(@length, local_min_up));
+
+% If the index is within the range of upward local minima
+if parfor_index_2 <= total_up
+    % Find which parameter and which position this index corresponds to
+    counter = 0;
+    for i = 1:length(local_min_up)
+        for m = 1:length(local_min_up{i})
+            counter = counter + 1;
+            if counter == parfor_index_2
+                par_indx = i;
+                pos_to_opt = local_min_up{i}(m);
+                is_up = true;
+                return;
             end
         end
     end
-end
-
-function [x, fval, simd] = run_selected_optimization_method(alg, param_value, settings, model_folder)
-    % Select the optimization method based on the algorithm specified
-    switch alg
-        case 'sa'
-            [x, fval, simd] = sim_a(param_value, settings, model_folder);
-        case 'ps'
-            [x, fval, simd] = p_search(param_value, settings, model_folder);
-        case 'fm'
-            [x, fval, simd] = fmin_con(param_value, settings, model_folder);
-        otherwise
-            error('Invalid optimization algorithm specified');
+else
+    % Adjust the index for downward local minima
+    parfor_index_2 = parfor_index_2 - total_up;
+    % Find which parameter and which position this index corresponds to
+    counter = 0;
+    for i = 1:length(local_min_down)
+        for m = 1:length(local_min_down{i})
+            counter = counter + 1;
+            if counter == parfor_index_2
+                par_indx = i;
+                pos_to_opt = local_min_down{i}(m);
+                is_up = false;
+                return;
+            end
+        end
     end
 end
+end
 
-function [local_min_up,local_min_down,local_min_number] = local_minimuns(rst,settings,PL_iter_start)
+function [local_min_up,local_min_down,local_min_number] = ...
+identify_local_minima(rst,settings,PL_iter_start)
 % Identifies local minima in the optimization results for each parameter.
 % It scans the results and marks points as local minima if the value at a
 % point is lower than its neighbors by a certain threshold.
@@ -374,26 +341,8 @@ for par_indx = settings.pltest
 end
 end
 
-function idx = get_PL_iter_start(x, settings)
-% Computes the index nearest to the optimal parameter value for initiating
-% the profile likelihood (PL) calculation. It creates a linearly spaced
-% range between the lower and upper bounds for the parameter and finds the
-% closest point to the best parameter value.
-%
-% Inputs:
-% - x: The parameter index for which the start index is to be found.
-% - settings: A structure containing settings such as lower bound (lb),
-% upper bound (ub), and best parameter value (bestpa).
-%
-% Output:
-% - idx: The index of the starting point closest to the best parameter 
-% value.
-range = linspace(settings.lb(x), settings.ub(x), settings.plres + 1);
-[~,idx] = min(abs(settings.bestpa(x) - range));
-end
-
 function rst =...
-    assign_struct_values(settings, x, fval, simd, Pval, param_length, alg)
+    assign_optimization_results(settings, x, fval, simd, Pval, param_length, alg)
 % Assigns optimization results (x, fval, simd, Pval) to the appropriate
 % fields in the result structure `rst`. The function organizes results for
 % each parameter and optimization method and updates the `rst` structure.
@@ -421,8 +370,10 @@ for par_indx = 1:length(settings.pltest)
             old_indices2 = par_indx + param_length * (i*2-1);
 
             for n = 1:length(Out_name)
-                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(:) = Out_array{n}{1,old_indices1}{i}';
-                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(1:length(Out_array{n}{1,old_indices2}{i}')) = Out_array{n}{1,old_indices2}{i}';
+                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(:) = ...
+                Out_array{n}{1,old_indices1}{i}';
+                rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(1:length(Out_array{n}{1,old_indices2}{i}')) = ...
+                Out_array{n}{1,old_indices2}{i}';
             end
         end
     end
@@ -442,10 +393,12 @@ for par_indx = 1:length(settings.pltest)
 
             % If there is a valid minimum, assign it and corresponding Pval
             if ~isempty(min_fvalt)
-                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = min_fvalt;
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = ...
+                    min_fvalt;
                 % Find index of algorithm with min value
                 min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
-                rst.("min").("Pval"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
+                rst.("min").("Pval"){settings.pltest(par_indx)}(n) = ...
+                    rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
             end
         end
     end
@@ -481,12 +434,11 @@ end
 end
 
 function [x,fval,simd,Pval] =...
-    f_PL_s(parfor_indices, PL_iter_start, settings, model_folders)
-% Executes optimization for a given parameter index. It manages the
-% direction of parameter search, sets the range for PL_iter based on the
-% current parameter index, and performs optimization using the specified
-% method (simulated annealing, fmincon, or pattern search) for a single
-% parameter.
+    run_PLA_on_parameter(parfor_indices, PL_iter_start, settings, model_folders)
+% Executes optimization for a given parameter. It manages the direction of
+% parameter search, sets the range for PL_iter based on the current
+% parameter index, and performs optimization using the specified method
+% (simulated annealing, fmincon, or pattern search) for a single parameter.
 %
 % Inputs:
 % - parfor_indices: Indices for parallel execution.
@@ -541,7 +493,7 @@ temp_up(par_indx) = [];
 if parfor_indices <= length(settings.pltest)*2 && settings.plsa
     alg = {'sa',1};
 elseif parfor_indices > length(settings.pltest)*2 &&...
-    parfor_indices <= length(settings.pltest)*4 && settings.plps
+        parfor_indices <= length(settings.pltest)*4 && settings.plps
     alg = {'ps',2};
 elseif parfor_indices > length(settings.pltest)*4 && settings.plfm
     alg = {'fm',3};
@@ -551,9 +503,9 @@ end
 if settings.(['pl' alg{1}])
     % Set the starting point of PL to the best solution found so far
     % if ~isempty(PL_iter(:))
-        % x{alg{2}}{1} = temp_array;
+    % x{alg{2}}{1} = temp_array;
     % else
-        x{alg{2}} = [];
+    x{alg{2}} = [];
     % end
     fval{alg{2}} = [];
     simd{alg{2}} = [];
@@ -598,8 +550,8 @@ function [x, fval, simd, Pval] =...
 % - section: Part of the parameter space being optimized ('start' or 'end').
 % - temp_array: Array of parameter values excluding the current parameter.
 %
-% Outputs: 
-% - x, fval, simd, Pval: Updated optimization results after running this 
+% Outputs:
+% - x, fval, simd, Pval: Updated optimization results after running this
 % iteration.
 %
 % This function orchestrates the optimization process, adjusting the
@@ -621,7 +573,7 @@ for PL_iter_current = PL_iter
         end
         pos_minus_1 = pos;
         x{alg{2}}{pos_minus_1} = temp_array;
-        
+
     end
 
 
@@ -642,7 +594,7 @@ for PL_iter_current = PL_iter
             x_score = x{alg{2}}{pos_minus_1};
             [score,~,~] = f_sim_score(x_score, settings, model_folders);
         end
-        
+
         % Run optimization methods for position 1 and position 3
         if current_pos == 1 || current_pos == 3
             optimize = true;
@@ -710,8 +662,8 @@ end
 end
 
 function [x, fval, simd, Pval, prev_fval, offset] = ...
-run_optimization_method(x, fval, simd, Pval, offset, temp_lb,...
-temp_up, settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus_1,debug)
+    run_optimization_method(x, fval, simd, Pval, offset, temp_lb,...
+    temp_up, settings, model_folders, alg, PL_iter_current, current_pos, pos,pos_minus_1,debug)
 % Executes the chosen optimization method for the current parameter and position.
 % It runs either simulated annealing, fmincon, or pattern search based on the algorithm
 % specified and returns the optimized variables, function values, and simulation data.
@@ -744,15 +696,15 @@ else
     error('No optimization method specified');
 end
 
-if debug 
-% alg{2}
-% pos_minus_1
-% x{alg{2}}
-x{alg{2}}{pos_minus_1}
+if debug
+    % alg{2}
+    % pos_minus_1
+    % x{alg{2}}
+    % x{alg{2}}{pos_minus_1}
 end
 % Run the selected optimization function
-    [x{alg{2}}{pos}, fval{alg{2}}(pos),...
-        simd{alg{2}}{pos}] = ...
+[x{alg{2}}{pos}, fval{alg{2}}(pos),...
+    simd{alg{2}}{pos}] = ...
     optimization_func(offset, ...
     x{alg{2}}{pos_minus_1}, temp_lb, temp_up, settings, ...
     model_folders);
@@ -872,9 +824,9 @@ function [x,fval,simd] =...
 if PL_iter_current == 1
     % Define initial options for the first iteration
     options = optimoptions(@patternsearch,'Display','off',...
-    'MaxTime',1,...
-    'UseCompletePoll',false,'UseCompleteSearch',false,...
-    'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
+        'MaxTime',1,...
+        'UseCompletePoll',false,'UseCompleteSearch',false,...
+        'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 else
     % Use predefined options from settings
     options = settings.plpso;
@@ -882,8 +834,8 @@ end
 
 % Execute the optimization
 [x, fval] = ...
-            patternsearch(@(x)f_sim_score(x,settings,model_folders), x, ...
-            [], [], [], [], temp_lb,temp_up, [], options);
+    patternsearch(@(x)f_sim_score(x,settings,model_folders), x, ...
+    [], [], [], [], temp_lb,temp_up, [], options);
 
 % Compute and store the result of the optimization
 [~,rst,~] = f_sim_score(x,settings,model_folders);
