@@ -76,15 +76,15 @@ local_min_up
 start_over_position = 1;
 start_over_position_n = 1;
 for n = 1:length(local_min_up)
-local_min_up{n}
-start_over_position_n = start_over_position_n + length(local_min_up{n});
-start_over_position = [start_over_position,start_over_position_n];
+    local_min_up{n}
+    start_over_position_n = start_over_position_n + length(local_min_up{n});
+    start_over_position = [start_over_position,start_over_position_n];
 end
 local_min_down
 for n = 1:length(local_min_down)
-local_min_down{n}
-start_over_position_n = start_over_position_n + length(local_min_down{n});
-start_over_position = [start_over_position,start_over_position_n];
+    local_min_down{n}
+    start_over_position_n = start_over_position_n + length(local_min_down{n});
+    start_over_position = [start_over_position,start_over_position_n];
 end
 
 % local_min_up{1}
@@ -99,20 +99,86 @@ parfor parfor_index_2 = 1:local_min_number
 
     [x_temp{parfor_index_2},fval_temp{parfor_index_2},...
         simd_temp{parfor_index_2},Pval_temp{parfor_index_2}] = ...
-    optimize_towards_start(x, fval, simd, Pval, parfor_index_2, ...
-    local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
-    alg,start_over_position);
+        optimize_towards_start(x, fval, simd, Pval, parfor_index_2, ...
+        local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
+        alg,start_over_position);
 
     % x_temp{parfor_index_2}{1}
     % fval_temp{parfor_index_2}{1}
     % simd_temp{parfor_index_2}{1}
     % Pval_temp{parfor_index_2}{1}
-    % 
+    %
     % x_temp{parfor_index_2}{2}
     % fval_temp{parfor_index_2}{2}
     % simd_temp{parfor_index_2}{2}
     % Pval_temp{parfor_index_2}{2}
 end
+
+for parfor_index_2 = 1:local_min_number
+
+    [param_index, pos_to_opt, is_up] = ...
+        locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
+
+    sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
+
+    next_pos_to_opt = PL_iter_start(param_index)*4;
+
+    if ~ismember(parfor_index_2,start_over_position)
+        [~, next_pos_to_opt, ~] = ...
+            locate_minima_for_optimization(parfor_index_2-1, local_min_up, local_min_down);
+    end
+
+    pos_to_opt
+    next_pos_to_opt
+    
+    if is_up
+        for n = next_pos_to_opt+1:pos_to_opt
+            x{sortes_plas}{:}{n} = ...
+                x_temp{parfor_index_2}{sortes_plas}{:}{n};
+
+            simd{sortes_plas}{:}{n} = ...
+                simd_temp{parfor_index_2}{sortes_plas}{:}{n};
+        end
+
+        % param_index
+        % pos_to_opt
+        % next_pos_to_opt
+        % is_up
+
+        % fval
+        % fval{sortes_plas}
+        % fval{sortes_plas}{:}
+        % fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+        % fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+
+        fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt) = ...
+            fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt);
+
+        % Pval
+        % Pval{sortes_plas}
+        % Pval{sortes_plas}{:}
+        % Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+        % Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+
+        Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt) = ...
+            Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt);
+    else
+        for n = pos_to_opt:next_pos_to_opt-1
+            x{sortes_plas}{:}{n} = ...
+                x_temp{parfor_index_2}{sortes_plas}{:}{n};
+
+            simd{sortes_plas}{:}{n} = ...
+                simd_temp{parfor_index_2}{sortes_plas}{:}{n};
+        end
+
+        fval{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1) = ...
+            fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1);
+
+        Pval{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1) = ...
+            Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1);
+    end
+end
+rst.test = assign_optimization_results(settings, x, fval, simd, Pval, param_length,alg);
 
 end
 
@@ -132,7 +198,7 @@ function [x, fval, simd, Pval] = ...
 % - settings: A structure containing various settings for the optimization
 % process.
 % - model_folder: Directory containing the model files.
-% - PL_iter_start: Indices of the starting points for profile likelihood 
+% - PL_iter_start: Indices of the starting points for profile likelihood
 % calculation.
 % - alg: The optimization algorithm to use ('sa', 'ps', or 'fm').
 %
@@ -173,8 +239,8 @@ start_over_position
 parfor_index_2
 ~ismember(parfor_index_2,start_over_position)
 if ~ismember(parfor_index_2,start_over_position)
-[~, next_pos_to_opt, ~] = ...
-    locate_minima_for_optimization(parfor_index_2-1, local_min_up, local_min_down);
+    [~, next_pos_to_opt, ~] = ...
+        locate_minima_for_optimization(parfor_index_2-1, local_min_up, local_min_down);
 end
 
 disp("next_param_index: " + next_pos_to_opt)
@@ -182,7 +248,6 @@ disp("next_param_index: " + next_pos_to_opt)
 
 current_pos = pos_to_opt;
 isFirstIteration = true;
-prev_fval{1+~is_up} = Inf; % Initialize previous fval to Inf
 offset = 0; % Initialize offset
 
 par_indx = 2;
@@ -204,15 +269,15 @@ while current_pos ~= next_pos_to_opt
 
     % Pval
     % Pval{:}
-    % 
+    %
     % Pval{1}{:}
     % Pval{2}{:}
-    % 
+    %
 
     % param_index
     % find(settings.pltest==param_index)
     sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
-    
+
 
     delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
 
@@ -233,7 +298,7 @@ while current_pos ~= next_pos_to_opt
     % Calculate the parameter value at the current position
     settings.PLval = settings.lb(par_indx) + abs(delta_par)/4 * (current_pos + direction-1);
     % Pval{sortes_plas}{:}(current_pos+direction);
-                    
+
     % x{1+~is_up}
     disp ("x: " + x{sortes_plas}{:}{current_pos})
     disp ("fval: " + fval{sortes_plas}{:}(current_pos))
@@ -263,8 +328,7 @@ while current_pos ~= next_pos_to_opt
     disp ("old_fval: " + old_fval)
 
     % Check if the new value is less than 5% more than the previous value
-    if ~isFirstIteration && ...
-        temp_fval{:}(current_pos+direction) >= old_fval
+    if temp_fval{:}(current_pos+direction) >= old_fval
         break; % Exit the loop if the condition is met
     end
 
@@ -281,11 +345,10 @@ while current_pos ~= next_pos_to_opt
     % disp ("settings.PLval: " + settings.PLval)
     disp ("old_fval_2: " + old_fval_2)
 
-    if ~isFirstIteration && ...
-            fval{sortes_plas}{:}(current_pos+direction) >= old_fval_2 * 1.05
+    if fval{sortes_plas}{:}(current_pos+direction) >= old_fval_2 * 1.05
         break; % Exit the loop if the condition is met
     end
-    
+
 
     % After the first iteration, set isFirstIteration to false
     isFirstIteration = false;
@@ -357,7 +420,7 @@ end
 end
 
 function [local_min_up,local_min_down,local_min_number] = ...
-identify_local_minima(rst,settings,PL_iter_start)
+    identify_local_minima(rst,settings,PL_iter_start)
 % Identifies local minima in the optimization results for each parameter.
 % It scans the results and marks points as local minima if the value at a
 % point is lower than its neighbors by a certain threshold.
@@ -434,9 +497,9 @@ for par_indx = 1:length(settings.pltest)
 
             for n = 1:length(Out_name)
                 rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(:) = ...
-                Out_array{n}{1,old_indices1}{i}';
+                    Out_array{n}{1,old_indices1}{i}';
                 rst.(alg{i}).(Out_name(n)){settings.pltest(par_indx)}(1:length(Out_array{n}{1,old_indices2}{i}')) = ...
-                Out_array{n}{1,old_indices2}{i}';
+                    Out_array{n}{1,old_indices2}{i}';
             end
         end
     end
