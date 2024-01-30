@@ -254,6 +254,14 @@ for m = settings.pltest
                 'LineWidth',1.5,'color',[0, 0, 0, 0.5])
             minfval = min(results.PLA.min.fvalt{m});
 
+            i = find([results.PLA.test.min.fvalt{m}]);
+            plot(results.PLA.test.min.Pval{m}(i),...
+                nonzeros([results.PLA.test.min.fvalt{m}]),'DisplayName','Total score ps',...
+                'LineWidth',1,'color',[1, 0, 0, 0.5])
+            minfval = min(results.PLA.test.min.fvalt{m});
+
+
+
 % end
 
     end
