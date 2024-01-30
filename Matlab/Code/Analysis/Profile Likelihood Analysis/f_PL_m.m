@@ -93,7 +93,7 @@ end
 % local_min_down{2}
 local_min_number
 
-parfor parfor_index_2 = 1:local_min_number
+for parfor_index_2 = 1:local_min_number
 
     disp("parfor_index_2: " + parfor_index_2)
 
@@ -116,10 +116,26 @@ end
 
 for parfor_index_2 = 1:local_min_number
 
+parfor_index_2
+
     [param_index, pos_to_opt, is_up] = ...
         locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
 
-    sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
+
+    ~is_up
+
+    settings.pltest
+    param_index
+    settings.pltest==param_index
+    find(settings.pltest==param_index)
+    
+    sortes_plas = find(settings.pltest==param_index)+(~is_up*length(settings.pltest));
+
+sortes_plas
+x
+x{sortes_plas};
+x{sortes_plas}{:}
+
 
     next_pos_to_opt = PL_iter_start(param_index)*4;
 
@@ -151,6 +167,8 @@ for parfor_index_2 = 1:local_min_number
         % fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         % fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
 
+fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt) = ...
             fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt);
 
@@ -160,10 +178,22 @@ for parfor_index_2 = 1:local_min_number
         % Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         % Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
 
+Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
+
         Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt) = ...
             Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt);
     else
-        for n = pos_to_opt:next_pos_to_opt-1
+        size_lower_array = (length(fval{sortes_plas}{:}))
+        for n = pos_to_opt:min(next_pos_to_opt-1,size_lower_array)
+
+            x{sortes_plas}{:}{n};
+            %
+            % x_temp{parfor_index_2};
+            % x_temp{parfor_index_2}{sortes_plas};
+            % x_temp{parfor_index_2}{sortes_plas}{:};
+            % x_temp{parfor_index_2}{sortes_plas}{:}{n};
+
             x{sortes_plas}{:}{n} = ...
                 x_temp{parfor_index_2}{sortes_plas}{:}{n};
 
@@ -171,11 +201,17 @@ for parfor_index_2 = 1:local_min_number
                 simd_temp{parfor_index_2}{sortes_plas}{:}{n};
         end
 
-        fval{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1) = ...
-            fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1);
+fval{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array))
+fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array))
 
-        Pval{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1) = ...
-            Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:next_pos_to_opt-1);
+        fval{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array)) = ...
+            fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array));
+
+Pval{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array))
+Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array))
+
+        Pval{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array)) = ...
+            Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:min(next_pos_to_opt-1,size_lower_array));
     end
 end
 rst.test = assign_optimization_results(settings, x, fval, simd, Pval, param_length,alg);
@@ -210,6 +246,12 @@ function [x, fval, simd, Pval] = ...
 % - Pval_optimized: Parameter values at which the function was optimized.
 
 alg = {'sa',1};
+
+settings.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,settings.parnum-1)*1,'MaxTime',120,'ReannealInterval',40);
+
+
 % Determine the parameter index, position to optimize, and direction
 [param_index, pos_to_opt, is_up] = ...
     locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
@@ -276,8 +318,9 @@ while current_pos ~= next_pos_to_opt
 
     % param_index
     % find(settings.pltest==param_index)
-    sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
-
+    % sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
+    sortes_plas = find(settings.pltest==param_index)+(~is_up*length(settings.pltest));
+    sortes_plas
 
     delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
 
@@ -302,11 +345,10 @@ while current_pos ~= next_pos_to_opt
     % x{1+~is_up}
     disp ("x: " + x{sortes_plas}{:}{current_pos})
     disp ("fval: " + fval{sortes_plas}{:}(current_pos))
-    % disp ("pval: " + param_value)
     disp ("Pval: " + Pval{sortes_plas}{:}(current_pos))
     disp ("x+dir: " + x{sortes_plas}{:}{current_pos+direction})
     disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
-    % disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
+    disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
     disp ("settings.PLval: " + settings.PLval)
 
     old_fval = fval{sortes_plas}{:}(current_pos+direction);
@@ -321,10 +363,12 @@ while current_pos ~= next_pos_to_opt
     [temp_x, temp_fval, temp_simd, temp_Pval, prev_fval{sortes_plas}, offset] =...
         run_optimization_method(x{sortes_plas}, fval{sortes_plas}, simd{sortes_plas}, ...
         Pval{sortes_plas}, offset, temp_lb, temp_up, settings, model_folder, ...
-        {alg, 1}, 1, 1, current_pos+direction, current_pos,1);
+        alg, 1, 1, current_pos+direction, current_pos,1);
 
     disp ("temp_x+dir: " + temp_x{:}{current_pos+direction})
     disp ("temp_fval+dir: " + temp_fval{:}(current_pos+direction))
+    disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
+    disp ("settings.PLval: " + settings.PLval)
     disp ("old_fval: " + old_fval)
 
     % Check if the new value is less than 5% more than the previous value
@@ -829,6 +873,10 @@ if debug
     % x{alg{2}}{pos_minus_1}
 end
 % Run the selected optimization function
+
+disp("alg{1}: " + alg{1})
+disp("alg{2}: " + alg{2})
+
 [x{alg{2}}{pos}, fval{alg{2}}(pos),...
     simd{alg{2}}{pos}] = ...
     optimization_func(offset, ...
