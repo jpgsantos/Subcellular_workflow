@@ -118,10 +118,8 @@ for n = 1:length(local_min_down)
     start_over_position = [start_over_position,start_over_position_n];
 end
 
-% local_min_up{1}
-% local_min_down{1}
-% local_min_up{2}
-% local_min_down{2}
+local_min_up
+local_min_down
 
 % local_min_number
 
@@ -131,7 +129,7 @@ fval_temp_1 = rst.min.fvalt;
 
 parfor parfor_index_2 = 1:local_min_number
 
-    disp("parfor_index_2: " + parfor_index_2)
+    % disp("parfor_index_2: " + parfor_index_2)
 
     [x_temp{parfor_index_2},fval_temp{parfor_index_2}] = ...
         optimize_towards_start(x_temp_1,fval_temp_1,parfor_index_2, ...
@@ -149,7 +147,7 @@ parfor parfor_index_2 = 1:local_min_number
     % Pval_temp{parfor_index_2}{2}
 end
 
-local_min_number
+fprintf("local_min_number: " + local_min_number + "\n")
 
 for parfor_index_2 = 1:local_min_number
 
@@ -228,10 +226,11 @@ for parfor_index_2 = 1:local_min_number
         % fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         % fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
 
-        sortes_plas
-        parfor_index_2
-        fval{sortes_plas}{:}(up_index_temp:pos_to_opt)
-        fval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt)
+        fprintf("sortes_plas: " + sortes_plas + "\n" +...
+            "parfor_index_2: " + parfor_index_2 + "\n")
+        
+        disp(fval{sortes_plas}{:}(up_index_temp:pos_to_opt))
+        disp(fval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt))
 
         fval{sortes_plas}{:}(up_index_temp:pos_to_opt) = ...
             fval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt);
@@ -269,10 +268,11 @@ for parfor_index_2 = 1:local_min_number
 
         end
 
-        sortes_plas
-        parfor_index_2
-        fval{sortes_plas}{:}(pos_to_opt:down_index_temp)
-        fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp)
+        fprintf("sortes_plas: " + sortes_plas + "\n" + ...
+            "parfor_index_2: " + parfor_index_2 + "\n")
+
+        disp(fval{sortes_plas}{:}(pos_to_opt:down_index_temp))
+        disp(fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp))
 
         fval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
             fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp);
@@ -329,7 +329,7 @@ alg = {'sa',1};
 
 settings.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,settings.parnum-1)*1,'MaxTime',30,'ReannealInterval',40);
+    ones(1,settings.parnum-1)*1,'MaxTime',60,'ReannealInterval',40);
 
 % Determine the parameter index, position to optimize, and direction
 [param_index, pos_to_opt, is_up] = ...
