@@ -224,7 +224,7 @@ for m = settings.pltest
             i = find([results.PLA.sa.fvalt{m}]);
             plot(results.PLA.sa.Pval{m}(i),...
                 nonzeros([results.PLA.sa.fvalt{m}]),'DisplayName','Total score sa',...
-                'LineWidth',1.5,'color',[0, 0, 1, 0.5])
+                'LineWidth',2,'color',[0, 0, 1, 0.5])
 
             % minfval = min(results.PLA.sa.fvalt{m});
          end
@@ -234,7 +234,7 @@ for m = settings.pltest
             i = find([results.PLA.fm.fvalt{m}]);
             plot(results.PLA.fm.Pval{m}(i),...
                 nonzeros([results.PLA.fm.fvalt{m}]),'DisplayName','Total score fm',...
-                'LineWidth',1.5,'color',[1, 0, 0, 0.5])
+                'LineWidth',2,'color',[1, 0, 0, 0.5])
 
             % minfval = min(results.PLA.fm.fvalt{m});
             % elseif isfield(results.PLA,'ps')
@@ -243,20 +243,20 @@ for m = settings.pltest
             i = find([results.PLA.ps.fvalt{m}]);
             plot(results.PLA.ps.Pval{m}(i),...
                 nonzeros([results.PLA.ps.fvalt{m}]),'DisplayName','Total score ps',...
-                'LineWidth',1.5,'color',[0, 1, 0, 0.5])
+                'LineWidth',2,'color',[0, 1, 0, 0.5])
 
             % minfval = min(results.PLA.min.fvalt{m});
         end
 
             i = find([results.PLA.min.fvalt{m}]);
             plot(results.PLA.min.Pval{m}(i),...
-                nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score ps',...
+                nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score min',...
                 'LineWidth',1.5,'color',[0, 0, 0, 0.5])
             minfval = min(results.PLA.min.fvalt{m});
 
             i = find([results.PLA.test.min.fvalt{m}]);
             plot(results.PLA.test.min.Pval{m}(i),...
-                nonzeros([results.PLA.test.min.fvalt{m}]),'DisplayName','Total score ps',...
+                nonzeros([results.PLA.test.min.fvalt{m}]),'DisplayName','Total score min2',...
                 'LineWidth',1,'color',[1, 0, 0, 0.5])
             minfval = min(results.PLA.test.min.fvalt{m});
 

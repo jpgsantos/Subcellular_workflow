@@ -57,6 +57,37 @@ parfor parfor_indices = parfor_indices
         run_PLA_on_parameter(parfor_indices,PL_iter_start,settings,model_folder);
 end
 
+
+% fval{parfor_indices}
+
+% delta = (settings.ub(param_index) - settings.lb(param_index)) / settings.plres;
+
+for parfor_indices = parfor_indices
+
+    % Calculate the actual parameter index based on the input
+par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
+
+% Determine the direction of the parameter search and set the range for
+% PL_iter based on the current parameter index
+
+% Calculate the step size for the search
+delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
+        % [param_index, pos_to_opt, is_up] = ...
+        % locate_minima_for_optimization(parfor_indices, local_min_up, local_min_down);
+    for n = 1:length(fval{parfor_indices})
+         % n
+         % fval{parfor_indices}{n}
+         % settings.lb(par_indx)
+         % abs(delta)/4
+         % (1:settings.plres*4+1)
+        Pval{parfor_indices}{n} = (settings.lb(par_indx) + abs(delta)/4 * (1:settings.plres*4+1))-abs(delta)/4;
+    end
+
+end
+% Pval{parfor_indices}{1}
+% Pval{parfor_indices}
+% Pval{parfor_indices}{:}
+
 % for parfor_indices = parfor_indices
 %
 % x{settings.pltest(parfor_indices)} = x_temp{parfor_indices};
@@ -94,13 +125,16 @@ end
 
 % local_min_number
 
+x_temp_1 = rst.min.xt;
+fval_temp_1 = rst.min.fvalt;
+
+
 parfor parfor_index_2 = 1:local_min_number
 
     disp("parfor_index_2: " + parfor_index_2)
 
-    [x_temp{parfor_index_2},fval_temp{parfor_index_2},...
-        Pval_temp{parfor_index_2}] = ...
-        optimize_towards_start(x, fval, Pval, parfor_index_2, ...
+    [x_temp{parfor_index_2},fval_temp{parfor_index_2}] = ...
+        optimize_towards_start(x_temp_1,fval_temp_1,parfor_index_2, ...
         local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
         alg,start_over_position);
 
@@ -115,12 +149,15 @@ parfor parfor_index_2 = 1:local_min_number
     % Pval_temp{parfor_index_2}{2}
 end
 
+local_min_number
+
 for parfor_index_2 = 1:local_min_number
 
     % parfor_index_2
 
     [param_index, pos_to_opt, is_up] = ...
         locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
+
 
     % ~is_up
 
@@ -147,9 +184,23 @@ for parfor_index_2 = 1:local_min_number
     % next_pos_to_opt
 
     up_index_temp = next_pos_to_opt;
-    size_lower_array = (length(fval{sortes_plas}{:}));
-    down_index_temp = min(next_pos_to_opt-1,size_lower_array);
 
+    % fval
+    % fval{sortes_plas}
+    % fval{sortes_plas}{:}
+    % length(fval{sortes_plas}{:})
+
+    % fval_temp
+    % fval_temp{parfor_index_2}
+    % fval_temp{parfor_index_2}{:}
+    % length(fval_temp{parfor_index_2}{:})
+
+
+    size_lower_array = length(fval{sortes_plas}{:});
+    down_index_temp = min(next_pos_to_opt-1,size_lower_array);
+    % down_index_temp
+    % next_pos_to_opt-1
+    % size_lower_array
     if is_up
         for n = up_index_temp:pos_to_opt
             x{sortes_plas}{:}{n} = ...
@@ -157,7 +208,14 @@ for parfor_index_2 = 1:local_min_number
 
             % simd{sortes_plas}{:}{n} = ...
             %     simd_temp{parfor_index_2}{sortes_plas}{:}{n};
+
+            
         end
+
+        % settings.lb(param_index) + abs(delta)/4 * ([up_index_temp:pos_to_opt]-1)
+
+% Pval{sortes_plas}{:}(up_index_temp:pos_to_opt) = ...
+%     settings.lb(param_index) + abs(delta)/4 * ([up_index_temp:pos_to_opt]-1);
 
         % param_index
         % pos_to_opt
@@ -170,8 +228,11 @@ for parfor_index_2 = 1:local_min_number
         % fval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         % fval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
 
+        sortes_plas
+        parfor_index_2
         fval{sortes_plas}{:}(up_index_temp:pos_to_opt)
         fval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt)
+
         fval{sortes_plas}{:}(up_index_temp:pos_to_opt) = ...
             fval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt);
 
@@ -181,11 +242,11 @@ for parfor_index_2 = 1:local_min_number
         % Pval{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
         % Pval_temp{parfor_index_2}{sortes_plas}{:}(next_pos_to_opt+1:pos_to_opt)
 
-        Pval{sortes_plas}{:}(up_index_temp:pos_to_opt)
-        Pval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt)
-
-        Pval{sortes_plas}{:}(up_index_temp:pos_to_opt) = ...
-            Pval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt);
+        % Pval{sortes_plas}{:}(up_index_temp:pos_to_opt)
+        % Pval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt)
+        % 
+        % Pval{sortes_plas}{:}(up_index_temp:pos_to_opt) = ...
+        %     Pval_temp{parfor_index_2}{sortes_plas}{:}(up_index_temp:pos_to_opt);
     else
 
         for n = pos_to_opt:down_index_temp
@@ -202,27 +263,43 @@ for parfor_index_2 = 1:local_min_number
 
             % simd{sortes_plas}{:}{n} = ...
             %     simd_temp{parfor_index_2}{sortes_plas}{:}{n};
+
+% Pval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
+%     settings.lb(param_index) + abs(-delta)/4 * (n-1);
+
         end
 
+        sortes_plas
+        parfor_index_2
         fval{sortes_plas}{:}(pos_to_opt:down_index_temp)
         fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp)
 
         fval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
             fval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp);
 
-        Pval{sortes_plas}{:}(pos_to_opt:down_index_temp)
-        Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp)
+        % Pval{sortes_plas}{:}(pos_to_opt:down_index_temp)
+        % Pval_temp{parfor_index_2}{sortes_plas}{:}
+        % pos_to_opt
+        % down_index_temp
 
-        Pval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
-            Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp);
+% settings.lb(param_index) + abs(-delta)/4 * ([pos_to_opt:down_index_temp]-1)
+
+
+    %     Pval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
+    % settings.lb(param_index) + abs(-delta)/4 * ([pos_to_opt:down_index_temp]-1);
+
+        % Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp)
+        % 
+        % Pval{sortes_plas}{:}(pos_to_opt:down_index_temp) = ...
+        %     Pval_temp{parfor_index_2}{sortes_plas}{:}(pos_to_opt:down_index_temp);
     end
 end
 rst.test = assign_optimization_results(settings, x, fval, simd, Pval, param_length,alg);
 
 end
 
-function [x, fval, Pval] = ...
-    optimize_towards_start(x, fval, Pval,parfor_index_2, ...
+function [x, fval] = ...
+    optimize_towards_start(x_ini,fval_ini,parfor_index_2, ...
     local_min_up, local_min_down, settings, model_folder, PL_iter_start, ...
     alg,start_over_position)
 % This function optimizes parameters in the direction of the starting point
@@ -252,14 +329,13 @@ alg = {'sa',1};
 
 settings.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,settings.parnum-1)*1,'MaxTime',5,'ReannealInterval',40);
-
+    ones(1,settings.parnum-1)*1,'MaxTime',30,'ReannealInterval',40);
 
 % Determine the parameter index, position to optimize, and direction
 [param_index, pos_to_opt, is_up] = ...
     locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down);
 
-disp("param_index: " + param_index)
+% disp("param_index: " + param_index)
 % disp("pos_to_opt: " + pos_to_opt)
 
 % is_up
@@ -290,7 +366,7 @@ if ~ismember(parfor_index_2,start_over_position)
         locate_minima_for_optimization(parfor_index_2-1, local_min_up, local_min_down);
 end
 
-disp("next_param_index: " + next_pos_to_opt)
+% disp("param_index: " + param_index )
 % Set initial values for the optimization
 
 current_pos = pos_to_opt;
@@ -307,12 +383,19 @@ temp_lb(par_indx) = [];
 temp_up = settings.ub;
 temp_up(par_indx) = [];
 
+sortes_plas = find(settings.pltest==param_index)+(~is_up*length(settings.pltest));
+
+    fval{sortes_plas}{:} = fval_ini{par_indx};
+    x{sortes_plas}{:}= x_ini{par_indx};
+
 % Optimization loop: Continue until the starting point is reached
 % or the new value is less than 5% more than the previous value
 while current_pos ~= next_pos_to_opt
 
-    disp("current_pos: " + current_pos)
-    disp("direction: " + direction)
+    % disp("current_pos: " + current_pos + ...
+    %     " final_pos: " + next_pos_to_opt + ...
+    %     " direction: " + direction)
+
 
     % Pval
     % Pval{:}
@@ -324,14 +407,22 @@ while current_pos ~= next_pos_to_opt
     % param_index
     % find(settings.pltest==param_index)
     % sortes_plas = find(settings.pltest==param_index)+~is_up*find(settings.pltest==param_index);
-    sortes_plas = find(settings.pltest==param_index)+(~is_up*length(settings.pltest));
+    
     % sortes_plas
 
     % if is_up
         if current_pos+direction >= length(fval{sortes_plas}{:})
-            disp("break 1")
-            disp(current_pos+direction)
-            disp(length(fval{sortes_plas}{:}))
+            fprintf("\n break 1 " + ... 
+                "\n parfor_index_2: " + parfor_index_2 + ...
+                "\n param_index: " + param_index + ...
+                "\n current_pos: " + current_pos + ...
+                "\n final_pos: " + next_pos_to_opt + ...
+                "\n direction: " + direction + ...
+                "\n current_pos: " + current_pos + ...
+                "\n direction: " + direction + ...
+                "\n lenght_fval: " + length(fval{sortes_plas}{:}) + "\n" )
+            % disp(current_pos+direction)
+            % disp(length(fval{sortes_plas}{:}))
             break
         end
     % else
@@ -403,13 +494,18 @@ while current_pos ~= next_pos_to_opt
     settings.PLval = settings.lb(par_indx) + abs(delta_par)/4 * (current_pos + direction-1);
 
     % disp ("x: " + x{sortes_plas}{:}{old_current_pos})
-    disp ("fval: " + fval{sortes_plas}{:}(old_current_pos))
-    disp ("Pval: " + Pval{sortes_plas}{:}(old_current_pos))
-    % disp ("x+dir: " + x{sortes_plas}{:}{current_pos+direction})
-    disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
-    % disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
-    disp ("settings.PLval: " + settings.PLval)
 
+    
+    % disp ("fval: " + fval{sortes_plas}{:}(old_current_pos))
+
+    % disp ("Pval: " + Pval{sortes_plas}{:}(old_current_pos))
+    % disp ("x+dir: " + x{sortes_plas}{:}{current_pos+direction})
+    % disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
+
+    % disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
+    % disp ("settings.PLval: " + settings.PLval)
+    % Pval{sortes_plas}{:}(current_pos) = settings.lb(par_indx) + abs(delta_par)/4 * (current_pos-1);
+    % Pval{sortes_plas}{:}(current_pos+direction) = settings.PLval;
     % if  old_fval == 0
     %     break; % Exit the loop if the condition is met
     % end
@@ -418,20 +514,39 @@ while current_pos ~= next_pos_to_opt
     % if any(strcmp(alg, {'sa', 'ps', 'fm'}))
     [temp_x, temp_fval, temp_simd{alg{2}}{current_pos+direction}, temp_Pval, prev_fval{sortes_plas}, offset] =...
         run_optimization_method(x{sortes_plas}, fval{sortes_plas}, ...
-        Pval{sortes_plas}, offset, temp_lb, temp_up, settings, model_folder, ...
+        offset, temp_lb, temp_up, settings, model_folder, ...
         alg, 1, 1, current_pos+direction, old_current_pos,1);
 
+    fprintf("\n parfor_index_2: " + parfor_index_2 + ...
+        "\n param_index: " + param_index + ...
+        "\n current_pos: " + current_pos + ...
+        "\n final_pos: " + next_pos_to_opt + ...
+        "\n direction: " + direction + ...
+        "\n PLval: " + settings.PLval + ...
+        "\n previous score: " + fval{sortes_plas}{:}(old_current_pos) + ...
+        "\n old score: " + old_fval + ...
+        "\n new score: " + temp_fval{:}(current_pos+direction) + ...
+        "\n next score: " +  old_fval_2 + "\n")
+
     % disp ("temp_x+dir: " + temp_x{:}{current_pos+direction})
-    disp ("temp_fval+dir: " + temp_fval{:}(current_pos+direction))
+    % disp ("temp_fval+dir: " + temp_fval{:}(current_pos+direction))
+
     % disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
-    disp ("settings.PLval: " + settings.PLval)
-    disp ("old_fval: " + old_fval)
+    % disp ("settings.PLval: " + settings.PLval)
+    % disp ("old_fval: " + old_fval)
 
     % Check if the new value is less than 5% more than the previous value
     if temp_fval{:}(current_pos+direction) >= old_fval
-        disp("break 2")
-        disp(temp_fval{:}(current_pos+direction))
-        disp(old_fval)
+        fprintf("\n break 2 " + ... 
+            "\n parfor_index_2: " + parfor_index_2 + ...
+            "\n param_index: " + param_index + ...
+            "\n current_pos: " + current_pos + ...
+            "\n final_pos: " + next_pos_to_opt + ...
+            "\n direction: " + direction + ...
+            "\n new score: " + temp_fval{:}(current_pos+direction) + ...
+            "\n old score: " + old_fval + "\n")
+        % disp(temp_fval{:}(current_pos+direction))
+        % disp(old_fval)
         break; % Exit the loop if the condition is met
     end
 
@@ -446,12 +561,19 @@ while current_pos ~= next_pos_to_opt
     % disp ("fval+dir: " + fval{sortes_plas}{:}(current_pos+direction))
     % disp ("Pval+dir: " + Pval{sortes_plas}{:}(current_pos+direction))
     % disp ("settings.PLval: " + settings.PLval)
-    disp ("old_fval_2: " + old_fval_2)
+    % disp ("old_fval_2: " + old_fval_2)
  
     if fval{sortes_plas}{:}(current_pos+direction) >= old_fval_2 * 1.05
-        disp("break 3")
-        disp(fval{sortes_plas}{:}(current_pos+direction) )
-        disp(old_fval_2 * 1.05)
+        fprintf("\n break 3 " + ... 
+            "\n parfor_index_2: " + parfor_index_2 + ...
+            "\n param_index: " + param_index + ...
+            "\n current_pos: " + current_pos + ...
+            "\n final_pos: " + next_pos_to_opt + ...
+            "\n direction: " + direction + ...
+            "\n  new score: " + temp_fval{:}(current_pos+direction)+ ...
+            "\n next score*1.05: " + old_fval_2 * 1.05 + "\n");
+        % disp(fval{sortes_plas}{:}(current_pos+direction) )
+        % disp(old_fval_2 * 1.05)
         break; % Exit the loop if the condition is met
     end
 
@@ -632,6 +754,8 @@ for par_indx = 1:length(settings.pltest)
                 min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
                 rst.("min").("Pval"){settings.pltest(par_indx)}(n) = ...
                     rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
+                rst.("min").("xt"){settings.pltest(par_indx)}(n) = ...
+                    rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);
             end
         end
     end
@@ -878,7 +1002,7 @@ for PL_iter_current = PL_iter
 
             % Execute the optimization method with updated settings and current step
             [x, fval, simd{alg{2}}{pos}, Pval, prev_fval, offset] =...
-                run_optimization_method(x, fval, Pval,...
+                run_optimization_method(x, fval,...
                 offset, temp_lb, temp_up,...
                 settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus_1,0);
         end
@@ -895,7 +1019,7 @@ end
 end
 
 function [x, fval, simd, Pval, prev_fval, offset] = ...
-    run_optimization_method(x, fval, Pval, offset, temp_lb,...
+    run_optimization_method(x, fval, offset, temp_lb,...
     temp_up, settings, model_folders, alg, PL_iter_current, current_pos, pos,pos_minus_1,debug)
 % Executes the chosen optimization method for the current parameter and position.
 % It runs either simulated annealing, fmincon, or pattern search based on the algorithm
@@ -982,7 +1106,7 @@ if PL_iter_current == 1
     % Define initial options for the first iteration
     options = optimoptions(@simulannealbnd,'Display','off', ...
         'InitialTemperature',...
-        ones(1,settings.parnum-1)*1,'MaxTime',1,'ReannealInterval',40);
+        ones(1,settings.parnum-1)*1,'MaxTime',10,'ReannealInterval',40);
 else
     % Use predefined options from settings
     options = settings.plsao;
@@ -1021,7 +1145,7 @@ if PL_iter_current == 1
     % Define initial options for the first iteration
     options = optimoptions('fmincon','Display','off',...
         'Algorithm','interior-point',...
-        'MaxIterations',1,'OptimalityTolerance',0,...
+        'MaxIterations',2,'OptimalityTolerance',0,...
         'StepTolerance',1e-6,'FiniteDifferenceType','central');
 else
     % Use predefined options from settings
@@ -1061,7 +1185,7 @@ function [x,fval,simd] =...
 if PL_iter_current == 1
     % Define initial options for the first iteration
     options = optimoptions(@patternsearch,'Display','off',...
-        'MaxTime',1,...
+        'MaxTime',10,...
         'UseCompletePoll',false,'UseCompleteSearch',false,...
         'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 else
