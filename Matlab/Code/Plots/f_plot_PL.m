@@ -224,7 +224,7 @@ for m = settings.pltest
             i = find([results.PLA.sa.fvalt{m}]);
             plot(results.PLA.sa.Pval{m}(i),...
                 nonzeros([results.PLA.sa.fvalt{m}]),'DisplayName','Total score sa',...
-                'LineWidth',2,'color',[0, 0, 1, 0.5])
+                'LineWidth',4,'color',[0, 0, 1, 0.5])
 
             % minfval = min(results.PLA.sa.fvalt{m});
          end
@@ -234,7 +234,7 @@ for m = settings.pltest
             i = find([results.PLA.fm.fvalt{m}]);
             plot(results.PLA.fm.Pval{m}(i),...
                 nonzeros([results.PLA.fm.fvalt{m}]),'DisplayName','Total score fm',...
-                'LineWidth',2,'color',[1, 0, 0, 0.5])
+                'LineWidth',4,'color',[1, 0, 0, 0.5])
 
             % minfval = min(results.PLA.fm.fvalt{m});
             % elseif isfield(results.PLA,'ps')
@@ -243,24 +243,57 @@ for m = settings.pltest
             i = find([results.PLA.ps.fvalt{m}]);
             plot(results.PLA.ps.Pval{m}(i),...
                 nonzeros([results.PLA.ps.fvalt{m}]),'DisplayName','Total score ps',...
-                'LineWidth',2,'color',[0, 1, 0, 0.5])
+                'LineWidth',4,'color',[0, 1, 0, 0.5])
 
             % minfval = min(results.PLA.min.fvalt{m});
         end
 
-            i = find([results.PLA.min.fvalt{m}]);
-            plot(results.PLA.min.Pval{m}(i),...
-                nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score min',...
-                'LineWidth',1.5,'color',[0, 0, 0, 0.5])
-            minfval = min(results.PLA.min.fvalt{m});
+        color = {
+            [0.15196,0.05741,0.18574],  % Dark Indigo
+            [0,0,0.8],                  % Blue
+            [0,0.4,0.8],                % Light Blue
+            [0,0.8,0.8],                % Cyan
+            [0,0.8,0],                  % Green
+            [0.4,0.8,0],                % Light Green
+            [0.8,0.8,0],                % Yellow
+            [0.8,0.4,0],                % Orange
+            [0.8,0,0],                  % Red
+            [0.51765,0.04706,0.06588]   % Dark Red
+            };
 
-            i = find([results.PLA.test.min.fvalt{m}]);
-            plot(results.PLA.test.min.Pval{m}(i),...
-                nonzeros([results.PLA.test.min.fvalt{m}]),'DisplayName','Total score min2',...
-                'LineWidth',1,'color',[0.75, 0.75, 0.75, 0.5])
-            minfval = min(results.PLA.test.min.fvalt{m});
+        line_width = [3:-0.25:1];
 
+        for n = 1:9
+            i = find([results.PLA.("reopt" +n).min.fvalt{m}]);
+            plot(results.PLA.("reopt" +n).min.Pval{m}(i),...
+                nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]),'DisplayName',"Total score min" + n,...
+                'LineWidth',line_width(n),'color',color{n})
+            minfval = min(results.PLA.("reopt" +n).min.fvalt{m});
+        end
 
+            % i = find([results.PLA.min.fvalt{m}]);
+            % plot(results.PLA.min.Pval{m}(i),...
+            %     nonzeros([results.PLA.min.fvalt{m}]),'DisplayName','Total score min',...
+            %     'LineWidth',2,'color',[0, 0, 0, 0.5])
+            % minfval = min(results.PLA.min.fvalt{m});
+            % 
+            % i = find([results.PLA.test1.min.fvalt{m}]);
+            % plot(results.PLA.test1.min.Pval{m}(i),...
+            %     nonzeros([results.PLA.test1.min.fvalt{m}]),'DisplayName','Total score min2',...
+            %     'LineWidth',1.5,'color',[0.75, 0.75, 0.75, 0.5])
+            % minfval = min(results.PLA.test1.min.fvalt{m});
+            % 
+            % i = find([results.PLA.test2.min.fvalt{m}]);
+            % plot(results.PLA.test2.min.Pval{m}(i),...
+            %     nonzeros([results.PLA.test2.min.fvalt{m}]),'DisplayName','Total score min2',...
+            %     'LineWidth',1,'color',[0.5, 0.5, 0.5, 0.5])
+            % minfval = min(results.PLA.test2.min.fvalt{m});
+            % 
+            % i = find([results.PLA.test3.min.fvalt{m}]);
+            % plot(results.PLA.test3.min.Pval{m}(i),...
+            %     nonzeros([results.PLA.test3.min.fvalt{m}]),'DisplayName','Total score min2',...
+            %     'LineWidth',1,'color',[0.25, 0.25, 0.25, 0.5])
+            % minfval = min(results.PLA.test3.min.fvalt{m});
 
 % end
 
