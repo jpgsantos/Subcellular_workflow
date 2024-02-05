@@ -73,7 +73,7 @@ rst = assign_optimization_results(settings, x, fval, simd, Pval, param_length,al
 
 rst.reopt1 = rst;
 
-for n = 1:8
+for n = 1:15
     [x, fval, rst.("reopt" + (n+1))] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"reopt" + n);
 end
 

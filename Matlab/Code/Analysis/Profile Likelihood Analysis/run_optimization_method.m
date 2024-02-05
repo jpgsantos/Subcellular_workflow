@@ -26,9 +26,9 @@ offset = offset+1;
 if alg{2} == 1
     optimization_func = @sim_a;
 elseif alg{2} == 2
-    optimization_func = @fmin_con;
-elseif alg{2} == 3
     optimization_func = @p_search;
+elseif alg{2} == 3
+    optimization_func = @fmin_con;
 else
     error('No optimization method specified');
 end
@@ -43,7 +43,7 @@ end
 
 % disp("alg{1}: " + alg{1})
 % disp("alg{2}: " + alg{2})
-
+tic
 [x{alg{2}}{pos}, fval{alg{2}}(pos),...
     simd] = ...
     optimization_func(offset, ...
@@ -55,9 +55,9 @@ Pval{alg{2}}(pos) = settings.PLval;
 prev_fval = fval{alg{2}}(pos);
 
 % Optional: Display current optimization status
-disp(convertCharsToStrings(alg{1}) + " m: " + settings.PLind + "  n: " +...
+disp(convertCharsToStrings(alg{1}) + " " + alg{2} + " m: " + settings.PLind + "  n: " +...
     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
-    " fval: " + prev_fval);
+    " fval: " + prev_fval + " counter: " + offset + " time: " + toc);
 end
 
 function [x,fval,simd] =...
@@ -83,9 +83,7 @@ function [x,fval,simd] =...
 % Set optimization options based on the iteration
 if PL_iter_current == 1
     % Define initial options for the first iteration
-    options = optimoptions(@simulannealbnd,'Display','off', ...
-        'InitialTemperature',...
-        ones(1,settings.parnum-1)*1,'MaxTime',10,'ReannealInterval',40);
+    options = settings.plsaos;
 else
     % Use predefined options from settings
     options = settings.plsao;
@@ -122,18 +120,17 @@ function [x,fval,simd] =...
 % Set optimization options based on the iteration
 if PL_iter_current == 1
     % Define initial options for the first iteration
-    options = optimoptions('fmincon','Display','off',...
-        'Algorithm','interior-point',...
-        'MaxIterations',2,'OptimalityTolerance',0,...
-        'StepTolerance',1e-6,'FiniteDifferenceType','central');
+    options = settings.plfmos;
 else
     % Use predefined options from settings
     options = settings.plfmo;
 end
 
 % Execute the optimization
-[x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
-    x,[],[],[],[],temp_lb,temp_up,[],options);
+% [x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
+%     x,[],[],[],[],temp_lb,temp_up,[],options);
+[x, fval] = ...
+        surrogateopt(@(x)f_sim_score(x,settings,model_folders), temp_lb,temp_up, options);
 
 % Compute and store the result of the optimization
 [~,rst,~] = f_sim_score(x,settings,model_folders);
@@ -163,10 +160,7 @@ function [x,fval,simd] =...
 % Set optimization options based on the iteration
 if PL_iter_current == 1
     % Define initial options for the first iteration
-    options = optimoptions(@patternsearch,'Display','off',...
-        'MaxTime',10,...
-        'UseCompletePoll',false,'UseCompleteSearch',false,...
-        'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
+    options = settings.plpsos;
 else
     % Use predefined options from settings
     options = settings.plpso;
@@ -176,6 +170,7 @@ end
 [x, fval] = ...
     patternsearch(@(x)f_sim_score(x,settings,model_folders), x, ...
     [], [], [], [], temp_lb,temp_up, [], options);
+
 
 % Compute and store the result of the optimization
 [~,rst,~] = f_sim_score(x,settings,model_folders);

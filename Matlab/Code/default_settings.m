@@ -333,7 +333,7 @@ stg.PLind = -1;
 % Which parameters to do PL on, it should be all parameters but can also be
 % a subset for testing purposes
 % (Profile Likelihood parameters to Test)
-stg.pltest = (1:6);
+stg.pltest = [1:6];
 
 % How many points to do for each parameter in the PL
 % (Profile Likelihood Resolution)
@@ -343,43 +343,65 @@ stg.plres = 50;
 % (Profile Likelihood Plots)
 stg.plplot = true;
 
+stg.plsaots = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum-1)*1,'MaxTime', 30,'ReannealInterval',40);
+% (Profile likelihood simulated annealing opptimization to start)
+
+stg.plotv = 0.99;
+% (Profile Likelihood optimization threshold value)
+
+stg.ratio = 2;
+
 % True or false to decide whether to run simulated annealing
 % (Profile Likelihood Simulated Annealing)
-stg.plsa = false;
+stg.plsa = true;
 
 % Options for simulated annealing
+% (Profile Likelihood Simulated Annealing options)
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum-1)*1,'MaxTime',7,'ReannealInterval',40);
+    ones(1,stg.parnum-1)*1,'MaxTime',15,'ReannealInterval',40);
 
-% stg.plsao = optimoptions(@patternsearch,...
-%     'MaxTime',25,'UseParallel',false,...
-%     'UseCompletePoll',true,'UseCompleteSearch',true,...
-%     'MaxMeshSize',2,'MaxFunctionEvaluations',2000);
+% (Profile Likelihood Simulated Annealing options start)
+stg.plsaos = optimoptions(@simulannealbnd,'Display','off', ...
+        'InitialTemperature',...
+        ones(1,stg.parnum-1)*1,'MaxTime',60,'ReannealInterval',40);
 
-% True or false to decide whether to run fmincon
-% (Profile Likelihood FMincon)
-stg.plfm = false;
-
-% Options for fmincon
-stg.plfmo = optimoptions('fmincon','Display','off',...
-    'Algorithm','interior-point',...
-    'MaxIterations',2,'OptimalityTolerance',0,...
-    'StepTolerance',1e-6,'FiniteDifferenceType','central');
 
 
 % True or false to decide whether to run Pattern search
-% (Pattern search)
-stg.plps = false;
+% (Profile Likelihood Pattern search)
+stg.plps = true;
 
 % Options for Pattern search
 % (Pattern search options)
 stg.plpso = optimoptions(@patternsearch,'Display','off',...
-    'MaxTime',7,...
-    'UseCompletePoll',true,'UseCompleteSearch',true,...
+    'MaxTime',15,...
+    'UseCompletePoll',false,'UseCompleteSearch',false,...
     'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 
+stg.plpsos = optimoptions(@patternsearch,'Display','off',...
+    'MaxTime',60,...
+    'UseCompletePoll',false,'UseCompleteSearch',false,...
+    'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 
+% True or false to decide whether to run surrogate optimization
+% (Profile Likelihood surrogate optimization)
+stg.plfm = true;
+
+% Options for surrogate optimization
+% (Profile Likelihood surrogate optimization options)
+stg.plfmo = optimoptions('surrogateopt','Display','off',...
+    'MaxTime',15,...
+    'MaxFunctionEvaluations',10000,...
+    'MinSampleDistance',0.01,'MinSurrogatePoints',6+1);
+
+% (Profile Likelihood surrogate optimization options start)
+stg.plfmos = optimoptions('surrogateopt','Display','off',...
+    'MaxTime',60,...
+    'MaxFunctionEvaluations',10000,...
+    'MinSampleDistance',0.01,'MinSurrogatePoints',6*6+1);
 
 %% Optimization
 

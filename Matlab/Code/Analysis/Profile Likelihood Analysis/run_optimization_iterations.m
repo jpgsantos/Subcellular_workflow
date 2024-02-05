@@ -30,7 +30,7 @@ function [x, fval, simd, Pval] =...
 % Initialize additional variables for optimization
 offset = 0;
 prev_fval = inf;
-ratio = 1.5;
+ratio = settings.ratio;
 
 % Iterate over the PL values
 for PL_iter_current = PL_iter

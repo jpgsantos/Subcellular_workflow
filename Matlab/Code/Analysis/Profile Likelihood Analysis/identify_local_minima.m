@@ -25,7 +25,7 @@ for par_indx = settings.pltest
 
     for n = (PL_iter_start(par_indx)-1)*4+1:settings.plres*4+1
         if rst.("min").("fvalt"){par_indx}(n) ~= 0
-            if current*0.95 > rst.("min").("fvalt"){par_indx}(n)
+            if current*settings.plotv > rst.("min").("fvalt"){par_indx}(n)
                 local_min_up{par_indx} = [local_min_up{par_indx},n];
                 local_min_number = local_min_number +1;
             end
@@ -37,7 +37,7 @@ for par_indx = settings.pltest
 
     for n = (PL_iter_start(par_indx)-1)*4+1:-1:1
         if rst.("min").("fvalt"){par_indx}(n) ~= 0
-            if current*0.95 > rst.("min").("fvalt"){par_indx}(n)
+            if current*settings.plotv > rst.("min").("fvalt"){par_indx}(n)
                 local_min_down{par_indx} = [local_min_down{par_indx},n];
                 local_min_number = local_min_number +1;
             end
