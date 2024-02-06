@@ -248,26 +248,13 @@ for m = settings.pltest
             % minfval = min(results.PLA.min.fvalt{m});
         end
 
-        color = {
-            [0.15196,0.05741,0.18574],  % Dark Indigo
-            [0,0,0.8],                  % Blue
-            [0,0.4,0.8],                % Light Blue
-            [0,0.8,0.8],                % Cyan
-            [0,0.8,0],                  % Green
-            [0.4,0.8,0],                % Light Green
-            [0.8,0.8,0],                % Yellow
-            [0.8,0.4,0],                % Orange
-            [0.8,0,0],                  % Red
-            [0.51765,0.04706,0.06588]   % Dark Red
-            };
+        color = generateRainbowGradient(settings.plroptn+1);
 
-        line_width = [3:-0.25:1];
-
-        for n = 1:9
+        for n = 1:settings.plroptn+1
             i = find([results.PLA.("reopt" +n).min.fvalt{m}]);
             plot(results.PLA.("reopt" +n).min.Pval{m}(i),...
                 nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]),'DisplayName',"Total score min" + n,...
-                'LineWidth',line_width(n),'color',color{n})
+                'LineWidth',1,'color',color(n,:))
             minfval = min(results.PLA.("reopt" +n).min.fvalt{m});
         end
 

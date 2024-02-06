@@ -43,7 +43,7 @@ end
 
 % disp("alg{1}: " + alg{1})
 % disp("alg{2}: " + alg{2})
-tic
+
 [x{alg{2}}{pos}, fval{alg{2}}(pos),...
     simd] = ...
     optimization_func(offset, ...
@@ -54,10 +54,12 @@ tic
 Pval{alg{2}}(pos) = settings.PLval;
 prev_fval = fval{alg{2}}(pos);
 
-% Optional: Display current optimization status
+if settings.pldcos
+% Display current optimization status
 disp(convertCharsToStrings(alg{1}) + " " + alg{2} + " m: " + settings.PLind + "  n: " +...
     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
-    " fval: " + prev_fval + " counter: " + offset + " time: " + toc);
+    " fval: " + prev_fval + " counter: " + offset);
+end
 end
 
 function [x,fval,simd] =...
@@ -129,8 +131,12 @@ end
 % Execute the optimization
 % [x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
 %     x,[],[],[],[],temp_lb,temp_up,[],options);
-[x, fval] = ...
-        surrogateopt(@(x)f_sim_score(x,settings,model_folders), temp_lb,temp_up, options);
+
+% [x, fval] = ...
+%         surrogateopt(@(x)f_sim_score(x,settings,model_folders), temp_lb,temp_up, options);
+
+[x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders),...
+    x,temp_lb,temp_up,options);
 
 % Compute and store the result of the optimization
 [~,rst,~] = f_sim_score(x,settings,model_folders);

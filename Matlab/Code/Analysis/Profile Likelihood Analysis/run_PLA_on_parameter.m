@@ -76,19 +76,22 @@ if settings.(['pl' alg{1}])
     simd{alg{2}} = [];
     Pval{alg{2}} = [];
 end
-
+tic
 % Run optimization iterations
 [x, fval, simd, Pval] =...
     run_optimization_iterations(x, fval, simd, Pval, PL_iter, settings,...
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
     alg, section,temp_array);
 
+ time_run_optimization_iterations = toc;
+
+
 str_end_alg_names = {'end    sa', 'start  sa', 'end    ps',...
     'start  ps', 'end    fm', 'start  fm'};
 % Display completion message for current parameter and optimization method
 for i = 1:length(str_end_alg_names)
     if parfor_indices <= length(settings.pltest) * i
-        disp(['P' num2str(par_indx) ' ' str_end_alg_names{i} ' finished']);
+        disp("P" + num2str(par_indx) + " " + str_end_alg_names{i} + " finished time: " + time_run_optimization_iterations);
         break;
     end
 end

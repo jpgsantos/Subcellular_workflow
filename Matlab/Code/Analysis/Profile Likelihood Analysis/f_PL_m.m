@@ -57,6 +57,9 @@ parfor parfor_indices = parfor_indices
         run_PLA_on_parameter(parfor_indices,PL_iter_start,settings,model_folder);
 end
 
+% Add code to start both optimizations from the same parameter value and
+% then select the best point for the start
+
 for parfor_indices = parfor_indices
 % Calculate the actual parameter index based on the input
 par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
@@ -73,13 +76,7 @@ rst = assign_optimization_results(settings, x, fval, simd, Pval, param_length,al
 
 rst.reopt1 = rst;
 
-for n = 1:15
+for n = 1:settings.plroptn
     [x, fval, rst.("reopt" + (n+1))] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"reopt" + n);
 end
-
-% rst.test = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"test");
-% 
-% rst.test2 = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"test");
-% 
-% rst.test3 = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"test2");
 end
