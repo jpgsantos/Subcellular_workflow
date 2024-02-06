@@ -14,8 +14,8 @@ for n = 1:length(local_min_down)
     start_over_position = [start_over_position,start_over_position_n];
 end
 
-local_min_up
-local_min_down
+% local_min_up
+% local_min_down
 
 x_temp_1 = rst.(name).min.xt;
 fval_temp_1 = rst.(name).min.fvalt;
@@ -50,8 +50,8 @@ for parfor_index_2 = 1:local_min_number
     size_lower_array = length(fval{sortes_plas}{:});
     down_index_temp = min(current_pos{parfor_index_2}+1,size_lower_array);
 
-    fprintf("sortes_plas: " + sortes_plas + "\n" +...
-        "parfor_index_2: " + parfor_index_2 + "\n")
+    % fprintf("sortes_plas: " + sortes_plas + "\n" +...
+    %     "parfor_index_2: " + parfor_index_2 + "\n")
 delta = (settings.ub(param_index) - settings.lb(param_index)) / settings.plres;
 
     if is_up
@@ -67,11 +67,11 @@ delta = (settings.ub(param_index) - settings.lb(param_index)) / settings.plres;
             x_temp{parfor_index_2}{sortes_plas}{:}{n};
     end
 
-    disp(array_index)
-    settings.lb(param_index) + abs(delta_par)/4 * (array_index)-abs(delta_par)/4
-    disp(fval{sortes_plas}{:}(array_index))
-    disp(fval_temp_1{param_index}(array_index))
-    disp(fval_temp{parfor_index_2}{sortes_plas}{:}(array_index))
+    % disp(array_index)
+    % settings.lb(param_index) + abs(delta_par)/4 * (array_index)-abs(delta_par)/4
+    % disp(fval{sortes_plas}{:}(array_index))
+    % disp(fval_temp_1{param_index}(array_index))
+    % disp(fval_temp{parfor_index_2}{sortes_plas}{:}(array_index))
 
     fval{sortes_plas}{:}(array_index) = ...
         fval_temp{parfor_index_2}{sortes_plas}{:}(array_index);

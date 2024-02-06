@@ -51,22 +51,37 @@ for i = 1:length(alg)
 end
 
 % Execute optimization for each parameter in parallel
-parfor parfor_indices = parfor_indices
-    [x{parfor_indices},fval{parfor_indices},...
-        simd{parfor_indices},Pval{parfor_indices}] = ...
-        run_PLA_on_parameter(parfor_indices,PL_iter_start,settings,model_folder);
+parfor idx = parfor_indices
+    [x{idx},fval{idx},...
+        simd{idx},Pval{idx}] = ...
+        run_PLA_on_parameter(idx,PL_iter_start,settings,model_folder);
 end
 
 % Add code to start both optimizations from the same parameter value and
 % then select the best point for the start
 
-for parfor_indices = parfor_indices
-% Calculate the actual parameter index based on the input
-par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
+for idx = parfor_indices
+    n_parameters = length(settings.pltest);
 
-delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
-    for n = 1:length(fval{parfor_indices})
-        Pval{parfor_indices}{n} = (settings.lb(par_indx) + abs(delta)/4 * (1:settings.plres*4+1))-abs(delta)/4;
+    if mod(idx,n_parameters*2) == 1
+        for idx_2 = 1:n_parameters
+
+            test = floor(idx/n_parameters)*n_parameters+idx_2;
+
+            if min(fval{test}{end}(length(fval{test+n_parameters}{end})),...
+                    fval{test+n_parameters}{end}(end)) ==...
+                    fval{test}{end}(length(fval{test+n_parameters}{end}))
+
+                fval{test+n_parameters}{end}(end) = [];
+            end
+        end
+    end
+    % Calculate the actual parameter index based on the input
+    par_indx = settings.pltest(mod(idx-1, length(settings.pltest)) + 1);
+
+    delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
+    for n = 1:length(fval{idx})
+        Pval{idx}{n} = (settings.lb(par_indx) + abs(delta)/4 * (1:settings.plres*4+1))-abs(delta)/4;
     end
 end
 

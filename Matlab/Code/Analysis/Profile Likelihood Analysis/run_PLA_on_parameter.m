@@ -39,7 +39,7 @@ else
     % Calculate the step size for the search in the reverse direction
     delta_par = -delta;
     % Set the search range in the reverse direction
-    PL_iter(:) = PL_iter_start(par_indx)-1:-1:1;
+    PL_iter(:) = PL_iter_start(par_indx):-1:1;
     section = "start";
 end
 
