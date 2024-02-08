@@ -19,7 +19,7 @@ end
 
 x_temp_1 = rst.(name).min.xt;
 fval_temp_1 = rst.(name).min.fvalt;
-
+tic
 parfor parfor_index_2 = 1:local_min_number
     [x_temp{parfor_index_2},fval_temp{parfor_index_2},current_pos{parfor_index_2}] = ...
         optimize_towards_start(x_temp_1,fval_temp_1,parfor_index_2, ...
@@ -27,7 +27,9 @@ parfor parfor_index_2 = 1:local_min_number
         alg,start_over_position);
 end
 
-fprintf("local_min_number: " + local_min_number + "\n")
+time_reopt = toc;
+
+fprintf("local_min_number: " + local_min_number + "  time: " + time_reopt +"\n")
 
 for parfor_index_2 = 1:local_min_number
 
