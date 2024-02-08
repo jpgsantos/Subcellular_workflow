@@ -165,14 +165,6 @@ function [stg] = default_settings()
 % stg.sopt_options: Provides options for Surrogate optimization (Surrogate
 % optimization options)
 
-
-
-
-
-
-
-
-
 %% Analysis
 
 % Lists experiments to run (example experiment 1 to 3 and experimet 6)
@@ -343,15 +335,24 @@ stg.plres = 50;
 % (Profile Likelihood Plots)
 stg.plplot = true;
 
+% (Profile likelihood simulated annealing opptimization to start)
 stg.plsaots = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum-1)*1,'MaxTime', 30,'ReannealInterval',40);
-% (Profile likelihood simulated annealing opptimization to start)
+    ones(1,stg.parnum-1)*1,'MaxTime',15,'ReannealInterval',40);
 
-stg.plotv = 0.99;
 % (Profile Likelihood optimization threshold value)
+stg.plotv = 0.99;
 
+% Ratio betweeen the value of the first try of a point in PLA and the
+% previous point,if abobe this ratio an intermideatia value is picked up to
+% 2 times
 stg.ratio = 2;
+
+% Profile Likelihood reoptimize optimization number
+stg.plroptn = 30;
+
+% Profile Likelihood display current optimization status
+stg.pldcos = 0;
 
 % True or false to decide whether to run simulated annealing
 % (Profile Likelihood Simulated Annealing)
@@ -361,14 +362,12 @@ stg.plsa = true;
 % (Profile Likelihood Simulated Annealing options)
 stg.plsao = optimoptions(@simulannealbnd,'Display','off', ...
     'InitialTemperature',...
-    ones(1,stg.parnum-1)*1,'MaxTime',15,'ReannealInterval',40);
+    ones(1,stg.parnum-1)*1,'MaxTime',10,'ReannealInterval',40);
 
 % (Profile Likelihood Simulated Annealing options start)
 stg.plsaos = optimoptions(@simulannealbnd,'Display','off', ...
         'InitialTemperature',...
         ones(1,stg.parnum-1)*1,'MaxTime',60,'ReannealInterval',40);
-
-
 
 % True or false to decide whether to run Pattern search
 % (Profile Likelihood Pattern search)
@@ -377,7 +376,7 @@ stg.plps = true;
 % Options for Pattern search
 % (Pattern search options)
 stg.plpso = optimoptions(@patternsearch,'Display','off',...
-    'MaxTime',15,...
+    'MaxTime',9,...
     'UseCompletePoll',false,'UseCompleteSearch',false,...
     'MaxMeshSize',1,'MaxFunctionEvaluations',10000);
 
@@ -392,16 +391,14 @@ stg.plfm = true;
 
 % Options for surrogate optimization
 % (Profile Likelihood surrogate optimization options)
-stg.plfmo = optimoptions('surrogateopt','Display','off',...
-    'MaxTime',15,...
-    'MaxFunctionEvaluations',10000,...
-    'MinSampleDistance',0.01,'MinSurrogatePoints',6+1);
+stg.plfmo = optimoptions(@simulannealbnd,'Display','off', ...
+    'InitialTemperature',...
+    ones(1,stg.parnum-1)*1,'MaxTime',10,'ReannealInterval',40);
 
 % (Profile Likelihood surrogate optimization options start)
-stg.plfmos = optimoptions('surrogateopt','Display','off',...
-    'MaxTime',60,...
-    'MaxFunctionEvaluations',10000,...
-    'MinSampleDistance',0.01,'MinSurrogatePoints',6*6+1);
+stg.plfmos = optimoptions(@simulannealbnd,'Display','off', ...
+        'InitialTemperature',...
+        ones(1,stg.parnum-1)*1,'MaxTime',60,'ReannealInterval',40);
 
 %% Optimization
 
