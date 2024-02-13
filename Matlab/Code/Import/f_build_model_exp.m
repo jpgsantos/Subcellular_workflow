@@ -112,7 +112,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     save(model_exp_eq + number_exp + ".mat",'model_exp','config_exp')
-    
+    sbiosaveproject(model_exp_eq + number_exp,'modelobj')
+
     % Update simulation settings for the proper simulation run
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
@@ -191,6 +192,8 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     model_exp = model_run{number_exp};
     config_exp = configsetObj{number_exp};
     save(model_exp_default + number_exp + ".mat",'model_exp','config_exp')
+    sbiosaveproject(model_exp_default + number_exp,'model_exp')
+
 
     % Update simulation settings for detailed simulation run
     set(configsetObj{number_exp}.SolverOptions,'OutputTimes', []);

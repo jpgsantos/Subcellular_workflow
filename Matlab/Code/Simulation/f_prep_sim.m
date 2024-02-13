@@ -85,7 +85,7 @@ n=stg.exprun(m);
         max(find(stg.exprun==n)-1,1))).start_amount{:,2}]);
     previous_simulation_valid = ...
         result.simd{stg.exprun(max(find(stg.exprun==n)-1,1))} ~= 0;
-
+    
     if is_not_first_experiment && start_values_equal && previous_simulation_valid
         % Set the start amounts based on the previous experiment
         ssa(:,n) = ssa(:,stg.exprun(find(stg.exprun==n)-1));
@@ -104,25 +104,46 @@ n=stg.exprun(m);
 
         try
             success = true;
-                
-            while stg.reltol >= 1.0E-3
-                while stg.abstol >= 1.0E-6
-                    try
-                        ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
-                        success = true;
-                    catch
-                        success = false;
+
+            if stg.reltol < stg.reltol_min
+                try
+                    ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
+                    success = true;
+                catch
+                    success = false;
+                    disp("check your stg.reltol value")
+                end
+
+            else
+                while stg.reltol >= stg.reltol_min
+                    if stg.abstol < stg.abstol_min
+                        try
+                            ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
+                            success = true;
+                        catch
+                            success = false;
+                            disp("check your stg.abstol value")
+                        end
+                    else
+                        while stg.abstol >= stg.abstol_min
+                            try
+                                ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
+                                success = true;
+                            catch
+                                success = false;
+                            end
+                            if success
+                                break
+                            end
+                            stg.abstol = stg.abstol/10;
+                        end
                     end
                     if success
                         break
                     end
-                    stg.abstol = stg.abstol/10;
+                    stg.abstol = stg.abstol_min;
+                    stg.reltol = stg.reltol/10;
                 end
-                if success
-                    break
-                end
-                stg.abstol = 1.0E-6;
-                stg.reltol = stg.reltol/10;
             end
         catch
             % disp("fail_eq")

@@ -215,10 +215,19 @@ stg.UnitConversion = false;
 stg.abstolscale = true;
 
 % Assigns the value of Relative tolerance (Relative tolerance)
-stg.reltol = 1.0E-4;
+stg.reltol = 1.0E-3;
 
-% Assigns the value of Absolute tolerance (Absolute tolerance)
-stg.abstol = 1.0E-4;
+% Value of Relative tolerance minimum
+% (Relative tolerance minimum)
+stg.reltol_min = 1.0E-3;
+
+% Value of Absolute tolerance
+% (Absolute tolerance)
+stg.abstol = 1.0E-6;
+
+% Value of Absolute tolerance minimum
+% (Absolute tolerance minimum)
+stg.abstol_min = 1.0E-6;
 
 % Specifies the time units for simulation (Simulation time)
 stg.simtime = "second";
