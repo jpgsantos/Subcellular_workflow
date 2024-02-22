@@ -255,7 +255,7 @@ for m = settings.pltest
             plot(results.PLA.("reopt" +n).min.Pval{m}(i),...
                 nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]),'DisplayName',"Total score min" + n,...
                 'LineWidth',1,'color',color(n,:))
-            minfval = min(nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]);
+            minfval = min(nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]));
         end
 
             % i = find([results.PLA.min.fvalt{m}]);

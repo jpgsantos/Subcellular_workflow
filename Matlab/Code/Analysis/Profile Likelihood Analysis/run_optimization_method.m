@@ -26,9 +26,9 @@ offset = offset+1;
 if alg{2} == 1
     optimization_func = @sim_a;
 elseif alg{2} == 2
-    optimization_func = @p_search;
-elseif alg{2} == 3
     optimization_func = @fmin_con;
+elseif alg{2} == 3
+    optimization_func = @p_search;
 else
     error('No optimization method specified');
 end
@@ -129,14 +129,14 @@ else
 end
 
 % Execute the optimization
-% [x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
-%     x,[],[],[],[],temp_lb,temp_up,[],options);
+[x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders),...
+    x,[],[],[],[],temp_lb,temp_up,[],options);
 
 % [x, fval] = ...
 %         surrogateopt(@(x)f_sim_score(x,settings,model_folders), temp_lb,temp_up, options);
 
-[x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders),...
-    x,temp_lb,temp_up,options);
+% [x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders),...
+%     x,temp_lb,temp_up,options);
 
 % Compute and store the result of the optimization
 [~,rst,~] = f_sim_score(x,settings,model_folders);
