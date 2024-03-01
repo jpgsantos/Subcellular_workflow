@@ -83,7 +83,6 @@ if rst.simd{n} ~= 0
     if ~isempty(sim_results_norm)
         sim_results = sim_results_norm;
     end
-    % sim_results = f_normalize(rst, stg, n, j, mmf);
     rst.xfinal{n, 1}(j) = sim_results(end);
 
     % Calculate score using formula that accounts for normalization
