@@ -80,6 +80,9 @@ if rst.simd{n} ~= 0
 
     number_points = size(Data(n).Experiment.x(:, j), 1);
     [sim_results_norm,sim_results_detailed,sim_results] = f_normalize(rst, stg, n, j, mmf);
+    if ~isempty(sim_results_norm)
+        sim_results = sim_results_norm;
+    end
     % sim_results = f_normalize(rst, stg, n, j, mmf);
     rst.xfinal{n, 1}(j) = sim_results(end);
 
