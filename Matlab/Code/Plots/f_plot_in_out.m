@@ -302,7 +302,7 @@ for n = stg.exprun
                             string("\theta_"+m));
                     end
                     % Set ylabel with the correct units
-                    ylabel("A.U.",...
+                    ylabel("dimensionless",...
                         'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
                     valid_outputs2 = [valid_outputs2,m];
                 end
