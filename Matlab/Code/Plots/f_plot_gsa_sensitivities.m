@@ -1,138 +1,232 @@
-function f_plot_gsa_sensitivities(rst,stg,sbtab)
-% Generates figures for Sensitivity Analysis
+function plots = f_plot_gsa_sensitivities(results,settings,sbtab)
+% This function creates plots for Global Sensitivity Analysis. It takes in
+% results from sensitivity analysis, settings, an SBtab table, and font
+% settings, then generates a set of plots for each section of the analysis.
+% The function relies on three helper functions to generate heatmap plots,
+% compute mean values, and set font settings. 
+% 
+% Inputs:
+% - results: A structure containing the results from the sensitivity
+%   analysis
+% - settings: A structure containing various settings for the analysis
+% - sbtab: An SBtab table used for creating the outputs
+% - font_settings: A structure containing the font settings for the plots
+%
+% Outputs:
+% - plots: A cell array containing the generated plots and their names
+%
+% Functions called:
+% - f_generate_plot: Generates a heatmap plot for the given parameters
+% - get_mean_values: Computes the mean values of an input matrix
+% - set_font_settings: Sets font settings according to the provided
+%   configuration
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
+%
+% Variables:
+% Loaded:
+% None
+%
+% Initialized:
+% - output_names2: Names of the outputs used in the plots
+% - par_names: Names of the parameters used in the plots
+% - par_names2: Modified names of the parameters used in the plots
+% - plot_sections: Information about each plot section, including name,
+% title, output_names2, and heatmap_values
+% 
+% Persistent:
+% None
+
+
+
+% Set font settings
+f_set_font_settings()
 
 % Get the total number of outputs
-[~,outputNames.sd] = f_get_outputs(stg,sbtab);
+[~,output_names.sd] = f_get_outputs(settings,sbtab);
 
-for n = 1:size(outputNames.sd,2)
-    outputNames.sd{n}{:} = strrep(outputNames.sd{n}{:},"_","\_");
+% Set output_names2 values
+for n = 1:size(output_names.sd,2)
+    output_names.sd{n}{:} = strrep(output_names.sd{n}{:},"_","\_");
 end
-for n = stg.exprun
-    outputNames.se{n} = "E " + string(n-1);
+for n = settings.exprun
+    output_names.se{n} = "E " + string(n-1);
+end
+output_names.xfinal = output_names.sd;
+
+% Set parameter names
+% par_names = cell(1,settings.parnum);
+par_names2 = cell(1,settings.parnum);
+par_names = "P_{" + [1:settings.parnum] + "}";
+for n = 1:settings.parnum
+    % par_names = n
+    % par_names{n} = char("P_{" + find(settings.partest==n) + "}");
+    par_names2{n} = string(par_names{n}(1,:));
+    % Confirm if can be deleted
+    % for m = 2:size(par_names{n},1)
+    %     par_names2{n} = string(par_names2{n}) + ", " +...
+    %         string(par_names{n}(m,:));
+    % end
 end
 
-outputNames.xfinal = outputNames.sd;
+% Define plot sections
+plot_sections = {
+    % Bootstrapping quartile mean of first order Sensitivity index for
+    % score per Experimental Output
+    "Si seo bm", ...
+    ["First order Sensitivities",...
+    "calculated using the Score of each Experimental Output",...
+    "(Bootstrapping Mean)"],...
+    "output_names.sd", "get_mean_values(results.SiQ.sd,settings)";
+    % Bootstrapping quartile mean of total order Sensitivity index for
+    % score per Experimental Output
+    "SiT seo bm",...
+    ["Total order Sensitivities",...
+    " calculated using the Score of each Experimental Output ",...
+    " (Bootstrapping Mean)"],...
+    "output_names.sd", "get_mean_values(results.SiTQ.sd,settings)";
+    % Bootstrapping quartile mean of first order Sensitivity index for
+    % score per Experiments
+    "Si se bm",...
+    ["First order Sensitivities",...
+    " calculated using the Score of each Experiment",...
+    "(Bootstrapping Mean)"],...
+    "output_names.se", "get_mean_values(results.SiQ.se,settings)";
+    % Bootstrapping quartile mean of total order Sensitivity index for
+    % score per Experiments
+    "SiT se bm",...
+    ["Total order Sensitivities",...
+    " calculated using the Score of each Experiment",...
+    "(Bootstrapping Mean)"],...
+    "output_names.se", "get_mean_values(results.SiTQ.se,settings)";
+    % Bootstrapping quartile mean of first order Sensitivity index for the
+    % final points of the simulations for the output beeing measured
+    "Si xfinal bm",...
+    ["First order Sensitivities",...
+    " calculated using the final value of each Experimental Output",...
+    "(Bootstrapping Mean)"],...
+    "output_names.xfinal", "get_mean_values(results.SiQ.xfinal,settings)"
+    % Bootstrapping quartile mean of total order Sensitivity index for the
+    % final points of the simulations for the output beeing measured
+    "SiT xfinal bm",...
+    ["Total order Sensitivities",...
+    " calculated using the final value of each Experimental Output",...
+    "(Bootstrapping Mean)"],...
+    "output_names.xfinal", "get_mean_values(results.SiTQ.xfinal,settings)"
+    };
 
-parNames = cell(1,stg.parnum);
-parNames2 = cell(1,stg.parnum);
-
-for n = 1:stg.parnum
-    parNames{n} = char("P" + find(stg.partest==n));
+% Generate plots for each section
+for i = 1:size(plot_sections, 1)
+    [plots(i,:)] = f_generate_plot(results, settings, output_names,...
+        par_names2, plot_sections{i, 1}, plot_sections{i, 2},...
+        plot_sections{i, 3}, plot_sections{i, 4});
 end
 
-for n = 1:size(parNames,2)
-    parNames2{n} = string(parNames{n}(1,:));
-    for m = 2:size(parNames{n},1)
-        parNames2{n} = string(parNames2{n}) + ", " +...
-            string(parNames{n}(m,:));
-    end
-end
+% Create Si, SiT plot
+plots(7,:) = f_renew_plot('Si,SiT');
 
-% Bootstrapping quartile mean of first order Sensitivity index for score
-% per Experimental Output
-f_generate_plot(rst,stg,outputNames,parNames2,...
-    "Si seo bm",...
-    "First order Sensitivities calculated using the Score of each Experimental Output  (Bootstrapping Mean)",...
-    "outputNames.sd",...
-    "transpose(reshape(mean(rst.SiQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))")
+layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+nexttile(layout)
 
-% Bootstrapping quartile mean of total order Sensitivity index for score
-% per Experimental Output
-f_generate_plot(rst,stg,outputNames,parNames2,"SiT seo bm",...
-    "Total order Sensitivities calculated using the Score of each Experimental Output (Bootstrapping Mean)",...
-    "outputNames.sd",...
-    "transpose(reshape(mean(rst.SiTQ.sd(:,:,1:stg.parnum)),[size(rst.SiQ.sd,2),size(rst.SiQ.sd,3)]))")
-
-% Bootstrapping quartile mean of first order Sensitivity index for score
-% per Experiments
-f_generate_plot(rst,stg,outputNames,parNames2,"Si se bm",...
-    "First order Sensitivities calculated using the Score of each Experiment(Bootstrapping Mean)",...
-    "outputNames.se",...
-    "transpose(reshape(mean(rst.SiQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))")
-
-% Bootstrapping quartile mean of total order Sensitivity index for score
-% per Experiments
-f_generate_plot(rst,stg,outputNames,parNames2,"SiT se bm",...
-    "Total order Sensitivities calculated using the Score of each Experiment (Bootstrapping Mean)",...
-    "outputNames.se",...
-    "transpose(reshape(mean(rst.SiTQ.se(:,:,1:stg.parnum)),[size(rst.SiQ.se,2),size(rst.SiQ.se,3)]))")
-
-% Bootstrapping quartile mean of first order Sensitivity index for the
-% final points of the simulations for the output beeing measured
-f_generate_plot(rst,stg,outputNames,parNames2,"Si xfinal bm",...
-    "First order Sensitivities calculated using the final value of each Experimental Output (Bootstrapping Mean)",...
-    "outputNames.xfinal",...
-    "transpose(reshape(mean(rst.SiQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))")
-
-% Bootstrapping quartile mean of total order Sensitivity index for the
-% final points of the simulations for the output beeing measured
-f_generate_plot(rst,stg,outputNames,parNames2,"SiT xfinal bm",...
-    "Total order Sensitivities calculated using the final value of each Experimental Output (Bootstrapping Mean)",...
-    "outputNames.xfinal",...
-    "transpose(reshape(mean(rst.SiTQ.xfinal(:,:,1:stg.parnum)),[size(rst.SiQ.xfinal,2),size(rst.SiQ.xfinal,3)]))")
-
-figHandles = findobj('type', 'figure', 'name', 'Si,SiT');
-close(figHandles);
-figure('WindowStyle', 'docked','Name','Si,SiT', 'NumberTitle', 'off');
-
-for n = 1:size(parNames2,2)
-    a{n} = char(parNames2{n});
+for n = 1:size(par_names2,2)
+    a{n} = char(par_names2{n});
 end
 
 a = categorical(a,a);
 
-bar(a,[transpose(rst.Si.st(:,1:stg.parnum)),...
-    transpose(rst.SiT.st(:,1:stg.parnum))])
-xlabel('Parameters');
-ylabel('Sensitivity');
-title('Sensitivities calculated using the sum of the Score of all Experiments');
-legend({'SI','SIT'});
+bar(a,[transpose(results.Si.st(:,1:settings.parnum)),...
+    transpose(results.SiT.st(:,1:settings.parnum))])
+set(gca,'FontSize', Axis_FontSize);
+xlabel('Parameters','FontSize', Axis_FontSize,...
+    'Fontweight',Axis_Fontweight);
+ylabel('Sensitivity','FontSize', Axis_FontSize,...
+    'Fontweight',Axis_Fontweight);
+title(layout,...
+    'Sensitivities calculated using the sum of the Score of all Experiments',...
+    'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
+leg = legend({'Si','SiT'},'Location','best',...
+    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
+leg.ItemTokenSize = Legend_ItemTokenSize;
 legend boxoff
 
-figHandles = findobj('type', 'figure', 'name', 'Si,SiT b');
-close(figHandles);
-figure('WindowStyle', 'docked','Name','Si,SiT b', 'NumberTitle', 'off');
+% Create Si, SiT bootstraping plot
+plots(8,:) = f_renew_plot('Si,SiT b');
+
+
+layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+nexttile(layout)
 
 T = [];
 
 for n = 1:size(a,2)
-    for m = 1:size(rst.SiQ.st(:,n),1)
- T = [T;table(rst.SiQ.st(m,n),a(n),"Si")];
+    for m = 1:size(results.SiQ.st(:,n),1)
+        T = [T;table(results.SiQ.st(m,n),a(n),"Si")];
     end
 end
 for n = 1:size(a,2)
-    for m = 1:size(rst.SiTQ.st(:,n),1)
- T = [T;table(rst.SiTQ.st(m,n),a(n),"SiT")];
+    for m = 1:size(results.SiTQ.st(:,n),1)
+        T = [T;table(results.SiTQ.st(m,n),a(n),"SiT")];
     end
 end
 
-boxchart(T.Var2,T.Var1,'GroupByColor',T.Var3,'MarkerStyle','.','JitterOutliers','on')
-xlabel('Parameters');
-ylabel('Sensitivity');
-title('Sensitivities calculated using the sum of the Score of all Experiments (Bootstrapping)');
-legend({'Si','SiT'},'Location','best');
+boxchart(T.Var2,T.Var1,'GroupByColor',T.Var3,...
+    'MarkerStyle','.','JitterOutliers','on')
+set(gca,'FontSize', Axis_FontSize);
+xlabel('Parameters','FontSize',...
+    Axis_FontSize,'Fontweight',Axis_Fontweight);
+ylabel('Sensitivity','FontSize',...
+    Axis_FontSize,'Fontweight',Axis_Fontweight);
+title(layout,...
+    'Sensitivities calculated using the sum of the Score of all Experiments',...
+    'FontSize',Major_title_FontSize,'Fontweight',Major_title_Fontweight);
+    
+subtitle(layout,'(Bootstrapping)','FontSize', Major_subtitle_FontSize,...
+    'Fontweight',Major_subtitle_Fontweight);
+leg = legend({'Si','SiT'},'Location','best',...
+    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight);
+leg.ItemTokenSize = Legend_ItemTokenSize;
 legend boxoff
 end
 
-function f_generate_plot(rst,stg,outputNames,parNames2,name,title,...
-    helprer1,helprer2)
+function [plots] =...
+    f_generate_plot(results,settings,output_names,par_names2,name,major_title,...
+    output_names_2,heatmap_values)
+% Function to generate heatmap plot for the given parameters
 
-eval("figHandles = findobj('type', 'figure', 'name', '" + name + "');")
-close(figHandles);
-eval("figure('WindowStyle', 'docked','Name','" + name +...
-    "','NumberTitle', 'off');")
+% Set font settings
+f_set_font_settings()
 
-heatmap_fixer = eval(helprer1);
-heatmap_fixer=heatmap_fixer(~cellfun('isempty',heatmap_fixer));
+plots = f_renew_plot(name);
 
-heatmap_fixer2 = eval(helprer2);
-heatmap_fixer2 = heatmap_fixer2(:,all(~isnan(heatmap_fixer2)));
+layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+nexttile(layout)
 
-h = heatmap(heatmap_fixer,parNames2,heatmap_fixer2,'Colormap',turbo,...
-    'ColorLimits',[0 1],'GridVisible','off');
+fixed_output_names2 = eval(output_names_2);
+fixed_output_names2 =...
+    fixed_output_names2(~cellfun('isempty',fixed_output_names2));
+
+fixed_heatmap_values = eval(heatmap_values);
+fixed_heatmap_values =...
+    fixed_heatmap_values(:,all(~isnan(fixed_heatmap_values)));
+
+h = heatmap(fixed_output_names2,par_names2,...
+    fixed_heatmap_values,'Colormap',turbo,...
+    'ColorLimits',[0 1],'GridVisible','off',FontSize=Axis_FontSize);
 h.CellLabelFormat = '%.2f';
 
-eval(" h.Title = """ + title + """;")
-h.XLabel = 'Outputs';
-h.YLabel = 'Parameters';
+title(layout,major_title(1),'FontSize', Major_title_FontSize,...
+    'Fontweight',Major_title_Fontweight);
+subtitle(layout,major_title(2:end),'FontSize', Major_subtitle_FontSize,...
+    'Fontweight',Major_subtitle_Fontweight)
+
+h.XLabel = '\fontsize{8} \bf Outputs';
+h.YLabel = '\fontsize{8} \bf Parameters';
+end
+
+function mean_values = get_mean_values(input_matrix,settings)
+% Function to compute the mean values of the input matrix
+
+mean_values = transpose(reshape(mean(input_matrix(:,:,1:settings.parnum)),...
+    [size(input_matrix,2),size(input_matrix,3)]));
 end

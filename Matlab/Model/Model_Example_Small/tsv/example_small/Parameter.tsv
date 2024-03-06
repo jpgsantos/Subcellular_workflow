@@ -1,0 +1,10 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example small' TableName='Parameter' TableTitle='SBTAB example small Parameter' TableType = 'Quantity'						
+!ID	!Name	!Unit	!Value:log2	!Value:linspace	!Value:log10	!Location	!Comment
+K0	kf_0	1/(nanomolarity*second)	3.8346	6832.934	3.8346	Compartment	kf_aReceptorXLigand__aReceptor_Ligand
+K1	kr_0	1/second	0.6998	5.0095	0.6998	Compartment	kr_aReceptorXLigand__aReceptor_Ligand
+K2	kf_1	1/second	-0.7145	0.19298	-0.7145	Compartment	kf_iReceptor__aReceptor
+K3	kr_1	1/second	1.4356	27.2655	1.4356	Compartment	kr_iReceptor__aReceptor
+K4	kf_2	1/second	3.584	3837.2947	3.584	Compartment	kf_iReceptor_Ligand__aReceptor_Ligand
+K5	kr_2	1/second	-1.0681	0.085493	-1.0681	Compartment	kr_iReceptor_Ligand__aReceptor_Ligand
+K6	kf_3	1/(nanomolarity*second)	3.6638	4610.5246	3.6638	Compartment	kf_iReceptorXLigand__iReceptor_Ligand
+K7	kr_3	1/second	7.3311	21436012.5386	7.3311	Compartment	kr_iReceptorXLigand__iReceptor_Ligand
