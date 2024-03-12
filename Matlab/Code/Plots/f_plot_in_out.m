@@ -48,8 +48,6 @@ function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % Minor_Title_Spacing, Legend_FontSize, Legend_Fontweight,
 % Legend_ItemTokenSize: Font settings variables.
 
-
-
 % Display a message indicating that the inputs outputs are being plotted
 disp("Plotting Inputs Outputs")
 
@@ -60,7 +58,7 @@ f_set_font_settings()
 fig_number = 0;
 plots = cell(1,2);
 
-
+colors = generateRainbowGradient(length(stg.pat));
 
 % Loop through each experiment run
 for n = stg.exprun
@@ -76,6 +74,7 @@ for n = stg.exprun
     [layout,input_plot,plots] = ...
         f_plot_in_out_left(rst, stg, sbtab, fig_number_same_exp,...
         n_outputs_exp > 4, n, plots, fig_number);
+    draw_legend = 1;
 
     % Loop through each output of the current experiment
     for j = 1:n_outputs_exp
@@ -92,81 +91,18 @@ for n = stg.exprun
             [layout,input_plot,plots] = ...
                 f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
                 n_outputs_exp > 4, n, plots, fig_number);
+            draw_legend = 1;
         end
 
         % Set up the layout for output data
         nexttile(layout,[1 1]);
+
         hold on
-        valid_outputs = [];
-        valid_outputs2 = [];
-        % Loop through each parameter array to test
+        [valid_outputs_plots,valid_outputs,sim_results,sim_results_norm,sim_results_detailed] = ...
+            name_1(stg,rst,sbtab,mmf,n,j,colors,0);
 
-
-        % Loop through each parameter array to test
-        for m = stg.pat
-
-            % Plot simulated output data only if the simulation was
-            % successful
-            if rst(m).simd{1,n} ~= 0
-
-                % Retrieve time and normalized simulation results
-                time = rst(m).simd{1,n}.Time;
-                [sim_results_norm,sim_results_detailed,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
-
-                % If simdetail is enabled, retrieve detailed time and
-                % simulation results
-                if stg.simdetail
-                    time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
-                    % [~,sim_results_detailed] = ...
-                    %     f_normalize(rst(m),stg,n,j,mmf);
-                end
-
-                % Plot the outputs to each dataset (new subplots) and
-                % parameter array to test that are simulated using
-                % Simbiology
-
-                % Plot simulated output data
-                if stg.simdetail
-                    valid_outputs_plots(:,m) = scatter(time_detailed,...
-                        sim_results_detailed,1,"o","filled","MarkerFaceAlpha",0.75,"MarkerEdgeAlpha",0.75,"DisplayName",...
-                        string("\theta_"+m));
-
-                else
-
-                    valid_outputs_plots(:,m) = scatter(time,...
-                        sim_results,1,"o","filled","MarkerFaceAlpha",0.75,"MarkerEdgeAlpha",0.75,...
-                        "DisplayName",string("\theta_"+m));
-                end
-                % Set ylabel with the correct units
-                ylabel(string(rst(m).simd{1,n}. ...
-                    DataInfo{end-n_outputs_exp+j,1}.Units),...
-                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-                valid_outputs = [valid_outputs,m];
-            end
-
-        end
         if isempty(sim_results_norm)
-            for m = stg.pat
-                % Plot output data only if the simulation was successful
-                if rst(m).simd{1,n} ~= 0
-
-                    % Retrieve time, data and standard deviation from the
-                    % experiment
-                    time = rst(m).simd{1,n}.Time;
-                    data = Data(n).Experiment.x(:,j);
-                    data_SD = Data(n).Experiment.x_SD(:,j);
-
-                    % Plot the output data
-                    plot_data = scatter(time,data,2,'k',"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,'LineWidth',0.5,...
-                        "DisplayName","data");
-
-                    % Plot the standard deviation of the output data
-                    plot_data_SD = f_error_area(transpose(time),...
-                        transpose([data-data_SD,data+data_SD]));
-                    break
-                end
-            end
-
+            [plot_data,plot_data_SD,data,data_SD] = name_3(stg,rst,Data,j,n);
 
             % Set ylim based on whether simdetail is enabled or not
             if stg.simdetail
@@ -177,17 +113,6 @@ for n = stg.exprun
                     min(data-data_SD),min(data)]) inf])
             end
 
-        % Add a legend for the entire image
-        % disp(1)
-        leg = ...
-            legend([input_plot,valid_outputs_plots(:,valid_outputs),...
-            plot_data,plot_data_SD],'FontSize', Legend_FontSize,...
-            'Fontweight',Legend_Fontweight,'Location',...
-            'layout',"Orientation","Horizontal");
-        leg.Layout.Tile = 'South';
-        leg.ItemTokenSize = Legend_ItemTokenSize;
-        set(leg,'Box','off')
-
         else
             % Set ylim based on whether simdetail is enabled or not
             if stg.simdetail
@@ -195,50 +120,13 @@ for n = stg.exprun
             else
                 ylim([min([0,min(sim_results),]) inf])
             end
-
-                    % Add a legend for the entire image
- %        leg = ...
- %            legend([input_plot,valid_outputs_plots(:,valid_outputs),...
- % ],'FontSize', Legend_FontSize,...
- %            'Fontweight',Legend_Fontweight,'Location',...
- %            'layout',"Orientation","Horizontal");
- %        leg.Layout.Tile = 'South';
- %        leg.ItemTokenSize = Legend_ItemTokenSize;
- %        set(leg,'Box','off')
-        
         end
 
         hold off
 
-        % Set xlabel with correct font settings
-        xlabel('Seconds','FontSize', Axis_FontSize,...
-            'Fontweight',Axis_Fontweight)
-
-        % Set title according to settings
-        if stg.plotoln == 1
-            [~,t2] = ...
-                title(strrep(string(sbtab.datasets(n).output_name{1,j}),...
-                '_','\_')," ",'FontSize',Minor_title_FontSize,...
-                'Fontweight',Minor_title_Fontweight);
-        else
-            [~,t2] = ...
-                title(string(sbtab.datasets(n).output{1,j}),...
-                " ",'FontSize',Minor_title_FontSize,...
-                'Fontweight',Minor_title_Fontweight);
-        end
-
-        t2.FontSize = Minor_Title_Spacing;
-        % Set the number of decimal places for the y-axis
-        % ytickformat('%-3.1f')
-
-
-
         if ~isempty(sim_results_norm)
-            nexttile(layout,[1 1]);
-            valid_outputs = [];
-            hold on
-            sub_fig_number = sub_fig_number +1;
 
+            sub_fig_number = sub_fig_number +1;
             if sub_fig_number/4 > fig_number_same_exp
                 fig_number_same_exp = fig_number_same_exp+1;
                 fig_number = fig_number+ 1;
@@ -247,68 +135,17 @@ for n = stg.exprun
                 [layout,input_plot,plots] = ...
                     f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
                     n_outputs_exp > 4, n, plots, fig_number);
+                draw_legend = 1;
             end
-            for m = stg.pat
-                 % Plot output data only if the simulation was successful
-                if rst(m).simd{1,n} ~= 0
 
-                    % Retrieve time, data and standard deviation from the
-                    % experiment
-                    time = rst(m).simd{1,n}.Time;
-                    data = Data(n).Experiment.x(:,j);
-                    data_SD = Data(n).Experiment.x_SD(:,j);
+            nexttile(layout,[1 1]);
 
-                    % Plot the output data
-                    plot_data = scatter(time,data,2,'k',"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,'LineWidth',0.5,...
-                        "DisplayName","data");
-
-                    % Plot the standard deviation of the output data
-                    plot_data_SD = f_error_area(transpose(time),...
-                        transpose([data-data_SD,data+data_SD]));
-                    break
-                end
-            end
-            for m = stg.pat
-
-                % Plot simulated output data only if the simulation was
-                % successful
-                if rst(m).simd{1,n} ~= 0
-
-                    % Retrieve time and normalized simulation results
-                    time = rst(m).simd{1,n}.Time;
-                    [sim_results_norm,sim_results_detailed,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
-
-                    % If simdetail is enabled, retrieve detailed time and
-                    % simulation results
-                    if stg.simdetail
-                        time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
-                        % [~,sim_results_detailed] = ...
-                        %     f_normalize(rst(m),stg,n,j,mmf);
-                    end
-
-                    % Plot the outputs to each dataset (new subplots) and
-                    % parameter array to test that are simulated using
-                    % Simbiology
-
-                    % Plot simulated output data
-                    if stg.simdetail
-                        valid_outputs_plots2(:,m) = scatter(time_detailed,...
-                            sim_results_detailed,1,"o","filled","MarkerFaceAlpha",0.75,"MarkerEdgeAlpha",0.75,"DisplayName",...
-                            string("\theta_"+m));
-
-                    else
-                        valid_outputs_plots2(:,m) = scatter(time,...
-                            sim_results_norm,1,"o","filled","MarkerFaceAlpha",0.75,"MarkerEdgeAlpha",0.75,"DisplayName",...
-                            string("\theta_"+m));
-                    end
-                    % Set ylabel with the correct units
-                    ylabel("dimensionless",...
-                        'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-                    valid_outputs2 = [valid_outputs2,m];
-                end
-
-            end
+            hold on
+            [plot_data,plot_data_SD,data,data_SD] = name_3(stg,rst,Data,j,n);
+            [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
+                name_1(stg,rst,sbtab,mmf,n,j,colors,1);
             hold off
+
             % Set ylim based on whether simdetail is enabled or not
             if stg.simdetail
                 ylim([min([0,min(sim_results_detailed),min(sim_results_norm),...
@@ -317,41 +154,119 @@ for n = stg.exprun
                 ylim([min([0,min(sim_results_norm),...
                     min(data-data_SD),min(data)]) inf])
             end
+        end
 
-            % Set xlabel with correct font settings
-            xlabel('Seconds','FontSize', Axis_FontSize,...
-                'Fontweight',Axis_Fontweight)
-
-            % Set title according to settings
-            if stg.plotoln == 1
-                [~,t2] = ...
-                    title(strrep(string(sbtab.datasets(n).output_name{1,j}),...
-                    '_','\_')+ " Norm"," " ,'FontSize',Minor_title_FontSize,...
-                    'Fontweight',Minor_title_Fontweight);
-            else
-                [~,t2] = ...
-                    title(string(sbtab.datasets(n).output{1,j})+ " Norm",...
-                    " " ,'FontSize',Minor_title_FontSize,...
-                    'Fontweight',Minor_title_Fontweight);
-            end
-
-            t2.FontSize = Minor_Title_Spacing;
-            % Set the number of decimal places for the y-axis
-            % ytickformat('%-3.1f')
-
-            % Add a legend for the entire image
-            % disp(2)
-            leg = ...
-                legend([input_plot,valid_outputs_plots2(:,valid_outputs2),...
-                plot_data,plot_data_SD],'FontSize', Legend_FontSize,...
+        if draw_legend == 1
+            leg = legend([valid_outputs_plots(:,valid_outputs),...
+                input_plot,plot_data,plot_data_SD],...
+                'FontSize', Legend_FontSize,...
                 'Fontweight',Legend_Fontweight,'Location',...
                 'layout',"Orientation","Horizontal");
             leg.Layout.Tile = 'South';
             leg.ItemTokenSize = Legend_ItemTokenSize;
             set(leg,'Box','off')
+            draw_legend = 0;
         end
     end
 end
+end
+
+function [plot_data,plot_data_SD,data,data_SD] = name_3(stg,rst,Data,j,n)
+for m = stg.pat
+    % Plot output data only if the simulation was successful
+    if rst(m).simd{1,n} ~= 0
+
+        % Retrieve time, data and standard deviation from the
+        % experiment
+        time = rst(m).simd{1,n}.Time;
+        data = Data(n).Experiment.x(:,j);
+        data_SD = Data(n).Experiment.x_SD(:,j);
+
+        % Plot the output data
+        plot_data = scatter(time,data,2,'k',"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
+            "DisplayName","data");
+
+        % Plot the standard deviation of the output data
+        plot_data_SD = f_error_area(transpose(time),...
+            transpose([data-data_SD,data+data_SD]));
+        break
+    end
+end
+end
+
+function [valid_outputs_plots,valid_outputs,sim_results,sim_results_norm,sim_results_detailed] = name_1(stg,rst,sbtab,mmf,n,j,colors,is_norm)
+valid_outputs = [];
+
+f_set_font_settings()
+
+% Loop through each parameter array to test
+for m = stg.pat
+    % Plot simulated output data only if the simulation was
+    % successful
+    if rst(m).simd{1,n} ~= 0
+
+        % Retrieve time and normalized simulation results
+        time = rst(m).simd{1,n}.Time;
+
+        [sim_results_norm,sim_results_detailed,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+
+        % If simdetail is enabled, retrieve detailed time and
+        % simulation results
+        if stg.simdetail
+            time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
+            % [~,sim_results_detailed] = ...
+            %     f_normalize(rst(m),stg,n,j,mmf);
+        end
+
+        % Plot the outputs to each dataset (new subplots) and
+        % parameter array to test that are simulated using
+        % Simbiology
+
+        % Plot simulated output data
+        if stg.simdetail
+            valid_outputs_plots(:,m) = scatter(time_detailed,...
+                sim_results_detailed,1,colors(m,:),"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+                string("\theta_"+m));
+
+        else
+            if is_norm
+                valid_outputs_plots(:,m) = scatter(time,...
+                    sim_results_norm,1,colors(m,:),"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+                    string("\theta_"+m));
+            else
+                valid_outputs_plots(:,m) = scatter(time,...
+                    sim_results,1,colors(m,:),"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+                    string("\theta_"+m));
+            end
+
+        end
+        % Set ylabel with the correct units
+        ylabel("dimensionless",...
+            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+        valid_outputs(m) = m;
+    end
+end
+% Set xlabel with correct font settings
+xlabel('Seconds','FontSize', Axis_FontSize,...
+    'Fontweight',Axis_Fontweight)
+
+% Set title according to settings
+if stg.plotoln == 1
+    [~,t2] = ...
+        title(strrep(string(sbtab.datasets(n).output_name{1,j}),...
+        '_','\_')+ " Norm"," " ,'FontSize',Minor_title_FontSize,...
+        'Fontweight',Minor_title_Fontweight);
+else
+    [~,t2] = ...
+        title(string(sbtab.datasets(n).output{1,j})+ " Norm",...
+        " " ,'FontSize',Minor_title_FontSize,...
+        'Fontweight',Minor_title_Fontweight);
+end
+
+t2.FontSize = Minor_Title_Spacing;
+
+        % Set the number of decimal places for the y-axis
+        % ytickformat('%-3.1f')
 end
 
 function [layout,input_plot,plots] = ...
@@ -396,9 +311,10 @@ for o = 1:size(sbtab.datasets(n).input,2)
                 str2double(strrep(sbtab.datasets(n).input(o),'S',''))+1;
 
             % Plot the inputs to each experiment
+            % input_plot = [];
             input_plot = ...
                 scatter(rst(p).simd{1,n}.Time,rst(p).simd{1,n}.Data(1:end,...
-                input_species_ID),2,"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+                input_species_ID),2,[0.5,0.5,0.5],"o","filled","MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                 string(rst(p).simd{1,n}.DataNames(input_species_ID)));
 
             % Set ylabel with the correct units
