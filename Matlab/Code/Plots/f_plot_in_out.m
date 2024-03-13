@@ -411,36 +411,10 @@ title(layout,name_long,...
 % Begin plotting the input data for the specified experiment.
 hold on % Keep the plot active to overlay multiple inputs if necessary.
 
-% Iterate through each input species for the current experiment.
-for inpt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
-    % Iterate through each set of parameters to process simulation results.
-    for pa_idx = stg.pat
-        % Check if the simulation was successful for the current parameter
-        % set and experiment.
-        if rst(pa_idx).simd{1,exp_idx} ~= 0
-            % Convert species identifier from string to number.
-            input_species_ID =...
-                str2double(strrep(sbtab.datasets(exp_idx).input(inpt_idx),'S',''))+1;
+[input_plot,~] = f_plot_input(stg,rst,sbtab,exp_idx,layout);
 
-            % Create a scatter plot for the input species data points.
-            input_plot = ...
-                scatter(rst(pa_idx).simd{1,exp_idx}.Time,...
-                rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID),...
-                2,[0.5,0.5,0.5],"o","filled","MarkerFaceAlpha",1,...
-                "MarkerEdgeAlpha",1,"DisplayName",...
-                string(rst(pa_idx).simd{1,exp_idx}.DataNames(input_species_ID)));
-
-            % Label the y-axis with the correct unit and apply pre-defined
-            % font settings.
-            ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
-                DataInfo{input_species_ID,1}.Units), ...
-                'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-
-            % Break after plotting the first available set to avoid clutter.
-            break
-        end
-    end
-end
+% Finish plotting to ensure all input data is displayed properly.
+hold off
 
 % Label the x-axis as 'Seconds' and apply pre-defined font settings.
 xlabel('Seconds','FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
@@ -461,7 +435,4 @@ else
         'Fontweight',Minor_title_Fontweight);
 end
 t4.FontSize = Minor_Title_Spacing;
-
-% Finish plotting to ensure all input data is displayed properly.
-hold off
 end

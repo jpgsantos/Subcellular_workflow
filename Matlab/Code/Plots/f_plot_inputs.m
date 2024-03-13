@@ -45,7 +45,7 @@ layout = [];
 f_set_font_settings()
 
 % Iterate over the number of experiments
-for n = stg.exprun
+for exp_idx = stg.exprun
 
     % Generate the right amount of figures for all plots and calculates
     % proper subploting position
@@ -68,32 +68,7 @@ for n = stg.exprun
 
     hold on
 
-    % Iterate over the number of inputs in each experiment
-    for j = 1:size(sbtab.datasets(n).input,2)
-
-        % Iterate over the number of parameter arrays to test
-        for m = stg.pat
-
-            % (Until a non broken simulation is found)
-            if rst(m).simd{1,n} ~= 0
-
-                % Plot the inputs to each experiment
-                plot(rst(m).simd{1,n}.Time,rst(m).simd{1,n}.Data(1:end,...
-                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1),'LineWidth',line_width)
-
-                % Get the correct label for each input of the experiment
-                labelfig2(j) = rst(m).simd{1,n}.DataNames(str2double(...
-                    strrep(sbtab.datasets(n).input(j),'S',''))+1);
-
-                % Set y-axis label
-                ylabel(layout,string(rst(m).simd{1,n}.DataInfo{...
-                    str2double(strrep(sbtab.datasets(n).input(j),'S',''))+1,1}.Units),...
-                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-
-                break
-            end
-        end
-    end
+    [~,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx,layout);
 
     % Set x-axis label for the first plot in a row
     if mod(plot_n,12) == 1
@@ -113,7 +88,7 @@ for n = stg.exprun
     % ytickformat('%-4.1f')
 
     % Add a title to each plot
-    title("E"+(n-1))
+    title("E"+(exp_idx-1))
 
     hold off
 end

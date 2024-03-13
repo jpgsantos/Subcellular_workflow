@@ -58,12 +58,12 @@ plot_tn = plot_tn *2;
 f_set_font_settings()
 
 % Loop through each experiment
-for n = stg.exprun
+for exp_idx = stg.exprun
 
     % Loop through each dataset in the current experiment
-    for j = 1:size(sbtab.datasets(n).output,2)
+    for j = 1:size(sbtab.datasets(exp_idx).output,2)
         do_norm = 1;
-        if ~isempty(sbtab.datasets(n).Normalize)
+        if ~isempty(sbtab.datasets(exp_idx).Normalize)
             do_norm = 2;
         end
         for k = 1:do_norm
@@ -95,13 +95,13 @@ for n = stg.exprun
         for m = stg.pat
 
             % Plot output data only if the simulation was successful
-            if rst(m).simd{1,n} ~= 0
+            if rst(m).simd{1,exp_idx} ~= 0
 
                 % Retrieve time, data and standard deviation from the
                 % experiment
-                time = rst(m).simd{1,n}.Time;
-                data = Data(n).Experiment.x(:,j);
-                data_SD = Data(n).Experiment.x_SD(:,j);
+                time = rst(m).simd{1,exp_idx}.Time;
+                data = Data(exp_idx).Experiment.x(:,j);
+                data_SD = Data(exp_idx).Experiment.x_SD(:,j);
 
                 % Plot the output data
                 plot_data = plot(time,data,'LineWidth',0.5,...
@@ -118,7 +118,7 @@ for n = stg.exprun
         for m = stg.pat
 
             % Plot only if the simulation was successful
-            if rst(m).simd{1,n} ~= 0
+            if rst(m).simd{1,exp_idx} ~= 0
 
                 if k == 1
                 % Plot the error area if it hasn't been plotted yet
@@ -131,18 +131,18 @@ for n = stg.exprun
                 % [sim_results,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
                 % sim_results_detailed =[];
                 if k == 1
-                    [~,~,sim_results] = f_normalize(rst(m),stg,n,j,mmf);
+                    [~,~,sim_results] = f_normalize(rst(m),stg,exp_idx,j,mmf);
                     sim_results_detailed =[];
                 else
-                    [sim_results,~,~] = f_normalize(rst(m),stg,n,j,mmf);
+                    [sim_results,~,~] = f_normalize(rst(m),stg,exp_idx,j,mmf);
                     sim_results_detailed =[];
                 end
                 
 
                 % Plot detailed simulation results if enabled in settings
                 if stg.simdetail
-                    time_detailed = rst(m).simd{1,n+2*stg.expn}.Time;
-                    [~,sim_results_detailed]= f_normalize(rst(m),stg,n,j,mmf);
+                    time_detailed = rst(m).simd{1,exp_idx+2*stg.expn}.Time;
+                    [~,sim_results_detailed]= f_normalize(rst(m),stg,exp_idx,j,mmf);
 
                     valid_outputs_plots(:,m) = plot(time_detailed,sim_results_detailed,'DisplayName',...
                         string("\theta_"+m),'LineWidth',line_width);
@@ -153,8 +153,8 @@ for n = stg.exprun
                 end
 
                 % Set the y-axis label
-                ylabel(string(rst(m).simd{1,n}.DataInfo{end-...
-                    size(sbtab.datasets(n).output,2)+j,1}.Units),...
+                ylabel(string(rst(m).simd{1,exp_idx}.DataInfo{end-...
+                    size(sbtab.datasets(exp_idx).output,2)+j,1}.Units),...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
                 valid_outputs = [valid_outputs,m];
             end
@@ -169,11 +169,11 @@ for n = stg.exprun
 
         % Choose the appropriate title based on the settings
         if stg.plotoln == 1
-            title_text = "E" + (n-1) + " " +...
-                strrep(string(sbtab.datasets(n).output_name{1,j}),'_','\_');
+            title_text = "E" + (exp_idx-1) + " " +...
+                strrep(string(sbtab.datasets(exp_idx).output_name{1,j}),'_','\_');
         else
-            title_text = "E" + (n-1) + " " +...
-                string(sbtab.datasets(n).output{1,j});
+            title_text = "E" + (exp_idx-1) + " " +...
+                string(sbtab.datasets(exp_idx).output{1,j});
         end
 
         % if stg.simdetail
