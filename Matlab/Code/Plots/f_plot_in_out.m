@@ -56,10 +56,10 @@ f_set_font_settings()
 
 % Initialize variables for managing the figures and plot storage.
 fig_number = 0;
-plots = cell(1,2);
+plots = cell(1,2); 
 
-% Generate colors for plotting.
-colors = generateRainbowGradient(length(stg.pat)); 
+include_exp_n = 0;
+
 
 % Iterate over each experiment run to generate plots.
 for exp_idx = stg.exprun
@@ -104,12 +104,12 @@ for exp_idx = stg.exprun
         % Call function to plot simulation outputs.
         [valid_outputs_plots,valid_outputs,sim_results,...
             sim_results_norm,sim_results_detailed] = ...
-            plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,colors,0);
+            plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n);
 
         if isempty(sim_results_norm)
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] = ...
-                plot_data_with_SD(stg,rst,Data,exp_idx,out_idx);
+                plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
 
             % Set the y-axis limits based on simulation detail setting and
             % data range.
@@ -157,11 +157,11 @@ for exp_idx = stg.exprun
             
             % Call function to plot simulation outputs.
             [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,colors,1);
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n);
 
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] =...
-                plot_data_with_SD(stg,rst,Data,exp_idx,out_idx);
+                plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
 
             hold off
 
@@ -196,164 +196,164 @@ for exp_idx = stg.exprun
 end
 end
 
-function [plot_data,plot_data_SD,data,data_SD] = ...
-    plot_data_with_SD(stg,rst,Data,exp_idx,out_idx)
-% Plot output data only if the simulation was successful. This is a
-% subfunction to plot data and their standard deviation for a specific
-% output.
-%
-% Inputs:
-% - stg: Experiment settings.
-% - rst: Results from simulations.
-% - Data: Experimental data and standard deviations.
-% - exp_idx: Index identifying the current experiment.
-% - out_idx: Index identifying the current output.
-% Outputs:
-% - plot_data: Scatter plot of the experimental data points.
-% - plot_data_SD: Area plot representing the standard deviation.
+% function [plot_data,plot_data_SD,data,data_SD] = ...
+%     plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx)
+% % Plot output data only if the simulation was successful. This is a
+% % subfunction to plot data and their standard deviation for a specific
+% % output.
+% %
+% % Inputs:
+% % - stg: Experiment settings.
+% % - rst: Results from simulations.
+% % - Data: Experimental data and standard deviations.
+% % - exp_idx: Index identifying the current experiment.
+% % - out_idx: Index identifying the current output.
+% % Outputs:
+% % - plot_data: Scatter plot of the experimental data points.
+% % - plot_data_SD: Area plot representing the standard deviation.
+% 
+% % Iterate through each set of parameters to process simulation results.
+% for pa_idx = stg.pat
+%     % Check if the simulation was successful for the current parameter set
+%     % and experiment.
+%     if rst(pa_idx).simd{1,exp_idx} ~= 0
+% 
+%         % Extract time, data, and standard deviation for the current
+%         % experiment
+%         time = rst(pa_idx).simd{1,exp_idx}.Time;
+%         data = Data(exp_idx).Experiment.x(:,out_idx);
+%         data_SD = Data(exp_idx).Experiment.x_SD(:,out_idx);
+% 
+%         % Create a scatter plot for the output data points.
+%         plot_data = scatter(time,data,2,'k',"o","filled",...
+%             "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
+%             "DisplayName","data");
+% 
+%         % Overlay the standard deviation of the output data as shaded
+%         % areas.
+%         plot_data_SD = f_error_area(transpose(time),...
+%             transpose([data-data_SD,data+data_SD]));
+% 
+%          % Only plot the first successful set of data for clarity.
+%         break
+%     end
+% end
+% end
 
-% Iterate through each set of parameters to process simulation results.
-for pa_idx = stg.pat
-    % Check if the simulation was successful for the current parameter set
-    % and experiment.
-    if rst(pa_idx).simd{1,exp_idx} ~= 0
-
-        % Extract time, data, and standard deviation for the current
-        % experiment
-        time = rst(pa_idx).simd{1,exp_idx}.Time;
-        data = Data(exp_idx).Experiment.x(:,out_idx);
-        data_SD = Data(exp_idx).Experiment.x_SD(:,out_idx);
-
-        % Create a scatter plot for the output data points.
-        plot_data = scatter(time,data,2,'k',"o","filled",...
-            "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
-            "DisplayName","data");
-
-        % Overlay the standard deviation of the output data as shaded
-        % areas.
-        plot_data_SD = f_error_area(transpose(time),...
-            transpose([data-data_SD,data+data_SD]));
-
-         % Only plot the first successful set of data for clarity.
-        break
-    end
-end
-end
-
-function [valid_outputs_plots,valid_outputs,sim_results,...
-    sim_results_norm,sim_results_detailed] =...
-    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,colors,is_norm)
-% This subfunction handles the plotting of simulation outputs. It plots
-% data based on the simulation success and whether normalization is
-% applied.
-%
-% Inputs:
-% - stg, rst, sbtab, mmf: Structures containing settings, results, table
-% data, and model info.
-% - exp_idx: Current experiment index.
-% - out_idx: Current output index.
-% - colors: Color array for plot elements.
-% - is_norm: Flag indicating whether data should be normalized.
-% Outputs:
-% - valid_outputs_plots: Array of plots for valid outputs.
-% - valid_outputs: Array of indices for valid outputs.
-% - sim_results: Simulation results.
-% - sim_results_norm: Normalized simulation results.
-% - sim_results_detailed: Detailed simulation results, used if 'simdetail'
-% is enabled.
-
-% Initialize an empty list for storing indices of valid outputs.
-valid_outputs = [];
-
-% Apply font settings for the plot, ensuring consistency across all plots.
-f_set_font_settings()
-
-% Calculate the number of outputs for the current experiment.
-    n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
-
-% Iterate through each set of parameters to process simulation results.
-for pa_idx = stg.pat
-    % Check if the simulation was successful for the current parameter set
-    % and experiment.
-    if rst(pa_idx).simd{1,exp_idx} ~= 0
-
-        % Fetch time and simulation results; normalize if applicable.
-        time = rst(pa_idx).simd{1,exp_idx}.Time;
-        [sim_results_norm,sim_results_detailed,sim_results] =...
-        f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
-
-        % Detailed simulation time series is used if detailed simulation
-        % settings are enabled.
-        if stg.simdetail
-            time_detailed = rst(pa_idx).simd{1,exp_idx+2*stg.expn}.Time;
-        end
-
-        % Plot simulation data. Use detailed time and results if simdetail
-        % is enabled, and color-code by parameter set.
-        if stg.simdetail
-            valid_outputs_plots(:,pa_idx) = scatter(time_detailed,...
-                sim_results_detailed,1,colors(pa_idx,:),"o","filled",...
-                "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                string("\theta_"+pa_idx));
-            % Label the y-axis with the correct unit and apply pre-defined
-            % font settings.
-            ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
-                DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
-                'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        else
-            % Select between normalized and raw results based on 'is_norm'
-            % flag.
-            if is_norm
-                valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results_norm,1,colors(pa_idx,:),"o","filled",...
-                    "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                    string("\theta_"+pa_idx));
-                % Label the y-axis as 'dimensionless' and apply pre-defined
-                % font settings.
-                ylabel("dimensionless",...
-                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-            else
-                valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results,1,colors(pa_idx,:),"o","filled",...
-                    "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                    string("\theta_"+pa_idx));
-                % Label the y-axis with the correct unit and apply
-                % pre-defined font settings.
-                ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
-                    DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
-                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-            end
-        end
-
-        % Add the successful parameter index to the list of valid outputs.
-        valid_outputs(pa_idx) = pa_idx;
-    end
-end
-
-% Label the x-axis as 'Seconds' and apply pre-defined font settings.
-xlabel('Seconds','FontSize', Axis_FontSize,...
-    'Fontweight',Axis_Fontweight)
-
-% Determine the title based on whether the setting plot option long names
-% is set. Replace underscores in dataset names for proper formatting in
-% titles.
-if stg.plotoln == 1
-    [~,t2] = ...
-        title(strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),...
-        '_','\_')+ " Norm"," " ,'FontSize',Minor_title_FontSize,...
-        'Fontweight',Minor_title_Fontweight);
-else
-    [~,t2] = ...
-        title(string(sbtab.datasets(exp_idx).output{1,out_idx})+ " Norm",...
-        " " ,'FontSize',Minor_title_FontSize,...
-        'Fontweight',Minor_title_Fontweight);
-end
-
-t2.FontSize = Minor_Title_Spacing;
-
-% Set the number of decimal places for the y-axis
-% ytickformat('%-3.1f')
-end
+% function [valid_outputs_plots,valid_outputs,sim_results,...
+%     sim_results_norm,sim_results_detailed] =...
+%     plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,colors,is_norm)
+% % This subfunction handles the plotting of simulation outputs. It plots
+% % data based on the simulation success and whether normalization is
+% % applied.
+% %
+% % Inputs:
+% % - stg, rst, sbtab, mmf: Structures containing settings, results, table
+% % data, and model info.
+% % - exp_idx: Current experiment index.
+% % - out_idx: Current output index.
+% % - colors: Color array for plot elements.
+% % - is_norm: Flag indicating whether data should be normalized.
+% % Outputs:
+% % - valid_outputs_plots: Array of plots for valid outputs.
+% % - valid_outputs: Array of indices for valid outputs.
+% % - sim_results: Simulation results.
+% % - sim_results_norm: Normalized simulation results.
+% % - sim_results_detailed: Detailed simulation results, used if 'simdetail'
+% % is enabled.
+% 
+% % Initialize an empty list for storing indices of valid outputs.
+% valid_outputs = [];
+% 
+% % Apply font settings for the plot, ensuring consistency across all plots.
+% f_set_font_settings()
+% 
+% % Calculate the number of outputs for the current experiment.
+%     n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
+% 
+% % Iterate through each set of parameters to process simulation results.
+% for pa_idx = stg.pat
+%     % Check if the simulation was successful for the current parameter set
+%     % and experiment.
+%     if rst(pa_idx).simd{1,exp_idx} ~= 0
+% 
+%         % Fetch time and simulation results; normalize if applicable.
+%         time = rst(pa_idx).simd{1,exp_idx}.Time;
+%         [sim_results_norm,sim_results_detailed,sim_results] =...
+%         f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
+% 
+%         % Detailed simulation time series is used if detailed simulation
+%         % settings are enabled.
+%         if stg.simdetail
+%             time_detailed = rst(pa_idx).simd{1,exp_idx+2*stg.expn}.Time;
+%         end
+% 
+%         % Plot simulation data. Use detailed time and results if simdetail
+%         % is enabled, and color-code by parameter set.
+%         if stg.simdetail
+%             valid_outputs_plots(:,pa_idx) = scatter(time_detailed,...
+%                 sim_results_detailed,1,colors(pa_idx,:),"o","filled",...
+%                 "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+%                 string("\theta_"+pa_idx));
+%             % Label the y-axis with the correct unit and apply pre-defined
+%             % font settings.
+%             ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
+%                 DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
+%                 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%         else
+%             % Select between normalized and raw results based on 'is_norm'
+%             % flag.
+%             if is_norm
+%                 valid_outputs_plots(:,pa_idx) = scatter(time,...
+%                     sim_results_norm,1,colors(pa_idx,:),"o","filled",...
+%                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+%                     string("\theta_"+pa_idx));
+%                 % Label the y-axis as 'dimensionless' and apply pre-defined
+%                 % font settings.
+%                 ylabel("dimensionless",...
+%                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%             else
+%                 valid_outputs_plots(:,pa_idx) = scatter(time,...
+%                     sim_results,1,colors(pa_idx,:),"o","filled",...
+%                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
+%                     string("\theta_"+pa_idx));
+%                 % Label the y-axis with the correct unit and apply
+%                 % pre-defined font settings.
+%                 ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
+%                     DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
+%                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%             end
+%         end
+% 
+%         % Add the successful parameter index to the list of valid outputs.
+%         valid_outputs(pa_idx) = pa_idx;
+%     end
+% end
+% 
+% % Label the x-axis as 'Seconds' and apply pre-defined font settings.
+% xlabel('Seconds','FontSize', Axis_FontSize,...
+%     'Fontweight',Axis_Fontweight)
+% 
+% % Determine the title based on whether the setting plot option long names
+% % is set. Replace underscores in dataset names for proper formatting in
+% % titles.
+% if stg.plotoln == 1
+%     [~,t2] = ...
+%         title(strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),...
+%         '_','\_')+ " Norm"," " ,'FontSize',Minor_title_FontSize,...
+%         'Fontweight',Minor_title_Fontweight);
+% else
+%     [~,t2] = ...
+%         title(string(sbtab.datasets(exp_idx).output{1,out_idx})+ " Norm",...
+%         " " ,'FontSize',Minor_title_FontSize,...
+%         'Fontweight',Minor_title_Fontweight);
+% end
+% 
+% t2.FontSize = Minor_Title_Spacing;
+% 
+% % Set the number of decimal places for the y-axis
+% % ytickformat('%-3.1f')
+% end
 
 function [layout,input_plot,plots] = ...
     f_plot_in_out_left(rst,stg,sbtab,fig_number_same_exp,reuse,exp_idx,...
