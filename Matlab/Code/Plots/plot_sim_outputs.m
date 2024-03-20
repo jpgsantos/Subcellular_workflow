@@ -1,6 +1,6 @@
 function [valid_outputs_plots,valid_outputs,sim_results,...
     sim_results_norm,sim_results_detailed] =...
-    plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,is_norm,include_exp_n)
+    plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,is_norm,include_exp_n,do_norm)
 % This subfunction handles the plotting of simulation outputs. It plots
 % data based on the simulation success and whether normalization is
 % applied.
@@ -27,7 +27,7 @@ valid_outputs = [];
 f_set_font_settings()
 
 % Calculate the number of outputs for the current experiment.
-    n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
+n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
 
 % Generate colors for plotting.
 colors = generateRainbowGradient(length(stg.pat));
@@ -42,8 +42,8 @@ for pa_idx = stg.pat
         time = rst(pa_idx).simd{1,exp_idx}.Time;
         data = Data(exp_idx).Experiment.x(:,out_idx);
         data_SD = Data(exp_idx).Experiment.x_SD(:,out_idx);
-        [sim_results_norm,sim_results_detailed,sim_results] =...
-        f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
+        [sim_results_norm{pa_idx},sim_results_detailed{pa_idx},sim_results{pa_idx}] =...
+            f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
 
         % Detailed simulation time series is used if detailed simulation
         % settings are enabled.
@@ -55,7 +55,7 @@ for pa_idx = stg.pat
         % is enabled, and color-code by parameter set.
         if stg.simdetail
             valid_outputs_plots(:,pa_idx) = scatter(time_detailed,...
-                sim_results_detailed,1,colors(pa_idx,:),"o","filled",...
+                sim_results_detailed{pa_idx},1,colors(pa_idx,:),"o","filled",...
                 "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                 string("\theta_"+pa_idx));
             % Label the y-axis with the correct unit and apply pre-defined
@@ -64,14 +64,18 @@ for pa_idx = stg.pat
                 DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
                 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
-             output_max = max([max(sim_results_detailed),...
-                max(data-data_SD),max(data)]);
+            if do_norm == 2
+                output_max = max([max(sim_results_detailed{pa_idx})]);
+            else
+                output_max = max([max(sim_results_detailed{pa_idx}),...
+                    max(data+data_SD),max(data)]);
+            end
         else
             % Select between normalized and raw results based on 'is_norm'
             % flag.
             if is_norm
                 valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results_norm,1,colors(pa_idx,:),"o","filled",...
+                    sim_results_norm{pa_idx},1,colors(pa_idx,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                     string("\theta_"+pa_idx));
                 % Label the y-axis as 'dimensionless' and apply pre-defined
@@ -79,11 +83,11 @@ for pa_idx = stg.pat
                 ylabel("dimensionless",...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
-                 output_max = max([max(sim_results_norm),...
-                max(data-data_SD),max(data)]);
+                output_max = max([max(sim_results_norm{pa_idx}),...
+                    max(data+data_SD),max(data)]);
             else
                 valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results,1,colors(pa_idx,:),"o","filled",...
+                    sim_results{pa_idx},1,colors(pa_idx,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                     string("\theta_"+pa_idx));
                 % Label the y-axis with the correct unit and apply
@@ -92,8 +96,12 @@ for pa_idx = stg.pat
                     DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
-                 output_max = max([max(sim_results),...
-                max(data-data_SD),max(data)]);
+                if do_norm == 2
+                    output_max = max([max(sim_results{pa_idx})]);
+                else
+                    output_max = max([max(sim_results{pa_idx}),...
+                        max(data+data_SD),max(data)]);
+                end
             end
         end
 
@@ -106,25 +114,30 @@ end
 xlabel('Seconds','FontSize', Axis_FontSize,...
     'Fontweight',Axis_Fontweight)
 
-            % Choose the appropriate title based on the settings
-            if stg.plotoln == 1
-                title_text = strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),'_','\_');
-            else
-                title_text = string(sbtab.datasets(exp_idx).output{1,out_idx});
-            end
+% Choose the appropriate title based on the settings
+if stg.plotoln == 1
+    title_text = strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),'_','\_');
+else
+    title_text = string(sbtab.datasets(exp_idx).output{1,out_idx});
+end
 
-            if include_exp_n == 1
-                title_text = "E" + (exp_idx-1) + " " + title_text;
-            end
+if include_exp_n == 1
+    title_text = "E" + (exp_idx-1) + " " + title_text;
+end
 
-            if is_norm
-                title_text = title_text + " Norm";
-            end
+if is_norm
+    title_text = title_text + " Norm";
+end
 
+% output_max
+if output_max >= 10000 || output_max <= 0.01
+% disp("y: " + output_max)
+title_text = "      " + title_text;
+end
 
 [~,t2] = ...
-        title(title_text, " " ,'FontSize',Minor_title_FontSize,...
-        'Fontweight',Minor_title_Fontweight);
+    title(title_text, " " ,'FontSize',Minor_title_FontSize,...
+    'Fontweight',Minor_title_Fontweight);
 t2.FontSize = Minor_Title_Spacing;
 
 % Set the number of decimal places for the y-axis

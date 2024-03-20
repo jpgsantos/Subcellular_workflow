@@ -2,7 +2,7 @@ function [input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx,layout)
 
 % Set font settings
 f_set_font_settings()
-
+log_10 = 0;
 % Iterate through each input species for the current experiment.
     for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
         % Iterate through each set of parameters to process simulation results.
@@ -13,11 +13,21 @@ f_set_font_settings()
                 % Convert species identifier from string to number.
                 input_species_ID =...
                     str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+                if log_10 == 0
+                    input_y = rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID);
+                    label_y = string(rst(pa_idx).simd{1,exp_idx}. ...
+                    DataInfo{input_species_ID,1}.Units);
+
+                else
+                    input_y = log10(rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID));
+                    label_y = "Log10 " + string(rst(pa_idx).simd{1,exp_idx}. ...
+                        DataInfo{input_species_ID,1}.Units);
+                end
 
                 % Create a scatter plot for the input species data points.
                 input_plot = ...
                     scatter(rst(pa_idx).simd{1,exp_idx}.Time,...
-                    rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID),...
+                    input_y,...
                     2,[0.5,0.5,0.5],"o","filled","MarkerFaceAlpha",1,...
                     "MarkerEdgeAlpha",1,"DisplayName",...
                     string(rst(pa_idx).simd{1,exp_idx}.DataNames(input_species_ID)));

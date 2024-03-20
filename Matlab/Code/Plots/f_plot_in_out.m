@@ -56,10 +56,18 @@ f_set_font_settings()
 
 % Initialize variables for managing the figures and plot storage.
 fig_number = 0;
-plots = cell(1,2); 
+plots = cell(1,2);
 
 include_exp_n = 0;
 
+for exp_idx = stg.exprun
+    n_outputs_exp_1(exp_idx) = size(sbtab.datasets(exp_idx).output,2);
+    for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
+        if ~isempty(sbtab.datasets(exp_idx).Normalize)
+            n_outputs_exp_1(exp_idx) = n_outputs_exp_1(exp_idx)+1;
+        end
+    end
+end
 
 % Iterate over each experiment run to generate plots.
 for exp_idx = stg.exprun
@@ -98,13 +106,19 @@ for exp_idx = stg.exprun
         end
 
         % Setup the next tile for output data plotting.
-        nexttile(layout,[1 1]);
+        if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
+            nexttile(layout,[2 2]);
+        elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
+            nexttile(layout,[1 2]);
+        else
+            nexttile(layout,[1 1]);
+        end
 
         hold on
         % Call function to plot simulation outputs.
         [valid_outputs_plots,valid_outputs,sim_results,...
             sim_results_norm,sim_results_detailed] = ...
-            plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n);
+            plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n,2);
 
         if isempty(sim_results_norm)
             % Call function to plot simulation data.
@@ -114,28 +128,35 @@ for exp_idx = stg.exprun
             % Set the y-axis limits based on simulation detail setting and
             % data range.
             if stg.simdetail
-                ylim([min([0,min(sim_results_detailed),min(sim_results),...
-                    min(data-data_SD),min(data)]) inf])
+                min_noSD = min(min(min(sim_results_detailed{:})),min(data));
+                max_noSD = max(max(max(sim_results_detailed{:})),max(data));
             else
-                ylim([min([0,min(sim_results),...
-                    min(data-data_SD),min(data)]) inf])
+                min_noSD = min(min(min(sim_results{:})),min(data));
+                max_noSD = max(max(max(sim_results{:})),max(data));
             end
+            y_range = max_noSD - min_noSD;
 
+            min_SD = (max(min(data-data_SD),min(data)-y_range*0.05));
+            max_SD = (min(max(data-data_SD),max(data)-y_range*0.05));
         else
-             % Adjust y-axis limits if normalized simulation results are
-             % available.
+            % Adjust y-axis limits if normalized simulation results are
+            % available.
             if stg.simdetail
-                ylim([min([0,min(sim_results_detailed),min(sim_results)])...
-                    inf])
+                min_noSD = min(min([sim_results_detailed{:}]));
+                max_noSD = max(max([sim_results_detailed{:}]));
             else
-                ylim([min([0,min(sim_results),]) inf])
+                min_noSD = min(min([sim_results{:}]));
+                max_noSD = max(max([sim_results{:}]));
             end
+            min_SD = min_noSD;
+            max_SD = max_noSD;
         end
+        ylim([min(min_noSD,min_SD) max(max_noSD,max_SD)])
 
         hold off
 
         if ~isempty(sim_results_norm)
-            
+
             % Check if new subplot layout is needed based on output count.
             sub_fig_number = sub_fig_number +1;
             if sub_fig_number/4 > fig_number_same_exp
@@ -151,13 +172,19 @@ for exp_idx = stg.exprun
             end
 
             % Setup the next tile for output data plotting.
-            nexttile(layout,[1 1]);
+            if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
+                nexttile(layout,[2 2]);
+            elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
+                nexttile(layout,[1 2]);
+            else
+                nexttile(layout,[1 1]);
+            end
 
             hold on
-            
+
             % Call function to plot simulation outputs.
             [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n);
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n,1);
 
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] =...
@@ -165,195 +192,48 @@ for exp_idx = stg.exprun
 
             hold off
 
-
             % Set ylim based on whether simdetail is enabled or not
-            if stg.simdetail
-                ylim([min([0,min(sim_results_detailed),...
-                    min(sim_results_norm), min(data-data_SD),min(data)])...
-                    inf])
+           if stg.simdetail
+                min_noSD = min(min(min([sim_results_detailed{:}])),min(data));
+                max_noSD = max(max(max([sim_results_detailed{:}])),max(data));
             else
-                ylim([min([0,min(sim_results_norm),...
-                    min(data-data_SD),min(data)]) inf])
-            end
+                min_noSD = min(min(min([sim_results_norm{:}])),min(data));
+                max_noSD = max(max(max([sim_results_norm{:}])),max(data));
+           end
+            y_range = max_noSD - min_noSD;
+
+            min_SD = (max(min(data-data_SD),min(data)-y_range*0.05));
+            max_SD = (min(max(data-data_SD),max(data)-y_range*0.05));
+            ylim([min(min_noSD,min_SD) max(max_noSD,max_SD)])
         end
 
         % Check if legend needs to be drawn for the current subplot.
         if draw_legend == 1
+% input_plot
+% plot_data
+% plot_data_SD
+% valid_outputs_plots(:,1)
+% valid_outputs_plots(:,2)
+% valid_outputs_plots(:,3)
+% valid_outputs_plots(:,4)
             % Construct the legend with the correct formatting and
             % placement.
-            leg = legend([valid_outputs_plots(:,valid_outputs),...
-                input_plot,plot_data,plot_data_SD],...
+            leg = legend([plot_data,plot_data_SD,input_plot, ...
+                valid_outputs_plots(:,valid_outputs)],...
                 'FontSize', Legend_FontSize,...
-                'Fontweight',Legend_Fontweight,'Location',...
-                'layout',"Orientation","Horizontal");
-            leg.Layout.Tile = 'South'; % Position legend at the bottom.
+                'Fontweight',Legend_Fontweight,'Location','layout', ...
+                "Orientation","horizontal");
+            leg.Layout.Tile = 'south'; % Position legend at the bottom.
             % Set the size of legend markers.
-            leg.ItemTokenSize = Legend_ItemTokenSize; 
+            leg.ItemTokenSize = Legend_ItemTokenSize;
             set(leg,'Box','off') % Remove the legend box boundary.
             draw_legend = 0; % Reset flag after drawing the legend.
+
+            % input_plot,plot_data,plot_data_SD,valid_outputs_plots(:,valid_outputs)
         end
     end
 end
 end
-
-% function [plot_data,plot_data_SD,data,data_SD] = ...
-%     plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx)
-% % Plot output data only if the simulation was successful. This is a
-% % subfunction to plot data and their standard deviation for a specific
-% % output.
-% %
-% % Inputs:
-% % - stg: Experiment settings.
-% % - rst: Results from simulations.
-% % - Data: Experimental data and standard deviations.
-% % - exp_idx: Index identifying the current experiment.
-% % - out_idx: Index identifying the current output.
-% % Outputs:
-% % - plot_data: Scatter plot of the experimental data points.
-% % - plot_data_SD: Area plot representing the standard deviation.
-% 
-% % Iterate through each set of parameters to process simulation results.
-% for pa_idx = stg.pat
-%     % Check if the simulation was successful for the current parameter set
-%     % and experiment.
-%     if rst(pa_idx).simd{1,exp_idx} ~= 0
-% 
-%         % Extract time, data, and standard deviation for the current
-%         % experiment
-%         time = rst(pa_idx).simd{1,exp_idx}.Time;
-%         data = Data(exp_idx).Experiment.x(:,out_idx);
-%         data_SD = Data(exp_idx).Experiment.x_SD(:,out_idx);
-% 
-%         % Create a scatter plot for the output data points.
-%         plot_data = scatter(time,data,2,'k',"o","filled",...
-%             "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
-%             "DisplayName","data");
-% 
-%         % Overlay the standard deviation of the output data as shaded
-%         % areas.
-%         plot_data_SD = f_error_area(transpose(time),...
-%             transpose([data-data_SD,data+data_SD]));
-% 
-%          % Only plot the first successful set of data for clarity.
-%         break
-%     end
-% end
-% end
-
-% function [valid_outputs_plots,valid_outputs,sim_results,...
-%     sim_results_norm,sim_results_detailed] =...
-%     plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,colors,is_norm)
-% % This subfunction handles the plotting of simulation outputs. It plots
-% % data based on the simulation success and whether normalization is
-% % applied.
-% %
-% % Inputs:
-% % - stg, rst, sbtab, mmf: Structures containing settings, results, table
-% % data, and model info.
-% % - exp_idx: Current experiment index.
-% % - out_idx: Current output index.
-% % - colors: Color array for plot elements.
-% % - is_norm: Flag indicating whether data should be normalized.
-% % Outputs:
-% % - valid_outputs_plots: Array of plots for valid outputs.
-% % - valid_outputs: Array of indices for valid outputs.
-% % - sim_results: Simulation results.
-% % - sim_results_norm: Normalized simulation results.
-% % - sim_results_detailed: Detailed simulation results, used if 'simdetail'
-% % is enabled.
-% 
-% % Initialize an empty list for storing indices of valid outputs.
-% valid_outputs = [];
-% 
-% % Apply font settings for the plot, ensuring consistency across all plots.
-% f_set_font_settings()
-% 
-% % Calculate the number of outputs for the current experiment.
-%     n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
-% 
-% % Iterate through each set of parameters to process simulation results.
-% for pa_idx = stg.pat
-%     % Check if the simulation was successful for the current parameter set
-%     % and experiment.
-%     if rst(pa_idx).simd{1,exp_idx} ~= 0
-% 
-%         % Fetch time and simulation results; normalize if applicable.
-%         time = rst(pa_idx).simd{1,exp_idx}.Time;
-%         [sim_results_norm,sim_results_detailed,sim_results] =...
-%         f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
-% 
-%         % Detailed simulation time series is used if detailed simulation
-%         % settings are enabled.
-%         if stg.simdetail
-%             time_detailed = rst(pa_idx).simd{1,exp_idx+2*stg.expn}.Time;
-%         end
-% 
-%         % Plot simulation data. Use detailed time and results if simdetail
-%         % is enabled, and color-code by parameter set.
-%         if stg.simdetail
-%             valid_outputs_plots(:,pa_idx) = scatter(time_detailed,...
-%                 sim_results_detailed,1,colors(pa_idx,:),"o","filled",...
-%                 "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-%                 string("\theta_"+pa_idx));
-%             % Label the y-axis with the correct unit and apply pre-defined
-%             % font settings.
-%             ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
-%                 DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
-%                 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-%         else
-%             % Select between normalized and raw results based on 'is_norm'
-%             % flag.
-%             if is_norm
-%                 valid_outputs_plots(:,pa_idx) = scatter(time,...
-%                     sim_results_norm,1,colors(pa_idx,:),"o","filled",...
-%                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-%                     string("\theta_"+pa_idx));
-%                 % Label the y-axis as 'dimensionless' and apply pre-defined
-%                 % font settings.
-%                 ylabel("dimensionless",...
-%                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-%             else
-%                 valid_outputs_plots(:,pa_idx) = scatter(time,...
-%                     sim_results,1,colors(pa_idx,:),"o","filled",...
-%                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-%                     string("\theta_"+pa_idx));
-%                 % Label the y-axis with the correct unit and apply
-%                 % pre-defined font settings.
-%                 ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
-%                     DataInfo{end-n_outputs_exp+out_idx,1}.Units),...
-%                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-%             end
-%         end
-% 
-%         % Add the successful parameter index to the list of valid outputs.
-%         valid_outputs(pa_idx) = pa_idx;
-%     end
-% end
-% 
-% % Label the x-axis as 'Seconds' and apply pre-defined font settings.
-% xlabel('Seconds','FontSize', Axis_FontSize,...
-%     'Fontweight',Axis_Fontweight)
-% 
-% % Determine the title based on whether the setting plot option long names
-% % is set. Replace underscores in dataset names for proper formatting in
-% % titles.
-% if stg.plotoln == 1
-%     [~,t2] = ...
-%         title(strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),...
-%         '_','\_')+ " Norm"," " ,'FontSize',Minor_title_FontSize,...
-%         'Fontweight',Minor_title_Fontweight);
-% else
-%     [~,t2] = ...
-%         title(string(sbtab.datasets(exp_idx).output{1,out_idx})+ " Norm",...
-%         " " ,'FontSize',Minor_title_FontSize,...
-%         'Fontweight',Minor_title_Fontweight);
-% end
-% 
-% t2.FontSize = Minor_Title_Spacing;
-% 
-% % Set the number of decimal places for the y-axis
-% % ytickformat('%-3.1f')
-% end
 
 function [layout,input_plot,plots] = ...
     f_plot_in_out_left(rst,stg,sbtab,fig_number_same_exp,reuse,exp_idx,...
@@ -401,7 +281,7 @@ plots(fig_number,:) = f_renew_plot(name_short);
 layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
 % Use a 2x3 grid layout with tight spacing.
 
-nexttile(layout,[2 1]); 
+nexttile(layout,[2 1]);
 % Span the input data plot across two rows for better visibility.
 
 % Assign a title to the overall layout, enhancing readability and context.
