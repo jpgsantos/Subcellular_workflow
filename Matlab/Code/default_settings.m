@@ -26,8 +26,8 @@ function [stg] = default_settings()
 % stg.useLog: Determines the scoring method choice (check documentation)
 % (Use logarithm)
 % 
-% stg.optmc: Specifies whether to use multicore wherever available
-% (Optimization Multicore)
+% stg.optmc: Specifies whether to use multi-core wherever available
+% (Optimization Multi-core)
 % 
 % stg.rseed: Sets the random seed value (Random seed)
 % 
@@ -66,14 +66,14 @@ function [stg] = default_settings()
 % stg.abstolstepsize_eq: Provides the absolute tolerance step size for
 % equilibration (Absolute tolerance step size for equilibration)
 % 
-% stg.maxstep: Max step size in the simulation (if empty, Matlab decides
+% stg.maxstep: Max step size in the simulation (if empty, MATLAB decides
 % what's best) (Maximum step)
 % 
-% stg.maxstepeq: Sets the max step size in the simulation (if empty, Matlab
+% stg.maxstepeq: Sets the max step size in the simulation (if empty, MATLAB
 % decides what's best) (Maximum step)
 % 
 % stg.maxstepdetail: Sets the max step size in the detailed plots (if
-% empty, Matlab decides what's best) (Maximum step)
+% empty, MATLAB decides what's best) (Maximum step)
 % 
 % stg.errorscore: Specifies the default score when there is a simulation
 % error, required to keep optimizations working (error score)
@@ -167,7 +167,7 @@ function [stg] = default_settings()
 
 %% Analysis
 
-% Lists experiments to run (example experiment 1 to 3 and experimet 6)
+% Lists experiments to run (example experiment 1 to 3 and experiment 6)
 stg.exprun = [1:3,6];
 
 % Determines the scoring method choice (check documentation) (Use
@@ -178,7 +178,7 @@ stg.useLog = 4;
 % Multicore)
 stg.optmc = true;
 
-% Sets the random seed value (Ramdom seed)
+% Sets the random seed value (Random seed)
 stg.rseed = 1;
 
 % Indicates whether to display simulation diagnostics in the console
@@ -240,15 +240,15 @@ stg.sbioacc = true;
 % tolerance step size for equilibration)
 stg.abstolstepsize_eq = [];
 
-% Max step size in the simulation (if empty matlab decides whats best)
+% Max step size in the simulation (if empty MATLAB decides whats best)
 % (Maximum step)
 stg.maxstep = 10;
 
-% Sets the max step size in the simulation (if empty, Matlab decides what's
+% Sets the max step size in the simulation (if empty, MATLAB decides what's
 % best) (Maximum step)
 stg.maxstepeq = 2;
 
-% Sets the max step size in the detailed plots (if empty, Matlab decides
+% Sets the max step size in the detailed plots (if empty, MATLAB decides
 % what's best) (Maximum step)
 stg.maxstepdetail = 2;
 
@@ -352,12 +352,12 @@ stg.plsaots = optimoptions(@simulannealbnd,'Display','off', ...
 % (Profile Likelihood optimization threshold value)
 stg.plotv = 0.99;
 
-% Ratio betweeen the value of the first try of a point in PLA and the
-% previous point,if abobe this ratio an intermideatia value is picked up to
+% Ratio between the value of the first try of a point in PLA and the
+% previous point,if above this ratio an intermediate value is picked up to
 % 2 times
 stg.ratio = 2;
 
-% Profile Likelihood reoptimize optimization number
+% Profile Likelihood re-optimize optimization number
 stg.plroptn = 30;
 
 % Profile Likelihood display current optimization status
