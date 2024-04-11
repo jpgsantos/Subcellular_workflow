@@ -31,7 +31,7 @@ function result = f_prep_sim(parameters,stg,model_folders)
 % information
 % - Data: Array of structures containing experimental data
 
-% Save variables that need to be mantained over multiple function calls
+% Save variables that need to be maintained over multiple function calls
 persistent sbtab
 persistent Data
 
@@ -43,7 +43,7 @@ if isempty(sbtab)
 end
 
 % Set the parameters that are going to be used for the simulation to the
-% default ones as definded in the SBTAB
+% default ones as defined in the SBTAB
 sim_par(:,1) = [sbtab.defpar{:,2}];
 
 % Check if the parametrer needs to be set to the value relevant for Profile
@@ -67,7 +67,7 @@ m=1;
 % Run simulations for each experiment
 while m <= size(stg.exprun,2)
 n=stg.exprun(m);
-    % Try catch used because iterations errors can happen unexectedly and
+    % Try catch used because iterations errors can happen unexpectedly and
     % we want to be able to continue simulations
     % try
     % Display progress message if appropriate
@@ -111,7 +111,7 @@ n=stg.exprun(m);
                     success = true;
                 catch
                     success = false;
-                    disp("check your stg.reltol value")
+                    % disp("check your stg.reltol value")
                 end
 
             else
@@ -122,7 +122,7 @@ n=stg.exprun(m);
                             success = true;
                         catch
                             success = false;
-                            disp("check your stg.abstol value")
+                            % disp("check your stg.abstol value")
                         end
                     else
                         while stg.abstol >= stg.abstol_min
@@ -198,57 +198,77 @@ for n = 1:size(sim_par,1)
 
     % Update thermodynamic constrained parameters
     if isfield(settings,'tci') && ~isempty(settings.tci) && ismember(n,settings.tci) && settings.partest(n) > 0
-        sim_par = update_thermo_constrained_multiplications(sim_par, parameters,settings, n,sbtab);
-        sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab);
+        sim_par = update_thermo_constrained(sim_par, parameters,settings, n,sbtab);
+        % sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab);
     end
 end
 end
 
-function sim_par = update_thermo_constrained_multiplications(sim_par, parameters, settings, n,sbtab)
-% Iterate over the parameters that need to be mutiplied for calculating the
-% parameter that depends on the thermodynamic constraints
-for m = 1:size(settings.tcm, 2)
-    % Check that the parameter that is going to be used to calculate the
-    % parameter dependent on thermodynamic constraintsis is not the default
-    if settings.partest(settings.tcm(n, m), 1) > 0
-        % Check if the parametrer needs to be set to the value relevant for
-        % Profile Likelihood
-        if isfield(settings, "PLind") && settings.partest(settings.tcm(n, m), 1) == settings.PLind
-            parameters(settings.partest(settings.tcm(n, m), 1)) = settings.PLval;
-        end
-        % Make the appropriate multiplications to get the thermodinamicly
-        % constrained parameter
-        sim_par(n) = sim_par(n) * (10 ^ (parameters(settings.partest(settings.tcm(n, m), 1))));
-    else
-        % Make the appropriate multiplications to get the thermodinamicly
-        % constrained parameter
-        sim_par(n) = sim_par(n) * (sbtab.defpar{settings.tcm(n, m), 2});
+function sim_par = update_thermo_constrained(sim_par, parameters, settings, n,sbtab)
+
+key_1 = ["tcm","tcd"];
+key_2 = ["*","/"];
+for k=1:2
+
+count = 0;
+for m = 1:size(settings.(key_1(k)), 2)
+    if settings.(key_1(k))(n, m) ~= 0
+        count = count +1;
     end
+end
+% Iterate over the parameters that need to be multiplied for calculating the
+% parameter that depends on the thermodynamic constraints
+for m = 1:count
+    % Check that the parameter that is going to be used to calculate the
+    % parameter dependent on thermodynamic constraints is not the default
+    if settings.partest(settings.(key_1(k))(n, m), 1) > 0
+        % Check if the parameter needs to be set to the value relevant for
+        % Profile Likelihood
+        if isfield(settings, "PLind") && settings.partest(settings.(key_1(k))(n, m), 1) == settings.PLind
+            parameters(settings.partest(settings.(key_1(k))(n, m), 1)) = settings.PLval;
+        end
+        % Make the appropriate multiplications to get the thermodynamically
+        % constrained parameter
+        eval("sim_par(n) = sim_par(n) " + key_2(k) + " (10 ^ (parameters(settings.partest(settings.(key_1(k))(n, m), 1))))");
+    else
+        % Make the appropriate multiplications to get the thermodynamically
+        % constrained parameter
+
+        eval("sim_par(n) = sim_par(n) " + key_2(k) + "(sbtab.defpar{settings.(key_1(k))(n, m), 2})");
+    end
+end
 end
 end
 
-function sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab)
-% Iterate over the parameters that need to be divided for calculating the
-% parameter that depends on the thermodynamic constraints
-for m = 1:size(settings.tcd, 2)
-    % Check that the parameter that is going to be used to calculate the
-    % parameter dependent on thermodynamic constraintsis is not the default
-    if settings.partest(settings.tcd(n, m), 1) > 0
-        % Check if the parametrer needs to be set to the value relevant for
-        % Profile Likelihood
-        if isfield(settings, "PLind") && settings.partest(settings.tcd(n, m), 1) == settings.PLind
-            parameters(settings.partest(settings.tcd(n, m), 1)) = settings.PLval;
-        end
-        % Make the appropriate divisions to get the thermodinamicly
-        % constrained parameter
-        sim_par(n) = sim_par(n) / (10 ^ (parameters(settings.partest(settings.tcd(n, m), 1))));
-    else
-        % Make the appropriate divisions to get the thermodinamicly
-        % constrained parameter
-        sim_par(n) = sim_par(n) / (sbtab.defpar{settings.tcd(n, m), 2});
-    end
-end
-end
+% function sim_par = update_thermo_constrained_divisions(sim_par, parameters, settings, n,sbtab)
+% 
+% count = 0;
+% for m = 1:size(settings.tcd, 2)
+%     if settings.tcd(n, m) ~= 0
+%         count = count +1;
+%     end
+% end
+% % Iterate over the parameters that need to be divided for calculating the
+% % parameter that depends on the thermodynamic constraints
+% for m = 1:count
+%     % Check that the parameter that is going to be used to calculate the
+%     % parameter dependent on thermodynamic constraints is not the default
+%     if settings.partest(settings.tcd(n, m), 1) > 0
+%         % Check if the parameter needs to be set to the value relevant for
+%         % Profile Likelihood
+%         if isfield(settings, "PLind") && settings.partest(settings.tcd(n, m), 1) == settings.PLind
+%             parameters(settings.partest(settings.tcd(n, m), 1)) = settings.PLval;
+%         end
+%         % Make the appropriate divisions to get the thermodynamically
+%         % constrained parameter
+%         sim_par(n) = sim_par(n) / (10 ^ (parameters(settings.partest(settings.tcd(n, m), 1))));
+%     else
+%         % Make the appropriate divisions to get the thermodynamically
+%         % constrained parameter
+%         sim_par(n) = sim_par(n) / (sbtab.defpar{settings.tcd(n, m), 2});
+%     end
+% end
+% end
 
 function ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success)
 
