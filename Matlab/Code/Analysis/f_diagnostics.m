@@ -9,7 +9,7 @@ function rst = f_diagnostics(stg,mmf)
 % - stg: A structure containing settings for the model, such as:
 %        * pa: An array of parameter arrays to be tested.
 %        * pat: Indices of the parameter arrays to be tested.
-%        * optmc: A boolean flag, if true the function runs in multi-core
+%        * optmc: A Boolean flag, if true the function runs in multi-core
 %          mode, otherwise it runs in single-core mode.
 % - mmf: A custom memory-mapped file object, used for reading or writing 
 % data.

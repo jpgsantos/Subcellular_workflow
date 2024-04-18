@@ -35,7 +35,7 @@ function [score,rst,rst_not_simd] = f_sim_score(parameters, stg, model_folders)
 % - None.
 %
 
-%Turn off Dimension analysis warning from simbiology
+%Turn off Dimension analysis warning from SimBiology
 warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
 
 % Call the function that simulates the model
