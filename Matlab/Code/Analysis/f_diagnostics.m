@@ -34,24 +34,25 @@ function rst = f_diagnostics(stg,mmf)
 
 % Run the model and obtain scores for fitness Multi Core
 
-pa = stg.pa;
+pa = stg.pa(stg.pat,:);
 if stg.optmc
     disp("Running the model and obtaining Scores (Multicore)")
     
     % Iterate over the parameter arrays to be tested
-    parfor par_array_idx = stg.pat
+    parfor par_array_idx = 1:length(stg.pat)
         [~,rst(par_array_idx),~] =...
-            f_sim_score(pa(par_array_idx,:),stg,mmf);
+            f_sim_score(pa(par_array_idx,:),stg,mmf,0,0);
     end
-    
+        
     % Run the model and obtain scores for fitness single Core
 else
     disp("Running the model and obtaining Scores (Singlecore)")
     
     % Iterate over the parameter arrays to be tested
-    for par_array_idx = stg.pat
+    for par_array_idx = 1:length(stg.pat)
         [~,rst(par_array_idx),~] =...
-            f_sim_score(pa(par_array_idx,:),stg,mmf);
+            f_sim_score(pa(par_array_idx,:),stg,mmf,0,0);
     end
 end
+rst(stg.pat(1:length(stg.pat)))=rst(1:length(stg.pat));
 end

@@ -1,5 +1,5 @@
-function [x, fval, simd, Pval] =...
-    run_optimization_iterations(x, fval, simd, Pval, PL_iter,...
+function [x, fval, Pval] =...
+    run_optimization_iterations(x, fval, Pval, PL_iter,...
     settings, model_folders, par_indx, delta_par, temp_lb, temp_up,...
     alg, section,temp_array)
 % Manages optimization iterations for a specific parameter and method.
@@ -8,7 +8,7 @@ function [x, fval, simd, Pval] =...
 % bounds and settings specified.
 %
 % Inputs:
-% - x, fval, simd, Pval: Containers for optimization results.
+% - x, fval, Pval: Containers for optimization results.
 % - PL_iter: Current range of indices in the profile likelihood calculation.
 % - settings: A structure containing optimization settings.
 % - model_folders: Directory containing the model files.
@@ -20,7 +20,7 @@ function [x, fval, simd, Pval] =...
 % - temp_array: Array of parameter values excluding the current parameter.
 %
 % Outputs:
-% - x, fval, simd, Pval: Updated optimization results after running this
+% - x, fval, Pval: Updated optimization results after running this
 % iteration.
 %
 % This function orchestrates the optimization process, adjusting the
@@ -61,7 +61,7 @@ for PL_iter_current = PL_iter
 
             % Get the score for the current solution
             x_score = x{alg{2}}{pos_minus_1};
-            [score,~,~] = f_sim_score(x_score, settings, model_folders);
+            [score,~,~] = f_sim_score(x_score, settings, model_folders,0,0);
         end
 
         % Run optimization methods for position 1 and position 3
@@ -113,7 +113,7 @@ for PL_iter_current = PL_iter
             end
 
             % Execute the optimization method with updated settings and current step
-            [x, fval, simd{alg{2}}{pos}, Pval, prev_fval, offset] =...
+            [x, fval, Pval, prev_fval, offset] =...
                 run_optimization_method(x, fval,...
                 offset, temp_lb, temp_up,...
                 settings, model_folders, alg,PL_iter_current,current_pos, pos,pos_minus_1,0);

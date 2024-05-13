@@ -18,7 +18,7 @@ function rst = f_PL_m(settings,model_folder)
 % - get_PL_iter_start: Calculates the index closest to the best parameter
 % value.
 % - f_PL_s: Runs the optimization for the given parameter index.
-% - assign_struct_values: Assigns the values of x, fval, and simd to the
+% - assign_struct_values: Assigns the values of x, and fval, to the
 % corresponding struct entries.
 % - sim_a: Runs simulated annealing optimization.
 % - fmin_con: Runs fmincon optimization.
@@ -27,7 +27,7 @@ function rst = f_PL_m(settings,model_folder)
 %
 % Loaded Variables: - PL_iter_start: A vector containing the indices of the
 % starting points for PL calculation. - parfor_indices: A vector containing
-% the indices for parallel execution. - x, fval, simd: Cell arrays
+% the indices for parallel execution. - x, fval: Cell arrays
 % containing the optimization results for each parameter.
 
 % Find the index of the starting point for profile likelihood (PL)
@@ -52,8 +52,7 @@ end
 
 % Execute optimization for each parameter in parallel
 parfor idx = parfor_indices
-    [x{idx},fval{idx},...
-        simd{idx},Pval{idx}] = ...
+    [x{idx},fval{idx},Pval{idx}] = ...
         run_PLA_on_parameter(idx,PL_iter_start,settings,model_folder);
 end
 
@@ -87,11 +86,11 @@ end
 
 % Assign the values of x and fval to the correct struct entries
 param_length = length(settings.pltest);
-rst = assign_optimization_results(settings, x, fval, simd, Pval, param_length,alg);
+rst = assign_optimization_results(settings, x, fval, Pval, param_length,alg);
 
 rst.reopt1 = rst;
 
 for n = 1:settings.plroptn
-    [x, fval, rst.("reopt" + (n+1))] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length,"reopt" + n);
+    [x, fval, rst.("reopt" + (n+1))] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, Pval, param_length,"reopt" + n);
 end
 end

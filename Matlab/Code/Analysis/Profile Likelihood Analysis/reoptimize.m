@@ -1,4 +1,4 @@
-function [x, fval, output] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, simd, Pval, param_length, name)
+function [x, fval, output] = reoptimize(rst, settings, PL_iter_start, model_folder, alg, x, fval, Pval, param_length, name)
 
 [local_min_up,local_min_down,local_min_number] =...
     identify_local_minima(rst.(name),settings,PL_iter_start);
@@ -82,5 +82,5 @@ delta = (settings.ub(param_index) - settings.lb(param_index)) / settings.plres;
 
 end
 
-output = assign_optimization_results(settings, x, fval, simd, Pval, param_length, alg);
+output = assign_optimization_results(settings, x, fval, Pval, param_length, alg);
 end

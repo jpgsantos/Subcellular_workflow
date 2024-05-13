@@ -53,6 +53,7 @@ rst.st = sum(rst.se);
 if stg.useLog == 3
     rst.st = log10(rst.st);
 end
+% disp(rst.st)
 end
 
 function rst = calculate_score_per_experiment(rst, stg, n, mmf,sbtab, Data)
@@ -69,6 +70,7 @@ rst.se(n, 1) = sum(rst.sd(:, n));
 if stg.useLog == 2
     rst.se(n, 1) = log10(rst.se(n, 1));
 end
+
 end
 
 function rst = calculate_score_per_dataset(rst, stg, n, j, mmf, Data)
@@ -80,6 +82,8 @@ if rst.simd{n} ~= 0
 
     number_points = size(Data(n).Experiment.x(:, j), 1);
     [sim_results_norm,sim_results_detailed,sim_results] = f_normalize(rst, stg, n, j, mmf);
+
+    sim_results1 = sim_results;
     if ~isempty(sim_results_norm)
         sim_results = sim_results_norm;
     end
@@ -97,9 +101,22 @@ if rst.simd{n} ~= 0
         otherwise
             error('Invalid value for stage.useLog: %d', stg.useLog);
     end
-
+    % disp(rst.sd(j, n))
+    % disp("c")
+    if rst.sd(j, n) == inf || isnan(rst.sd(j, n))
+% sim_results1
+% sim_results
+ %        disp(data)
+ % disp(sim_results)
+ % disp(data_sd)
+ % disp(number_points)
+        % disp("y1")
+        rst.sd(j, n) = stg.errorscore;
+        rst.xfinal{n, 1}(j) = 0;
+    end
     % If there are errors output a very high score value (10^10)
-elseif rst.simd{n} == 0 || rst.sd(n, j) == inf
+elseif rst.simd{n} == 0 || rst.sd(j, n) == inf || isnan(rst.sd(j, n))
+    % disp("y2")
     rst.sd(j, n) = stg.errorscore;
 rst.xfinal{n, 1}(j) = 0;
 end

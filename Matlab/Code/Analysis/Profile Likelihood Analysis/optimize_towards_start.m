@@ -21,7 +21,6 @@ function [x, fval,current_pos] = ...
 % Outputs:
 % - x_optimized: Optimized parameter values.
 % - fval_optimized: Objective function values at the optimized parameters.
-% - simd_optimized: Simulated data corresponding to the optimized
 % parameters.
 % - Pval_optimized: Parameter values at which the function was optimized.
 
@@ -136,7 +135,7 @@ while current_pos ~= next_pos_to_opt
 
     % Perform optimization using the selected method
     % if any(strcmp(alg, {'sa', 'ps', 'fm'}))
-    [temp_x, temp_fval, temp_simd{alg{2}}{current_pos+direction}, temp_Pval, prev_fval{sortes_plas}, offset] =...
+    [temp_x, temp_fval, temp_Pval, prev_fval{sortes_plas}, offset] =...
         run_optimization_method(x{sortes_plas}, fval{sortes_plas}, ...
         offset, temp_lb, temp_up, settings, model_folder, ...
         alg, 1, 1, current_pos+direction, old_current_pos,1);

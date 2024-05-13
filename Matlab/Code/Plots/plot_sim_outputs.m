@@ -31,9 +31,10 @@ n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
 
 % Generate colors for plotting.
 colors = generateRainbowGradient(length(stg.pat));
-
+current_plot = 0;
 % Iterate through each set of parameters to process simulation results.
 for pa_idx = stg.pat
+current_plot = current_plot + 1;
     % Check if the simulation was successful for the current parameter set
     % and experiment.
     if rst(pa_idx).simd{1,exp_idx} ~= 0
@@ -54,8 +55,8 @@ for pa_idx = stg.pat
         % Plot simulation data. Use detailed time and results if simdetail
         % is enabled, and color-code by parameter set.
         if stg.simdetail
-            valid_outputs_plots(:,pa_idx) = scatter(time_detailed,...
-                sim_results_detailed{pa_idx},1,colors(pa_idx,:),"o","filled",...
+            valid_outputs_plots(:,current_plot) = scatter(time_detailed,...
+                sim_results_detailed{pa_idx},1,colors(current_plot,:),"o","filled",...
                 "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                 string("\theta_"+pa_idx));
             % Label the y-axis with the correct unit and apply pre-defined
@@ -74,8 +75,8 @@ for pa_idx = stg.pat
             % Select between normalized and raw results based on 'is_norm'
             % flag.
             if is_norm
-                valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results_norm{pa_idx},1,colors(pa_idx,:),"o","filled",...
+                valid_outputs_plots(:,current_plot) = scatter(time,...
+                    sim_results_norm{pa_idx},1,colors(current_plot,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                     string("\theta_"+pa_idx));
                 % Label the y-axis as 'dimensionless' and apply pre-defined
@@ -86,8 +87,8 @@ for pa_idx = stg.pat
                 output_max = max([max(sim_results_norm{pa_idx}),...
                     max(data+data_SD),max(data)]);
             else
-                valid_outputs_plots(:,pa_idx) = scatter(time,...
-                    sim_results{pa_idx},1,colors(pa_idx,:),"o","filled",...
+                valid_outputs_plots(:,current_plot) = scatter(time,...
+                    sim_results{pa_idx},1,colors(current_plot,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
                     string("\theta_"+pa_idx));
                 % Label the y-axis with the correct unit and apply
@@ -106,7 +107,7 @@ for pa_idx = stg.pat
         end
 
         % Add the successful parameter index to the list of valid outputs.
-        valid_outputs(pa_idx) = pa_idx;
+        valid_outputs(current_plot) = current_plot;
     end
 end
 

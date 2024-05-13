@@ -1,4 +1,4 @@
-function [x,fval,simd,Pval] =...
+function [x,fval,Pval] =...
     run_PLA_on_parameter(parfor_indices, PL_iter_start, settings, model_folders)
 % Executes optimization for a given parameter. It manages the direction of
 % parameter search, sets the range for PL_iter based on the current
@@ -14,7 +14,6 @@ function [x,fval,simd,Pval] =...
 % Outputs:
 % - x: Optimized parameter values.
 % - fval: Objective function values.
-% - simd: Simulated data.
 % - Pval: Parameter values.
 %
 % This function handles both forward and reverse direction searches and
@@ -73,13 +72,12 @@ if settings.(['pl' alg{1}])
     x{alg{2}} = [];
     % end
     fval{alg{2}} = [];
-    simd{alg{2}} = [];
     Pval{alg{2}} = [];
 end
 tic
 % Run optimization iterations
-[x, fval, simd, Pval] =...
-    run_optimization_iterations(x, fval, simd, Pval, PL_iter, settings,...
+[x, fval, Pval] =...
+    run_optimization_iterations(x, fval, Pval, PL_iter, settings,...
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
     alg, section,temp_array);
 

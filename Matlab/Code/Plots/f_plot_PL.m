@@ -50,7 +50,7 @@ disp("Plotting PL")
 % does
 if isfield(settings,'bestpa')
     settings.sbioacc = false;
-    [best_score,~,~] = f_sim_score(settings.bestpa,settings,model_folder);
+    [best_score,~,~] = f_sim_score(settings.bestpa,settings,model_folder,0,0);
 end
 % best_score
 % Set the font settings
@@ -307,8 +307,8 @@ for m = settings.pltest
 
     % Set the x-axis limits
     xlim([settings.lb(m) settings.ub(m)])
-    ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
-
+    % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
+    ylim([0 100])
     % Set the title for each plot
     % titlestring = "P_{" + find(settings.partest==m)+"}";
     titlestring = "P_{" + m +"}";

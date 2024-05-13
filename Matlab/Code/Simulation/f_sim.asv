@@ -43,8 +43,6 @@ function results = f_sim(experiment_idx,settings,simulation_parameters,...
 persistent models
 persistent configs
 
-rel_tol_ind = abs(log10(settings.reltol_min)-log10(settings.reltol))+1;
-abs_tol_ind = abs(log10(settings.abstol_min)-log10(settings.abstol))+1;
 % If the function is called for the first time, load the appropriate model
 % and compile the code for simulation run
 if isempty(models)
@@ -67,76 +65,87 @@ if isempty(models)
     model_exp_eq = main_model_folders.model.data.model_exp.equilibration;
     model_exp_detail = main_model_folders.model.data.model_exp.detail;
 
+% Value of Relative tolerance
+% (Relative tolerance)
+settings.reltol = 1.0E-4;
+
+% Value of Relative tolerance minimum
+% (Relative tolerance minimum)
+settings.reltol_min = 1.0E-6;
+
+% Value of Absolute tolerance
+% (Absolute tolerance)
+settings.abstol = 1.0E-4;
+
+% Value of Absolute tolerance minimum
+% (Absolute tolerance minimum)
+settings.abstol_min = 1.0E-6;
+
+% abs(log10(settings.abstol_min)-log10(settings.abstol))
+% abs(log10(settings.reltol_min)-log10(settings.reltol))
+
     % Iterate over the experiments thar are being run
     for n = settings.exprun
-        
-        % disp(n)
-        for j = 1:rel_tol_ind
-            % disp(j)
-            for k = 1:abs_tol_ind
-                % tic
+        for j = 1:abs(log10(settings.reltol_min)-log10(settings.reltol))
+            for k = 1:abs(log10(settings.abstol_min)-log10(settings.abstol))
                 % Load and compile SimBiology models for each experiment
-               
+
                 % Load models for main simulation
                 load(model_exp_default + n + ".mat",'model_exp','config_exp')
-                models{j,k,n} = model_exp;
-                configs{j,k,n} = config_exp;
+                models{1,1,n} = model_exp;
+                configs{1,1,n} = config_exp;
 
                 % Load models for equilibrium
                 load(model_exp_eq + n + ".mat",'model_exp','config_exp')
-                models{j,k,n+settings.expn} = model_exp;
-                configs{j,k,n+settings.expn} = config_exp;
+                models{1,1,n+settings.expn} = model_exp;
+                configs{1,1,n+settings.expn} = config_exp;
 
                 % Load models for detailed simulation
                 if settings.simdetail
                     load(model_exp_detail + n + ".mat",'model_exp','config_exp')
-                    models{j,k,n+2*settings.expn} = model_exp;
-                    configs{j,k,n+2*settings.expn} = config_exp;
+                    models{1,1,n+2*settings.expn} = model_exp;
+                    configs{1,1,n+2*settings.expn} = config_exp;
                 end
-                if settings.sbioacc
-                    sbioaccelerate(models{j,k,n},configs{j,k,n});
-                    sbioaccelerate(models{j,k,n+settings.expn},configs{j,k,n+settings.expn});
-                    if settings.simdetail
-                        sbioaccelerate(models{j,k,n+2*settings.expn},configs{j,k,n+2*settings.expn});
-                    end
-                end
-                % disp("n: "+n+" j: "+j+" k: "+k + " time: " +toc)
             end
         end
         % Compile the model code if the option is selected in settings
-
+        if settings.sbioacc
+            sbioaccelerate(models{1,1,n},configs{1,1,n});
+            sbioaccelerate(models{1,1,n+settings.expn},configs{1,1,n+settings.expn});
+            if settings.simdetail
+                sbioaccelerate(models{1,1,n+2*settings.expn},configs{1,1,n+2*settings.expn});
+            end
+        end
     end
 end
-% models
-% disp(1)
+
+
 
 % substitute the start amount of the species in the model with the correct
 % ones for  simulations
-set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.species(1:size(species_start_amount(:,experiment_idx),1)),...
+set(models{1,1,experiment_idx}.species(1:size(species_start_amount(:,experiment_idx),1)),...
     {'InitialAmount'},num2cell(species_start_amount(:,experiment_idx)));
-% disp(2)
+
 % Substitute the values of the parameters in the model for the correct one
 % for simultaions
-set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.parameters(1:size(simulation_parameters,1)),...
+set(models{1,1,experiment_idx}.parameters(1:size(simulation_parameters,1)),...
     {'Value'},num2cell(simulation_parameters));
-% disp(3)
 % log10(get(configs{experiment_idx}.SolverOptions, 'OutputTimes'))
 % get(configs{experiment_idx}.SolverOptions, 'OutputTimes')
 
 if ~success
-    configs_fail = configs{rel_tol_ind,abs_tol_ind,experiment_idx};
+    configs_fail = configs{1,1,experiment_idx};
     configs_fail.SolverOptions.AbsoluteTolerance = settings.abstol;
     configs_fail.SolverOptions.RelativeTolerance = settings.reltol;
 % if experiment_idx < settings.expn
     % set(config.SolverOptions, 'MaxStep', 0.1);
 % end
 % end
-    results.simd{experiment_idx} = sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
+    results.simd{1,1,experiment_idx} = sbiosimulate(models{1,1,experiment_idx},...
         configs_fail);
 else
-    % disp(4)
     % simulate the model using matlab built in function
-    results.simd{experiment_idx} = sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
-        configs{rel_tol_ind,abs_tol_ind,experiment_idx});
+    results.simd{1,1,experiment_idx} = sbiosimulate(models{1,1,experiment_idx},...
+        configs{1,1,experiment_idx});
 end
 end

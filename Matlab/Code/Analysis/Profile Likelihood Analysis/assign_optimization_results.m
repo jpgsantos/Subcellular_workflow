@@ -1,11 +1,11 @@
 function rst =...
-    assign_optimization_results(settings, x, fval, simd, Pval, param_length, alg)
-% Assigns optimization results (x, fval, simd, Pval) to the appropriate
+    assign_optimization_results(settings, x, fval,  Pval, param_length, alg)
+% Assigns optimization results (x, fval, Pval) to the appropriate
 % fields in the result structure `rst`. The function organizes results for
 % each parameter and optimization method and updates the `rst` structure.
 %
 % Inputs: - settings: A structure with optimization settings. - x, fval,
-% simd, Pval: Cell arrays containing optimization results. - param_length:
+% Pval: Cell arrays containing optimization results. - param_length:
 % The number of parameters. - alg: The algorithms used for optimization.
 %
 % Output: - rst: The updated result structure with assigned values.
@@ -14,8 +14,8 @@ function rst =...
 % results to the corresponding entries in `rst`.
 
 % Define method index mapping
-Out_name = ["xt", "fvalt", "simdt", "Pval"];
-Out_array = {x, fval, simd, Pval};
+Out_name = ["xt", "fvalt", "Pval"];
+Out_array = {x, fval, Pval};
 
 % Loop over each parameter in the settings and each optimization method
 for par_indx = 1:length(settings.pltest)
@@ -43,21 +43,46 @@ for par_indx = 1:length(settings.pltest)
                 end
             end
         end
-
+        min_fvalt = [];
         if length(fvalt_values) == n
             % Find minimum non-zero value
             min_fvalt = min(fvalt_values{n}(fvalt_values{n} ~= 0));
 
+
+
+%             min_fvalt
+%             fvalt_values{n}
+% [fvalt_values{n} == min_fvalt]
+% find(fvalt_values{n} == min_fvalt, 1, 'first')
+% n
+% par_indx
+
+
             % If there is a valid minimum, assign it and corresponding Pval
-            if ~isempty(min_fvalt)
+            if ~isempty(min_fvalt) && ~isnan(min_fvalt)
                 rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = ...
                     min_fvalt;
                 % Find index of algorithm with min value
                 min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
+
+
+% settings.pltest(par_indx)
+% {settings.pltest(par_indx)}
+% rst
+% min_index
+% alg{min_index}
+% rst.(alg{min_index})
+% rst.(alg{min_index}).("Pval")
+% rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}
+% rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n)
                 rst.("min").("Pval"){settings.pltest(par_indx)}(n) = ...
                     rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
                 rst.("min").("xt"){settings.pltest(par_indx)}(n) = ...
                     rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);
+            else % hack needs to be checked
+                rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = settings.errorscore; % makes sense
+rst.("min").("Pval"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);% hack needs to be checked
+rst.("min").("xt"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);% hack needs to be checked
             end
         end
     end

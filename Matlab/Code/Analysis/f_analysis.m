@@ -56,7 +56,7 @@ switch matching_option_idx
         % parallelize simulation runs
         for j = stg.pat
             % run simulation for current valid option
-            [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf);
+            [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf,0,0);
         end
         % store simulation results in results structure
         rst.diag(stg.pat) = [sim_results{:}];

@@ -108,5 +108,4 @@ if settings.save_results
     catch
     end
 end
-
 end

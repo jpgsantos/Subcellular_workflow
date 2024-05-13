@@ -90,7 +90,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     configsetObj{number_exp} = getconfigset(model_run{number_exp});
     
     % Configure simulation settings for the equilibrium simulation run
-    set(configsetObj{number_exp}, 'MaximumWallClock', stg.maxt);
+    set(configsetObj{number_exp}, 'MaximumWallClock', 0.1);
     set(configsetObj{number_exp}, 'StopTime', stg.eqt);
     set(configsetObj{number_exp}.CompileOptions,...
         'DimensionalAnalysis', stg.dimenanal);
@@ -104,7 +104,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
         'AbsoluteTolerance', stg.abstol);
     set(configsetObj{number_exp}.SolverOptions,...
         'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
-    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', stg.eqt);
+    set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', [0,10.^(-20:0.01:log10(stg.eqt))]);
     set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstepeq);
 
@@ -115,6 +115,7 @@ for number_exp = 1:size(sb.Experiments.ID,1)
     sbiosaveproject(model_exp_eq + number_exp,'modelobj')
 
     % Update simulation settings for the proper simulation run
+    set(configsetObj{number_exp}, 'MaximumWallClock', stg.maxt);
     set(configsetObj{number_exp}, 'StopTime', sbtab.sim_time(number_exp));
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes',...
         Data(number_exp).Experiment.t);
