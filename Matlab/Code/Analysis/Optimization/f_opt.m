@@ -1,4 +1,4 @@
-function [rst,parameter_array] = f_opt(stg,model_folders)
+function [result,parameter_array] = f_opt(settings,model_folders)
 % This function performs optimization on a given objective function using
 % different optimization algorithms. The available algorithms include
 % fmincon, Simulated annealing, Pattern search, Genetic algorithm, Particle
@@ -41,7 +41,7 @@ function [rst,parameter_array] = f_opt(stg,model_folders)
 % optimization algorithm.
 
 % Set the random seed for reproducibility
-rng(stg.rseed);
+rng(settings.rseed);
 
 % Initialize the cell array containing optimization algorithm names and
 % corresponding settings flags
@@ -56,16 +56,16 @@ optimization_algorithms = {
 p = gcp(); % If no pool, do not create new one.
 poolsize = p.NumWorkers;
 
-stg.pat_original = stg.pat;
-stg.pa_original = stg.pa;
+settings.pat_original = settings.pat;
+settings.pa_original = settings.pa;
 
 
-stg.pat = 1:poolsize;
+settings.pat = 1:poolsize;
 for n = 1:poolsize
-stg.pa(n,:) = stg.pa(1,:);
+settings.pa(n,:) = settings.pa(1,:);
 end
 parfor n = 1:poolsize
-[~] = f_diagnostics(stg,model_folders);
+[~] = f_diagnostics(settings,model_folders);
 end
 
 % Iterate through the optimization_algorithms cell array and call the
@@ -74,10 +74,10 @@ for i = 1:size(optimization_algorithms, 1)
     % algorithm_func = optimization_algorithms{i, 1};
     algorithm_flag = optimization_algorithms{i, 2};
 
-    if stg.(algorithm_flag)
-        [rst(i), parameter_array(i, :)] = ...
+    if settings.(algorithm_flag)
+        [result(i), parameter_array(i, :)] = ...
             run_algorithm(@optimize_algorithm,...
-            optimization_algorithms{i, 1}, stg, model_folders);
+            optimization_algorithms{i, 1}, settings, model_folders);
     end
 end
 end
@@ -196,54 +196,54 @@ switch algorithm_name
 end
 end
 
-function options = prepare_optimization_options(stg, algorithm_name)
+function options = prepare_optimization_options(settings, algorithm_name)
 
 % Set options for each algorithm
 switch algorithm_name
     case 'fmincon'
-        options = stg.fm_options;
-        options.UseParallel = stg.optmc;
+        options = settings.fm_options;
+        options.UseParallel = settings.optmc;
     case 'Simulated annealing'
-        options =  stg.sa_options;
-        options.MaxTime = stg.optt;
+        options =  settings.sa_options;
+        options.MaxTime = settings.optt;
     case 'Pattern search'
-        options = stg.psearch_options;
-        options.MaxTime = stg.optt;
-        options.UseParallel = stg.optmc;
+        options = settings.psearch_options;
+        options.MaxTime = settings.optt;
+        options.UseParallel = settings.optmc;
     case 'Genetic algorithm'
 
-        test = stg.pa_original(stg.pat_original,:);
+        test = settings.pa_original(settings.pat_original,:);
 
-        options = stg.ga_options;
-        options.MaxTime = stg.optt;
-        options.PopulationSize = stg.popsize+length(test);
+        options = settings.ga_options;
+        options.MaxTime = settings.optt;
+        options.PopulationSize = settings.popsize+length(test);
         % options.PopulationSize = stg.popsize;
-        options.UseParallel = stg.optmc;
-        [~,startpop,~] = f_opt_start(stg);
+        options.UseParallel = settings.optmc;
+        [~,startpop,~] = f_opt_start(settings);
         options.InitialPopulationMatrix = startpop;
     case 'Particle swarm'
-        options = stg.pswarm_options;
-        options.MaxTime = stg.optt;
-        options.SwarmSize = stg.popsize;
-        options.UseParallel = stg.optmc;
-        [~,startpop,~] = f_opt_start(stg);
+        options = settings.pswarm_options;
+        options.MaxTime = settings.optt;
+        options.SwarmSize = settings.popsize;
+        options.UseParallel = settings.optmc;
+        [~,startpop,~] = f_opt_start(settings);
         options.InitialSwarmMatrix = startpop;
     case 'Surrogate optimization'
-        options = stg.sopt_options;
-        options.MaxTime = stg.optt;
-        options.UseParallel = stg.optmc;
+        options = settings.sopt_options;
+        options.MaxTime = settings.optt;
+        options.UseParallel = settings.optmc;
     otherwise
         error('Unsupported optimization algorithm.');
 end
 
 % Enable plots if chosen in settings
-if stg.optplots
+if settings.optplots
     % Set the appropriate PlotFcn based on the optimization algorithm
     options.PlotFcn = get_plot_functions(algorithm_name);
 end
 
 % Enable console messages if chosen in settings
-if stg.optcsl
+if settings.optcsl
     options.Display = 'iter';
 end
 end
@@ -277,14 +277,14 @@ switch algorithm_name
 end
 end
 
-function [spoint,spop_mc,spop_sc] = f_opt_start(stg)
+function [spoint,spop_mc,spop_sc] = f_opt_start(settings)
 % Set the randomm seed for reproducibility
-rng(stg.rseed);
+rng(settings.rseed);
 
-test = stg.pa_original(stg.pat_original,:);
+test = settings.pa_original(settings.pat_original,:);
 
 % Optimization Start method 1
-if stg.osm == 1
+if settings.osm == 1
 % stg.pat_original
 % stg.pa_original
 % for n = stg.pat_original
@@ -298,40 +298,38 @@ if stg.osm == 1
 % test = stg.pa_original(stg.pat_original,:);
     % Get a random starting point or group of starting points, if using
     % multistart, inside the bounds
-    spoint = lhsdesign(stg.msts,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+    spoint = lhsdesign(settings.msts,settings.parnum).*(settings.ub-settings.lb)+settings.lb;
 
     % Get a group of ramdom starting points inside the bounds
-    spop_mc = lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+    spop_mc = lhsdesign(settings.popsize,settings.parnum).*(settings.ub-settings.lb)+settings.lb;
     % spop_mc = [lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;test];
 
     % Get a group of ramdom starting points inside the bounds
-    for n = 1:stg.msts
-    spop_sc{n} = lhsdesign(ceil(stg.popsize/36),stg.parnum).*(stg.ub-stg.lb)+stg.lb;
+    for n = 1:settings.msts
+    spop_sc{n} = lhsdesign(ceil(settings.popsize/36),settings.parnum).*(settings.ub-settings.lb)+settings.lb;
     end
     % Optimization Start method 2
-elseif stg.osm == 2
+elseif settings.osm == 2
     
     % Get a random starting point or group of starting points, if using
     % multistart, near the best point
-    spoint = stg.bestpa - stg.dbpa +...
-        (stg.dbpa*2*lhsdesign(stg.msts,stg.parnum));
+    spoint = settings.bestpa - settings.dbpa +...
+        (settings.dbpa*2*lhsdesign(settings.msts,settings.parnum));
     
     spoint = max(min(5,spoint),-7);
 
 
     % Get a group of random starting points near the best point
-    spop_mc = stg.bestpa - stg.dbpa +...
-        (stg.dbpa*2*lhsdesign(stg.popsize,stg.parnum));
+    spop_mc = settings.bestpa - settings.dbpa +...
+        (settings.dbpa*2*lhsdesign(settings.popsize,settings.parnum));
 
-    spop_mc = max(min(stg.ub,spop_mc),stg.lb);
+    spop_mc = max(min(settings.ub,spop_mc),settings.lb);
     spop_mc = [spop_mc;test];
-    for n = 1:stg.msts
-    spop_sc{n} = stg.bestpa - stg.dbpa +...
-        (stg.dbpa*2*lhsdesign(ceil(stg.popsize/36),stg.parnum));
+    for n = 1:settings.msts
+    spop_sc{n} = settings.bestpa - settings.dbpa +...
+        (settings.dbpa*2*lhsdesign(ceil(settings.popsize/36),settings.parnum));
 
-    spop_sc{n} = max(min(stg.ub,spop_sc{n}),stg.lb);
+    spop_sc{n} = max(min(settings.ub,spop_sc{n}),settings.lb);
     end
-
-
 end
 end
