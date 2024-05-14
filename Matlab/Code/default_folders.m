@@ -1,9 +1,5 @@
 function [mmf] = default_folders(stg,mmf,date_stamp)
 
-% Matlab_main_folder
-% Matlab/
-% mmf.main
-
     % Model_folder
     % Matlab/"Model Folder name"
     mmf.model.main = mmf.main + "Model/" + stg.folder_model + "/";

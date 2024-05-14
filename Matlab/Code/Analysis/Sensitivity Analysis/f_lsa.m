@@ -128,7 +128,7 @@ delta_scaled = delta * (range_from_best * 2) * ones(1, parameter_n);
 progress = 1;
 time_begin = datetime;
 D = parallel.pool.DataQueue;
-afterEach(D, @progress_track);
+afterEach(D, @progress_track_LSA);
 
 % Parallel loop for calculating score_B_star
 parfor n = 1:number_samples*par_n_plus_1
@@ -149,15 +149,19 @@ rst.P_matrix = P_matrix_1;
 % Calculate and store parameter_score
 for n = 1:number_samples
     for i = 1:parameter_n
-        if any(any(score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).sd == stg.errorscore)) ||...
-                any(any(score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st == stg.errorscore))
-            parameter_score(n,x22_1(n,:)) = [];
-            break
-        else
-           
         parameter_score(n,x22_1(n,i)) =...
             score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).st -...
             score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st;
+    end
+end
+for n = number_samples:-1:1
+     % n
+    for i = 1:parameter_n
+        if any(any(score_B_star(x11_1(n,i)+(n-1)*(parameter_n+1)).sd == stg.errorscore)) ||...
+                any(any(score_B_star(x11_1(n,i)+1+(n-1)*(parameter_n+1)).st == stg.errorscore))
+            % disp("fodeu")
+            parameter_score(n,:) = [];
+            break
         end
     end
 end
@@ -186,7 +190,7 @@ rst.sigma_deviation = rst.sigma_parameter_score_delta;
 end
 
 % Function to track progress of the LSA
-function progress_track(arg)
+function progress_track_LSA(arg)
 persistent current_sample
 persistent last_time
 task_name = arg{1};

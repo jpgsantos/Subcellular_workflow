@@ -1,5 +1,5 @@
 function results = f_sim(experiment_idx,settings,simulation_parameters,...
-    species_start_amount,results,main_model_folders,success,out_time)
+    species_start_amount,results,main_model_folders,success)
 % This function runs simulations using SimBiology models for a set of
 % experiments. It loads the appropriate models and compiles the code for
 % simulation run, then substitutes the start amounts of species and
@@ -51,14 +51,9 @@ if isempty(models)
 
     % Turn off warning messages
     warning('off','all')
-    % warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
-    % warning('off', 'SimBiology:SolodeSolverIntegrationError');
-    % warning('off', 'SimBiology:Solver:IntegrationTolNotMet');
-    % warning('off', 'SimBiology:Solver:InfOrNaN');
-    % warning('off', 'SimBiology:solver');
-
-    %Generate an empty array to be populated with the model suited for each
-    %equilibration and experiment%
+    
+    % Generate an empty array to be populated with the model suited for
+    % each equilibration and experiment
     models = cell(1,1,settings.expn*(2 + settings.simdetail));
     configs = cell(1,1,settings.expn*(2 + settings.simdetail));
 
@@ -107,34 +102,23 @@ if isempty(models)
 
     end
 end
-% models
-% disp(1)
 
 % substitute the start amount of the species in the model with the correct
 % ones for  simulations
 set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.species(1:size(species_start_amount(:,experiment_idx),1)),...
     {'InitialAmount'},num2cell(species_start_amount(:,experiment_idx)));
-% disp(2)
+
 % Substitute the values of the parameters in the model for the correct one
 % for simultaions
 set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.parameters(1:size(simulation_parameters,1)),...
     {'Value'},num2cell(simulation_parameters));
-% disp(3)
-% log10(get(configs{experiment_idx}.SolverOptions, 'OutputTimes'))
-% get(configs{experiment_idx}.SolverOptions, 'OutputTimes')
-
 if ~success
     configs_fail = configs{rel_tol_ind,abs_tol_ind,experiment_idx};
     configs_fail.SolverOptions.AbsoluteTolerance = settings.abstol;
     configs_fail.SolverOptions.RelativeTolerance = settings.reltol;
-% if experiment_idx < settings.expn
-    % set(config.SolverOptions, 'MaxStep', 0.1);
-% end
-% end
     results.simd{experiment_idx} = sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
         configs_fail);
 else
-    % disp(4)
     % simulate the model using matlab built in function
     results.simd{experiment_idx} = sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
         configs{rel_tol_ind,abs_tol_ind,experiment_idx});

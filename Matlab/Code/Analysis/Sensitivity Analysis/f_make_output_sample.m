@@ -54,7 +54,7 @@ function [f_out] =...
 D = parallel.pool.DataQueue;
 
 % Set up the progress tracker for the DataQueue
-afterEach(D, @progress_track);
+afterEach(D, @progress_track_GSA);
 
 clear R RN
 
@@ -121,7 +121,7 @@ disp(task_name + " Runtime: " + string(datetime - time_begin) +...
 end
 
 % Function to track progress of the GSA
-function progress_track(arg)
+function progress_track_GSA(arg)
 persistent current_sample
 persistent last_time
 

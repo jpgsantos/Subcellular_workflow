@@ -43,20 +43,10 @@ for par_indx = 1:length(settings.pltest)
                 end
             end
         end
-        min_fvalt = [];
+
         if length(fvalt_values) == n
             % Find minimum non-zero value
             min_fvalt = min(fvalt_values{n}(fvalt_values{n} ~= 0));
-
-
-
-%             min_fvalt
-%             fvalt_values{n}
-% [fvalt_values{n} == min_fvalt]
-% find(fvalt_values{n} == min_fvalt, 1, 'first')
-% n
-% par_indx
-
 
             % If there is a valid minimum, assign it and corresponding Pval
             if ~isempty(min_fvalt) && ~isnan(min_fvalt)
@@ -65,24 +55,16 @@ for par_indx = 1:length(settings.pltest)
                 % Find index of algorithm with min value
                 min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
 
-
-% settings.pltest(par_indx)
-% {settings.pltest(par_indx)}
-% rst
-% min_index
-% alg{min_index}
-% rst.(alg{min_index})
-% rst.(alg{min_index}).("Pval")
-% rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}
-% rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n)
                 rst.("min").("Pval"){settings.pltest(par_indx)}(n) = ...
                     rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);
+
                 rst.("min").("xt"){settings.pltest(par_indx)}(n) = ...
                     rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);
+
             else % hack needs to be checked
                 rst.("min").("fvalt"){settings.pltest(par_indx)}(n) = settings.errorscore; % makes sense
-rst.("min").("Pval"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);% hack needs to be checked
-rst.("min").("xt"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);% hack needs to be checked
+                rst.("min").("Pval"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("Pval"){settings.pltest(par_indx)}(n);% hack needs to be checked
+                rst.("min").("xt"){settings.pltest(par_indx)}(n) = rst.(alg{min_index}).("xt"){settings.pltest(par_indx)}(n);% hack needs to be checked
             end
         end
     end

@@ -1,4 +1,3 @@
-% function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,settings)
 function [settings,sb,results,model_folders,plots] = Run_main(Folder,Analysis,settings)
 % Main function to perform various analyses on a selected model
 % using a given settings file.
@@ -65,10 +64,6 @@ analysis_options = ["Diagnostics","Parameter Estimation",...
     "Profile Likelihood Analysis","Reproduce a previous analysis",...
     "Reproduce the plots of a previous analysis","Import model files"];
 
-% sb = [];
-% results = [];
-% plots = [];
-
 % Code for choosing the model and loading the settings files
 [settings,results,sb] = f_user_input(model_folders,analysis_options,user_choices);
 
@@ -94,11 +89,11 @@ end
 % loading the results of a previously run analysis
 plots = [];
 if settings.plot
-     % plots = f_plot(results,settings,model_folders);
+     plots = f_plot(results,settings,model_folders);
     % Save plots results if chosen in settings
-%     if stg.save_results
-%          f_save_plots(mmf)
-%     end
+    if stg.save_results
+         f_save_plots(mmf)
+    end
 end
 
 % Save Analysis results if chosen in settings

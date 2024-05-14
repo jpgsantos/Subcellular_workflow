@@ -33,7 +33,6 @@ function rst = f_diagnostics(stg,mmf)
 % (None)
 
 % Run the model and obtain scores for fitness Multi Core
-
 pa = stg.pa(stg.pat,:);
 if stg.optmc
     disp("Running the model and obtaining Scores (Multicore)")

@@ -98,22 +98,22 @@ for exp_indx = settings.exprun
     % Main simulation
     if success_eq(exp_indx)
 
-        tolerance_settings = create_tolerance_settings(settings, 0);
+        tolerance_settings = create_tolerance_settings(exp_indx, settings, 0);
 
-        [success_sim, error_type, result] = ...
+        [~, error_type, result] = ...
             run_with_tolerances(@(success) f_sim(exp_indx, settings, sim_par, species_start_amounts,  ...
-            result, model_folders, success), tolerance_settings);
+            result, model_folders, success), tolerance_settings,result);
 
-        if ~success_sim
-            % disp("n: " + n + " E" + (n-1) + " fail_sim_2" + " last error: "+ ME.identifier)
-            result.simd{exp_indx} = 0;
-        end
+        % if ~success_sim
+        %     % disp("n: " + n + " E" + (n-1) + " fail_sim_2" + " last error: "+ ME.identifier)
+        %     result.simd{exp_indx} = 0;
+        % end
 
         % Run detailed simulation if required
         if settings.simdetail
             [~, error_type, result] = ...
             run_with_tolerances(@(success) f_sim(exp_indx+2*settings.expn, settings, sim_par, species_start_amounts,  ...
-            result, model_folders, success), tolerance_settings);
+            result, model_folders, success), tolerance_settings,result);
         end
 
         % Check simulation output times
@@ -130,28 +130,31 @@ for exp_indx = settings.exprun
     if result.simd{exp_indx} == 0
         error_list_E = append(error_list_E, ((exp_indx - 1) + error_type + " "));
     end
+    
 end
 
+% result.simd
 % Display progress and errors if necessary
 if settings.simcsl
     disp("i: " + i + " j: " + j + " E: " + error_list_E + " time: " + toc)
 end
 end
 
-function tolerance_settings = create_tolerance_settings(settings, equilibrate)
+function tolerance_settings = create_tolerance_settings(exp_indx, settings, equilibrate)
 % Create a structure for tolerance settings
     tolerance_settings = ...
-    struct('reltol', settings.reltol, 'reltol_step', ...
+    struct('exp_indx', exp_indx, 'reltol', settings.reltol, 'reltol_step', ...
             settings.reltol / 10, 'reltol_min', settings.reltol_min, ...
             'abstol', settings.abstol, 'abstol_step', settings.abstol / 10, ...
              'abstol_min', settings.abstol_min, 'equilibrate', equilibrate);
 end
 
 function [success, error_type, result] = ...
-    run_with_tolerances(func, tolerance_settings)
+    run_with_tolerances(func, tolerance_settings,result)
 % Run a function with varying tolerance settings until it succeeds
 success = true;
 error_type = '';
+
 for reltol = tolerance_settings.reltol:-tolerance_settings.reltol_step:...
     tolerance_settings.reltol_min
     for abstol = tolerance_settings.abstol:-tolerance_settings.abstol_step:...
@@ -160,21 +163,23 @@ for reltol = tolerance_settings.reltol:-tolerance_settings.reltol_step:...
         tolerance_settings.stg.reltol = reltol;
         tolerance_settings.stg.abstol = abstol;
         if tolerance_settings.equilibrate
-            % try
+            try
                 [result,error_type] = func();
                 success = true;
-            % catch
-            %     error_type = "e"; %equilibration
-            %     success = false;
-            % end
+            catch
+                error_type = "e"; %equilibration
+                success = false;
+            end
         else
-            % try
+            try
                 result = func(success);
                 success = true;
-            % catch
-            %     error_type = "s"; %simulation
-            %     success = false;
-            % end
+            catch
+                % tolerance_settings.exp_indx
+                result.simd{tolerance_settings.exp_indx} = 0;
+                error_type = "s"; %simulation
+                success = false;
+            end
         end
         if success
             break;
@@ -186,7 +191,7 @@ for reltol = tolerance_settings.reltol:-tolerance_settings.reltol_step:...
 end
 end
 
-function [species_start_amounts_1,success_eq,error_type] = equilibrate_2(n, settings, sim_par, ...
+function [species_start_amounts_1,success_eq,error_type] = equilibrate_2(exp_indx, settings, sim_par, ...
     result, model_folders, sbtab, success_eq)
 % Equilibrate the model for the specified experiment
 persistent species_start_amounts %species start amount
@@ -194,37 +199,37 @@ error_type = "";
 
 % Check if this is not the first experiment, the start values are equal to
 % the previous experiment, and the previous simulation was valid
-is_not_first_experiment = n ~= settings.exprun(1);
+is_not_first_experiment = exp_indx ~= settings.exprun(1);
 
-start_values_equal = min([sbtab.datasets(n).start_amount{:, 2}] ==...
+start_values_equal = min([sbtab.datasets(exp_indx).start_amount{:, 2}] ==...
     [sbtab.datasets(settings.exprun(...
-    max(find(settings.exprun == n) - 1, 1))).start_amount{:, 2}]);
+    max(find(settings.exprun == exp_indx) - 1, 1))).start_amount{:, 2}]);
 previous_simulation_valid = ...
-    result.simd{settings.exprun(max(find(settings.exprun == n) - 1, 1))} ~= 0;
+    result.simd{settings.exprun(max(find(settings.exprun == exp_indx) - 1, 1))} ~= 0;
 
 if is_not_first_experiment && start_values_equal && ...
         previous_simulation_valid && success_eq
     % Set the start amounts based on the previous experiment
-    species_start_amounts(:,n) = species_start_amounts(:, settings.exprun(find(settings.exprun == n) - 1));
+    species_start_amounts(:,exp_indx) = species_start_amounts(:, settings.exprun(find(settings.exprun == exp_indx) - 1));
     if settings.simdetail
-        species_start_amounts(:, n+2*settings.expn) = ...
-            species_start_amounts(:, settings.exprun(find(settings.exprun == n) - 1));
+        species_start_amounts(:, exp_indx+2*settings.expn) = ...
+            species_start_amounts(:, settings.exprun(find(settings.exprun == exp_indx) - 1));
     end
     success_eq = true;
 else
     % Set start amounts for species with non-zero values
-    for j = 1:size(sbtab.datasets(n).start_amount,1)
+    for j = 1:size(sbtab.datasets(exp_indx).start_amount,1)
         % Set the start amount of the species to the number defined in
         % the sbtab for each experiment
-        species_start_amounts(sbtab.datasets(n).start_amount{j,3},n+settings.expn) =...
-            sbtab.datasets(n).start_amount{j,2};
+        species_start_amounts(sbtab.datasets(exp_indx).start_amount{j,3},exp_indx+settings.expn) =...
+            sbtab.datasets(exp_indx).start_amount{j,2};
     end
 
-    tolerance_settings = create_tolerance_settings(settings, 1);
+    tolerance_settings = create_tolerance_settings(exp_indx, settings, 1);
 
     [success_eq, error_type, species_start_amounts] = ...
-        run_with_tolerances(@() equilibrate(n, settings, sim_par, result, ...
-        model_folders, sbtab, species_start_amounts, success_eq), tolerance_settings);
+        run_with_tolerances(@() equilibrate(exp_indx, settings, sim_par, result, ...
+        model_folders, sbtab, species_start_amounts, success_eq), tolerance_settings,species_start_amounts);
 end
 species_start_amounts_1 = species_start_amounts;
 end
