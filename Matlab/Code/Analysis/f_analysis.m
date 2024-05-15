@@ -1,4 +1,5 @@
-function [rst,stg] = f_analysis(stg,analysis,mmf,analysis_options,rst)
+function [results, settings] = ...
+    f_analysis(settings, analysis, model_folders, analysis_options, results)
 % This function performs a specific analysis based on the given analysis
 % options. The function calls the appropriate analysis functions
 % (f_diagnostics, f_opt, f_sim_score, f_lsa, f_gsa, f_PL_m) depending on
@@ -43,32 +44,33 @@ disp("Starting " + {analysis_options(matching_option_idx)})
 switch matching_option_idx
     case 1
         % run diagnostic analysis
-        rst.diag = f_diagnostics(stg,mmf);
+        results.diag = f_diagnostics(settings, model_folders);
     case 2
         % run optimization analysis
-        [rst.opt,pa] = f_opt(stg,mmf);
+        [results.opt, pa] = f_opt(settings, model_folders);
         % find valid optimization options
-        valid_options = find(pa(:,1) ~= 0);
+        valid_options = find(pa(:, 1) ~= 0);
         % update settings with valid options
-        stg.pat = transpose(valid_options);
+        settings.pat = transpose(valid_options);
         % create cell array for simulation results
-        sim_results = cell(length(valid_options),1);
+        sim_results = cell(length(valid_options), 1);
         % parallelize simulation runs
-        for j = stg.pat
+        for j = settings.pat
             % run simulation for current valid option
-            [~,sim_results{j},~] = f_sim_score(pa(j,:),stg,mmf,0,0);
+            [~, sim_results{j}, ~] = ...
+                f_sim_score(pa(j, :), settings, model_folders, 0, 0);
         end
         % store simulation results in results structure
-        rst.diag(stg.pat) = [sim_results{:}];
+        results.diag(settings.pat) = [sim_results{:}];
     case 3
         % run LSA analysis
-        rst.lsa = f_lsa(stg,mmf);
+        results.lsa = f_lsa(settings, model_folders);
     case 4
         % run GSA analysis
-        rst.gsa = f_gsa(stg,mmf);
+        results.gsa = f_gsa(settings, model_folders);
     case 5
         % run PLA analysis
-        rst.PLA = f_PL_m(stg,mmf);
+        results.PLA = f_PL_m(settings, model_folders);
 end
 
 % display completion message

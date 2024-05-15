@@ -1,5 +1,6 @@
 function [x,fval,Pval] =...
-    run_PLA_on_parameter(parfor_indices, PL_iter_start, settings, model_folders)
+    run_PLA_on_parameter(parfor_indices, PL_iter_start, settings, ...
+    model_folders)
 % Executes optimization for a given parameter. It manages the direction of
 % parameter search, sets the range for PL_iter based on the current
 % parameter index, and performs optimization using the specified method
@@ -21,7 +22,8 @@ function [x,fval,Pval] =...
 % for each step.
 
 % Calculate the actual parameter index based on the input
-par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
+par_indx = ...
+    settings.pltest(mod(parfor_indices - 1, length(settings.pltest)) + 1);
 
 % Determine the direction of the parameter search and set the range for
 % PL_iter based on the current parameter index
@@ -29,7 +31,8 @@ par_indx = settings.pltest(mod(parfor_indices-1, length(settings.pltest)) + 1);
 % Calculate the step size for the search
 delta = (settings.ub(par_indx) - settings.lb(par_indx)) / settings.plres;
 
-if mod(parfor_indices - 1, length(settings.pltest)*2) < length(settings.pltest)
+if mod(parfor_indices - 1, length(settings.pltest) * 2) < ...
+        length(settings.pltest)
     % Set the search range in the forward direction
     delta_par = delta;
     PL_iter(:) = PL_iter_start(par_indx):settings.plres+1;
@@ -38,7 +41,7 @@ else
     % Calculate the step size for the search in the reverse direction
     delta_par = -delta;
     % Set the search range in the reverse direction
-    PL_iter(:) = PL_iter_start(par_indx):-1:1;
+    PL_iter(:) = PL_iter_start(par_indx): - 1: 1;
     section = "start";
 end
 
@@ -54,13 +57,13 @@ temp_up = settings.ub;
 temp_up(par_indx) = [];
 
 % Choose optimization algorithm based on the settings and index
-if parfor_indices <= length(settings.pltest)*2 && settings.plsa
-    alg = {'sa',1};
-elseif parfor_indices > length(settings.pltest)*2 &&...
-        parfor_indices <= length(settings.pltest)*4 && settings.plps
-    alg = {'ps',2};
-elseif parfor_indices > length(settings.pltest)*4 && settings.plfm
-    alg = {'fm',3};
+if parfor_indices <= length(settings.pltest) * 2 && settings.plsa
+    alg = {'sa', 1};
+elseif parfor_indices > length(settings.pltest) * 2 &&...
+        parfor_indices <= length(settings.pltest) * 4 && settings.plps
+    alg = {'ps', 2};
+elseif parfor_indices > length(settings.pltest) * 4 && settings.plfm
+    alg = {'fm', 3};
 end
 
 % Initialize variables for the optimization
@@ -79,7 +82,7 @@ tic
 [x, fval, Pval] =...
     run_optimization_iterations(x, fval, Pval, PL_iter, settings,...
     model_folders, par_indx, delta_par, temp_lb, temp_up,...
-    alg, section,temp_array);
+    alg, section, temp_array);
 
  time_run_optimization_iterations = toc;
 
@@ -89,7 +92,8 @@ str_end_alg_names = {'end    sa', 'start  sa', 'end    ps',...
 % Display completion message for current parameter and optimization method
 for i = 1:length(str_end_alg_names)
     if parfor_indices <= length(settings.pltest) * i
-        disp("P" + num2str(par_indx) + " " + str_end_alg_names{i} + " finished time: " + time_run_optimization_iterations);
+        disp("P" + num2str(par_indx) + " " + str_end_alg_names{i} + ...
+            " finished time: " + time_run_optimization_iterations);
         break;
     end
 end

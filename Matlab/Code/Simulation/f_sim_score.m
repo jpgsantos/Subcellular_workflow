@@ -1,4 +1,5 @@
-function [score,rst,rst_not_simd] = f_sim_score(parameters, stg, model_folders,i,j)
+function [score,rst,rst_not_simd] = ...
+    f_sim_score(parameters, stg, model_folders,i,j)
 % This function calculates the total score of a given model by simulating
 % its performance and scoring the results.
 %

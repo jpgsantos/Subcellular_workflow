@@ -1,4 +1,5 @@
-function [settings, results, sb] = f_user_input(model_folders, analysis_options, user_choices)
+function [settings, results, sb] = ...
+    f_user_input(model_folders, analysis_options, user_choices)
 % This function processes user input for model, analysis options, and
 % settings files, and returns settings, results, and sbTab data structures.
 % It utilizes helper functions to validate user input, apply settings, and
@@ -7,7 +8,7 @@ function [settings, results, sb] = f_user_input(model_folders, analysis_options,
 % Inputs:
 % - model_folders: Model folders structure
 % - analysis_options: Array of available analysis options
-% - user_choices: Cell array of user input choices for model folder,
+% - user_choices: Cell array of user input choices for model folder, 
 % analysis, and settings
 %
 % Outputs:
@@ -16,7 +17,7 @@ function [settings, results, sb] = f_user_input(model_folders, analysis_options,
 % - sbTab: Struct containing SBtab data
 %
 % Used Functions:
-% - getValidInput: Validates user input for model folder, analysis option,
+% - getValidInput: Validates user input for model folder, analysis option, 
 % and settings file
 % - apply_settings: Updates settings based on chosen settings file and
 % checks for changes
@@ -81,10 +82,11 @@ if any(contains(analysis_options([1:5, 8]), analysis_text))
         getValidInput(settings_folder, user_choices{3}, "settings file");
 
     % Apply settings and return the settings struct
-    [settings,last_settings_file_text,last_settings_file_date] = ...
-        apply_settings(settings, settings_folder, settings_file_text,...
-        last_settings_file_date,last_settings_file_text, analysis_options,...
-        analysis_text, specific_model_folder, functions_cleared,model_folders);
+    [settings, last_settings_file_text, last_settings_file_date] = ...
+        apply_settings(settings, settings_folder, settings_file_text, ...
+        last_settings_file_date, last_settings_file_text, analysis_options, ...
+        analysis_text, specific_model_folder, functions_cleared, ...
+        model_folders);
 
     % Process user input for analysis options 6-7
 elseif any(contains(analysis_options(6:7), analysis_text))
@@ -96,8 +98,8 @@ elseif any(contains(analysis_options(6:7), analysis_text))
     last_choice = [];
     prompt = "\nWhat analysis should be reproduced?\n";
 
-    [r_analysis_text,~] =...
-        choose_options(results_folder,prompt,last_choice);
+    [r_analysis_text, ~] =...
+        choose_options(results_folder, prompt, last_choice);
 
     specific_results_folder = results_folder + "/" + ...
         r_analysis_text;
@@ -106,14 +108,14 @@ elseif any(contains(analysis_options(6:7), analysis_text))
     last_choice = [];
     prompt = "\nWhen was this analysis run originaly?\n";
 
-    [r_analysis_date_text,~] =...
-        choose_options(specific_results_folder,prompt,last_choice);
+    [r_analysis_date_text, ~] =...
+        choose_options(specific_results_folder, prompt, last_choice);
 
     specific_results_folder_date = specific_results_folder + "/" + ...
         r_analysis_date_text;
 
     % Load the settings file and the SBtab struct
-    load(specific_results_folder_date + "/Analysis.mat","settings","sb")
+    load(specific_results_folder_date + "/Analysis.mat", "settings", "sb")
 
     % Set inport to false since we don't want to overwrite anything
     settings.import = false;
@@ -125,12 +127,12 @@ elseif any(contains(analysis_options(6:7), analysis_text))
     % If the reproduction of the plots of an analysis is chosen, set the
     % code to produce plots and load the results that were previously
     % obtained.
-    if contains(analysis_options(7),analysis_text)
+    if contains(analysis_options(7), analysis_text)
         % Store the name of the chosen analysis in the settings struct
         settings.analysis = analysis_text;
 
         settings.plot = true;
-        load(specific_results_folder_date + "/Analysis.mat","results")
+        load(specific_results_folder_date + "/Analysis.mat", "results")
     end
 end
 
@@ -144,7 +146,7 @@ end
 function [settings, last_settings_file_text, last_settings_file_date] = ...
     apply_settings(settings, settings_folder, settings_file_text, ...
     last_settings_file_date, last_settings_file_text, analysis_options, ...
-    analysis_text, specific_model_folder, functions_cleared,model_folders)
+    analysis_text, specific_model_folder, functions_cleared, model_folders)
 % Function apply_settings updates the settings based on the chosen settings
 % file and checks if any changes have been made to the settings file or the
 % SBtab since the last analysis
@@ -188,17 +190,20 @@ end
 
 % Check if the date of the settings file changed, if so clear functions
 [last_settings_file_date, functions_cleared] = ...
-    compare_and_update(settings_file_date, last_settings_file_date, functions_cleared);
+    compare_and_update(settings_file_date, last_settings_file_date, ...
+    functions_cleared);
 
 % Check if the name of the settings file changed, if so clear functions
 [last_settings_file_text, functions_cleared] = ...
-    compare_and_update(settings_file_text, last_settings_file_text, functions_cleared);
+    compare_and_update(settings_file_text, last_settings_file_text, ...
+    functions_cleared);
 
 % Check if the date of the SBtab changed, if so clear functions
 listing = dir(specific_model_folder);
 
 for n = 1:size(listing, 1)
-    if matches(settings.sbtab_excel_name, listing(n).name, "IgnoreCase", true)
+    if matches(settings.sbtab_excel_name, listing(n).name, ...
+            "IgnoreCase", true)
         sbtab_date = listing(n).date;
     end
 end
@@ -218,7 +223,7 @@ end
 end
 
 function valid_input = getValidInput(options, user_choice, input_type)
-% Function getValidInput validates the user input for the model folder,
+% Function getValidInput validates the user input for the model folder, 
 % settings file, and analysis option
 
 persistent last_model_folder
@@ -237,9 +242,11 @@ switch input_type
             return;
             % Otherwise, prompt the user to choose a valid one
         else
-            disp("The chosen " + input_type + " is not valid, please choose a valid " + input_type)
+            disp("The chosen " + input_type + ...
+                " is not valid, please choose a valid " + input_type)
             prompt = "What " + input_type + " should be used?\n";
-            [valid_input, last_model_folder] = choose_options(options, prompt, last_model_folder);
+            [valid_input, last_model_folder] = ...
+            choose_options(options, prompt, last_model_folder);
         end
 
     case "settings file"
@@ -249,17 +256,22 @@ switch input_type
             return;
             % Otherwise, prompt the user to choose a valid one
         else
-            disp("The chosen " + input_type + " is not valid, please choose a valid " + input_type)
+            disp("The chosen " + input_type + ...
+                " is not valid, please choose a valid " + input_type)
             prompt = "What " + input_type + " should be used?\n";
-            [valid_input, last_settings_file_text] = choose_options(options, prompt, last_settings_file_text);
+            [valid_input, last_settings_file_text] = ...
+                choose_options(options, prompt, last_settings_file_text);
         end
     case "analysis option"
         % If the input is not a valid analysis, prompt the user to choose a
         % valid analysis
-        if isstring(user_choice) || ~(user_choice >= 1) || ~(user_choice <= 8)
-            disp("The chosen " + input_type + " is not valid, please choose a valid " + input_type)
+        if isstring(user_choice) || ~(user_choice >= 1) || ...
+            ~(user_choice <= 8)
+            disp("The chosen " + input_type + ...
+                " is not valid, please choose a valid " + input_type)
             prompt = "What " + input_type + " should be used?\n";
-            [valid_input, last_analysis_text] = parse_choices(prompt, options, last_analysis_text);
+            [valid_input, last_analysis_text] = ...
+                parse_choices(prompt, options, last_analysis_text);
             % Otherwise, if the analysis is valid, return it
         else
             valid_input = options(user_choice);
@@ -268,14 +280,15 @@ switch input_type
 end
 end
 
-function [choice, last_choice] = choose_options(folder, prompt, last_choice)
+function [choice, last_choice] = ...
+    choose_options(folder, prompt, last_choice)
 % Function choose_options helps user to choose valid options from available
 % choices
 
 listing = dir(folder);
 
 % Remove unnecessary entries from the listing
-for n = size(listing, 1):-1:1
+for n = size(listing, 1): -1: 1
     if any(matches(listing(n).name, [".", "..", "Place models here.txt"]))
         listing(n) = [];
     end
@@ -290,7 +303,8 @@ end
 [choice, last_choice] = parse_choices(prompt, folder, last_choice);
 end
 
-function [choice, last_choice] = parse_choices(prompt, options, last_choice)
+function [choice, last_choice] = ...
+    parse_choices(prompt, options, last_choice)
 % Function parse_choices presents a list of choices to the user and
 % validates their input, then returns the chosen option
 
@@ -343,7 +357,8 @@ else
 end
 end
 
-function [previous, is_cleared] = compare_and_update(current, previous, is_cleared)
+function [previous, is_cleared] = ...
+    compare_and_update(current, previous, is_cleared)
 % Function compare_and_update checks if the current and previous values are
 % different and clears the functions if necessary
 

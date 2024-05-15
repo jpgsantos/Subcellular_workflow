@@ -90,11 +90,17 @@ if rst.simd{n} ~= 0
     % with the starting point of the result
     switch stg.useLog
         case {0, 2, 3}
-            rst.sd(j, n) = sum(((data - sim_results) ./ (data_sd)).^2) / number_points;
+            rst.sd(j, n) = ...
+                sum(((data - sim_results) ./ (data_sd)).^2) / ...
+                number_points;
         case 1
-            rst.sd(j, n) = max(0, log10(sum(((data - sim_results) ./ (data_sd)).^2) / number_points));
+            rst.sd(j, n) = ...
+                max(0, log10(sum(((data - sim_results) ./ ...
+                (data_sd)).^2) / number_points));
         case 4
-            rst.sd(j, n) = sum(((data - sim_results) ./ (data_sd * sqrt(number_points))).^2);
+            rst.sd(j, n) = ...
+                sum(((data - sim_results) ./ ...
+                (data_sd * sqrt(number_points))).^2);
         otherwise
             error('Invalid value for stage.useLog: %d', stg.useLog);
     end
@@ -107,6 +113,6 @@ if rst.simd{n} ~= 0
     % If there are errors output a very high score value (10^10)
 elseif rst.simd{n} == 0 %|| rst.sd(j, n) == inf || isnan(rst.sd(j, n))
     rst.sd(j, n) = stg.errorscore;
-rst.xfinal{n, 1}(j) = 0;
+    rst.xfinal{n, 1}(j) = 0;
 end
 end

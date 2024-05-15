@@ -1,4 +1,4 @@
-function results= f_make_par_samples(settings)
+function results = f_make_par_samples(settings)
 % This function creates sample matrices of model parameters according to
 % specified distributions and settings, based on Geir Halnes et al.'s 2009
 % paper (J. comp. neuroscience 27.3 (2009): 471). It generates two sample
@@ -88,12 +88,12 @@ end
 % Replace the i:th column in M2 by the i:th column from M1 to create N
 % matrices
 for i=1:settings.parnum
-    N(:,:,i) = M2;
-    N(:,i,i) = M1(:,i);
+    N(:, :, i) = M2;
+    N(:, i, i) = M1(:, i);
 end
 
 % Store resulting matrices in the output structure
-results.M1=M1;
-results.M2=M2;
-results.N=N;
+results.M1 = M1;
+results.M2 = M2;
+results.N = N;
 end

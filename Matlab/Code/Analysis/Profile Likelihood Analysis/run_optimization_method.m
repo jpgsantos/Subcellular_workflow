@@ -1,12 +1,15 @@
 function [x, fval, Pval, prev_fval, offset] = ...
-    run_optimization_method(x, fval, offset, temp_lb,...
-    temp_up, settings, model_folders, alg, PL_iter_current, current_pos, pos,pos_minus_1,debug)
-% Executes the chosen optimization method for the current parameter and position.
-% It runs either simulated annealing, fmincon, or pattern search based on the algorithm
-% specified and returns the optimized variables, function values, and simulation data.
+    run_optimization_method(x, fval, offset, temp_lb, temp_up, settings,...
+     model_folders, alg, PL_iter_current, current_pos, pos, pos_minus_1, ...
+     debug)
+% Executes the chosen optimization method for the current parameter and
+% position. It runs either simulated annealing, fmincon, or pattern search
+% based on the algorithm specified and returns the optimized variables,
+% function values, and simulation data.
 %
 % Inputs:
-% - x, fval, Pval, prev_fval, offset: Containers for optimization results and parameters.
+% - x, fval, Pval, prev_fval, offset: Containers for optimization results 
+% and parameters.
 % - temp_lb, temp_up: Lower and upper bounds for the optimization.
 % - settings: A structure containing optimization settings.
 % - model_folders: Directory containing the model files.
@@ -15,12 +18,13 @@ function [x, fval, Pval, prev_fval, offset] = ...
 % - pos, pos_minus_1: Indices for the current and previous positions.
 %
 % Outputs:
-% - x, fval, Pval, prev_fval, offset: Updated optimization results and parameters.
+% - x, fval, Pval, prev_fval, offset: Updated optimization results and 
+% parameters.
 %
-% The function decides which optimization algorithm to run, executes it, and updates
-% the result containers with the latest optimization outcomes.
+% The function decides which optimization algorithm to run, executes it,
+% and updates the result containers with the latest optimization outcomes.
 
-offset = offset+1;
+offset = offset + 1;
 
 % Determine the optimization function based on the algorithm
 if alg{2} == 1
@@ -55,16 +59,18 @@ prev_fval = fval{alg{2}}(pos);
 
 if settings.pldcos
 % Display current optimization status
-disp(convertCharsToStrings(alg{1}) + " " + alg{2} + " m: " + settings.PLind + "  n: " +...
+disp(convertCharsToStrings(alg{1}) + " " + alg{2} + ...
+    " m: " + settings.PLind + "  n: " +...
     PL_iter_current + "." + current_pos + "  PLval: " + settings.PLval +...
     " fval: " + prev_fval + " counter: " + offset);
 end
 end
 
-function [x,fval] =...
-    sim_a(PL_iter_current,x,temp_lb,temp_up,settings,model_folders)
-% Executes the simulated annealing optimization algorithm. It configures the
-% algorithm settings, applies it to the current set of parameters, and returns the optimized results.
+function [x, fval] = ...
+    sim_a(PL_iter_current,x, temp_lb, temp_up, settings, model_folders)
+% Executes the simulated annealing optimization algorithm. It configures
+% the algorithm settings, applies it to the current set of parameters, and
+% returns the optimized results.
 %
 % Inputs:
 % - PL_iter_current: Current iteration of profile likelihood calculation.
@@ -77,8 +83,9 @@ function [x,fval] =...
 % - x: Optimized parameter values.
 % - fval: Objective function value at the optimized parameters.
 %
-% This function is tailored for the simulated annealing algorithm and handles
-% the optimization process including the algorithm configuration and execution.
+% This function is tailored for the simulated annealing algorithm and
+% handles the optimization process including the algorithm configuration
+% and execution.
 
 % Set optimization options based on the iteration
 if PL_iter_current == 1
@@ -89,17 +96,16 @@ else
     options = settings.plsao;
 end
 % Execute the optimization
-[x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders,0,0),...
-    x,temp_lb,temp_up,options);
-
-% Compute and store the result of the optimization
-% [~,rst,~] = f_sim_score(x,settings,model_folders,0,0);
+[x, fval] = ...
+    simulannealbnd(@(x)f_sim_score(x, settings, model_folders, 0, 0), ...
+    x, temp_lb, temp_up, options);
 end
 
-function [x,fval] =...
-    fmin_con(PL_iter_current,x,temp_lb,temp_up,settings,model_folders)
-% Executes the fmincon optimization algorithm. It sets the algorithm options, runs the optimization
-% for the current parameters within the specified bounds, and returns the optimized results.
+function [x,fval] = ...
+    fmin_con(PL_iter_current, x, temp_lb, temp_up, settings, model_folders)
+% Executes the fmincon optimization algorithm. It sets the algorithm
+% options, runs the optimization for the current parameters within the
+% specified bounds, and returns the optimized results.
 %
 % Inputs:
 % - PL_iter_current: Current iteration of profile likelihood calculation.
@@ -112,8 +118,9 @@ function [x,fval] =...
 % - x: Optimized parameter values.
 % - fval: Objective function value at the optimized parameters.
 %
-% This function specifically manages the fmincon optimization process, adjusting settings
-% and ensuring the optimization is performed within the defined parameter space.
+% This function specifically manages the fmincon optimization process,
+% adjusting settings and ensuring the optimization is performed within the
+% defined parameter space.
 
 % Set optimization options based on the iteration
 if PL_iter_current == 1
@@ -125,23 +132,15 @@ else
 end
 
 % Execute the optimization
-[x,fval] = fmincon(@(x)f_sim_score(x,settings,model_folders,0,0),...
-    x,[],[],[],[],temp_lb,temp_up,[],options);
-
-% [x, fval] = ...
-%         surrogateopt(@(x)f_sim_score(x,settings,model_folders,0,0), temp_lb,temp_up, options);
-
-% [x,fval] = simulannealbnd(@(x)f_sim_score(x,settings,model_folders,0,0),...
-%     x,temp_lb,temp_up,options);
-
-% Compute and store the result of the optimization
-% [~,rst,~] = f_sim_score(x,settings,model_folders,0,0);
+[x, fval] = fmincon(@(x)f_sim_score(x, settings, model_folders, 0, 0),...
+    x, [], [], [], [], temp_lb, temp_up, [], options);
 end
 
-function [x,fval] =...
-    p_search(PL_iter_current,x,temp_lb,temp_up,settings,model_folders)
-% Executes the pattern search optimization algorithm. Configures the algorithm,
-% applies it to the parameter set, and returns the optimized results.
+function [x,fval] = ...
+    p_search(PL_iter_current, x, temp_lb, temp_up, settings, model_folders)
+% Executes the pattern search optimization algorithm. Configures the
+% algorithm, applies it to the parameter set, and returns the optimized
+% results.
 %
 % Inputs:
 % - PL_iter_current: Current iteration of profile likelihood calculation.
@@ -154,8 +153,8 @@ function [x,fval] =...
 % - x: Optimized parameter values.
 % - fval: Objective function value at the optimized parameters.
 %
-% The function is dedicated to the pattern search algorithm, handling its configuration,
-% execution, and the return of the optimization results.
+% The function is dedicated to the pattern search algorithm, handling its
+% configuration, execution, and the return of the optimization results.
 
 % Set optimization options based on the iteration
 if PL_iter_current == 1
@@ -168,10 +167,6 @@ end
 
 % Execute the optimization
 [x, fval] = ...
-    patternsearch(@(x)f_sim_score(x,settings,model_folders,0,0), x, ...
-    [], [], [], [], temp_lb,temp_up, [], options);
-
-
-% Compute and store the result of the optimization
-% [~,rst,~] = f_sim_score(x,settings,model_folders,0,0);
+    patternsearch(@(x)f_sim_score(x, settings, model_folders, 0, 0), x, ...
+    [], [], [], [], temp_lb, temp_up, [], options);
 end

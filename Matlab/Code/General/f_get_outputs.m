@@ -1,4 +1,4 @@
-function [n_outputs,output_names] = f_get_outputs(stg,sbtab)
+function [n_outputs, output_names] = f_get_outputs(settings, sbtab)
 % Retrieves the total number of outputs and their names from a set of
 % experiment runs. It iterates through all the experiment runs specified in the
 % input 'stg' and, for each run, extracts the output names from the
@@ -34,17 +34,17 @@ function [n_outputs,output_names] = f_get_outputs(stg,sbtab)
 out_name = [];
 
 % Loop through all experiment runs specified in 'stg'
-for n = stg.exprun
+for n = settings.exprun
     % Loop through all outputs in the current experiment run
-    for j = 1:size(sbtab.datasets(n).output,2)
+    for j = 1:size(sbtab.datasets(n).output, 2)
         % Add the output name to 'out_name' with a prefix indicating the
         % experiment run
-        out_name{end+1} =...
-            {"E" + (n-1) + " " + string(sbtab.datasets(n).output{1,j})};
+        out_name{end + 1} = ...
+            {"E" + (n - 1) + " " + string(sbtab.datasets(n).output{1, j})};
     end
 end
 % Get the total number of outputs
-n_outputs = size(out_name,2);
+n_outputs = size(out_name, 2);
 
 % Assign the output names to 'output_names'
 output_names = out_name;

@@ -1,12 +1,12 @@
-function f_save_plots(mmf)
+function f_save_plots(model_folders)
 
-Analysis_date_folder = mmf.model.results.analysis.date.main;
+Analysis_date_folder = model_folders.model.results.analysis.date.main;
 
 FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
 
-[~,~] = mkdir(Analysis_date_folder);
+[~, ~] = mkdir(Analysis_date_folder);
 
-savefig(FigList(end:-1:1),...
+savefig(FigList(end: -1: 1), ...
     Analysis_date_folder + "All_figures.fig");
 
 for iFig = 1:length(FigList)
