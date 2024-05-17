@@ -23,7 +23,7 @@ fval_temp_1 = rst.(name).min.fvalt;
 tic
 
 parfor parfor_index_2 = 1: local_min_number
-    [x_temp{parfor_index_2}, fval_temp{parfor_index_2},
+    [x_temp{parfor_index_2}, fval_temp{parfor_index_2}, ...
         current_pos{parfor_index_2}] = ...
         optimize_towards_start(x_temp_1, fval_temp_1, parfor_index_2, ...
         local_min_up, local_min_down, settings, model_folder, ...
@@ -41,7 +41,7 @@ for parfor_index_2 = 1:local_min_number
         locate_minima_for_optimization(parfor_index_2, local_min_up, ...
         local_min_down);
 
-    x = find(settings.pltest == param_index) + ...
+    helper = find(settings.pltest == param_index) + ...
         (~is_up * length(settings.pltest));
 
     next_pos_to_opt = PL_iter_start(param_index) * 4;
@@ -54,7 +54,7 @@ for parfor_index_2 = 1:local_min_number
 
     up_index_temp = next_pos_to_opt;
 
-    size_lower_array = length(fval{x}{:});
+    size_lower_array = length(fval{helper}{:});
     down_index_temp = ...
         min(current_pos{parfor_index_2} + 1, size_lower_array);
 
@@ -71,12 +71,12 @@ for parfor_index_2 = 1:local_min_number
     end
 
     for n = array_index
-        x{x}{:}{n} = ...
-            x_temp{parfor_index_2}{x}{:}{n};
+        x{helper}{:}{n} = ...
+            x_temp{parfor_index_2}{helper}{:}{n};
     end
 
-    fval{x}{:}(array_index) = ...
-        fval_temp{parfor_index_2}{x}{:}(array_index);
+    fval{helper}{:}(array_index) = ...
+        fval_temp{parfor_index_2}{helper}{:}(array_index);
 end
 output = assign_optimization_results(settings, x, fval, Pval, ...
     param_length, alg);

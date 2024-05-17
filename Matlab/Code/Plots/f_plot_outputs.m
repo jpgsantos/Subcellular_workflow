@@ -51,7 +51,7 @@ plot_n = 0;
 fig_n = 0;
 layout = [];
 plots = cell(1,2);
-plot_tn = plot_tn *2;
+% plot_tn = plot_tn*2;
 
 % Set font settings using the provided font_settings
 f_set_font_settings()
@@ -73,9 +73,9 @@ for exp_idx = stg.exprun
                     f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
 
                 if fig_n > 1
-                    fig_name = "Outputs " + fig_n;
+                    fig_name = strrep(stg.plot_name, "_", "\_") + "  Outputs " + fig_n;
                 else
-                    fig_name = "Outputs";
+                    fig_name = strrep(stg.plot_name, "_", "\_") + "  Outputs";
                 end
                 title(layout,fig_name,...
                     'FontSize', Major_title_FontSize,...
@@ -90,19 +90,20 @@ for exp_idx = stg.exprun
             hold on
 
             if k == 1
-                [valid_outputs_plots,valid_outputs,sim_results,...
-                    sim_results_norm,sim_results_detailed] =...
-                    plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,~k,include_exp_n,do_norm);
                 if do_norm == 1
                     [plot_data,plot_data_SD,data,data_SD] = ...
                         plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
                 end
+                [valid_outputs_plots,valid_outputs,sim_results,...
+                    sim_results_norm,sim_results_detailed] =...
+                    plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,~k,include_exp_n,do_norm);
+               
             else
+                [plot_data,plot_data_SD,data,data_SD] = ...
+                    plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
                 [valid_outputs_plots,valid_outputs,sim_results,...
                     sim_results_norm,sim_results_detailed] =...
                     plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,k,include_exp_n,do_norm);
-                [plot_data,plot_data_SD,data,data_SD] = ...
-                    plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
             end
 
             hold off
@@ -122,5 +123,7 @@ for exp_idx = stg.exprun
             end
         end
     end
+
+    
 end
 end

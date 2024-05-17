@@ -20,7 +20,7 @@ function result = f_prep_sim(parameters, settings, model_folders, i, j)
 % Variables:
 % Loaded:
 % - Data: Array of structures containing experimental data
-% - sbtab: SBTAB structure containing default parameters and species 
+% - sbtab: SBTAB structure containing default parameters and species
 % information
 %
 % Initialized:
@@ -60,8 +60,8 @@ if isfield(settings, 'PLind') && isfield(settings, 'PLval')
     if settings.PLind > 0 && settings.PLind <= length(parameters) + 1
         % add stg.PLval in the midle of other parameters
         parameters = ...
-        [parameters(1:settings.PLind - 1), settings.PLval, ...
-        parameters(settings.PLind:end)]; 
+            [parameters(1:settings.PLind - 1), settings.PLval, ...
+            parameters(settings.PLind:end)];
     else
         error(['PLind is out of bounds.' ...
             ' It should be within the range of parameter indices.'])
@@ -70,7 +70,7 @@ end
 
 % Update simulation parameters
 sim_par = ...
-update_simulation_parameters(sim_par, parameters, settings, sbtab);
+    update_simulation_parameters(sim_par, parameters, settings, sbtab);
 
 % Initialize the result structure
 result = struct();
@@ -84,17 +84,17 @@ else
         ' Ensure exprun is a non - empty numeric array.'])
 end
 
-success_eq = zeros(1, length(settings.exprun));
+success_eq = zeros(1, settings.exprun(end));
 error_list_E = "";
 
 if settings.simcsl
-    tic
+    prep_sim_tic = tic;
 end
 
 % Run simulations for each experiment
 for exp_indx = settings.exprun
 
-    prev_success = success_eq(max(1, exp_indx - 1));
+    prev_success = success_eq(max(settings.exprun(1), exp_indx - 1));
     % Equilibration
     [species_start_amounts, success_eq(exp_indx), error_type] =...
         equilibrate_2(exp_indx, settings, sim_par, result, ...
@@ -104,12 +104,12 @@ for exp_indx = settings.exprun
     if success_eq(exp_indx)
 
         tolerance_settings = ...
-        create_tolerance_settings(exp_indx, settings, 0);
+            create_tolerance_settings(exp_indx, settings, 0);
 
         [~, error_type, result] = ...
             run_with_tolerances(@(success) f_sim(exp_indx, settings, ...
             sim_par, species_start_amounts, result, ...
-             model_folders, success), tolerance_settings, result);
+            model_folders, success), tolerance_settings, result);
 
         % if ~success_sim
         %     disp("n: " + n + " E" + (n - 1) + " fail_sim_2" + ...
@@ -120,18 +120,19 @@ for exp_indx = settings.exprun
         % Run detailed simulation if required
         if settings.simdetail
             [~, error_type, result] = ...
-            run_with_tolerances(@(success) f_sim(exp_indx + 2 * ...
-            settings.expn, settings, sim_par, species_start_amounts, ...
-             result, model_folders, success), tolerance_settings, result);
+                run_with_tolerances(@(success) f_sim(exp_indx + 2 * ...
+                settings.expn, settings, sim_par, species_start_amounts, ...
+                result, model_folders, success), tolerance_settings, ...
+                result);
         end
 
         % Check simulation output times
         if result.simd{exp_indx} ~= 0 && ...
                 size(Data(exp_indx).Experiment.t, 1) ~= ...
-            size(result.simd{exp_indx}.Data(:, end), 1)
-            % disp("n: " + n + " E" + (n - 1) + " fail_sim_out_time" + ...
-            %     " time_sim:  " + size(result.simd{n}.Data(:, end), 1) + ...
-            %     " data_time: " + size(Data(n).Experiment.t, 1))
+                size(result.simd{exp_indx}.Data(:, end), 1)
+            disp("n: " + n + " E" + (n - 1) + " fail_sim_out_time" + ...
+                " time_sim:  " + size(result.simd{n}.Data(:, end), 1) + ...
+                " data_time: " + size(Data(n).Experiment.t, 1))
             error_type = "st"; %simulation time
             result.simd{exp_indx} = 0;
         end
@@ -142,23 +143,24 @@ for exp_indx = settings.exprun
         error_list_E = append(error_list_E, ...
             ((exp_indx - 1) + error_type + " "));
     end
-    
+
 end
 
 % Display progress and errors if necessary
-if settings.simcsl
-    disp("i: " + i + " j: " + j + " E: " + error_list_E + " time: " + toc)
+if settings.simcsl && ~(error_list_E == "")
+    disp("i: " + i + " j: " + j + " E: " + error_list_E + ...
+        " time: " + toc(prep_sim_tic))
 end
 end
 
 function tolerance_settings = ...
-create_tolerance_settings(exp_indx, settings, equilibrate)
+    create_tolerance_settings(exp_indx, settings, equilibrate)
 % Create a structure for tolerance settings
-    tolerance_settings = ...
+tolerance_settings = ...
     struct('exp_indx', exp_indx, 'reltol', settings.reltol, 'reltol_step', ...
-            settings.reltol / 10, 'reltol_min', settings.reltol_min, ...
-            'abstol', settings.abstol, 'abstol_step', settings.abstol / 10, ...
-             'abstol_min', settings.abstol_min, 'equilibrate', equilibrate);
+    settings.reltol / 10, 'reltol_min', settings.reltol_min, ...
+    'abstol', settings.abstol, 'abstol_step', settings.abstol / 10, ...
+    'abstol_min', settings.abstol_min, 'equilibrate', equilibrate);
 end
 
 function [success, error_type, result] = ...
@@ -168,21 +170,22 @@ success = true;
 error_type = '';
 
 for reltol = tolerance_settings.reltol: - tolerance_settings.reltol_step:...
-    tolerance_settings.reltol_min
-    for abstol = ...
-        tolerance_settings.abstol: - tolerance_settings.abstol_step:...
-            tolerance_settings.abstol_min
+        min(tolerance_settings.reltol_min,tolerance_settings.reltol)
 
+    for abstol = ...
+            tolerance_settings.abstol: - tolerance_settings.abstol_step:...
+            min(tolerance_settings.abstol_min,tolerance_settings.abstol)
         tolerance_settings.stg.reltol = reltol;
         tolerance_settings.stg.abstol = abstol;
         if tolerance_settings.equilibrate
-            try
-                [result, error_type] = func();
-                success = true;
-            catch
-                error_type = "e"; %equilibration
-                success = false;
-            end
+            % try
+            [result, error_type] = func();
+            success = true;
+            % catch ME
+            %     disp(ME)
+            %     error_type = "e"; %equilibration
+            %     success = false;
+            % end
         else
             try
                 result = func(success);
@@ -205,7 +208,7 @@ end
 end
 
 function [species_start_amounts_1, success_eq, error_type] = ...
-equilibrate_2(exp_indx, settings, sim_par, ...
+    equilibrate_2(exp_indx, settings, sim_par, ...
     result, model_folders, sbtab, success_eq)
 % Equilibrate the model for the specified experiment
 persistent species_start_amounts %species start amount
@@ -246,7 +249,7 @@ else
     [success_eq, error_type, species_start_amounts] = ...
         run_with_tolerances(@() equilibrate(exp_indx, settings, sim_par, ...
         result, model_folders, sbtab, species_start_amounts, success_eq), ...
-         tolerance_settings, species_start_amounts);
+        tolerance_settings, species_start_amounts);
 end
 species_start_amounts_1 = species_start_amounts;
 end
@@ -265,13 +268,14 @@ for n = 1:length(sim_par)
     if isfield(settings, 'tci') && ~isempty(settings.tci) &&...
             ismember(n, settings.tci) && settings.partest(n) > 0
         sim_par = ...
-        update_thermo_constrained(sim_par, parameters, settings, n, sbtab);
+            update_thermo_constrained(sim_par, parameters, settings, ...
+            n, sbtab);
     end
 end
 end
 
 function sim_par = ...
-update_thermo_constrained(sim_par, parameters, settings, n, sbtab)
+    update_thermo_constrained(sim_par, parameters, settings, n, sbtab)
 % Update parameters constrained by thermodynamic laws
 
 key_1 = ["tcm", "tcd"];
@@ -295,8 +299,8 @@ for k=1:2
             % Check if the parameter needs to be set to the value relevant
             % for Profile Likelihood
             if isfield(settings, "PLind") && ...
-                settings.partest(settings.(key_1(k))(n, m), 1) == ...
-                settings.PLind
+                    settings.partest(settings.(key_1(k))(n, m), 1) == ...
+                    settings.PLind
                 parameters(settings.partest(settings.(key_1(k))(n, m), 1)) = ...
                     settings.PLval;
             end
@@ -320,21 +324,23 @@ function [species_start_amounts, error_type] = ...
     species_start_amounts, success)
 % Equilibrate the model
 
-result = f_sim(n + settings.expn, settings, sim_par, species_start_amounts, ...
-    result, model_folders, success);
+result = f_sim(n + settings.expn, settings, sim_par, ...
+    species_start_amounts, result, model_folders, success);
 error_type = "";
 
 if result.simd{n + settings.expn}.Time(end, 1) ~= settings.eqt
-    % disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
-    %     result.simd{n + stg.expn}.Time(end, 1) + " stg.eqt: " + stg.eqt)
-    error("E" + (n - 1) + " fail_eq_out_time")
+    disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
+        result.simd{n + settings.expn}.Time(end, 1) + ...
+        " settings.eqt: " + settings.eqt)
+    disp("pecado")
+    % error("E" + (n - 1) + " fail_eq_out_time")
     error_type = "et"; %equilibration time
 end
 
 % Update the start amounts based on equilibrium results
 for j = 1:size(sbtab.species, 1)
     final_amount = result.simd{n + settings.expn}.Data(end, j);
-    if final_amount < 1.0e - 10
+    if final_amount < 10 ^ -10
         species_start_amounts(j, n) = 0;
         if settings.simdetail
             species_start_amounts(j, n + 2 * settings.expn) = 0;

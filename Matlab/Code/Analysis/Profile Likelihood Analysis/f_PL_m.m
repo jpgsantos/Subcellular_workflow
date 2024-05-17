@@ -30,6 +30,19 @@ function rst = f_PL_m(settings, model_folder)
 % the indices for parallel execution. - x, fval: Cell arrays
 % containing the optimization results for each parameter.
 
+% settings.plres = 10;
+% 
+% % Options for simulated annealing
+% % (Profile Likelihood Simulated Annealing options)
+% settings.plsao = optimoptions(@simulannealbnd,'Display','off', ...
+%     'InitialTemperature',...
+%     ones(1,settings.parnum-1)*1,'MaxTime',20,'ReannealInterval',40);
+% 
+% % (Profile Likelihood Simulated Annealing options start)
+% settings.plsaos = optimoptions(@simulannealbnd,'Display','off', ...
+%         'InitialTemperature',...
+%         ones(1,settings.parnum-1)*1,'MaxTime',20,'ReannealInterval',40);
+
 % Find the index of the starting point for profile likelihood (PL)
 % calculation
 for n = settings.pltest
@@ -59,7 +72,6 @@ end
 
 % Add code to start both optimizations from the same parameter value and
 % then select the best point for the start
-
 for idx = parfor_indices
     n_parameters = length(settings.pltest);
 
@@ -76,7 +88,7 @@ for idx = parfor_indices
             end
         end
     end
-    
+
     % Calculate the actual parameter index based on the input
     par_indx = settings.pltest(mod(idx-1, length(settings.pltest)) + 1);
 

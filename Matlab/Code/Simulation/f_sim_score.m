@@ -1,5 +1,5 @@
-function [score,rst,rst_not_simd] = ...
-    f_sim_score(parameters, stg, model_folders,i,j)
+function [score, rst, rst_not_simd] = ...
+    f_sim_score(parameters, stg, model_folders, i, j)
 % This function calculates the total score of a given model by simulating
 % its performance and scoring the results.
 %
@@ -40,7 +40,7 @@ function [score,rst,rst_not_simd] = ...
 warning('off','SimBiology:DimAnalysisNotDone_MatlabFcn_Dimensionless')
 
 % Call the function that simulates the model
-rst = f_prep_sim(parameters, stg, model_folders,i,j);
+rst = f_prep_sim(parameters, stg, model_folders, i, j);
 
 % Call the function that scores
 rst = f_score(rst, stg, model_folders);

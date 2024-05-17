@@ -106,6 +106,7 @@ new_pos = current_pos + direction;
 
     while old_fval == 0
         current_pos = new_pos;
+        new_pos = current_pos + direction;
         if new_pos * 2 <= length(fval{sortes_plas}{:})
             old_fval_2 = fval{sortes_plas}{:}(new_pos * 2);
         else
@@ -113,7 +114,7 @@ new_pos = current_pos + direction;
         end
         old_fval = fval{sortes_plas}{:}(new_pos);
     end
-    
+
     plas = 2;
     if direction == -1
         while old_fval_2 == 0 && new_pos * plas >= next_pos_to_opt
@@ -172,7 +173,7 @@ new_pos = current_pos + direction;
 
     x{sortes_plas} = temp_x;
     fval{sortes_plas} = temp_fval;
-     
+
     if fval{sortes_plas}{:}(new_pos) >= old_fval_2
         % fprintf("\n break 3 " + ... 
         %     "\n parfor_index_2: " + parfor_index_2 + ...

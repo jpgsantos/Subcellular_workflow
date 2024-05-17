@@ -58,7 +58,7 @@ current_plot = current_plot + 1;
             valid_outputs_plots(:,current_plot) = scatter(time_detailed,...
                 sim_results_detailed{pa_idx},1,colors(current_plot,:),"o","filled",...
                 "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                string("\theta_"+pa_idx));
+                string("\theta_{"+pa_idx+ "}"));
             % Label the y-axis with the correct unit and apply pre-defined
             % font settings.
             ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
@@ -67,9 +67,12 @@ current_plot = current_plot + 1;
 
             if do_norm == 2
                 output_max = max([max(sim_results_detailed{pa_idx})]);
+                output_min = min([min(sim_results_detailed{pa_idx})]);
             else
                 output_max = max([max(sim_results_detailed{pa_idx}),...
                     max(data+data_SD),max(data)]);
+                output_min = min([min(sim_results_detailed{pa_idx}),...
+                    min(data+data_SD),min(data)]);
             end
         else
             % Select between normalized and raw results based on 'is_norm'
@@ -78,7 +81,7 @@ current_plot = current_plot + 1;
                 valid_outputs_plots(:,current_plot) = scatter(time,...
                     sim_results_norm{pa_idx},1,colors(current_plot,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                    string("\theta_"+pa_idx));
+                    string("\theta_{"+pa_idx+ "}"));
                 % Label the y-axis as 'dimensionless' and apply pre-defined
                 % font settings.
                 ylabel("dimensionless",...
@@ -86,11 +89,13 @@ current_plot = current_plot + 1;
 
                 output_max = max([max(sim_results_norm{pa_idx}),...
                     max(data+data_SD),max(data)]);
+                output_min = min([min(sim_results_norm{pa_idx}),...
+                    min(data+data_SD),min(data)]);
             else
                 valid_outputs_plots(:,current_plot) = scatter(time,...
                     sim_results{pa_idx},1,colors(current_plot,:),"o","filled",...
                     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,"DisplayName",...
-                    string("\theta_"+pa_idx));
+                    string("\theta_{"+pa_idx+ "}"));
                 % Label the y-axis with the correct unit and apply
                 % pre-defined font settings.
                 ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
@@ -99,9 +104,12 @@ current_plot = current_plot + 1;
 
                 if do_norm == 2
                     output_max = max([max(sim_results{pa_idx})]);
+                    output_min = min([min(sim_results{pa_idx})]);
                 else
                     output_max = max([max(sim_results{pa_idx}),...
                         max(data+data_SD),max(data)]);
+                     output_min = min([min(sim_results{pa_idx}),...
+                        min(data+data_SD),min(data)]);
                 end
             end
         end
@@ -110,6 +118,13 @@ current_plot = current_plot + 1;
         valid_outputs(current_plot) = current_plot;
     end
 end
+
+
+
+
+
+% Set the new y-tick values
+% yticks(newYTicks);
 
 % Label the x-axis as 'Seconds' and apply pre-defined font settings.
 xlabel('Seconds','FontSize', Axis_FontSize,...

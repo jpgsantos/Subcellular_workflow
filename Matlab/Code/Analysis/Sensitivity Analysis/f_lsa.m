@@ -134,7 +134,7 @@ afterEach(D, @progress_track_LSA);
 % Parallel loop for calculating score_B_star
 parfor n = 1: number_samples * par_n_plus_1
     [~, ~, score_B_star(n)] = ...
-        f_sim_score(B_star(n,:), settings, model_folders);
+        f_sim_score(B_star(n,:), settings, model_folders,n,0);
     send(D, {"LSA", progress, time_begin, number_samples, par_n_plus_1});
 end
 
@@ -156,12 +156,23 @@ for n = 1:number_samples
             score_B_star(x11_1(n, i) + 1 + (n - 1) * (parameter_n + 1)).st;
     end
 end
+
+    switch settings.useLog
+        case {1, 2, 3}
+            error_score = log10(settings.errorscore);
+        case {0, 4}
+            error_score = settings.errorscore;
+    end
+
 for n = number_samples: -1: 1
     for i = 1:parameter_n
         if any(any(score_B_star(x11_1(n, i) + (n - 1) * ...
-                (parameter_n + 1)).sd == settings.errorscore)) ||...
+                (parameter_n + 1)).sd == error_score)) ||...
                 any(any(score_B_star(x11_1(n, i) + 1 + (n - 1) * ...
-                (parameter_n + 1)).st == settings.errorscore))
+                (parameter_n + 1)).sd == error_score))
+
+            % disp("n: " + (x11_1(n, i) + (n - 1) * (parameter_n + 1)) + ...
+            %      " n+1: " + (x11_1(n, i) + 1 + (n - 1) * (parameter_n + 1)))
             parameter_score(n, :) = [];
             break
         end

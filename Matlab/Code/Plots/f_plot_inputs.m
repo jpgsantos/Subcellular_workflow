@@ -54,9 +54,9 @@ for exp_idx = stg.exprun
 
         % Set figure name based on its order
         if fig_n > 1
-            fig_name = "Inputs " + fig_n;
+            fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs " + fig_n;
         else
-            fig_name = "Inputs";
+            fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs";
         end
         title(layout,fig_name,...
             'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)

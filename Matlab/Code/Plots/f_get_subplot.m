@@ -40,8 +40,8 @@ function [figure_number,layout,plots] =...
 
 size_total = 12;
 
-size_x = [1,1,1,2,3,3,4,4,3,4,4,4];
-size_y = [1,2,3,2,2,2,2,2,3,3,3,3];
+size_x = [1,1,1,2,2,2,2,2,3,3,3,3];
+size_y = [1,2,3,2,3,3,4,4,3,4,4,4];
 
 if mod(plot_n,size_total) == 0
     figure_number = figure_number + 1;

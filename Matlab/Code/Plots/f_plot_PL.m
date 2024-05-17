@@ -308,7 +308,7 @@ for m = settings.pltest
     % Set the x-axis limits
     xlim([settings.lb(m) settings.ub(m)])
     % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
-    ylim([0 100])
+    ylim([0 10000])
     % Set the title for each plot
     % titlestring = "P_{" + find(settings.partest==m)+"}";
     titlestring = "P_{" + m +"}";

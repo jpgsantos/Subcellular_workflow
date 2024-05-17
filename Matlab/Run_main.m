@@ -3,7 +3,8 @@ function [settings, sb, results, model_folders, plots] = ...
 % Main function to perform various analyses on a selected model
 % using a given settings file.
 %
-% Syntax: [stg, sb, rst, mmf, plots] = Run_main(Folder, Analysis, settings)
+% Syntax: [settings, sb, results, model_folders, plots] = ...
+% Run_main(Folder, Analysis, settings)
 %
 % Inputs:
 %   - Folder: Name of the model folder located at
@@ -95,9 +96,9 @@ plots = [];
 if settings.plot
      plots = f_plot(results, settings, model_folders);
     % Save plots results if chosen in settings
-    if stg.save_results
-         f_save_plots(mmf)
-    end
+    % if settings.save_results
+    %      f_save_plots(model_folders)
+    % end
 end
 
 % Save Analysis results if chosen in settings

@@ -1,5 +1,5 @@
 function plots = f_plot_lsa(results,settings)
-% This function takes in two input arguments, rst and stg, and generates a
+% This function takes in two input arguments, rst and settings, and generates a
 % bar plot displaying the average deviation and sigma deviation with
 % different line styles. It applies the desired font settings, closes any
 % existing figures with the same name, creates a new one, and adds a title
@@ -7,7 +7,7 @@ function plots = f_plot_lsa(results,settings)
 %
 % Inputs:
 % - rst: A structure containing the average and sigma deviation data
-% - stg: A structure containing the parnum (parameter number) field
+% - settings: A structure containing the parnum (parameter number) field
 %
 % Outputs:
 % - plots: A cell array containing the name of the plot and the plot
@@ -58,7 +58,7 @@ end
 set(gca,'FontSize',Axis_FontSize);
 
 % Add a title and legend to the plot
-title(layout,"Local sensitivity Analysis",'FontSize',...
+title(layout,strrep(settings.plot_name, "_", "\_") + "  Local sensitivity Analysis",'FontSize',...
     Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 
 Lgnd = legend({'\mu_{deviation}','\sigma_{deviation}'},...

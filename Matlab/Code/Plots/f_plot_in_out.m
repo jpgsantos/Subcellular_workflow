@@ -76,16 +76,18 @@ for exp_idx = stg.exprun
     % Calculate the number of outputs for the current experiment.
     n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
 
+    n_outputs_exp_norm = n_outputs_exp;
+
     % Initialize variable for figure management within the same experiment
     fig_number_same_exp = 1;
     % Increment counters for figure management.
-    fig_number =fig_number+ 1;
+    fig_number =fig_number + 1;
 
     % Plot input data on the left side of the figure for the current
     % experiment.
     [layout,input_plot,plots] = ...
         f_plot_in_out_left(rst, stg, sbtab, fig_number_same_exp,...
-        n_outputs_exp > 4, exp_idx, plots, fig_number);
+        n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
     draw_legend = 1;% Initialize flag to draw legend.
 
     % Loop through each output of the current experiment
@@ -101,7 +103,7 @@ for exp_idx = stg.exprun
             % current experiment.
             [layout,input_plot,plots] = ...
                 f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
-                n_outputs_exp > 4, exp_idx, plots, fig_number);
+                n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
             draw_legend = 1; % Reset flag for new subplot layout.
         end
 
@@ -109,30 +111,36 @@ for exp_idx = stg.exprun
         if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
             nexttile(layout,[2 2]);
         elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
-            nexttile(layout,[1 2]);
+            nexttile(layout,[2 1]);
         else
             nexttile(layout,[1 1]);
         end
 
+        for pa_idx = stg.pat
+            [sim_results_norm{pa_idx},sim_results_detailed{pa_idx},sim_results{pa_idx}] =...
+                f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
+        end
+       
         hold on
-        % Call function to plot simulation outputs.
-        [valid_outputs_plots,valid_outputs,sim_results,...
-            sim_results_norm,sim_results_detailed] = ...
-            plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n,2);
-
-        if isempty(sim_results_norm)
+       
+        if isempty(sim_results_norm{stg.pat(1)})
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] = ...
                 plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
 
+            % Call function to plot simulation outputs.
+            [valid_outputs_plots,valid_outputs,sim_results,...
+                sim_results_norm,sim_results_detailed] = ...
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n,2);
+
             % Set the y-axis limits based on simulation detail setting and
             % data range.
             if stg.simdetail
-                min_noSD = min(min(min(sim_results_detailed{:})),min(data));
-                max_noSD = max(max(max(sim_results_detailed{:})),max(data));
+                min_noSD = min(min(min([sim_results_detailed{:}])),min(data));
+                max_noSD = max(max(max([sim_results_detailed{:}])),max(data));
             else
-                min_noSD = min(min(min(sim_results{:})),min(data));
-                max_noSD = max(max(max(sim_results{:})),max(data));
+                min_noSD = min(min(min([sim_results{:}])),min(data));
+                max_noSD = max(max(max([sim_results{:}])),max(data));
             end
             y_range = max_noSD - min_noSD;
 
@@ -151,11 +159,56 @@ for exp_idx = stg.exprun
             min_SD = min_noSD;
             max_SD = max_noSD;
         end
-        ylim([min(min_noSD,min_SD) max(max_noSD,max_SD)])
+        ylim([0 max(max_noSD,max_SD)])
+
+        % Get the current y-axis tick values
+        % currentYTicks = get(gca, 'YTick');
+
+        % Limit the number of y-ticks
+        % numDesiredYTicks = 4; % Set the desired number of y-ticks
+        % currentYTicks
+
+        % if min(min_noSD,min_SD) < 1
+        % min_tick = 0
+        % else
+        % min_tick = min(min_noSD,min_SD)
+        % end
+        % newYTicks = linspace(min(min_noSD,min_SD), max(max_noSD,max_SD), numDesiredYTicks);
+
+        % newYTicks
+
+        % set(gca, 'YTick', newYTicks)
+
+        % Get the current y-axis tick values
+        yticks = get(gca, 'YTick');
+
+        % yticks
+
+        % Convert the tick values to strings with high precision
+        tickStrings = arrayfun(@(v) convertStringsToChars(string(v)), yticks, 'UniformOutput', false);
+
+        % tickStrings
+
+        for n = 1:length(tickStrings)
+            % Count the number of decimal places
+            countDecimals{n} = regexp(tickStrings{n}, '(?<=\.)\d+');
+            matches{n} = regexp(tickStrings{n}, '(?<=\.)\d+', 'match');
+            if ~isempty(matches{n})
+                countDecimals{n} = length(matches{n});
+            else
+                countDecimals{n} = 0;
+            end
+
+        end
+
+        % [countDecimals{:}]
+
+        if max([countDecimals{:}]) > 2
+            ytickformat('%.2f');
+        end
 
         hold off
-
-        if ~isempty(sim_results_norm)
+        if ~isempty(sim_results_norm{stg.pat(1)})
 
             % Check if new subplot layout is needed based on output count.
             sub_fig_number = sub_fig_number +1;
@@ -167,7 +220,7 @@ for exp_idx = stg.exprun
                 % current experiment.
                 [layout,input_plot,plots] = ...
                     f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
-                    n_outputs_exp > 4, exp_idx, plots, fig_number);
+                    n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
                 draw_legend = 1;% Reset flag for new subplot layout.
             end
 
@@ -175,22 +228,24 @@ for exp_idx = stg.exprun
             if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
                 nexttile(layout,[2 2]);
             elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
-                nexttile(layout,[1 2]);
+                nexttile(layout,[2 1]);
             else
                 nexttile(layout,[1 1]);
             end
 
             hold on
 
-            % Call function to plot simulation outputs.
-            [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n,1);
-
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] =...
                 plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
 
+            % Call function to plot simulation outputs.
+            [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n,1);
+
             hold off
+
+
 
             % Set ylim based on whether simdetail is enabled or not
            if stg.simdetail
@@ -202,9 +257,53 @@ for exp_idx = stg.exprun
            end
             y_range = max_noSD - min_noSD;
 
-            min_SD = (max(min(data-data_SD),min(data)-y_range*0.05));
-            max_SD = (min(max(data-data_SD),max(data)-y_range*0.05));
-            ylim([min(min_noSD,min_SD) max(max_noSD,max_SD)])
+            min_SD = min(data-data_SD);
+            max_SD = max(data+data_SD);
+
+            ylim([max(0,min(min_noSD,min_SD)) max(max_noSD,max_SD)])
+
+            % Get the current y-axis tick values
+            % currentYTicks = get(gca, 'YTick');
+
+            % Limit the number of y-ticks
+            % numDesiredYTicks = 4; % Set the desired number of y-ticks
+            % currentYTicks
+
+            % newYTicks = linspace(min(min_noSD,min_SD), max(max_noSD,max_SD), numDesiredYTicks);
+
+            % newYTicks
+
+            % set(gca, 'YTick', newYTicks)
+
+            % Get the current y-axis tick values
+            yticks = get(gca, 'YTick');
+
+            % yticks
+
+            % Convert the tick values to strings with high precision
+            tickStrings = arrayfun(@(v) convertStringsToChars(string(v)), yticks, 'UniformOutput', false);
+
+            % tickStrings
+
+            for n = 1:length(tickStrings)
+                % Count the number of decimal places
+                countDecimals{n} = regexp(tickStrings{n}, '(?<=\.)\d+');
+                matches{n} = regexp(tickStrings{n}, '(?<=\.)\d+', 'match');
+                if ~isempty(matches{n})
+                    countDecimals{n} = length(matches{n});
+                else
+                    countDecimals{n} = 0;
+                end
+
+            end
+
+            % [countDecimals{:}]
+
+            if max([countDecimals{:}]) > 2
+                ytickformat('%.2f');
+            end
+
+
         end
 
         % Check if legend needs to be drawn for the current subplot.
@@ -218,7 +317,8 @@ for exp_idx = stg.exprun
 % valid_outputs_plots(:,4)
             % Construct the legend with the correct formatting and
             % placement.
-            leg = legend([plot_data,plot_data_SD,input_plot, ...
+
+            leg = legend([input_plot,plot_data,plot_data_SD, ...
                 valid_outputs_plots(:,valid_outputs)],...
                 'FontSize', Legend_FontSize,...
                 'Fontweight',Legend_Fontweight,'Location','layout', ...
@@ -266,11 +366,13 @@ f_set_font_settings()
 if reuse
     name_short = "E " + (exp_idx-1) + " " + fig_number_same_exp;
     name_long = ...
-        "Experiment " + (exp_idx-1) + " " + fig_number_same_exp + "  (E " +...
-        (exp_idx-1) + " " + fig_number_same_exp +")";
+        strrep(stg.plot_name, "_", "\_") + "  Experiment " + (exp_idx-1) + " " + ...
+        fig_number_same_exp + "  (E " + (exp_idx-1) + " " + ...
+        fig_number_same_exp +")";
 else
     name_short = "E " + (exp_idx-1);
-    name_long = "Experiment " + (exp_idx-1) + "  (E " + (exp_idx-1) +")";
+    name_long = strrep(stg.plot_name, "_", "\_") + "  Experiment " + (exp_idx-1) + ...
+        "  (E " + (exp_idx-1) +")";
 end
 
 % Refresh or create a plot with the new naming convention.

@@ -22,7 +22,7 @@ Out_array = {x, fval, Pval};
 % Loop over each parameter in the settings and each optimization method
 for par_indx = 1:length(settings.pltest)
 
-    x = settings.pltest(par_indx);
+    helper = settings.pltest(par_indx);
 
     fvalt_values = [];
     for i = 1:length(alg)
@@ -32,9 +32,9 @@ for par_indx = 1:length(settings.pltest)
             old_indices2 = par_indx + param_length * (i * 2 - 1);
 
             for n = 1:length(Out_name)
-                result.(alg{i}).(Out_name(n)){x}(:) = ...
+                result.(alg{i}).(Out_name(n)){helper}(:) = ...
                     Out_array{n}{1, old_indices1}{i}';
-                result.(alg{i}).(Out_name(n)){x}...
+                result.(alg{i}).(Out_name(n)){helper}...
                     (1:length(Out_array{n}{1, old_indices2}{i}')) = ...
                     Out_array{n}{1, old_indices2}{i}';
             end
@@ -44,8 +44,8 @@ for par_indx = 1:length(settings.pltest)
     for n = 1:settings.plres * 4 + 1
         for i = 1:length(alg)
             if settings.(['pl' alg{i}])
-                if result.(alg{i}).("fvalt"){x}(n) ~= 0
-                    fvalt_values{n}(i) = result.(alg{i}).("fvalt"){x}(n);
+                if result.(alg{i}).("fvalt"){helper}(n) ~= 0
+                    fvalt_values{n}(i) = result.(alg{i}).("fvalt"){helper}(n);
                 end
             end
         end
@@ -56,30 +56,30 @@ for par_indx = 1:length(settings.pltest)
 
             % If there is a valid minimum, assign it and corresponding Pval
             if ~isempty(min_fvalt) && ~isnan(min_fvalt)
-                temp_fval(n) = ...
+                result.("min").("fvalt"){helper}(n) = ...
                     min_fvalt;
                 % Find index of algorithm with min value
                 min_index = find(fvalt_values{n} == min_fvalt, 1, 'first');
 
-                result.("min").("Pval"){x}(n) = ...
-                    result.(alg{min_index}).("Pval"){x}(n);
+                result.("min").("Pval"){helper}(n) = ...
+                    result.(alg{min_index}).("Pval"){helper}(n);
 
-                result.("min").("xt"){x}(n) = ...
-                    result.(alg{min_index}).("xt"){x}(n);
+                result.("min").("xt"){helper}(n) = ...
+                    result.(alg{min_index}).("xt"){helper}(n);
 
             else % hack needs to be checked
 
                 % makes sense
-                temp_fval(n) = ...
+                result.("min").("fvalt"){helper}(n) = ...
                     settings.errorscore;
 
                 % hack needs to be checked
-                result.("min").("Pval"){x}(n) = ...
-                    result.(alg{min_index}).("Pval"){x}(n);
+                result.("min").("Pval"){helper}(n) = ...
+                    result.(alg{min_index}).("Pval"){helper}(n);
 
                 % hack needs to be checked
-                result.("min").("xt"){x}(n) = ...
-                    result.(alg{min_index}).("xt"){x}(n);
+                result.("min").("xt"){helper}(n) = ...
+                    result.(alg{min_index}).("xt"){helper}(n);
             end
         end
     end
@@ -87,31 +87,31 @@ for par_indx = 1:length(settings.pltest)
     for n = 1:settings.plres * 4 + 1
 
         if mod(n, 4) == 3
-            if temp_fval(n) > temp_fval(n - 2) &&...
-                    temp_fval(n) > temp_fval(n + 2)
-                temp_fval(n) = 0;
+            if result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n - 2) &&...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n + 2)
+                result.("min").("fvalt"){helper}(n) = 0;
             end
         end
 
         if mod(n, 4) == 2
-            if temp_fval(n) > temp_fval(n - 1) &&...
-                    temp_fval(n) > temp_fval(n + 3) ||...
-                    temp_fval(n) > temp_fval(n - 1) &&...
-                    temp_fval(n) > temp_fval(n + 1)
-                temp_fval(n) = 0;
+            if result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n - 1) &&...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n + 3) ||...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n - 1) &&...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n + 1)
+                result.("min").("fvalt"){helper}(n) = 0;
             end
         end
 
         if mod(n, 4) == 0
-            if temp_fval(n) > temp_fval(n - 3) &&...
-                    temp_fval(n) > temp_fval(n + 1) ||...
-                    temp_fval(n) > temp_fval(n - 1) &&...
-                    temp_fval(n) > temp_fval(n + 1)
-                temp_fval(n) = 0;
+            if result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n - 3) &&...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n + 1) ||...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n - 1) &&...
+                    result.("min").("fvalt"){helper}(n) > result.("min").("fvalt"){helper}(n + 1)
+                result.("min").("fvalt"){helper}(n) = 0;
             end
         end
     end
 
-    result.("min").("fvalt"){x}(n) = temp_fval(n);
+    % result.("min").("fvalt"){helper}(n) = result.("min").("fvalt"){helper}(n);
 end
 end

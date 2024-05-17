@@ -105,8 +105,13 @@ for number_exp = 1:size(sb.Experiments.ID, 1)
         'AbsoluteTolerance', stg.abstol);
     set(configsetObj{number_exp}.SolverOptions, ...
         'AbsoluteToleranceStepSize', stg.abstolstepsize_eq);
+    helper = [0,10 .^ (-20: 0.01: log10(stg.eqt))];
+    if helper(end) ~= stg.eqt
+        helper = [helper,stg.eqt];
+    end
+
     set(configsetObj{number_exp}.SolverOptions, 'OutputTimes', ...
-        [0, 10 .^ (-20: 0.01: log10(stg.eqt))]);
+        helper);
     set(configsetObj{number_exp}, 'TimeUnits', stg.simtime);
     set(configsetObj{number_exp}.SolverOptions, 'MaxStep', stg.maxstepeq);
 
