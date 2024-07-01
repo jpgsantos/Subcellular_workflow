@@ -76,10 +76,10 @@ for exp_idx = stg.exprun
         xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 
         % Create legend
-        Lgnd = legend(labelfig2,'Orientation','vertical', ...
+        Lgnd = legend(labelfig2,'Orientation','horizontal', ...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
             'Location','layout','Box','off');
-        Lgnd.Layout.Tile = 'East';
+        Lgnd.Layout.Tile = 'North';
         Lgnd.ItemTokenSize = Legend_ItemTokenSize;
     end
 

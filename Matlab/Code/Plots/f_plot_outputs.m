@@ -51,7 +51,7 @@ plot_n = 0;
 fig_n = 0;
 layout = [];
 plots = cell(1,2);
-plot_tn = plot_tn*2;
+plot_tn = plot_tn;
 
 % Set font settings using the provided font_settings
 f_set_font_settings()
@@ -111,13 +111,13 @@ for exp_idx = stg.exprun
             % Add a legend to the plot
             if mod(plot_n,12) == do_norm 
                 Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
-                    plot_data,plot_data_SD],'Orientation','vertical',...
+                    plot_data,plot_data_SD],'Orientation','horizontal',...
                     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
                     'Location','layout');
-                Lgnd.Layout.Tile = 'East';
+                Lgnd.Layout.Tile = 'South';
                 Lgnd.ItemTokenSize = Legend_ItemTokenSize;
-                xlabel(layout,"Seconds",...
-                    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+%                 xlabel(layout,"Seconds",...
+%                     'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
                 % Remove the legend box
                 set(Lgnd,'Box','off')
             end
