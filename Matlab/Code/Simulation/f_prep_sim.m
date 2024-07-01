@@ -130,9 +130,9 @@ for exp_indx = settings.exprun
         if result.simd{exp_indx} ~= 0 && ...
                 size(Data(exp_indx).Experiment.t, 1) ~= ...
                 size(result.simd{exp_indx}.Data(:, end), 1)
-            disp("n: " + n + " E" + (n - 1) + " fail_sim_out_time" + ...
-                " time_sim:  " + size(result.simd{n}.Data(:, end), 1) + ...
-                " data_time: " + size(Data(n).Experiment.t, 1))
+            % disp("n: " + n + " E" + (n - 1) + " fail_sim_out_time" + ...
+            %     " time_sim:  " + size(result.simd{n}.Data(:, end), 1) + ...
+            %     " data_time: " + size(Data(n).Experiment.t, 1))
             error_type = "st"; %simulation time
             result.simd{exp_indx} = 0;
         end
@@ -172,20 +172,22 @@ error_type = '';
 for reltol = tolerance_settings.reltol: - tolerance_settings.reltol_step:...
         min(tolerance_settings.reltol_min,tolerance_settings.reltol)
 
+    % disp("reltol: " + reltol)
     for abstol = ...
             tolerance_settings.abstol: - tolerance_settings.abstol_step:...
             min(tolerance_settings.abstol_min,tolerance_settings.abstol)
+        % disp("abstol: " + abstol)
         tolerance_settings.stg.reltol = reltol;
         tolerance_settings.stg.abstol = abstol;
         if tolerance_settings.equilibrate
-            % try
+            try
             [result, error_type] = func();
             success = true;
-            % catch ME
-            %     disp(ME)
-            %     error_type = "e"; %equilibration
-            %     success = false;
-            % end
+            catch ME
+                % disp(ME)
+                error_type = "e"; %equilibration
+                success = false;
+            end
         else
             try
                 result = func(success);
@@ -329,11 +331,11 @@ result = f_sim(n + settings.expn, settings, sim_par, ...
 error_type = "";
 
 if result.simd{n + settings.expn}.Time(end, 1) ~= settings.eqt
-    disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
-        result.simd{n + settings.expn}.Time(end, 1) + ...
-        " settings.eqt: " + settings.eqt)
-    disp("pecado")
-    % error("E" + (n - 1) + " fail_eq_out_time")
+    % disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
+    %     result.simd{n + settings.expn}.Time(end, 1) + ...
+    %     " settings.eqt: " + settings.eqt)
+    % disp("pecado")
+    error("E" + (n - 1) + " fail_eq_out_time")
     error_type = "et"; %equilibration time
 end
 

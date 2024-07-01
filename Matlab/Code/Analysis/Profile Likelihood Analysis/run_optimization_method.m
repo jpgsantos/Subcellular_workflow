@@ -30,9 +30,9 @@ offset = offset + 1;
 if alg{2} == 1
     optimization_func = @sim_a;
 elseif alg{2} == 2
-    optimization_func = @fmin_con;
-elseif alg{2} == 3
     optimization_func = @p_search;
+elseif alg{2} == 3
+    optimization_func = @fmin_con;
 else
     error('No optimization method specified');
 end

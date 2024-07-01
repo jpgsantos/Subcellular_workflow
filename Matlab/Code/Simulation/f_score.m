@@ -121,9 +121,9 @@ if results.simd{n} ~= 0
     % If there are errors output a very high score value (10^10)
 elseif results.simd{n} == 0 %|| rst.sd(j, n) == inf || isnan(rst.sd(j, n))
     switch settings.useLog
-        case {1, 2, 3}
+        case {1}
             results.sd(j, n) = log10(settings.errorscore);
-        case {0, 4}
+        case {0, 2, 3, 4}
             results.sd(j, n) = settings.errorscore;
     end
     results.xfinal{n, 1}(j) = 0;

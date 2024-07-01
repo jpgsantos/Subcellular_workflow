@@ -51,7 +51,7 @@ plot_n = 0;
 fig_n = 0;
 layout = [];
 plots = cell(1,2);
-% plot_tn = plot_tn*2;
+plot_tn = plot_tn*2;
 
 % Set font settings using the provided font_settings
 f_set_font_settings()

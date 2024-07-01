@@ -68,9 +68,11 @@ sortes_plas = find(settings.pltest == ...
     fval{sortes_plas}{:} = fval_ini{par_indx};
     x{sortes_plas}{:}= x_ini{par_indx};
 
+
+    target = current_pos + direction*5;
 % Optimization loop: Continue until the starting point is reached
 % or the new value is less than 5% more than the previous value
-while current_pos ~= next_pos_to_opt
+while ~(current_pos == next_pos_to_opt || current_pos == target)
 
 new_pos = current_pos + direction;
 

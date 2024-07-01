@@ -161,7 +161,7 @@ xlabel('Ordered Scores','Fontweight',...
     'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 
 t2.FontSize = Major_Title_Spacing;
-set(gca,'xtick',1:max(n_opts))
+% set(gca,'xtick',1:max(n_opts))
 xlim([0 max(n_opts) + 1])
 
 % Create the legend, set its properties

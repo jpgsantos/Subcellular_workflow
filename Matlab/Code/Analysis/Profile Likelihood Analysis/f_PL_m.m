@@ -45,6 +45,7 @@ function rst = f_PL_m(settings, model_folder)
 
 % Find the index of the starting point for profile likelihood (PL)
 % calculation
+
 for n = settings.pltest
     % Calculate the index closest to the best parameter value
     range = linspace(settings.lb(n), settings.ub(n), settings.plres + 1);

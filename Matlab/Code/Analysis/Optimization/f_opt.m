@@ -73,12 +73,14 @@ end
 for i = 1:size(optimization_algorithms, 1)
     % algorithm_func = optimization_algorithms{i, 1};
     algorithm_flag = optimization_algorithms{i, 2};
-
+opt_time = tic;
     if settings.(algorithm_flag)
         [result(i), parameter_array(i, :)] = ...
             run_algorithm(@optimize_algorithm,...
             optimization_algorithms{i, 1}, settings, model_folders);
     end
+disp(convertCharsToStrings(optimization_algorithms{i, 2}) + ": " + ...
+    toc(opt_time))
 end
 end
 
@@ -104,13 +106,18 @@ p = gcp(); % If no pool, do not create new one.
 
 % poolsize = p.NumWorkers;
 % mst = settings.mst;
-% if contains(algorithm_name, {'fmincon', 'Simulated annealing', ...
-% 'Pattern search', 'Surrogate optimization'})
+% optt = settings.optt = 60*10;
+% if contains(algorithm_name, {'Pattern search', 'Surrogate optimization'})
 % settings.mst = true;
 % settings.msts = poolsize;
+% elseif contains(algorithm_name, {'fmincon', 'Simulated annealing'})
+% settings.mst = true;
+% settings.msts = poolsize*5;
+% settings.optt = optt/5;
 % else
 % settings.mst = mst;
 % settings.msts = poolsize;
+% settings.optt = optt;
 % end
 
 % Determine the starting point for the optimization
@@ -146,28 +153,22 @@ if settings.mst
     end
 else
 
-    % [x(1,:), fval(1), exitflag(1), output(1)] = ...
-    %     run_optimizer(algorithm_name, objective_function,...
-    %     (lb + ub) / 2, spop, lb, ub, options);
-
     [x(1,:), fval(1), exitflag(1), output(1)] = ...
         run_optimizer(algorithm_name, objective_function,...
-        settings.bestpa, spop, lb, ub, options);
+        (lb + ub) / 2, spop, lb, ub, options);
+
+    % [x(1,:), fval(1), exitflag(1), output(1)] = ...
+    %     run_optimizer(algorithm_name, objective_function,...
+    %     settings.bestpa, spop, lb, ub, options);
 end
 end
 
 function [x, fval, exitflag, output] = ...
     run_optimizer(algorithm_name, objective_function, startpoint, spop,...
     lb, ub, options)
-
 % Execute the appropriate optimization algorithm based on algorithm_name
 switch algorithm_name
     case 'fmincon'
-        % startpoint
-        % min(startpoint)
-        % max(startpoint)
-        % lb
-        % ub
         [x, fval, exitflag, output] = ...
             fmincon(objective_function, startpoint, ...
             [], [], [], [], lb, ub, [], options);
@@ -181,10 +182,8 @@ switch algorithm_name
             [], [], [], [], lb, ub, [], options);
     case 'Genetic algorithm'
         parnum = length(lb);
-        [x, fval] = ga(objective_function, parnum, ...
+        [x, fval,exitflag,output] = ga(objective_function, parnum, ...
             [], [], [], [], lb, ub, [], options);
-        exitflag = [" "];
-        output = [" "];
     case 'Particle swarm'
         parnum = length(lb);
         [x, fval, exitflag, output] = ...
@@ -214,12 +213,12 @@ switch algorithm_name
         options.UseParallel = settings.optmc;
     case 'Genetic algorithm'
 
-        test = settings.pa_original(settings.pat_original, :);
+        % test = settings.pa_original(settings.pat_original, :);
 
         options = settings.ga_options;
         options.MaxTime = settings.optt;
-        options.PopulationSize = settings.popsize+length(test);
-        % options.PopulationSize = stg.popsize;
+        % options.PopulationSize = settings.popsize+length(test);
+        options.PopulationSize = settings.popsize;
         options.UseParallel = settings.optmc;
         [~, startpop, ~] = f_opt_start(settings);
         options.InitialPopulationMatrix = startpop;
@@ -269,7 +268,7 @@ switch algorithm_name
         plot_functions = ...
             {@gaplotbestf, @gaplotexpectation, @gaplotrange, ...
             @gaplotscorediversity, @gaplotstopping, ...
-            @gaplotscores, @gaplotdistance, @gaplotselection};
+            @gaplotscores, @gaplotdistance, @gaplotselection, @gaplotbestindiv};
     case 'Particle swarm'
         plot_functions = {@pswplotbestf};
     case 'Surrogate optimization'
@@ -306,7 +305,7 @@ if settings.osm == 1
     % Get a group of ramdom starting points inside the bounds
     spop_mc = lhsdesign(settings.popsize, settings.parnum) .* ...
         (settings.ub - settings.lb) + settings.lb;
-    % spop_mc = [lhsdesign(stg.popsize,stg.parnum).*(stg.ub-stg.lb)+stg.lb;test];
+    % spop_mc = [lhsdesign(settings.popsize,settings.parnum).*(settings.ub-stg.lb)+settings.lb;test];
 
     % Get a group of ramdom starting points inside the bounds
     for n = 1:settings.msts

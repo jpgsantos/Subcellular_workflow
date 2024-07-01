@@ -40,7 +40,7 @@ plot_n = 0;
 fig_n = 0;
 layout = [];
 % plots_1 = [];
-
+plots = cell(1,2);
 % Set font settings
 f_set_font_settings()
 
