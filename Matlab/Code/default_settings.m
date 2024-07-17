@@ -304,6 +304,9 @@ stg.plot = true;
 % f_plot_outputs.m (Plot outputs long names)
 stg.plotoln = true;
 
+
+stg.in_plot_trim = 1;
+
 %% Sensitivity analysis
 
 % Sets the number of samples to use in Sensitivity Analysis (Sensitivity

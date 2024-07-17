@@ -69,6 +69,7 @@ for exp_idx = stg.exprun
     end
 end
 
+helper_var = 4/stg.plot_norm;
 % Iterate over each experiment run to generate plots.
 for exp_idx = stg.exprun
     sub_fig_number = 0;% Track subplot numbers within the same figure.
@@ -87,14 +88,15 @@ for exp_idx = stg.exprun
     % experiment.
     [layout,input_plot,plots] = ...
         f_plot_in_out_left(rst, stg, sbtab, fig_number_same_exp,...
-        n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
+        n_outputs_exp_norm > helper_var, exp_idx, plots, fig_number);
     draw_legend = 1;% Initialize flag to draw legend.
 
     % Loop through each output of the current experiment
     for out_idx = 1:n_outputs_exp
-
+        
         % Check if new subplot layout is needed based on output count.
         sub_fig_number = sub_fig_number +1;
+
         if sub_fig_number/4 > fig_number_same_exp
             fig_number_same_exp = fig_number_same_exp+1;
             fig_number = fig_number+ 1;
@@ -103,7 +105,7 @@ for exp_idx = stg.exprun
             % current experiment.
             [layout,input_plot,plots] = ...
                 f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
-                n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
+                n_outputs_exp_norm > helper_var, exp_idx, plots, fig_number);
             draw_legend = 1; % Reset flag for new subplot layout.
         end
 
@@ -122,8 +124,7 @@ for exp_idx = stg.exprun
         end
        
         hold on
-       
-        if isempty(sim_results_norm{stg.pat(1)})
+        % if isempty(sim_results_norm{stg.pat(1)})
             % Call function to plot simulation data.
             [plot_data,plot_data_SD,data,data_SD] = ...
                 plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
@@ -131,7 +132,7 @@ for exp_idx = stg.exprun
             % Call function to plot simulation outputs.
             [valid_outputs_plots,valid_outputs,sim_results,...
                 sim_results_norm,sim_results_detailed] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n,2);
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,0,include_exp_n,1);
 
             % Set the y-axis limits based on simulation detail setting and
             % data range.
@@ -146,19 +147,19 @@ for exp_idx = stg.exprun
 
             min_SD = (max(min(data-data_SD),min(data)-y_range*0.05));
             max_SD = (min(max(data-data_SD),max(data)-y_range*0.05));
-        else
-            % Adjust y-axis limits if normalized simulation results are
-            % available.
-            if stg.simdetail
-                min_noSD = min(min([sim_results_detailed{:}]));
-                max_noSD = max(max([sim_results_detailed{:}]));
-            else
-                min_noSD = min(min([sim_results{:}]));
-                max_noSD = max(max([sim_results{:}]));
-            end
-            min_SD = min_noSD;
-            max_SD = max_noSD;
-        end
+        % else
+        %     % Adjust y-axis limits if normalized simulation results are
+        %     % available.
+        %     if stg.simdetail
+        %         min_noSD = min(min([sim_results_detailed{:}]));
+        %         max_noSD = max(max([sim_results_detailed{:}]));
+        %     else
+        %         min_noSD = min(min([sim_results{:}]));
+        %         max_noSD = max(max([sim_results{:}]));
+        %     end
+        %     min_SD = min_noSD;
+        %     max_SD = max_noSD;
+        % end
         ylim([0 max(max_noSD,max_SD)])
 
         % Get the current y-axis tick values
@@ -214,13 +215,13 @@ for exp_idx = stg.exprun
             sub_fig_number = sub_fig_number +1;
             if sub_fig_number/4 > fig_number_same_exp
                 fig_number_same_exp = fig_number_same_exp+1;
-                fig_number = fig_number+ 1;
+                fig_number = fig_number + 1;
 
                 % Plot input data on the left side of the figure for the
                 % current experiment.
                 [layout,input_plot,plots] = ...
                     f_plot_in_out_left(rst, stg,sbtab, fig_number_same_exp,...
-                    n_outputs_exp_norm > 4, exp_idx, plots, fig_number);
+                    n_outputs_exp_norm > helper_var, exp_idx, plots, fig_number);
                 draw_legend = 1;% Reset flag for new subplot layout.
             end
 
@@ -241,7 +242,7 @@ for exp_idx = stg.exprun
 
             % Call function to plot simulation outputs.
             [valid_outputs_plots,valid_outputs,~,~,sim_results_detailed] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n,1);
+                plot_sim_outputs(stg,rst,sbtab,mmf,Data,exp_idx,out_idx,1,include_exp_n,2);
 
             hold off
 
