@@ -54,12 +54,14 @@ plots = [];
 if isfield(results, 'diag')
     % Generate and store figure with Scores
     plots = [plots;f_plot_scores(results.diag, settings, sbtab)];
-    % Generate and store figure with Inputs
-    plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
-    % Generate and store figure with Outputs
-    plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
-    % Generate and store figure with Input and Output for all experiments
-    plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
+
+    plots = f_plot_diagnostics(plots,results,settings,sbtab,Data,model_folder);
+    % % Generate and store figure with Inputs
+    % plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
+    % % Generate and store figure with Outputs
+    % plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
+    % % Generate and store figure with Input and Output for all experiments
+    % plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
 end
 
 % Check if the 'opt' field exists in the rst structure
