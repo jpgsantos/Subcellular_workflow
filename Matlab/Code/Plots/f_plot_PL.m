@@ -49,6 +49,8 @@ disp("Plotting PL")
 % does
 if isfield(settings,'bestpa')
     settings.sbioacc = false;
+    settings.simcsl = 1;
+    settings.maxt = 10;
     [best_score,~,~] = f_sim_score(settings.bestpa,settings,model_folder,0,0);
 end
 % best_score

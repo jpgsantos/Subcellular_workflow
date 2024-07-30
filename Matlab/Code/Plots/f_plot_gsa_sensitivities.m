@@ -58,7 +58,7 @@ output_names.xfinal = output_names.sd;
 % Set parameter names
 % par_names = cell(1,settings.parnum);
 par_names2 = cell(1,settings.parnum);
-par_names = "P_{" + [1:settings.parnum] + "}";
+par_names = "P{" + [1:settings.parnum] + "}";
 for n = 1:settings.parnum
     % par_names = n
     % par_names{n} = char("P_{" + find(settings.partest==n) + "}");
@@ -126,7 +126,7 @@ end
 % Create Si, SiT plot
 plots(7,:) = f_renew_plot('Si,SiT');
 
-layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
 nexttile(layout)
 
 for n = 1:size(par_names2,2)
@@ -154,7 +154,7 @@ legend boxoff
 plots(8,:) = f_renew_plot('Si,SiT b');
 
 
-layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
 nexttile(layout)
 
 T = [];
@@ -199,7 +199,7 @@ f_set_font_settings()
 
 plots = f_renew_plot(name);
 
-layout = tiledlayout(1,1,'Padding','compact','TileSpacing','tight');
+layout = tiledlayout(1,1,'Padding','tight','TileSpacing','none');
 nexttile(layout)
 
 fixed_output_names2 = eval(output_names_2);
@@ -220,6 +220,12 @@ title(layout,strrep(settings.plot_name, "_", "\_") + "  " + ...
     'Fontweight',Major_title_Fontweight);
 subtitle(layout,major_title(2:end),'FontSize', Major_subtitle_FontSize,...
     'Fontweight',Major_subtitle_Fontweight)
+
+% title(strrep(settings.plot_name, "_", "\_") + "  " + ...
+%     major_title(1),'FontSize', Major_title_FontSize,...
+%     'Fontweight',Major_title_Fontweight);
+% subtitle(major_title(2:end),'FontSize', Major_subtitle_FontSize,...
+%     'Fontweight',Major_subtitle_Fontweight)
 
 h.XLabel = '\fontsize{8} \bf Outputs';
 h.YLabel = '\fontsize{8} \bf Parameters';

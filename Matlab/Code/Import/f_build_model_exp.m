@@ -91,7 +91,7 @@ for number_exp = 1:size(sb.Experiments.ID, 1)
     configsetObj{number_exp} = getconfigset(model_run{number_exp});
     
     % Configure simulation settings for the equilibrium simulation run
-    set(configsetObj{number_exp}, 'MaximumWallClock', 0.5);
+    set(configsetObj{number_exp}, 'MaximumWallClock', 2);
     set(configsetObj{number_exp}, 'StopTime', stg.eqt);
     set(configsetObj{number_exp}.CompileOptions, ...
         'DimensionalAnalysis', stg.dimenanal);
