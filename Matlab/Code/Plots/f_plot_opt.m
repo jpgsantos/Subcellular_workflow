@@ -67,8 +67,13 @@ for n = settings.pat
         ((0.5/n_opt_methods)*(n_opt_methods+1)/2),results.opt(n).x(I(1),:),...
         20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n})
     % Add the method's name and score to the legend
+    if settings.useLog == 3
+    name{m} = ...
+        sprintf('%s (Score = %.2f)', results.opt(n).name, 10^results.opt(n).fval(I(1)));
+    else
     name{m} = ...
         sprintf('%s (Score = %.2f)', results.opt(n).name, results.opt(n).fval(I(1)));
+    end
 end
 
 % Add best parameter set, prior bounds, and vertical lines to the first
@@ -106,14 +111,18 @@ xlabel('Parameters','Fontweight',Axis_Fontweight,'FontSize',Axis_FontSize)
 t2.FontSize = Major_Title_Spacing;
 parNames = cell(1,settings.parnum);
 
-for n = 1:settings.parnum
-    parNames{n} = char("P" + find(settings.partest==n));
-end
+% for n = 1:settings.parnum
+%     parNames{n} = char("P" + find(settings.partest==n));
+% end
+% 
+% for n = 1:size(parNames,2)
+%     if size(parNames{n},1) > 1
+%         parNames{n} = parNames{n}(1,:);
+%     end
+% end
 
-for n = 1:size(parNames,2)
-    if size(parNames{n},1) > 1
-        parNames{n} = parNames{n}(1,:);
-    end
+for n = 1:settings.parnum
+    parNames{n} = char("P" + n);
 end
 
 ax = gca;

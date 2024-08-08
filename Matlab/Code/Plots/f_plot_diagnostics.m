@@ -286,8 +286,8 @@ for exp_idx = stg.exprun
         end
     end
 end
-
-helper_var = 4/stg.plot_norm;
+max_rigth_subplots = 6;
+helper_var = max_rigth_subplots/stg.plot_norm;
 % Iterate over each experiment run to generate plots.
 for exp_idx = stg.exprun
     sub_fig_number = 0;% Track subplot numbers within the same figure.
@@ -304,16 +304,15 @@ for exp_idx = stg.exprun
 
     % Plot input data on the left side of the figure for the current
     % experiment.
-    1
     [layout,plots] = ...
         f_plot_in_out_left(rst, stg, sbtab, fig_number_same_exp,...
         n_outputs_exp_norm > helper_var, exp_idx, plots, fig_number);
 
-% % Span the input data plot across two rows for better visibility.
-% nexttile(layout(1,1),[2 1]);
-% 
-%     [input_plot,labelfig2] = ...
-%         f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+    % % Span the input data plot across two rows for better visibility.
+    % nexttile(layout(1,1),[2 1]);
+    %
+    %     [input_plot,labelfig2] = ...
+    %         f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
     % draw_legend = 1;% Initialize flag to draw legend.
 
     % Loop through each output of the current experiment
@@ -322,8 +321,24 @@ for exp_idx = stg.exprun
         % Check if new subplot layout is needed based on output count.
         sub_fig_number = sub_fig_number +1;
 
-        if sub_fig_number/4 > fig_number_same_exp
-            2
+        if sub_fig_number/max_rigth_subplots > fig_number_same_exp
+            nexttile(1,[2 1]);
+
+            [input_plot,labelfig2] = ...
+                f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+
+            plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
+                plot_data,plot_data_SD];
+            save("plots_leg.mat","plots_leg")
+            leg = legend(plots_leg,...
+                'FontSize', Legend_FontSize,...
+                'Fontweight',Legend_Fontweight, ...
+                "Orientation","horizontal");
+            leg.Layout.Tile = 'south'; % Position legend at the bottom.
+            % % Set the size of legend markers.
+            leg.ItemTokenSize = Legend_ItemTokenSize;
+            set(leg,'Box','off') % Remove the legend box boundary.
+
             fig_number_same_exp = fig_number_same_exp+1;
             fig_number = fig_number+ 1;
 
@@ -334,21 +349,32 @@ for exp_idx = stg.exprun
                 n_outputs_exp_norm > helper_var, exp_idx, plots, fig_number);
             % draw_legend = 1; % Reset flag for new subplot layout.
 
-% Span the input data plot across two rows for better visibility.
-nexttile(layout,[2 1]);
-
+            % Span the input data plot across two rows for better visibility.
+            nexttile(layout,[2 1]);
 
             [input_plot,labelfig2] = ...
                 f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
         end
 
         % Setup the next tile for output data plotting.
-        if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
-            nexttile(2,[2 2]);
-        elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
-            nexttile(2,[2 1]);
-        else
-            nexttile(2,[1 1]);
+        if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots == 1
+            nexttile(2,[6 2]);
+        elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots == 2
+            nexttile(2,[6 1]);
+        elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots >= 3 && n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots <= 4
+            if sub_fig_number <=2+(fig_number_same_exp-1)*max_rigth_subplots
+                nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+1,[3 1]);
+            else
+                nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+8,[3 1]);
+            end
+        elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots >= 5 && n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots <= 6
+            if sub_fig_number <= 2+(fig_number_same_exp-1)*max_rigth_subplots
+                nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+1,[2 1]);
+            elseif sub_fig_number <= 4+(fig_number_same_exp-1)*max_rigth_subplots
+                nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+5,[2 1]);
+            else
+                nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+9,[2 1]);
+            end
         end
 
         hold on
@@ -390,8 +416,25 @@ nexttile(layout,[2 1]);
 
             % Check if new subplot layout is needed based on output count.
             sub_fig_number = sub_fig_number +1;
-            if sub_fig_number/4 > fig_number_same_exp
-                3
+            if sub_fig_number/max_rigth_subplots > fig_number_same_exp
+
+                nexttile(1,[2 1]);
+
+                [input_plot,labelfig2] = ...
+                    f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+
+                plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
+                    plot_data,plot_data_SD];
+                save("plots_leg.mat","plots_leg")
+                leg = legend(plots_leg,...
+                    'FontSize', Legend_FontSize,...
+                    'Fontweight',Legend_Fontweight, ...
+                    "Orientation","horizontal");
+                leg.Layout.Tile = 'south'; % Position legend at the bottom.
+                % % Set the size of legend markers.
+                leg.ItemTokenSize = Legend_ItemTokenSize;
+                set(leg,'Box','off') % Remove the legend box boundary.
+
                 fig_number_same_exp = fig_number_same_exp+1;
                 fig_number = fig_number + 1;
 
@@ -410,12 +453,24 @@ nexttile(layout,[2 1]);
             end
 
             % Setup the next tile for output data plotting.
-            if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 1
-                nexttile(3,[2 2]);
-            elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*4 == 2
-                nexttile(3,[2 1]);
-            else
-                nexttile(3,[1 1]);
+            if n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots == 1
+                nexttile(3,[6 2]);
+            elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots == 2
+                nexttile(3,[6 1]);
+            elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots >= 3 && n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots <= 4
+                if sub_fig_number <= 2+(fig_number_same_exp-1)*max_rigth_subplots
+                    nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+1,[3 1]);
+                else
+                    nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+8,[3 1]);
+                end
+            elseif n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots >= 5 && n_outputs_exp_1(exp_idx)-(fig_number_same_exp-1)*max_rigth_subplots <= 6
+                if sub_fig_number <= 2+(fig_number_same_exp-1)*max_rigth_subplots
+                    nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+1,[2 1]);
+                elseif sub_fig_number <= 4+(fig_number_same_exp-1)*max_rigth_subplots
+                    nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+5,[2 1]);
+                else
+                    nexttile(sub_fig_number-(fig_number_same_exp-1)*max_rigth_subplots+9,[2 1]);
+                end
             end
 
             hold on
@@ -445,23 +500,6 @@ nexttile(layout,[2 1]);
 
         ylim([min_SD max_SD])
 
-        % Span the input data plot across two rows for better visibility.
-        nexttile(1,[2 1]);
-
-        [input_plot,labelfig2] = ...
-            f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
-
-        plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
-            plot_data,plot_data_SD]
-        save("plots_leg.mat","plots_leg")
-        leg = legend(plots_leg,...
-            'FontSize', Legend_FontSize,...
-            'Fontweight',Legend_Fontweight, ...
-            "Orientation","horizontal");
-        leg.Layout.Tile = 'south'; % Position legend at the bottom.
-        % % Set the size of legend markers.
-        leg.ItemTokenSize = Legend_ItemTokenSize;
-        set(leg,'Box','off') % Remove the legend box boundary.
 
         % Check if legend needs to be drawn for the current subplot.
         % if draw_legend == 1
@@ -480,6 +518,28 @@ nexttile(layout,[2 1]);
         % draw_legend = 0; % Reset flag after drawing the legend.
         % end
     end
+
+    % Span the input data plot across two rows for better visibility.
+    nexttile(1,[6 1]);
+
+    [input_plot,labelfig2] = ...
+        f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+
+    plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
+        plot_data,plot_data_SD];
+    save("plots_leg.mat","plots_leg")
+    leg = legend(plots_leg,...
+        'FontSize', Legend_FontSize,...
+        'Fontweight',Legend_Fontweight, ...
+        "Orientation","horizontal");
+    leg.Layout.Tile = 'south'; % Position legend at the bottom.
+    % % Set the size of legend markers.
+    leg.ItemTokenSize = Legend_ItemTokenSize;
+    set(leg,'Box','off') % Remove the legend box boundary.
+
+
+
+
 end
 end
 
@@ -512,15 +572,15 @@ f_set_font_settings()
 % (for multiple outputs in the same experiment), append a sequence number
 % to distinguish between them.
 if reuse
-    name_short = "E " + (exp_idx-1) + " " + fig_number_same_exp;
+    name_short = "E" + (exp_idx-1) + " " + fig_number_same_exp;
     name_long = ...
         strrep(stg.plot_name, "_", "\_") + "  Experiment " + (exp_idx-1) + " " + ...
-        fig_number_same_exp + "  (E " + (exp_idx-1) + " " + ...
+        fig_number_same_exp + "  (E" + (exp_idx-1) + " " + ...
         fig_number_same_exp +")";
 else
-    name_short = "E " + (exp_idx-1);
+    name_short = "E" + (exp_idx-1);
     name_long = strrep(stg.plot_name, "_", "\_") + "  Experiment " + (exp_idx-1) + ...
-        "  (E " + (exp_idx-1) +")";
+        "  (E" + (exp_idx-1) +")";
 end
 
 % Refresh or create a plot with the new naming convention.
@@ -528,8 +588,8 @@ plots(fig_number,:) = f_renew_plot(name_short);
 
 % Set up the layout of the plot, preparing for input and output data
 % display.
-layout = tiledlayout(2,3,'Padding',"tight",'TileSpacing','tight');
-% Use a 2x3 grid layout with tight spacing.
+layout = tiledlayout(6,3,'Padding',"tight",'TileSpacing','tight');
+% Use a 3x3 grid layout with tight spacing.
 
 
 
@@ -703,7 +763,7 @@ for pa_idx = stg.pat
 
         valid_outputs_plots(current_plot) = scatter(time,...
             results,2,colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
-                "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
+            "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
 
         ylabel(results_y_label,...
             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)

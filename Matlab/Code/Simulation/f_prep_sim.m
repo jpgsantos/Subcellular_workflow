@@ -184,7 +184,7 @@ for reltol = tolerance_settings.reltol: - tolerance_settings.reltol_step:...
             [result, error_type] = func();
             success = true;
             catch ME
-                % disp(ME)
+                disp(ME)
                 error_type = "e"; %equilibration
                 success = false;
             end
@@ -331,9 +331,9 @@ result = f_sim(n + settings.expn, settings, sim_par, ...
 error_type = "";
 
 if result.simd{n + settings.expn}.Time(end, 1) ~= settings.eqt
-    % disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
-    %     result.simd{n + settings.expn}.Time(end, 1) + ...
-    %     " settings.eqt: " + settings.eqt)
+    disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
+        result.simd{n + settings.expn}.Time(end, 1) + ...
+        " settings.eqt: " + settings.eqt)
     % disp("pecado")
     error("E" + (n - 1) + " fail_eq_out_time")
     error_type = "et"; %equilibration time
