@@ -201,6 +201,7 @@ for n = 1:size(sb.Compound.ID, 1)
         species_inp_indices{end + 1, 1} = n;
     end
 end
+
 % Iterate through sb.Experiments.ID to process each experiment
 for n = 1:size(sb.Experiments.ID, 1)
     start_amount = cell(1, size(species_inp_indices, 1));
@@ -209,10 +210,15 @@ for n = 1:size(sb.Experiments.ID, 1)
     n_input = 0;
     n_output = 0;
 
+
     % Check if sb.Experiments has a Normalize field, and store it in
     % sbtab.datasets(n).Normalize
     if isfield(sb.Experiments, "Normalize")
-        sbtab.datasets(n).Normalize = sb.Experiments.Normalize{n};
+        if sb.Experiments.Normalize{n} ~= 0
+            sbtab.datasets(n).Normalize = sb.Experiments.Normalize{n};
+        else
+            sbtab.datasets(n).Normalize = [];
+        end
     else
         sbtab.datasets(n).Normalize = [];
     end
