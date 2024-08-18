@@ -302,7 +302,9 @@ end
 end
 % n_outputs_exp_plus_norm
 
-max_rigth_subplots = 6;
+max_rigth_subplots = 8;
+row_length = [1,1,2,2,3,3,4,4];
+column_length = [1,2,2,2,2,2,2,2];
 for exp_idx = stg.exprun
 
 sub_fig_number = 0;% Track subplot numbers within the same figure.
@@ -322,7 +324,7 @@ ax = axes(outerLayout, 'Visible', 'off');
 innerLayout_input = tiledlayout(outerLayout,1,1,'Padding',"tight",'TileSpacing','tight');
 % nexttile(outerLayout,2,[1 2]);
 
-innerLayout_output = tiledlayout(outerLayout,2,2,'Padding',"tight",'TileSpacing','tight');
+innerLayout_output = tiledlayout(outerLayout,row_length(n_outputs_exp_plus_norm(exp_idx)),column_length(n_outputs_exp_plus_norm(exp_idx)),'Padding',"tight",'TileSpacing','tight');
 % innerLayout_output.Layout
 
 innerLayout_output.Layout.Tile = 2;
