@@ -42,9 +42,6 @@ disp("Plotting Optimization results")
 % Set font settings
 f_set_font_settings()
 
-% Define color map for the plots
-colour = {[1 0 0],[0 1 0],[0 0 1],[1 0.75 0],[1 0 1],[0 0.75 1]};
-
 % Create the first plot and delete any existing plot with the same name
 plots(1,:) = f_renew_plot('Optimization results');
 
@@ -52,8 +49,13 @@ plots(1,:) = f_renew_plot('Optimization results');
 layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
 nexttile(layout,[1 1]);
 
+settings.pat
 % Determine the number of optimization methods used
 n_opt_methods = size(settings.pat,2);
+
+% Define color map for the plots
+colour = {[1 0 0],[0 1 0],[0 0 1],[1 0.75 0],[1 0 1],[0 0.75 1]};
+colour = generateRainbowGradient(n_opt_methods);
 
 % Create scatter plots for each optimization method and add them to the legend
 hold on
@@ -65,7 +67,7 @@ for n = settings.pat
     % Create a scatter plot for the optimization method
     scatter((1:settings.parnum)+((0.5/n_opt_methods)*m)-...
         ((0.5/n_opt_methods)*(n_opt_methods+1)/2),results.opt(n).x(I(1),:),...
-        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n})
+        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(n,:))
     % Add the method's name and score to the legend
     if settings.useLog == 3
     name{m} = ...
@@ -150,7 +152,7 @@ for n = settings.pat
     % Create a scatter plot for the optimization method
     scatter(fval_number+(0.75/n_opt_methods*m)-...
         (0.75/n_opt_methods*(n_opt_methods+1)/2),log10(B(fval_number)),10,...
-        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n})
+        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(n,:))
 
     % Add the method's name to the legend
     name{m} = sprintf('%s', results.opt(n).name);

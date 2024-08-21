@@ -4,9 +4,29 @@ plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
 % Generate and store figure with Outputs
 plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
 
-
 % Generate and store figure with Input and Output for all experiments
-plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
+ plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
+end
+
+function list_imputs = f_list_imputs(stg,sbtab,list_imputs,exp_idx)
+% for exp_idx = stg.exprun
+for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
+input_species_ID =...
+                str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+input_species_name = convertCharsToStrings(sbtab.species{input_species_ID,1});
+
+if ~ismember(input_species_ID, [list_imputs{1,:}])
+    if isempty(list_imputs{1,1})
+        list_imputs{1,1} =  input_species_ID;
+        list_imputs{2,1} = input_species_name;
+    else
+        list_imputs{1,end+1} = input_species_ID;
+        list_imputs{2,end} = input_species_name;
+    end
+end
+end
+% end
+% list_imputs
 end
 
 function plots = f_plot_inputs(rst,stg,sbtab)
@@ -53,47 +73,116 @@ plots = cell(1,2);
 % Set font settings
 f_set_font_settings()
 
-% Iterate over the number of experiments
-for exp_idx = stg.exprun
+input_number = length(stg.exprun);
 
+list_imputs = cell(2,1);
+all_list_imputs = cell(2,1);
+for exp_idx = 1:length(stg.exprun)
+all_list_imputs = f_list_imputs(stg,sbtab,all_list_imputs,stg.exprun(exp_idx));
+end
+
+different_input_number = size(all_list_imputs,2);
+colors = generateRainbowGradient(different_input_number);
+
+% [fig_n,layout,plots(fig_n,:)] = f_get_subplot(input_number,plot_n,fig_n,"Inputs",layout);
+[fig_n,layout,plots,outer_layout] =...
+    f_get_subplot(input_number,plot_n,fig_n,"Inputs");
+
+% Set figure name
+if input_number > 12
+    fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs " + fig_n;
+elseif input_number <= 12 && input_number ~= 1
+    fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs";
+else
+    fig_name = strrep(stg.plot_name, "_", "\_") + "  Input";
+end
+title(layout,fig_name,...
+    'FontSize', Major_title_FontSize,'Fontweight', Major_title_Fontweight)
+
+% Iterate over the number of experiments
+for exp_idx = 1:length(stg.exprun)
     % Generate the right amount of figures for all plots and calculates
     % proper subploting position
-    if mod(plot_n,12) == 0
-        [fig_n,layout,plots(fig_n,:)] = f_get_subplot(size(stg.exprun,2),plot_n,fig_n,"Inputs",layout);
 
-        % Set figure name based on its order
-        if fig_n > 1
-            fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs " + fig_n;
-        else
-            fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs";
+    if exp_idx/12 > fig_n
+        ax = axes(outer_layout, 'Visible', 'off');
+        hold(ax, 'on');
+        for n = 1:size(list_imputs,2)
+            input_Index = find(contains([all_list_imputs{2,:}],list_imputs{2,n}));
+        input_plot_lgd{input_Index,1} = ...
+        scatter(ax,NaN, NaN,...
+        2,"o","filled","MarkerFaceAlpha",1,...
+        "MarkerEdgeAlpha",1,"DisplayName",...
+        list_imputs{2,n},'MarkerFaceColor',colors(input_Index,:));
         end
+        hold(ax, 'off');
+
+        % Create legend
+        Lgnd = legend([input_plot_lgd{:}],'Orientation','horizontal', ...
+            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+            'Location','layout','Box','off');
+        Lgnd.Layout.Tile = 'South';
+        Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+        input_plot_lgd = [];
+
+        list_imputs = cell(2,1);
+
+        xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
+
+        [fig_n,layout,plots,outer_layout] =...
+    f_get_subplot(input_number,plot_n,fig_n,"Inputs");
+
+        % Set figure name
+        fig_name = strrep(stg.plot_name, "_", "\_") + "  Inputs " + fig_n;
         title(layout,fig_name,...
             'FontSize', Major_title_FontSize,'Fontweight', Major_title_Fontweight)
     end
+
+    list_imputs = f_list_imputs(stg,sbtab,list_imputs,stg.exprun(exp_idx));
 
     nexttile(layout);
 
     plot_n = plot_n +1;
 
-    [input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx);
+   
+    [input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,stg.exprun(exp_idx),all_list_imputs,colors);
 
     % Set x-axis label for the first plot in a row
-    if mod(plot_n,12) == 1
+    % if mod(plot_n,12) == 1
+    % 
+    %     xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
+    % 
+    %     % Create legend
+    %     Lgnd = legend(input_plot,'Orientation','horizontal', ...
+    %         'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+    %         'Location','layout','Box','off');
+    %     Lgnd.Layout.Tile = 'North';
+    %     Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+    % end
 
+    % Add a title to each plot
+    title("E"+(stg.exprun(exp_idx)-1), 'FontSize', Minor_title_FontSize,...
+    'Fontweight', Minor_title_Fontweight)
+end
+        ax = axes(outer_layout, 'Visible', 'off');
+        hold(ax, 'on');
+        for n = 1:size(list_imputs,2)
+            input_Index = find(contains([all_list_imputs{2,:}],list_imputs{2,n}));
+        input_plot_lgd{input_Index,1} = ...
+        scatter(ax,NaN, NaN,...
+        2,"o","filled","MarkerFaceAlpha",1,...
+        "MarkerEdgeAlpha",1,"DisplayName",...
+        list_imputs{2,n},'MarkerFaceColor',colors(input_Index,:));
+        end
+        hold(ax, 'off');
         xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
 
         % Create legend
-        Lgnd = legend(input_plot,'Orientation','horizontal', ...
+        Lgnd = legend([input_plot_lgd{:}],'Orientation','horizontal', ...
             'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
             'Location','layout','Box','off');
-        Lgnd.Layout.Tile = 'North';
+        Lgnd.Layout.Tile = 'South';
         Lgnd.ItemTokenSize = Legend_ItemTokenSize;
-    end
-
-    % Add a title to each plot
-    title("E"+(exp_idx-1), 'FontSize', Minor_title_FontSize,...
-    'Fontweight', Minor_title_Fontweight)
-end
 end
 
 function plots = f_plot_outputs(rst,stg,sbtab,Data,mmf)
@@ -150,6 +239,7 @@ fig_n = 0;
 layout = [];
 plots = cell(1,2);
 plot_tn = plot_tn*stg.plot_norm;
+colors = generateRainbowGradient(length(stg.pat));
 
 % Set font settings using the provided font_settings
 f_set_font_settings()
@@ -167,7 +257,7 @@ for exp_idx = stg.exprun
             % Generate the required number of figures for all plots and calculate
             % proper subplot positioning
             if mod(plot_n,12) == 0
-                [fig_n,layout,plots(fig_n,:)] =...
+                [fig_n,layout,plots(fig_n,:),outer_layout] =...
                     f_get_subplot(plot_tn,plot_n,fig_n,"Outputs",layout);
 
                 if fig_n > 1
@@ -193,26 +283,54 @@ for exp_idx = stg.exprun
                         plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
                 end
                 [valid_outputs_plots,valid_outputs,output_max,output_min] =...
-                    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,~k,include_exp_n);
+                    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,~k,include_exp_n,colors);
             else
                 [plot_data,plot_data_SD,data,data_SD] = ...
                     plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx);
                 [valid_outputs_plots,valid_outputs,output_max,output_min] =...
-                    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,k,include_exp_n);
+                    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,k,include_exp_n,colors);
             end
 
             hold off
 
             % Add a legend to the plot
             if mod(plot_n,12) == do_norm
-                Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
-                    plot_data,plot_data_SD],'Orientation','horizontal',...
-                    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
-                    'Location','layout');
-                Lgnd.Layout.Tile = 'South';
-                Lgnd.ItemTokenSize = Legend_ItemTokenSize;
-                % Remove the legend box
-                set(Lgnd,'Box','off')
+
+ax = axes(outer_layout, 'Visible', 'off');             
+hold(ax, 'on');
+plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
+    "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
+    "DisplayName","data");
+plot_data_SD_lgd = patch(ax,NaN, NaN,zeros(1,1),'DisplayName',"Data\_SD",'EdgeColor',...
+    'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
+current_plot = 0;
+
+for pa_idx = stg.pat
+    current_plot = current_plot + 1;
+    valid_outputs_plots_lgd(1,current_plot) = scatter(ax,NaN, NaN,2,...
+        colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
+        "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
+end
+hold(ax, 'off');
+
+
+        xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
+
+        % Create legend
+        Lgnd = legend([plot_data_lgd,plot_data_SD_lgd,valid_outputs_plots_lgd(1,:)],'Orientation','horizontal', ...
+            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+            'Location','layout','Box','off');
+        Lgnd.Layout.Tile = 'South';
+        Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+
+                % Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
+                %     plot_data,plot_data_SD],'Orientation','horizontal',...
+                %     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+                %     'Location','layout');
+                % Lgnd.Layout.Tile = 'South';
+                % Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+                % % Remove the legend box
+                % set(Lgnd,'Box','off')
             end
         end
     end
@@ -291,7 +409,7 @@ for exp_idx = stg.exprun
 end
 
 %count number of outputs
-n_outputs_exp_plus_norm = zeros(length(stg.exprun),1);
+n_outputs_exp_plus_norm = zeros(stg.exprun(end),1);
 for exp_idx = stg.exprun
 for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
     n_outputs_exp_plus_norm(exp_idx) = n_outputs_exp_plus_norm(exp_idx) + 1;
@@ -300,11 +418,20 @@ for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
     end
 end
 end
+
+all_list_imputs = cell(2,1);
+for exp_idx = 1:length(stg.exprun)
+all_list_imputs = f_list_imputs(stg,sbtab,all_list_imputs,stg.exprun(exp_idx));
+end
+different_input_number = size(all_list_imputs,2);
+colors = generateRainbowGradient(length(stg.pat)+different_input_number);
+% colors = turbo(length(stg.pat)+different_input_number);
+% colors
 % n_outputs_exp_plus_norm
 
-max_rigth_subplots = 8;
-row_length = [1,1,2,2,3,3,4,4];
-column_length = [1,2,2,2,2,2,2,2];
+max_rigth_subplots = 14;
+row_length = [1,1,2,2,3,3,4,4,3,4,4,4,5];
+column_length = [1,2,2,2,2,2,2,2,3,3,3,3,3];
 for exp_idx = stg.exprun
 
 sub_fig_number = 0;% Track subplot numbers within the same figure.
@@ -341,7 +468,7 @@ for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
             ax_input = nexttile(innerLayout_input,1,[1 1]);
 
             [input_plot,labelfig2] = ...
-                f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+                f_plot_in_out_left_2(rst,stg,sbtab,exp_idx,all_list_imputs,colors);
 
             plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
                 plot_data,plot_data_SD];
@@ -375,7 +502,7 @@ for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
         end
         % Call function to plot simulation outputs.
         [valid_outputs_plots,valid_outputs,output_max,output_min] = ...
-            plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,0,include_exp_n);
+            plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,0,include_exp_n,colors(different_input_number+1:end,:));
         hold off
         sub_fig_number = sub_fig_number +1;
 
@@ -384,7 +511,7 @@ for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
             ax_input = nexttile(innerLayout_input,1,[1 1]);
 
             [input_plot,labelfig2] = ...
-                f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+                f_plot_in_out_left_2(rst,stg,sbtab,exp_idx,all_list_imputs,colors);
 
             plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
                 plot_data,plot_data_SD];
@@ -419,7 +546,7 @@ for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
 
             % Call function to plot simulation outputs.
             [valid_outputs_plots,valid_outputs,output_max,output_min] = ...
-                plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,1,include_exp_n);
+                plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,1,include_exp_n,colors(different_input_number+1:end,:));
 
             hold off
             sub_fig_number = sub_fig_number +1;
@@ -429,7 +556,7 @@ end
 ax_input = nexttile(innerLayout_input,1,[1 1]);
 
 [input_plot,labelfig2] = ...
-    f_plot_in_out_left_2(rst,stg,sbtab,exp_idx);
+    f_plot_in_out_left_2(rst,stg,sbtab,exp_idx,all_list_imputs,colors);
 
 % plots_leg = [input_plot,valid_outputs_plots(:,valid_outputs),...
 %     plot_data,plot_data_SD];
@@ -455,13 +582,17 @@ ax_input = nexttile(innerLayout_input,1,[1 1]);
 % Create the legend using the dummy lines
 hold(ax, 'on');
 for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
+     input_species_ID =...
+                    str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+                input_species_name = convertCharsToStrings(sbtab.species{input_species_ID,1});
+                input_Index = find(contains([all_list_imputs{2,:}],input_species_name));
     input_species_ID =...
         str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
     input_plot_lgd(ipt_idx) = ...
         scatter(ax,NaN, NaN,...
         2,"o","filled","MarkerFaceAlpha",1,...
         "MarkerEdgeAlpha",1,"DisplayName",...
-        rst(stg.pat(1)).simd{1,exp_idx}.DataNames{input_species_ID});
+        rst(stg.pat(1)).simd{1,exp_idx}.DataNames{input_species_ID},'MarkerFaceColor',colors(input_Index,:));
 end
 plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
     "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
@@ -469,11 +600,11 @@ plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
 plot_data_SD_lgd = patch(ax,NaN, NaN,zeros(1,1),'DisplayName',"Data\_SD",'EdgeColor',...
     'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
 current_plot = 0;
-colors = generateRainbowGradient(length(stg.pat));
+% colors = generateRainbowGradient(length(stg.pat)+different_input_number);
 for pa_idx = stg.pat
     current_plot = current_plot + 1;
     valid_outputs_plots_lgd(1,current_plot) = scatter(ax,NaN, NaN,2,...
-        colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
+        colors(current_plot+different_input_number,:),"o","filled","MarkerFaceAlpha",1,...
         "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
 end
 hold(ax, 'off');
@@ -481,8 +612,8 @@ hold(ax, 'off');
 % valid_outputs_plots_lgd
 % plot_data_lgd
 % plot_data_SD_lgd
-plots_leg = [input_plot_lgd,valid_outputs_plots_lgd,...
-    plot_data_lgd,plot_data_SD_lgd];
+plots_leg = [input_plot_lgd,plot_data_lgd,plot_data_SD_lgd,...
+    valid_outputs_plots_lgd];
 % plots_leg
 lgd = legend(plots_leg,'FontSize', Legend_FontSize,...
     'Fontweight',Legend_Fontweight, ...
@@ -842,14 +973,14 @@ title(layout, name_long,...
 end
 
 function [input_plot,labelfig2] = ...
-    f_plot_in_out_left_2(rst,stg,sbtab,exp_idx)
+    f_plot_in_out_left_2(rst,stg,sbtab,exp_idx,all_list_imputs,colors)
 % Set the font settings for consistent appearance across all plots.
 f_set_font_settings()
 
 % Begin plotting the input data for the specified experiment.
 hold on % Keep the plot active to overlay multiple inputs if necessary.
 
-[input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx);
+[input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx,all_list_imputs,colors);
 
 % Finish plotting to ensure all input data is displayed properly.
 hold off
@@ -869,26 +1000,32 @@ end
 end
 
 
-function [input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx)
+function [input_plot,labelfig2] = f_plot_input(stg,rst,sbtab,exp_idx,all_list_imputs,colors)
 
 % Set font settings
 f_set_font_settings()
 log_10 = 0;
 % Iterate through each input species for the current experiment.
 for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
+    % list_imputs{2,ipt_idx}
+    % [all_list_imputs{2,:}]
+    hold on
     % Iterate through each set of parameters to process simulation results.
     for pa_idx = stg.pat
         % Check if the simulation was successful for the current parameter
         % set and experiment.
         if rst(pa_idx).simd{1,exp_idx} ~= 0
             % Convert species identifier from string to number.
-            input_species_ID =...
-                str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+            % input_species_ID =...
+                % str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+                input_species_ID =...
+                    str2double(strrep(sbtab.datasets(exp_idx).input(ipt_idx),'S',''))+1;
+                input_species_name = convertCharsToStrings(sbtab.species{input_species_ID,1});
+                input_Index = find(contains([all_list_imputs{2,:}],input_species_name));
             if log_10 == 0
                 input_y = rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID);
                 label_y = string(rst(pa_idx).simd{1,exp_idx}. ...
                     DataInfo{input_species_ID,1}.Units);
-
             else
                 input_y = log10(rst(pa_idx).simd{1,exp_idx}.Data(1:end,input_species_ID));
                 label_y = "Log10 " + string(rst(pa_idx).simd{1,exp_idx}. ...
@@ -901,7 +1038,7 @@ for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
                 input_y(1:stg.in_plot_trim:end),...
                 2,"o","filled","MarkerFaceAlpha",1,...
                 "MarkerEdgeAlpha",1,"DisplayName",...
-                rst(pa_idx).simd{1,exp_idx}.DataNames{input_species_ID});
+                rst(pa_idx).simd{1,exp_idx}.DataNames{input_species_ID},'MarkerFaceColor',colors(input_Index,:));
 
             % Get the correct label for each input of the experiment
             labelfig2(ipt_idx) = string(rst(pa_idx).simd{1,exp_idx}.DataNames{input_species_ID});
@@ -910,7 +1047,7 @@ for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
             % font settings.
             ylabel(string(rst(pa_idx).simd{1,exp_idx}. ...
                 DataInfo{input_species_ID,1}.Units), ...
-                'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+                'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
 
             % Get the current y-axis tick values
             yticks = get(gca, 'YTick');
@@ -939,11 +1076,12 @@ for ipt_idx = 1:size(sbtab.datasets(exp_idx).input,2)
             break
         end
     end
+    hold off
 end
 end
 
 function [valid_outputs_plots,valid_outputs,output_max,output_min] =...
-    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,is_norm,include_exp_n)
+    plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,is_norm,include_exp_n,colors)
 % This subfunction handles the plotting of simulation outputs. It plots
 % data based on the simulation success and whether normalization is
 % applied.
@@ -973,7 +1111,7 @@ f_set_font_settings()
 n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
 
 % Generate colors for plotting.
-colors = generateRainbowGradient(length(stg.pat));
+% colors = generateRainbowGradient(length(stg.pat));
 current_plot = 0;
 % Iterate through each set of parameters to process simulation results.
 for pa_idx = stg.pat
@@ -992,7 +1130,7 @@ for pa_idx = stg.pat
             results_y_label = string(rst(pa_idx).simd{1,exp_idx}. ...
                 DataInfo{end-n_outputs_exp+out_idx,1}.Units);
         else
-            time = rst(pa_idx).simd{1,exp_idx}.Time;
+            time = rst(pa_idx).simd{1,exp_idx}.Time(1:stg.out_plot_trim:end);
             if is_norm
                 results = sim_results_norm{pa_idx}(1:stg.out_plot_trim:end);
                 results_y_label = "dimensionless";
@@ -1002,7 +1140,6 @@ for pa_idx = stg.pat
                     DataInfo{end-n_outputs_exp+out_idx,1}.Units);
             end
         end
-
         valid_outputs_plots(current_plot) = scatter(time,...
             results,2,colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
             "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
@@ -1134,8 +1271,8 @@ plot = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
 reducepatch(plot,0.2)
 end
 
-function [figure_number,layout,plots] =...
-    f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,layout,plots)
+function [figure_number,inner_layout,plots,outer_layout] =...
+    f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,plots)
 % Determines the layout for subplots, creates a new figure when needed, and
 % closes previous instances of the figure.
 %
@@ -1189,18 +1326,20 @@ if mod(plot_n,size_total) == 0
 
     % Close previous instances of the figure and create a new one.
     plots = f_renew_plot(fig_name);
-
+    outer_layout = tiledlayout(1, 1,...
+        'Padding','tight', 'TileSpacing', 'none');
+    % innerLayout_input = tiledlayout(outerLayout,1,1,'Padding',"tight",'TileSpacing','tight');
     % Calculate the layout for the current figure based on the total number
     % of plots, maximum size, and the dimensions of the subplot.
-    layout =...
+    inner_layout =...
         calculate_layout(figure_number, plot_total_n,...
-        size_total, size_x, size_y);
+        size_total, size_x, size_y,outer_layout);
 end
 end
 
 function layout = ...
     calculate_layout(figure_number, plot_total_n,...
-    size_total, size_x, size_y)
+    size_total, size_x, size_y,outer_layout)
 % This function calculates the layout for the current figure based on the
 % figure number, total number of plots, maximum size, and subplot
 % dimensions.
@@ -1208,7 +1347,7 @@ function layout = ...
 if figure_number <= floor(plot_total_n/size_total)
     % If the current figure is not the last one, use the maximum size
     % dimensions for the layout.
-    layout = tiledlayout(size_x(size_total), size_y(size_total),...
+    layout = tiledlayout(outer_layout,size_x(size_total), size_y(size_total),...
         'Padding', 'none', 'TileSpacing', 'tight');
 else
     % If the current figure is the last one, calculate the remaining number
@@ -1217,45 +1356,7 @@ else
         plot_total_n - (floor(plot_total_n/size_total) * size_total);
 
     layout =...
-        tiledlayout(size_x(remaining_plots), size_y(remaining_plots),...
+        tiledlayout(outer_layout,size_x(remaining_plots), size_y(remaining_plots),...
         'Padding', 'none', 'TileSpacing', 'tight');
-end
-end
-
-function colors = generateRainbowGradient(n)
-% Define the base colors for the rainbow gradient
-baseColors = [
-    % 0.15196, 0.05741, 0.18574;  % Dark Indigo
-    0, 0, 0.8;                  % Blue
-    0, 0.4, 0.8;                % Light Blue
-    0, 0.8, 0.8;                % Cyan
-    0, 0.8, 0;                  % Green
-    0.4, 0.8, 0;                % Light Green
-    0.8, 0.8, 0;                % Yellow
-    0.8, 0.4, 0;                % Orange
-    0.8, 0, 0;                  % Red
-    % 0.51765, 0.04706, 0.06588;  % Dark Red
-    ];
-
-% Number of base colors
-numBaseColors = size(baseColors, 1);
-if n >= numBaseColors
-    % Interpolation case (same as before)
-    colors = zeros(n, 3);
-    for i = 1:n
-        ratio = (i - 1) / (n - 1) * (numBaseColors - 1);
-        baseIndex = floor(ratio) + 1;
-        if baseIndex < numBaseColors
-            nextIndex = baseIndex + 1;
-            alpha = ratio - floor(ratio);
-            colors(i, :) = (1 - alpha) * baseColors(baseIndex, :) + alpha * baseColors(nextIndex, :);
-        else
-            colors(i, :) = baseColors(end, :);
-        end
-    end
-else
-    % Selection case
-    indices = round(linspace(1, numBaseColors, n));
-    colors = baseColors(indices, :);
 end
 end
