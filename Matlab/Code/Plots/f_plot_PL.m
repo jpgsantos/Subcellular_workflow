@@ -281,7 +281,7 @@ for j = 1:8
     if j == 1
         name = "Total Score <= 10^" + string(j);
     elseif j == 8
-        name = "Total Score > 10^" + string(j);
+        name = "Total Score > 10^" + string(j-1);
     else
         name = "10^" + string(j-1)+ " < Total Score <= 10^" + string(j);
     end
@@ -325,7 +325,7 @@ for m = settings.pltest
         Yh=[m-0.4; m-0.4; m+0.4; m+0.4; ];
 
         patch(Xh,Yh,zeros(size(Xh)),'EdgeColor',...
-            'none','FaceColor',color(value{m}(j),:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"Total Score <= 10^" + string(value{m}(j)));
+            'none','FaceColor',color(value{m}(j)+1,:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"Total Score <= 10^" + string(value{m}(j)));
         hold off
     end
 
