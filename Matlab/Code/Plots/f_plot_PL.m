@@ -65,18 +65,18 @@ plots = cell(1,2);
 
 % Iterate through the pltest values
 % for m = settings.pltest
-% 
+%
 %     % Generate the required number of figures and calculate the subplot positions
 %     [fig_n,layout,plots] = f_get_subplot(size(settings.pltest,2)*2,plot_n,...
 %         fig_n,"Parameter Profile Likelihood",layout,plots);
-% 
+%
 %     % Set the next tile in the layout
 %     nexttile(layout);
-% 
+%
 %     % Add a legend, labels, and title to the figure if it's the first plot
 %     % in a set of 12
 %     if mod(plot_n,12) == 1
-% 
+%
 %         % Add a legend to the figure
 %         Lgnd = legend('show','Orientation','Horizontal','fontsize',Legend_FontSize);
 %         Lgnd.Layout.Tile = 'North';
@@ -87,17 +87,17 @@ plots = cell(1,2);
 %             'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
 %         title(layout,"Parameter Profile Likelihood",...
 %             'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight)
-% 
+%
 %     end
-% 
+%
 %     % Increment the plot counter
 %     plot_n = plot_n +1;
-% 
+%
 %     hold on
-% 
+%
 %     % Check if there are results from PL function
 %     if isfield(results,'PLA')
-% 
+%
 %         if isfield(results.PLA,'sa') && isfield(results.PLA,'fm')
 %             common_PVal = [];
 %             common_fval = [];
@@ -116,13 +116,13 @@ plots = cell(1,2);
 %                 common_fval,'DisplayName','Total score sa and fmincon',...
 %                 'LineWidth',1.5,'color',[0, 0, 0, 1])
 %             minfval = min(common_fval);
-% 
+%
 %         elseif isfield(results.PLA,'sa')
 %             plot([results.PLA.sa.Pval{m}],...
 %                 [results.PLA.sa.fvalt{m}],'DisplayName','Total score sa',...
 %                 'LineWidth',1.5,'color',[0, 0, 1, 0.5])
 %             minfval = min(results.PLA.sa.fvalt{m});
-% 
+%
 %             % Plot the PL results from fmincon if they exist
 %         elseif isfield(results.PLA,'fm')
 %             plot([results.PLA.fm.Pval{m}],...
@@ -131,30 +131,30 @@ plots = cell(1,2);
 %             minfval = min(results.PLA.fm.fvalt{m});
 %         end
 %     end
-% 
+%
 %     % Add a line indicating the 95% confidence threshold
 %     yline(icdf('chi2',0.95,1)+minfval,...
 %         'DisplayName','Total score icdf(\chi^2,0.95)')
-% 
+%
 %     % If the best parameter value exists in the settings, plot it
 %     if isfield(settings,'bestpa')
 %         scatter(settings.bestpa(m),best_score,20,'filled',...
 %             'DisplayName','best \theta','MarkerFaceColor','k')
 %     end
-% 
+%
 %     % If the diagnostic results exist, plot the parameters used in the
 %     % diagnostics
 %     if isfield(results,'diag')
 %         scatter(settings.pa(settings.pat,m),[results.diag(settings.pat).st],...
 %             10,'filled','DisplayName','\theta test')
 %     end
-% 
+%
 %     hold off
-% 
+%
 %     % Set the x-axis limits
 %     xlim([settings.lb(m) settings.ub(m)])
 %     % ylim([0 (icdf('chi2',0.95,1)+max(minfval)+0.5)*5])
-% 
+%
 %     % Set the title for each plot
 %     titlestring = "\theta_{" + find(settings.partest==m)+"}";
 %     title(titlestring(1),'FontSize',Minor_title_FontSize,...
@@ -182,7 +182,7 @@ for m = settings.pltest
         % end
 
     end
-    if mod(plot_n,12) ==  1 
+    if mod(plot_n,12) ==  1
         % Add a legend to the figure
         Lgnd = legend('show','Orientation','Horizontal',...
             'fontsize',Legend_FontSize);
@@ -219,25 +219,25 @@ for m = settings.pltest
         %     minfval = min(nonzeros([results.PLA.("reopt" +n).min.fvalt{m}]));
         % end
 
-            i = find([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
-            plot(results.PLA.("reopt" +(settings.plroptn+1)).min.Pval{m}(i),...
-                nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]),'DisplayName',"Total score",...
-                'LineWidth',1.5,'color',"k")
-            minfval = min(nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]));
+        i = find([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
+        plot(results.PLA.("reopt" +(settings.plroptn+1)).min.Pval{m}(i),...
+            nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]),'DisplayName',"Total score",...
+            'LineWidth',1.5,'color',"k")
+        minfval = min(nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]));
     end
-switch settings.useLog
+    switch settings.useLog
 
-    case {0, 4}
-    % Add a line indicating the 95% confidence threshold
-    yline(icdf('chi2',0.95,1)+minfval,...
-        'DisplayName','Total score icdf(\chi^2,0.95)')
+        case {0, 4}
+            % Add a line indicating the 95% confidence threshold
+            yline(icdf('chi2',0.95,1)+minfval,...
+                'DisplayName','Total score icdf(\chi^2,0.95)')
 
-    case {1, 2, 3}
-        % Add a line indicating the 95% confidence threshold
-    yline(log10(icdf('chi2',0.95,1)+10^minfval),...
-        'DisplayName','Total score icdf(\chi^2,0.95)')
+        case {1, 2, 3}
+            % Add a line indicating the 95% confidence threshold
+            yline(log10(icdf('chi2',0.95,1)+10^minfval),...
+                'DisplayName','Total score icdf(\chi^2,0.95)')
 
-end
+    end
 
     % If the best parameter value exists in the settings, plot it
     if isfield(settings,'bestpa')
@@ -263,12 +263,9 @@ end
     titlestring = "P_{" + m +"}";
     title(titlestring(1),'FontSize',Minor_title_FontSize,...
         'Fontweight',Minor_title_Fontweight)
-
-
-
 end
 
-color = generateRainbowGradient(9);  
+color = generateRainbowGradient(9);
 % Generate the required number of figures and calculate the subplot positions
 plots(end+1,:) = f_renew_plot('PLA Summary');
 layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
@@ -276,85 +273,166 @@ layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
 % Generate top plot of Scores figure
 nexttile(layout);
 
-
+% Prepare x coordinates for the shaded area
+Xh=[0;1; 1; 0; ];
+% Prepare y coordinates for the shaded area
+Yh=[1-0.4; 1-0.4; 1+0.4; 1+0.4; ];
+for j = 1:8
+    if j == 1
+        name = "Total Score <= 10^" + string(j);
+    elseif j == 8
+        name = "Total Score > 10^" + string(j);
+    else
+        name = "10^" + string(j-1)+ " < Total Score <= 10^" + string(j);
+    end
+    plot_patch(j) = patch(Xh,Yh,zeros(size(Xh)),'EdgeColor',...
+        'none','FaceColor',color(j,:),'FaceAlpha',1,...
+        'HandleVisibility','on','DisplayName',...
+        name,'visible','on');
+end
 
 for m = settings.pltest
 
-i = find([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
-x{m} = results.PLA.("reopt" +(settings.plroptn+1)).min.Pval{m}(i);
-y{m} = nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
+    i = find([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
+    x{m} = results.PLA.("reopt" +(settings.plroptn+1)).min.Pval{m}(i);
+    y{m} = nonzeros([results.PLA.("reopt" +(settings.plroptn+1)).min.fvalt{m}]);
 
-for j = 2:8
+    counter = 0;
     for k = 1:size(y{m},1)
-        if y{m}(k) <= j
-            y2{j}{m}(k) = y{m}(k);
-            x2{j}{m}(k) = x{m}(k);
+        if k == 1
+            value{m}(1) = floor(y{m}(k));
+            start_point{m}(1) = x{m}(k);
+        end
+        if floor(y{m}(k)) ~= value{m}(end)
+            counter = counter +1;
+            end_point{m}(counter) = x{m}(k-1)+((x{m}(k)-x{m}(k-1))/2);
+            value{m}(counter+1) = floor(y{m}(k));
+            start_point{m}(counter+1) = x{m}(k)-((x{m}(k)-x{m}(k-1))/2);
         end
     end
-end
-hold on
-    for j = 8:-1:2
-        % scatter(nonzeros(x2{j}{m}),zeros(size(nonzeros(x2{j}{m})))+m,5,color(j,:),"|")
-        X{m,j}(1,:) = nonzeros(x2{j}{m})';
-        Y{m,j}(1,:) = zeros(size(nonzeros(x2{j}{m})))+m+0.4;
-        Y{m,j}(2,:) = zeros(size(nonzeros(x2{j}{m})))+m-0.4;
 
+    if size(end_point,2) ~= m
+        end_point{m}(1) = x{m}(size(y{m},1));
+    else
+        end_point{m}(end+1) = x{m}(size(y{m},1));
+    end
+
+    for j = 1:size(value{m},2)
+        hold on
         % Prepare x coordinates for the shaded area
-        Xh=[X{m,j}(1:end-1); X{m,j}(1:end-1); X{m,j}(2:end); X{m,j}(2:end); ];
+        Xh=[start_point{m}(j);end_point{m}(j); end_point{m}(j); start_point{m}(j); ];
         % Prepare y coordinates for the shaded area
-        Yh=[Y{m,j}(1,1:end-1); Y{m,j}(2,1:end-1); Y{m,j}(2,2:end); Y{m,j}(1,2:end); ];
-        % Create the shaded area plot
+        Yh=[m-0.4; m-0.4; m+0.4; m+0.4; ];
 
-        if j == 2
-            plot_patch{m}(j) = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
-                'none','FaceColor',color(j,:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"Total Score <= 10^" + string(j));
-        elseif j == 8
-            plot_patch{m}(j) = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
-                'none','FaceColor',color(j,:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"Total Score > 10^" + string(j-1));
-        else
-            plot_patch{m}(j) = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
-                'none','FaceColor',color(j,:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"10^" + string(j-1)+ " < Total Score <= 10^" + string(j));
+        patch(Xh,Yh,zeros(size(Xh)),'EdgeColor',...
+            'none','FaceColor',color(value{m}(j),:),'FaceAlpha',1,'HandleVisibility','off','DisplayName',"Total Score <= 10^" + string(value{m}(j)));
+        hold off
+    end
+
+    parNames = cell(1,size(settings.pltest,1));
+
+    for n = settings.pltest
+        parNames{n} = char("P" + find(settings.pltest==n));
+    end
+
+    for n = 1:size(parNames,2)
+        if size(parNames{n},1) > 1
+            parNames{n} = parNames{n}(1,:);
         end
-        reducepatch(plot_patch{m}(j),2)
     end
 
-parNames = cell(1,size(settings.pltest,1));
+    ax = gca;
+    set(gca,'ytick',1:settings.parnum,'yticklabel',parNames)
 
-for n = settings.pltest
-    parNames{n} = char("P" + find(settings.pltest==n));
+    xlim([min(settings.lb) max(settings.ub)])
+    ylim([0.5 max(settings.pltest)+0.5])
 end
 
-for n = 1:size(parNames,2)
-    if size(parNames{n},1) > 1
-        parNames{n} = parNames{n}(1,:);
-    end
-end
+xlabel(layout,"log_{10} P",...
+    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+ylabel(layout,"Parameters",...
+    'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+title(layout,settings.plot_name + " Profile Likelihood Analysis Summary",...
+    'FontSize', Major_title_FontSize,...
+    'Fontweight',Major_title_Fontweight)
 
-ax = gca;
-set(gca,'ytick',1:settings.parnum,'yticklabel',parNames)
-
-
-% yline(m+0.5,'w','LineWidth',4,'Alpha',1)
-xlim([min(settings.lb) max(settings.ub)])
-ylim([0.5 max(settings.pltest)+0.5])
-hold off
-
-end
-
-   Lgnd = legend(plot_patch{m}(2:8),'Orientation','vertical',...
-            'fontsize',Legend_FontSize);
-        Lgnd.Layout.Tile = 'south';
-        legend boxoff
+Lgnd = legend(plot_patch,'Orientation','vertical',...
+    'fontsize',Legend_FontSize);
+Lgnd.Layout.Tile = 'south';
+legend boxoff
 Lgnd.NumColumns = 3;
 
-        xlabel(layout,"log_{10} P",...
-            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        ylabel(layout,"Parameters",...
-            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
-        title(layout,settings.plot_name + " Profile Likelihood Analysis Summary",...
-            'FontSize', Major_title_FontSize,...
-            'Fontweight',Major_title_Fontweight)
+clc
+settings.bestpa(:)
+best_score
 
+% [-5:(7+5)/settings.plres:7]
+for m = settings.pltest
+% for m = 16
+    end_point_1{m} = [];
+    dif = [];
+    for k = 1:size(y{m},1)
+        dif(k) = settings.bestpa(m)-x{m}(k);
+    end
+    [a,b] = min(abs(dif));
+    % a
+    % b
+    % y{m}(b)
+    % x{m}(b)
+    counter = 0;
+    for k = b:size(y{m},1)
+        if k == b
+            value_1{m}(1) = floor(y{m}(k));
+            start_point_1{m}(1) = x{m}(k);
+            % value_1{m}
+            % value_1{m}(1)
+            % value_1{m}(end)
+        end
+        if floor(y{m}(k)) >= 3
+            counter = counter +1;
+            end_point_1{m}(counter) = x{m}(k-1);
+            value_1{m}(counter+1) = floor(y{m}(k));
+            start_point_1{m}(counter+1) = x{m}(k);
+            break
+        end
+    end
+    if end_point_1{m} == []
+        end_point_1{m}(1) = x{m}(size(y{m},1));
+    else
+        end_point_1{m}(end+1) = x{m}(size(y{m},1));
+    end
+    PLA_ub(m) = end_point_1{m}(1);
 
+    end_point_2{m} = [];
+    counter = 0;
+    for k = b:-1:1
+        if k == b
+            value_2{m}(1) = floor(y{m}(k));
+            start_point_2{m}(1) = x{m}(k);
+            % value_1{m}
+            % value_1{m}(1)
+            % value_1{m}(end)
+        end
+        if floor(y{m}(k)) >= 3
+            counter = counter +1;
+            end_point_2{m}(counter) = x{m}(k+1);
+            value_2{m}(counter+1) = floor(y{m}(k));
+            start_point_2{m}(counter+1) = x{m}(k);
+            break
+        end
+    end
+end_point_2{m}
+end_point_2
+    if end_point_2{m} == []
+        end_point_2{m}(1) = x{m}(1);
+    else
+        end_point_2{m}(end+1) = x{m}(1);
+    end
+    PLA_lb(m) = end_point_2{m}(1);
+end
 
+PLA_lb
+PLA_ub
+Analysis_date_folder = model_folder.model.results.analysis.date.main;
+    save (Analysis_date_folder + "PLA_bounds.mat", 'PLA_lb', 'PLA_ub');
 end
