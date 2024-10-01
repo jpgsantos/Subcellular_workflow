@@ -1,11 +1,13 @@
 function plots = f_plot_diagnostics(plots,results,settings,sbtab,Data,model_folder)
-% Generate and store figure with Inputs
-plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
-% Generate and store figure with Outputs
-plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
+% % Generate and store figure with Inputs
+% plots = [plots;f_plot_inputs(results.diag, settings, sbtab)];
+% % Generate and store figure with Outputs
+% plots = [plots;f_plot_outputs(results.diag, settings, sbtab, Data, model_folder)];
+% 
+% % Generate and store figure with Input and Output for all experiments
+% plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
 
-% Generate and store figure with Input and Output for all experiments
- plots = [plots;f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
+plots = [plots;f_plot_outputs_2(results.diag, settings, sbtab, Data, model_folder)];
 end
 
 function list_imputs = f_list_imputs(stg,sbtab,list_imputs,exp_idx)
@@ -296,32 +298,32 @@ for exp_idx = stg.exprun
             % Add a legend to the plot
             if mod(plot_n,12) == do_norm
 
-ax = axes(outer_layout, 'Visible', 'off');             
-hold(ax, 'on');
-plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
-    "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
-    "DisplayName","data");
-plot_data_SD_lgd = patch(ax,NaN, NaN,zeros(1,1),'DisplayName',"Data\_SD",'EdgeColor',...
-    'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
-current_plot = 0;
+                ax = axes(outer_layout, 'Visible', 'off');
+                hold(ax, 'on');
+                plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
+                    "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
+                    "DisplayName","data");
+                plot_data_SD_lgd = patch(ax,NaN, NaN,zeros(1,1),'DisplayName',"Data\_SD",'EdgeColor',...
+                    'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
+                current_plot = 0;
 
-for pa_idx = stg.pat
-    current_plot = current_plot + 1;
-    valid_outputs_plots_lgd(1,current_plot) = scatter(ax,NaN, NaN,2,...
-        colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
-        "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
-end
-hold(ax, 'off');
+                for pa_idx = stg.pat
+                    current_plot = current_plot + 1;
+                    valid_outputs_plots_lgd(1,current_plot) = scatter(ax,NaN, NaN,2,...
+                        colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
+                        "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
+                end
+                hold(ax, 'off');
 
 
-        xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
+                xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
 
-        % Create legend
-        Lgnd = legend([plot_data_lgd,plot_data_SD_lgd,valid_outputs_plots_lgd(1,:)],'Orientation','horizontal', ...
-            'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
-            'Location','layout','Box','off');
-        Lgnd.Layout.Tile = 'South';
-        Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+                % Create legend
+                Lgnd = legend([plot_data_lgd,plot_data_SD_lgd,valid_outputs_plots_lgd(1,:)],'Orientation','horizontal', ...
+                    'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+                    'Location','layout','Box','off');
+                Lgnd.Layout.Tile = 'South';
+                Lgnd.ItemTokenSize = Legend_ItemTokenSize;
 
                 % Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
                 %     plot_data,plot_data_SD],'Orientation','horizontal',...
@@ -336,6 +338,167 @@ hold(ax, 'off');
     end
 end
 end
+
+function plots = f_plot_outputs_2(rst,stg,sbtab,Data,mmf)
+% Generates a figure containing multiple subplots representing experimental
+% outputs for each experiment and dataset. The function loops through each
+% experiment and dataset and plots the results based on specified settings.
+% The font properties for plot elements are set using the
+% `set_font_settings` function.
+%
+% Inputs:
+% - rst: Results object containing simulation results and data information
+% - stg: Settings object containing various settings, such as experiment
+% run and parameter array
+% - sbtab: SBtab object containing datasets and output information
+% - Data: Data object containing experimental data and error information
+% - mmf: A flag to determine whether to normalize the simulation results
+% - font_settings: A structure containing font properties for plot elements
+%
+% Outputs:
+% - plots: A cell array containing figures and layouts generated
+% by the function
+%
+% Functions called:
+% - f_get_outputs: Get the total number of outputs to set the total number
+% of plots
+% - set_font_settings: Set the font properties for plot elements using the
+% provided font_settings
+% - f_get_subplot: Generate the required number of figures for all plots
+% and calculate proper subplot positioning
+% - f_error_area: Plot the error area
+% - f_normalize: Normalize simulation results
+%
+% Variables:
+% Loaded:
+% None
+%
+% Initialized:
+% - plot_tn: Total number of plots
+% - plot_n: Current plot number
+% - fig_n: Current figure number
+% - layout: TiledLayout object for subplots
+% - plots_1: Cell array to store figures and layouts temporarily
+%
+% Persistent:
+% None
+
+% Display a message indicating that the outputs are being plotted
+disp("Plotting Outputs")
+
+% Get the total number of outputs to set the total number of plots
+[plot_tn,~] = f_get_outputs(stg,sbtab);
+plot_n = 0;
+fig_n = 0;
+layout = [];
+plots = cell(1,2);
+plot_tn = plot_tn*stg.plot_norm;
+colors = generateRainbowGradient(length(stg.pat)*2);
+
+% Set font settings using the provided font_settings
+f_set_font_settings()
+
+% Loop through each experiment
+for exp_idx = stg.exprun(1:2:end)
+    % Loop through each dataset in the current experiment
+    for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
+        % do_norm = 1;
+        % if ~isempty(sbtab.datasets(exp_idx).Normalize)
+        %     do_norm = 2;
+        % end
+        % if exp_idx <= 29
+        % if out_idx <= 5
+        %     k=2;
+        % else
+        %     k=1;
+        % end
+        % else
+        % if out_idx <= 7
+        %     k=2;
+        % else
+        %     k=1;
+        % end
+        % end
+        k=1;
+        % for k = 1:do_norm
+        % Generate the required number of figures for all plots and calculate
+        % proper subplot positioning
+        if out_idx == 1
+            [fig_n,layout,plots(fig_n,:),outer_layout] =...
+                f_get_subplot_2(plot_tn,plot_n,fig_n,"Outputs",layout);
+
+            if fig_n > 1
+                fig_name = strrep(stg.plot_name, "_", "\_") + "  Outputs " + fig_n;
+            else
+                fig_name = strrep(stg.plot_name, "_", "\_") + "  Outputs";
+            end
+            title(layout,fig_name,...
+                'FontSize', Major_title_FontSize,...
+                'Fontweight',Major_title_Fontweight)
+        end
+
+        nexttile(layout);
+        plot_n = plot_n + 1;
+
+        include_exp_n = 1;
+
+        hold on
+
+        if k == 1
+            [valid_outputs_plots,valid_outputs,output_max,output_min] =...
+                plot_sim_outputs_2(stg,rst,sbtab,mmf,exp_idx,out_idx,~k,include_exp_n,colors);
+        else
+            [valid_outputs_plots,valid_outputs,output_max,output_min] =...
+                plot_sim_outputs_2(stg,rst,sbtab,mmf,exp_idx,out_idx,k,include_exp_n,colors);
+        end
+
+        hold off
+
+        % Add a legend to the plot
+        if out_idx == 1
+
+            ax = axes(outer_layout, 'Visible', 'off');
+            hold(ax, 'on');
+            plot_data_lgd = scatter(ax,NaN, NaN,2,'k',"o","filled",...
+                "MarkerFaceAlpha",1,"MarkerEdgeAlpha",1,...
+                "DisplayName","data");
+            plot_data_SD_lgd = patch(ax,NaN, NaN,zeros(1,1),'DisplayName',"Data\_SD",'EdgeColor',...
+                'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
+            current_plot = 0;
+            for j = 1:2
+                for pa_idx = stg.pat
+                    current_plot = current_plot + 1;
+                    valid_outputs_plots_lgd(1,current_plot) = scatter(ax,NaN, NaN,2,...
+                        colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
+                        "MarkerEdgeAlpha",1,"DisplayName",""+current_plot);
+                end
+            end
+            hold(ax, 'off');
+
+
+            xlabel(layout,"Seconds", 'FontSize', Axis_FontSize,'Fontweight', Axis_Fontweight)
+
+            % Create legend
+            Lgnd = legend([plot_data_lgd,plot_data_SD_lgd,valid_outputs_plots_lgd(1,:)],'Orientation','horizontal', ...
+                'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+                'Location','layout','Box','off');
+            Lgnd.Layout.Tile = 'South';
+            Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+
+            % Lgnd = legend([valid_outputs_plots(:,valid_outputs),...
+            %     plot_data,plot_data_SD],'Orientation','horizontal',...
+            %     'FontSize', Legend_FontSize,'Fontweight',Legend_Fontweight,...
+            %     'Location','layout');
+            % Lgnd.Layout.Tile = 'South';
+            % Lgnd.ItemTokenSize = Legend_ItemTokenSize;
+            % % Remove the legend box
+            % set(Lgnd,'Box','off')
+        end
+        % end
+    end
+end
+end
+
 
 function plots = f_plot_in_out(rst,stg,sbtab,Data,mmf)
 % This function generates a figure displaying input and output data for all
@@ -1081,6 +1244,144 @@ end
 end
 
 function [valid_outputs_plots,valid_outputs,output_max,output_min] =...
+    plot_sim_outputs_2(stg,rst,sbtab,mmf,exp_idx,out_idx,is_norm,include_exp_n,colors)
+% This subfunction handles the plotting of simulation outputs. It plots
+% data based on the simulation success and whether normalization is
+% applied.
+%
+% Inputs:
+% - stg, rst, sbtab, mmf: Structures containing settings, results, table
+% data, and model info.
+% - exp_idx: Current experiment index.
+% - out_idx: Current output index.
+% - colors: Color array for plot elements.
+% - is_norm: Flag indicating whether data should be normalized.
+% Outputs:
+% - valid_outputs_plots: Array of plots for valid outputs.
+% - valid_outputs: Array of indices for valid outputs.
+% - sim_results: Simulation results.
+% - sim_results_norm: Normalized simulation results.
+% - sim_results_detailed: Detailed simulation results, used if 'simdetail'
+% is enabled.
+
+% Initialize an empty list for storing indices of valid outputs.
+valid_outputs = [];
+
+% Apply font settings for the plot, ensuring consistency across all plots.
+f_set_font_settings()
+% Calculate the number of outputs for the current experiment.
+n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
+
+% Generate colors for plotting.
+% colors = generateRainbowGradient(length(stg.pat));
+current_plot = 0;
+hold on
+for j = 1:2
+if j == 2
+exp_idx = exp_idx + 1;
+end
+
+% Iterate through each set of parameters to process simulation results.
+for pa_idx = stg.pat
+    current_plot = current_plot + 1;
+    % Check if the simulation was successful for the current parameter set
+    % and experiment.
+    if rst(pa_idx).simd{1,exp_idx} ~= 0
+
+        % Fetch time and simulation results; normalize if applicable.
+        [sim_results_norm{pa_idx},sim_results_detailed{pa_idx},sim_results{pa_idx}] =...
+            f_normalize(rst(pa_idx),stg,exp_idx,out_idx,mmf);
+
+        if stg.simdetail
+            time = rst(pa_idx).simd{1,exp_idx+2*stg.expn}.Time;
+            results = sim_results_detailed{pa_idx};
+            results_y_label = string(rst(pa_idx).simd{1,exp_idx}. ...
+                DataInfo{end-n_outputs_exp+out_idx,1}.Units);
+        else
+            time = rst(pa_idx).simd{1,exp_idx}.Time(1:stg.out_plot_trim:end);
+            if is_norm
+                results = sim_results_norm{pa_idx}(1:stg.out_plot_trim:end);
+                results_y_label = "dimensionless";
+            else
+                results = sim_results{pa_idx}(1:stg.out_plot_trim:end);
+                results_y_label = string(rst(pa_idx).simd{1,exp_idx}. ...
+                    DataInfo{end-n_outputs_exp+out_idx,1}.Units);
+            end
+        end
+
+        valid_outputs_plots(current_plot) = scatter(time,...
+            results,2,colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
+            "MarkerEdgeAlpha",1,"DisplayName",""+j+ "");
+
+        ylabel(results_y_label,...
+            'FontSize', Axis_FontSize,'Fontweight',Axis_Fontweight)
+
+        output_max = max(results);
+        output_min = min(results);
+
+        % Add the successful parameter index to the list of valid outputs.
+        valid_outputs(current_plot) = current_plot;
+    end
+end
+end
+hold off
+% Get the current y-axis tick values
+yticks = get(gca, 'YTick');
+
+% Convert the tick values to strings with high precision
+tickStrings = arrayfun(@(v) convertStringsToChars(string(v)), yticks, 'UniformOutput', false);
+
+for n = 1:length(tickStrings)
+    % Count the number of decimal places
+    countDecimals{n} = regexp(tickStrings{n}, '(?<=\.)\d+');
+    matches{n} = regexp(tickStrings{n}, '(?<=\.)\d+', 'match');
+    if ~isempty(matches{n})
+        countDecimals{n} = length(matches{n});
+    else
+        countDecimals{n} = 0;
+    end
+end
+if max([countDecimals{:}]) > 2
+    ytickformat('%.2f');
+end
+
+
+% Label the x-axis as 'Seconds' and apply pre-defined font settings.
+% xlabel('Seconds','FontSize', Axis_FontSize,...
+%     'Fontweight',Axis_Fontweight)
+
+% Choose the appropriate title based on the settings
+if stg.plotoln == 1
+    title_text = strrep(string(sbtab.datasets(exp_idx).output_name{1,out_idx}),'_','\_');
+else
+    title_text = string(sbtab.datasets(exp_idx).output{1,out_idx});
+end
+
+if include_exp_n == 1
+    title_text = "E" + (exp_idx-1) + " " + title_text;
+end
+
+if is_norm
+    title_text = title_text + " Norm";
+end
+
+% output_max
+if output_max >= 10000 || output_max <= 0.01
+    % disp("y: " + output_max)
+    title_text = "      " + title_text;
+end
+
+[~,t2] = ...
+    title(title_text,'FontSize',Minor_title_FontSize,...
+    'Fontweight',Minor_title_Fontweight);
+% t2.FontSize = Minor_Title_Spacing;
+
+% Set the number of decimal places for the y-axis
+% ytickformat('%-3.1f')
+end
+
+
+function [valid_outputs_plots,valid_outputs,output_max,output_min] =...
     plot_sim_outputs(stg,rst,sbtab,mmf,exp_idx,out_idx,is_norm,include_exp_n,colors)
 % This subfunction handles the plotting of simulation outputs. It plots
 % data based on the simulation success and whether normalization is
@@ -1106,7 +1407,6 @@ valid_outputs = [];
 
 % Apply font settings for the plot, ensuring consistency across all plots.
 f_set_font_settings()
-
 % Calculate the number of outputs for the current experiment.
 n_outputs_exp = size(sbtab.datasets(exp_idx).output,2);
 
@@ -1140,6 +1440,7 @@ for pa_idx = stg.pat
                     DataInfo{end-n_outputs_exp+out_idx,1}.Units);
             end
         end
+
         valid_outputs_plots(current_plot) = scatter(time,...
             results,2,colors(current_plot,:),"o","filled","MarkerFaceAlpha",1,...
             "MarkerEdgeAlpha",1,"DisplayName","\theta_{"+pa_idx+ "}");
@@ -1210,6 +1511,9 @@ end
 % ytickformat('%-3.1f')
 end
 
+
+
+
 function [plot_data,plot_data_SD,data,data_SD] = ...
     plot_data_and_data_SD(stg,rst,Data,exp_idx,out_idx)
 % Plot output data only if the simulation was successful. This is a
@@ -1271,6 +1575,9 @@ plot = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
 reducepatch(plot,0.2)
 end
 
+
+
+
 function [figure_number,inner_layout,plots,outer_layout] =...
     f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,plots)
 % Determines the layout for subplots, creates a new figure when needed, and
@@ -1313,8 +1620,8 @@ function [figure_number,inner_layout,plots,outer_layout] =...
 
 size_total = 12;
 
-size_x = [1,1,1,2,2,2,2,2,3,3,3,3];
-size_y = [1,2,3,2,3,3,4,4,3,4,4,4];
+size_x = [1,1,1,2,2,2,3,3,3,3,3,3];
+size_y = [1,2,3,2,3,3,3,3,3,4,4,4];
 
 if mod(plot_n,size_total) == 0
     figure_number = figure_number + 1;
@@ -1336,6 +1643,75 @@ if mod(plot_n,size_total) == 0
         size_total, size_x, size_y,outer_layout);
 end
 end
+
+
+function [figure_number,inner_layout,plots,outer_layout] =...
+    f_get_subplot_2(plot_total_n,plot_n,figure_number,fig_name,plots)
+% Determines the layout for subplots, creates a new figure when needed, and
+% closes previous instances of the figure.
+%
+% Inputs:
+% - plot_total_n: Total number of plots to display
+% - plot_n: Current plot number
+% - figure_number: Current figure number
+% - fig_name: Figure name as a string
+% - layout: Layout object to be updated with new configuration
+% - plots: Cell array containing figure handles and names
+%
+% Outputs:
+% - figure_number: Updated figure number
+% - layout: Updated layout object
+% - plots: Updated cell array with figure handles and names
+%
+% Functions called:
+% - create_new_figure: Closes any existing figure with the same name,
+% then creates a new docked figure with the given name
+% - calculate_layout: Calculates the layout for the current figure based
+% on the figure number, total number of plots, maximum size, and subplot
+% dimensions
+% - f_renew_plot: Closes any existing figures with the specified name and
+% then creates a new figure with the given name and properties. It returns
+% a 1x2 cell array containing the figure name and the figure handle.
+%
+% Variables:
+% Loaded:
+% None
+%
+% Initialized:
+% - size_total: Maximum number of plots per figure
+% - size_x: Array of subplot layout column counts
+% - size_y: Array of subplot layout row counts
+%
+% Persistent:
+% None
+
+size_total = 9;
+
+size_y = [1,1,1,2,2,2,2,2,3,3,3,3];
+size_x = [1,2,3,2,3,3,4,4,3,4,4,4];
+
+% if mod(plot_n,size_total) == 0
+    figure_number = figure_number + 1;
+    % If the total number of plots exceeds the maximum per figure, create
+    % additional figures and update the figure name.
+    if plot_total_n > size_total
+        fig_name = fig_name + " " + figure_number;
+    end
+
+    % Close previous instances of the figure and create a new one.
+    plots = f_renew_plot(fig_name);
+    outer_layout = tiledlayout(1, 1,...
+        'Padding','tight', 'TileSpacing', 'none');
+    % innerLayout_input = tiledlayout(outerLayout,1,1,'Padding',"tight",'TileSpacing','tight');
+    % Calculate the layout for the current figure based on the total number
+    % of plots, maximum size, and the dimensions of the subplot.
+    inner_layout =...
+        calculate_layout(figure_number, plot_total_n,...
+        size_total, size_x, size_y,outer_layout);
+% end
+end
+
+
 
 function layout = ...
     calculate_layout(figure_number, plot_total_n,...

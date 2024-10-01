@@ -53,7 +53,7 @@ plots = [];
 % Check if the 'diag' field exists in the rst structure
 if isfield(results, 'diag')
     % Generate and store figure with Scores
-    plots = [plots;f_plot_scores(results.diag, settings, sbtab)];
+    % plots = [plots;f_plot_scores(results.diag, settings, sbtab)];
 
     plots = f_plot_diagnostics(plots,results,settings,sbtab,Data,model_folder);
     % % Generate and store figure with Inputs

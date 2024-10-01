@@ -362,9 +362,9 @@ Lgnd.Layout.Tile = 'south';
 legend boxoff
 Lgnd.NumColumns = 3;
 
-clc
-settings.bestpa(:)
-best_score
+% clc
+% settings.bestpa(:)
+% best_score
 
 % [-5:(7+5)/settings.plres:7]
 for m = settings.pltest
@@ -421,8 +421,8 @@ for m = settings.pltest
             break
         end
     end
-end_point_2{m}
-end_point_2
+% end_point_2{m}
+% end_point_2
     if end_point_2{m} == []
         end_point_2{m}(1) = x{m}(1);
     else
@@ -431,8 +431,8 @@ end_point_2
     PLA_lb(m) = end_point_2{m}(1);
 end
 
-PLA_lb
-PLA_ub
-Analysis_date_folder = model_folder.model.results.analysis.date.main;
-    save (Analysis_date_folder + "PLA_bounds.mat", 'PLA_lb', 'PLA_ub');
+% PLA_lb
+% PLA_ub
+% Analysis_date_folder = model_folder.model.results.analysis.date.main;
+%     save (Analysis_date_folder + "PLA_bounds.mat", 'PLA_lb', 'PLA_ub');
 end
