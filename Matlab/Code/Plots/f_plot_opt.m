@@ -49,7 +49,6 @@ plots(1,:) = f_renew_plot('Optimization results');
 layout = tiledlayout(1,1,'Padding','tight','TileSpacing','tight');
 nexttile(layout,[1 1]);
 
-settings.pat
 % Determine the number of optimization methods used
 n_opt_methods = size(settings.pat,2);
 
@@ -67,7 +66,7 @@ for n = settings.pat
     % Create a scatter plot for the optimization method
     scatter((1:settings.parnum)+((0.5/n_opt_methods)*m)-...
         ((0.5/n_opt_methods)*(n_opt_methods+1)/2),results.opt(n).x(I(1),:),...
-        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(n,:))
+        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
     % Add the method's name and score to the legend
     if settings.useLog == 3
     name{m} = ...
@@ -150,9 +149,15 @@ for n = settings.pat
     fval_number = 1:size(results.opt(n).x,1);
 
     % Create a scatter plot for the optimization method
+    if settings.useLog == 3
+    scatter(fval_number+(0.75/n_opt_methods*m)-...
+        (0.75/n_opt_methods*(n_opt_methods+1)/2),B(fval_number),10,...
+        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
+    else
     scatter(fval_number+(0.75/n_opt_methods*m)-...
         (0.75/n_opt_methods*(n_opt_methods+1)/2),log10(B(fval_number)),10,...
-        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(n,:))
+        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
+    end
 
     % Add the method's name to the legend
     name{m} = sprintf('%s', results.opt(n).name);
