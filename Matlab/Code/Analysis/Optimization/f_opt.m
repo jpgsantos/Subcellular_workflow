@@ -40,6 +40,8 @@ function [result,parameter_array] = f_opt(settings,model_folders)
 % - plot_functions: A cell array containing plot functions specific to each
 % optimization algorithm.
 
+% settings.optt = 60*60;
+% settings.popsize = 720;
 % Set the random seed for reproducibility
 rng(settings.rseed);
 
