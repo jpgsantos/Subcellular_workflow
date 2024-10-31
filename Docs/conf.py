@@ -21,11 +21,11 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'Subcellular workflow'
-copyright = '2021, João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrii Stepaniuk, Andrei Kramer, Daniel Keller'
+copyright = '2024, João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrii Stepaniuk, Andrei Kramer, Daniel Keller'
 author = 'João Pedro Gomes dos Santos, Kadri Pajo, Daniel Trpevski, Andrii Stepaniuk, Andrei Kramer, Daniel Keller'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '2.0'
 
 # -- General configuration ---------------------------------------------------
 
