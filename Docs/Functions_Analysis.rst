@@ -15,19 +15,43 @@ f_analysis
 		:linenos:
 		:language: matlab
 
-Calls the proper analysis functions depending on the analysis that was chosen on the settings file.
-The supported analysis right now are:
+The **f_analysis** function performs a specific analysis based on the given analysis options. It takes settings, analysis type, main model files, a list of possible analysis options, and a structure for storing analysis results as input arguments. The function outputs the results of the analysis and updates the settings as needed. The function calls the appropriate analysis functions (:ref:`f_diagnostics<f_diagnostics>`, :ref:`f_opt<f_opt>`, :ref:`f_sim_score<f_sim_score>`, :ref:`f_lsa<f_lsa>`, :ref:`f_gsa<f_gsa>`, :ref:`f_PL_m<f_PL_m>`) depending on the selected analysis type.
 
-  - :ref:`Model diagnostics functions<f_diagnostics>`
-  - :ref:`Optimization<f_opt>`
-  - :ref:`Global sensitivity analysis<f_gsa>`
-  
-- **Inputs**
+**Inputs**
 
-  - :ref:`stg<stg>`
-  - analysis - (string) analysis being run (:ref:`stg.analysis<stg.analysis>`)
-  
-- **Outputs** - :ref:`rst<rst>`
+- :ref:`stg<stg>`: Settings to use in the analysis.
+- analysis: Type of analysis to be performed.
+- mmf: Main model files.
+- analysis_options: List of possible analysis options.
+- rst: Structure for storing analysis results.
+
+**Outputs**
+
+
+- :ref:`rst<rst>`: Updated structure containing the results of the analysis.
+- :ref:`stg<stg>`: Updated settings after the analysis.
+
+**Usage**
+
+.. code-block:: matlab
+
+   [rst, stg] = f_analysis(stg, analysis, mmf, analysis_options, rst)
+
+**Example**
+
+.. code-block:: matlab
+
+   settings = :ref:`stg<stg>`;
+   analysis_type = 'diagnostics';
+   model_files = 'path/to/model/files';
+   options = ["Diagnostics","Parameter Estimation",...
+    "Local Sensitivity Analysis","Global Sensitivity Analysis",...
+    "Profile Likelihood Analysis","Reproduce a previous analysis",...
+    "Reproduce the plots of a previous analysis","Import model files"];
+   results = :ref:`stg<stg>`;
+
+   [results, settings] = f_analysis(settings, analysis_type, model_files, options, results);
+
 
 .. _diagnostics:
 

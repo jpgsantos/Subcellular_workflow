@@ -7,5 +7,6 @@
 **/Formulas/*.m
 **/Data/Exp/*.mat
 **/Model/*
-!**/Model/Model_Example/
+!**/Model/LiRMo/
+!**/Model/LiREM/
 *.xml

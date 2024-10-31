@@ -1,88 +1,131 @@
-function [sim_results,sim_results_detailed] = f_normalize(rst,stg,exp_number,output_number,mmf)
+function [sim_results_norm,sim_results_detailed,sim_results] = ...
+f_normalize(results, settings, exp_number, output_number, model_folders)
+% This function processes and normalizes simulation results based on a
+% specified normalization method. It accepts a set of inputs, including the
+% simulation results, settings, experiment and output numbers, and a model
+% metafile structure. The function returns normalized simulation results,
+% along with detailed normalized simulation results if the 'simdetail'
+% setting is enabled.
+%
+% Inputs:
+% - rst: Structure containing the simulation results and scores
+% - stg: Structure containing the settings for the simulation
+% - exp_number: An integer representing the experiment number
+% - output_number: An integer representing the output number
+% - mmf: Structure containing the model directory information
+%
+% Outputs:
+% - sim_results: A matrix containing the normalized simulation results
+% - sim_results_detailed: A matrix containing the detailed normalized
+% simulation results (if stg.simdetail is true)
+%
+% Used Functions:
+% - extract_data: Helper function to extract data from the simulation
+% results
+%
+% Variables
+% Persistent:
+% - sbtab: SBtab structure
+% - Data: Loaded data from the model
+% - sb: Structure containing experiment IDs
 
 persistent sbtab
 persistent Data
 persistent sb
 
+sim_results_norm = [];
+
+% Load Data and sbtab if empty
 if isempty(Data)
-    load(mmf.model.data.data_model,'Data','sbtab','sb')
+    load(model_folders.model.data.data_model, 'Data', 'sbtab','sb')
 end
 
-sim_results = rst.simd{1,exp_number}.Data(:,end-...
-    size(sbtab.datasets(exp_number).output,2)+output_number);
+% Extract the data from the simulation results
+sim_results = extract_data(results, exp_number, output_number, sbtab);
+sim_results_detailed = [];
 
-if stg.simdetail
-    sim_results_detailed = rst.simd{1,exp_number+2*stg.expn}.Data(:,end-...
-        size(sbtab.datasets(exp_number).output,2)+output_number);
-    
-else
-    sim_results_detailed = [];
+% Check if detailed simulation results are requested
+if settings.simdetail
+    sim_results_detailed =...
+        extract_data(results, exp_number + 2 * settings.expn, ...
+        output_number, sbtab);
 end
 
-if ~isempty(sbtab.datasets(exp_number).Normalize)
-    if contains(sbtab.datasets(exp_number).Normalize,'Max')
-        
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if
-        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %             end
-        %         end
-        
-        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
-            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                size(sbtab.datasets(exp_number).output,2)+output_number);
+% Get the normalization method
+normalize = sbtab.datasets(exp_number).Normalize;
+
+% Perform normalization if a method is specified
+if ~isempty(normalize)
+    output_ID = sbtab.datasets(exp_number).output_ID{output_number}{:};
+    norm_factor = extract_data(results, exp_number, output_number, sbtab);
+    sim_results_norm = sim_results;
+
+    % Normalize by the maximum value
+    if contains(normalize, 'Max') && contains(normalize, output_ID)
+        max_norm = max(norm_factor);
+        if max_norm == 0
+            max_norm = 1;
         end
-        
-        sim_results = sim_results/max(norm_factor);
-        if stg.simdetail
-            sim_results_detailed = sim_results_detailed/max(norm_factor);
+        sim_results_norm = sim_results / max_norm;
+        if settings.simdetail
+            sim_results_detailed = sim_results_detailed / max_norm;
         end
-        
     end
-    if contains(sbtab.datasets(exp_number).Normalize,'Min')
-        
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if
-        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %             end
-        %         end
-        
-        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
-            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                size(sbtab.datasets(exp_number).output,2)+output_number);
+
+    % Normalize to a value between 0 and 1
+    if contains(normalize, 'Norm') && contains(normalize, output_ID)
+        max_norm = max(norm_factor(2:end));% Here because sometimes the first value presents strange results
+        min_norm = min(norm_factor(2:end));% Here because sometimes the first value presents strange results
+        if max_norm-min_norm == 0
+            max_norm = 1;
+            min_norm = 0;
         end
-        
-        sim_results = sim_results/min(norm_factor);
-        if stg.simdetail
-            sim_results_detailed = sim_results_detailed/min(norm_factor);
+        sim_results_norm = (sim_results-min_norm) / (max_norm-min_norm);
+        sim_results_norm(1) = sim_results_norm(2);% Here because sometimes the first value presents strange results
+        if settings.simdetail
+            sim_results_detailed = (sim_results_detailed-min_norm) / (max_norm-min_norm);
         end
-        
     end
-    
-    if contains(sbtab.datasets(exp_number).Normalize,'Time')
-        
-        %         for n = 1:size(sb.Compound.ID,1)
-        %             if
-        %             contains(sbtab.datasets(exp_number).Normalize,sb.Compound.ID(n))
-        %                 norm_factor = rst.simd{1,exp_number}.Data(:,n);
-        %             end
-        %         end
-        
-        if contains(sbtab.datasets(exp_number).Normalize,sbtab.datasets(exp_number).output_ID{output_number}{:})
-            norm_factor = rst.simd{1,exp_number}.Data(:,end-...
-                size(sbtab.datasets(exp_number).output,2)+output_number);
-        end
-        for n = 1:size(Data(exp_number).Experiment.t,1)
-            if contains(sbtab.datasets(exp_number).Normalize,eval("sb.E"+(exp_number-1)+".ID(n)"))
-                sim_results = sim_results/norm_factor(n);
-                if stg.simdetail
-                    sim_results_detailed = sim_results_detailed/norm_factor(n);
+
+
+    % Normalize by the minimum value
+    % if contains(normalize, 'Min') && contains(normalize, output_ID)
+    % 
+    %     min_norm = min(norm_factor);
+    %     sim_results = sim_results / min_norm;
+    %     min_norm
+    %     if settings.simdetail
+    %         sim_results_detailed = sim_results_detailed / min_norm;
+    %     end
+    % end
+
+    % Normalize by time-dependent factors
+    if contains(normalize, 'Time') && contains(normalize, output_ID)
+        t_size = size(Data(exp_number).Experiment.t, 1);
+        for n = 1:t_size
+            exp_ID = getfield(sb, ['E' num2str(exp_number - 1) '.ID'], n);
+            if contains(normalize, exp_ID)
+                sim_results_norm = sim_results / norm_factor(n);
+                if settings.simdetail
+                    sim_results_detailed = ...
+                    sim_results_detailed / norm_factor(n);
                 end
             end
         end
-        
     end
 end
+end
+
+% Helper function to extract data
+function data = extract_data(results, exp_number, output_number, sbtab)
+% Helper function to extract data from the simulation results
+% Input arguments:
+% rst  - Structure containing the simulation results and scores.
+% stg  - Structure containing the settings for the simulation.
+% output_number - An integer representing the output number.
+% sbtab - SBtab structure
+% Output argument:
+% data - extracted data from the simulation results
+    data = results.simd{1, exp_number}.Data(:, end - ...
+        size(sbtab.datasets(exp_number).output, 2) + output_number);
 end

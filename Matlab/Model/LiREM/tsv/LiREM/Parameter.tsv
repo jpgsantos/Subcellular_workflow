@@ -1,0 +1,15 @@
+!!SBtab	SBtabVersion='1.0' Document='Example' TableName='Parameter' TableTitle='Parameter' TableType = 'Quantity'															
+!ID	!Name	!Unit	!Value:log2	!Value:linspace	!Value:log10	!Median	!Max	!Min	!Std	!ProbDist	!Description	!Location	!Comment	!Scale	!LaTeX	LaTeX Construct
+K0	kf_0	1/(nanomolarity*second)	3.8346	6832.934	3.8346							Compartment	kf_aRXL__aRL			
+K1	kr_0	1/second	0.6998	5.0095	0.6998							Compartment	kr_aRXL__aRL			
+K2	kf_1	1/second	-0.7145	0.19298	-0.7145							Compartment	kf_iR__aR			
+K3	kr_1	1/second	1.4356	27.2655	1.4356							Compartment	kr_iR__aR			
+K4	kf_2	1/second	3.584	3837.2947	3.584							Compartment	kf_iR_L__aRL			
+K5	kr_2	1/second	-1.0681	0.085493	-1.0681							Compartment	kr_iRL__aRL			
+K6	kf_3	1/(nanomolarity*second)	3.6638	4610.5246	3.6638							Compartment	kf_iRXL__iRL			
+K7	kr_3	1/second	7.3311	21436012.5386	7.3311							Compartment	kr_iRXL__iR_L			
+K8	kf_4	1/(nanomolarity*second)	1.9568	90.522	1.9568							Compartment	kf_iEXaR__aEXaR			
+K9	kr_4	1/(nanomolarity*second)	-1.0448	0.09019	-1.0448							Compartment	kr_iEXaR__aEXaR			
+K10	kf_5	1/(nanomolarity*second)	4	10000	4							Compartment	kf_iEXaRL__aEXaRL			
+K11	kr_5	1/(nanomolarity*second)	-3.9669	0.00010792	-3.9669							Compartment	kr_iEXaRL__aEXaRL			
+K12	kf_6	1/second	-2.4544	0.0035125	-2.4544							Compartment	kf_aE__iE			

@@ -1,0 +1,9 @@
+!!SBtab	SBtabVersion='1.0' Document='Example' TableName='Reaction' TableTitle='Reaction' TableType = 'Reaction'				
+!ID	!Name	!KineticLaw	!IsReversible	!Location	!ReactionFormula
+R0	ReactionFlux0	kf_0*aR*L - kr_0*aRL	1	Compartment	aR + L <=> aRL
+R1	ReactionFlux1	kf_1*iR - kr_1*aR	1	Compartment	iR <=> aR
+R2	ReactionFlux2	kf_2*iRL - kr_2*aRL	1	Compartment	iRL <=> aRL
+R3	ReactionFlux3	kf_3*iR*L - kr_3*iRL	1	Compartment	iR + L <=> iRL
+R4	ReactionFlux4	kf_4*iE*aR - kr_4*aE*aR	1	Compartment	iE + aR <=> aE + aR
+R5	ReactionFlux5	kf_5*iE*aRL - kr_5*aE*aRL	1	Compartment	iE + aRL <=> aE + aRL
+R6	ReactionFlux6	kf_6*aE	0	Compartment	aE <=> iE
