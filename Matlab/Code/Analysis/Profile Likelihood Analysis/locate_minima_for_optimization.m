@@ -1,5 +1,6 @@
 function [par_indx, pos_to_opt, is_up] = ...
-    locate_minima_for_optimization(parfor_index_2, local_min_up, local_min_down)
+    locate_minima_for_optimization(parfor_index_2, local_min_up, ...
+    local_min_down)
 % This function identifies the parameter index, the position to optimize,
 % and the direction (up or down) for the optimize_again function. It
 % determines these values based on the parallel index provided.

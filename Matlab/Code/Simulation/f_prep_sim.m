@@ -1,16 +1,17 @@
-function result = f_prep_sim(parameters,stg,model_folders)
-% This function prepares the parameters for a simulation by setting them
-% to the default values defined in the SBTAB and then updating any
-% parameters that are being tested. The parameters are also adjusted
-% according to any thermodynamic constraints.
+function result = f_prep_sim(parameters, settings, model_folders, i, j)
+% This function prepares the parameters for a simulation by setting them to
+% the default values defined in the SBTAB and then updating any parameters
+% that are being tested. The parameters are also adjusted according to any
+% thermodynamic constraints.
 %
 % Inputs:
-% - parameters: Array of parameter values that need to be tested
-% - stg: Settings structure containing various settings for the simulation
-% - model_folders: Structure containing folder paths for the model data
+% - parameters: Array of parameter values to be tested
+% - settings: Structure containing various settings for the simulation
+% - model_folders: Structure with folder paths for model data
+% - i, j: Indices for tracking simulations
 %
 % Outputs:
-% - result: Structure containing simulation results and parameter values
+% - result: Structure with simulation results and updated parameter values
 %
 % Used Functions:
 % - update_simulation_parameters: Function to update simulation parameters
@@ -31,233 +32,324 @@ function result = f_prep_sim(parameters,stg,model_folders)
 % information
 % - Data: Array of structures containing experimental data
 
-% Save variables that need to be maintained over multiple function calls
-persistent sbtab
-persistent Data
+% Save variables across multiple function calls
+persistent sbtab Data
 
-data_model = model_folders.model.data.data_model;
-
-% Import the data on the first run
-if isempty(sbtab)
-    load(data_model,'Data','sbtab')
+% Load data on the first run
+if isempty(sbtab) || isempty(Data)
+    if isfield(model_folders, 'model') && isfield(model_folders.model, ...
+            'data') && isfield(model_folders.model.data, 'data_model')
+        data_model_path = model_folders.model.data.data_model;
+        load(data_model_path, 'Data', 'sbtab')
+    else
+        error(['Data model not found in model_folders.' ...
+            ' Please check the folder paths.'])
+    end
 end
 
-% Set the parameters that are going to be used for the simulation to the
-% default ones as defined in the SBTAB
-sim_par(:,1) = [sbtab.defpar{:,2}];
+% Set simulation parameters to default values from SBtab
+if isfield(sbtab, 'defpar')
+    sim_par(:, 1) = [sbtab.defpar{:, 2}]; %simulation_parameters
+else
+    error(['Default parameters not found in SBtab.' ...
+        ' Ensure SBtab is properly formatted.'])
+end
 
-% Check if the parametrer needs to be set to the value relevant for Profile
-% Likelihood
-if isfield(stg,"PLind") && isfield(stg,"PLval")
-    parameters = [parameters(1:stg.PLind-1) stg.PLval parameters(stg.PLind:end)];
+% Update parameters for Profile Likelihood if needed
+if isfield(settings, 'PLind') && isfield(settings, 'PLval')
+    if settings.PLind > 0 && settings.PLind <= length(parameters) + 1
+        % add stg.PLval in the midle of other parameters
+        parameters = ...
+            [parameters(1:settings.PLind - 1), settings.PLval, ...
+            parameters(settings.PLind:end)];
+    else
+        error(['PLind is out of bounds.' ...
+            ' It should be within the range of parameter indices.'])
+    end
 end
 
 % Update simulation parameters
-sim_par = update_simulation_parameters(sim_par, parameters, stg,sbtab);
+sim_par = ...
+    update_simulation_parameters(sim_par, parameters, settings, sbtab);
 
-%  Set the start amount for the species in the model to 0
-ssa = zeros(size(sbtab.species,1),max(stg.exprun));
-
-% Initialize the results variable
-result = [];
+% Initialize the result structure
+result = struct();
 result.parameters = sim_par;
-result.simd{stg.exprun(1)} = [];
 
-m=1;
+% Validate experiment run settings
+if ~isempty(settings.exprun) && isnumeric(settings.exprun)
+    result.simd = cell(1, max(settings.exprun));
+else
+    error(['stg.exprun is invalid.' ...
+        ' Ensure exprun is a non - empty numeric array.'])
+end
+
+success_eq = zeros(1, settings.exprun(end));
+error_list_E = "";
+
+if settings.simcsl
+    prep_sim_tic = tic;
+end
+
 % Run simulations for each experiment
-while m <= size(stg.exprun,2)
-n = stg.exprun(m);
-    % Try catch used because iterations errors can happen unexpectedly and
-    % we want to be able to continue simulations
-    % try
-    % Display progress message if appropriate
-    if stg.simcsl
-        disp("Running dataset number " + n + " of " + stg.exprun(end))
-    end
+for exp_indx = settings.exprun
 
-    % Check if this is not the first experiment, the start values are
-    % equal to the previous experiment, and the previous simulation
-    % was valid
-    is_not_first_experiment = n ~= stg.exprun(1);
+    prev_success = success_eq(max(settings.exprun(1), exp_indx - 1));
+    % Equilibration
+    [species_start_amounts, success_eq(exp_indx), error_type] =...
+        equilibrate_2(exp_indx, settings, sim_par, result, ...
+        model_folders, sbtab, prev_success);
 
-    start_values_equal = min([sbtab.datasets(n).start_amount{:,2}] ==...
-        [sbtab.datasets(stg.exprun(...
-        max(find(stg.exprun==n)-1,1))).start_amount{:,2}]);
-    previous_simulation_valid = ...
-        result.simd{stg.exprun(max(find(stg.exprun==n)-1,1))} ~= 0;
-    
-    if is_not_first_experiment && start_values_equal && previous_simulation_valid
-        % Set the start amounts based on the previous experiment
-        ssa(:,n) = ssa(:,stg.exprun(find(stg.exprun==n)-1));
-        if stg.simdetail
-            ssa(:,n+2*stg.expn) = ssa(:,stg.exprun(find(stg.exprun==n)-1));
-        end
-    else
-        % Set start amounts for species with non-zero values
-        for j = 1:size(sbtab.datasets(n).start_amount,1)
+    % Main simulation
+    if success_eq(exp_indx)
 
-            % Set the start amount of the species to the number defined in
-            % the sbtab for each experiment
-            ssa(sbtab.datasets(n).start_amount{j,3},n+stg.expn) =...
-                sbtab.datasets(n).start_amount{j,2};
-        end
+        tolerance_settings = ...
+            create_tolerance_settings(exp_indx, settings, 0);
 
-        try
-            success = true;
+        [~, error_type, result] = ...
+            run_with_tolerances(@(success) f_sim(exp_indx, settings, ...
+            sim_par, species_start_amounts, result, ...
+            model_folders, success), tolerance_settings, result);
 
-            if stg.reltol < stg.reltol_min
-                try
-                    ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
-                    success = true;
-                catch
-                    success = false;
-                    % disp("check your stg.reltol value")
-                end
-
-            else
-                while stg.reltol >= stg.reltol_min
-                    if stg.abstol < stg.abstol_min
-                        try
-                            ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
-                            success = true;
-                        catch
-                            success = false;
-                            % disp("check your stg.abstol value")
-                        end
-                    else
-                        while stg.abstol >= stg.abstol_min
-                            try
-                                ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success);
-                                success = true;
-                            catch
-                                success = false;
-                            end
-                            if success
-                                break
-                            end
-                            stg.abstol = stg.abstol/10;
-                        end
-                    end
-                    if success
-                        break
-                    end
-                    stg.abstol = stg.abstol_min;
-                    stg.reltol = stg.reltol/10;
-                end
-            end
-        catch
-            % disp("fail_eq")
-            m=size(stg.exprun,2)+1;
-            for fail = stg.exprun
-                result.simd{fail} = 0;
-            end
-        end
-
-    end
-
-    % Run the main simulation
-            
-    try
-        result = f_sim(n,stg,sim_par,ssa,result,model_folders,success);
+        % if ~success_sim
+        %     disp("n: " + n + " E" + (n - 1) + " fail_sim_2" + ...
+        %         " last error: " + ME.identifier)
+        %     result.simd{exp_indx} = 0;
+        % end
 
         % Run detailed simulation if required
-        if stg.simdetail
-            result = f_sim(n+2*stg.expn,stg,sim_par,ssa,result,model_folders,success);
+        if settings.simdetail
+            [~, error_type, result] = ...
+                run_with_tolerances(@(success) f_sim(exp_indx + 2 * ...
+                settings.expn, settings, sim_par, species_start_amounts, ...
+                result, model_folders, success), tolerance_settings, ...
+                result);
         end
 
-        % Check if the simulation output times match the SBTAB data times, if
-        % they don't it means that the simulator didn't had enough time to run
-        % the model (happens in some unfavorable configurations of parameters,
-        % controlled by stg.maxt)
-        simulation_times_match = size(Data(n).Experiment.t,1) == size(result.simd{n}.Data(:,end),1);
-
-        % Handle cases where the simulation did not run properly
-        if ~simulation_times_match
-            result.simd{n} = 0;
+        % Check simulation output times
+        if result.simd{exp_indx} ~= 0 && ...
+                size(Data(exp_indx).Experiment.t, 1) ~= ...
+                size(result.simd{exp_indx}.Data(:, end), 1)
+            % disp("n: " + n + " E" + (n - 1) + " fail_sim_out_time" + ...
+            %     " time_sim:  " + size(result.simd{n}.Data(:, end), 1) + ...
+            %     " data_time: " + size(Data(n).Experiment.t, 1))
+            error_type = "st"; %simulation time
+            result.simd{exp_indx} = 0;
         end
+    else
+        result.simd{exp_indx} = 0;
+    end
+    if result.simd{exp_indx} == 0
+        error_list_E = append(error_list_E, ...
+            ((exp_indx - 1) + error_type + " "));
+    end
 
-    catch 
-        % disp("fail_sim")
-        m=size(stg.exprun,2)+1;
-        for fail = stg.exprun
-            result.simd{fail} = 0;
+end
+
+% Display progress and errors if necessary
+if settings.simcsl && ~(error_list_E == "")
+    disp("i: " + i + " j: " + j + " E: " + error_list_E + ...
+        " time: " + toc(prep_sim_tic))
+end
+end
+
+function tolerance_settings = ...
+    create_tolerance_settings(exp_indx, settings, equilibrate)
+% Create a structure for tolerance settings
+tolerance_settings = ...
+    struct('exp_indx', exp_indx, 'reltol', settings.reltol, 'reltol_step', ...
+    settings.reltol / 10, 'reltol_min', settings.reltol_min, ...
+    'abstol', settings.abstol, 'abstol_step', settings.abstol / 10, ...
+    'abstol_min', settings.abstol_min, 'equilibrate', equilibrate);
+end
+
+function [success, error_type, result] = ...
+    run_with_tolerances(func, tolerance_settings, result)
+% Run a function with varying tolerance settings until it succeeds
+success = true;
+error_type = '';
+
+for reltol = tolerance_settings.reltol: - tolerance_settings.reltol_step:...
+        min(tolerance_settings.reltol_min,tolerance_settings.reltol)
+
+    % disp("reltol: " + reltol)
+    for abstol = ...
+            tolerance_settings.abstol: - tolerance_settings.abstol_step:...
+            min(tolerance_settings.abstol_min,tolerance_settings.abstol)
+        % disp("abstol: " + abstol)
+        tolerance_settings.stg.reltol = reltol;
+        tolerance_settings.stg.abstol = abstol;
+        if tolerance_settings.equilibrate
+            try
+            [result, error_type] = func();
+            success = true;
+            catch
+                error_type = "e"; %equilibration
+                success = false;
+            end
+        else
+            try
+                result = func(success);
+                success = true;
+            catch
+                % tolerance_settings.exp_indx
+                result.simd{tolerance_settings.exp_indx} = 0;
+                error_type = "s"; %simulation
+                success = false;
+            end
+        end
+        if success
+            break;
         end
     end
-m=m+1;
+    if success
+        break;
+    end
 end
 end
 
-function sim_par = update_simulation_parameters(sim_par, parameters, settings,sbtab)
+function [species_start_amounts_1, success_eq, error_type] = ...
+    equilibrate_2(exp_indx, settings, sim_par, ...
+    result, model_folders, sbtab, success_eq)
+% Equilibrate the model for the specified experiment
+persistent species_start_amounts %species start amount
+error_type = "";
+
+% Check if this is not the first experiment, the start values are equal to
+% the previous experiment, and the previous simulation was valid
+is_not_first_experiment = exp_indx ~= settings.exprun(1);
+
+x = find(settings.exprun == exp_indx) - 1;
+
+start_values_equal = min([sbtab.datasets(exp_indx).start_amount{:, 2}] == ...
+    [sbtab.datasets(settings.exprun(max(x, 1))).start_amount{:, 2}]);
+previous_simulation_valid = result.simd{settings.exprun(max(x, 1))} ~= 0;
+
+if is_not_first_experiment && start_values_equal && ...
+        previous_simulation_valid && success_eq
+    % Set the start amounts based on the previous experiment
+    species_start_amounts(:, exp_indx) =...
+        species_start_amounts(:, settings.exprun(x));
+    if settings.simdetail
+        species_start_amounts(:, exp_indx + 2*settings.expn) = ...
+            species_start_amounts(:, settings.exprun(x));
+    end
+    success_eq = true;
+else
+    % Set start amounts for species with non - zero values
+    for j = 1:size(sbtab.datasets(exp_indx).start_amount, 1)
+        % Set the start amount of the species to the number defined in
+        % the sbtab for each experiment
+        species_start_amounts(sbtab.datasets(exp_indx).start_amount{j, 3}, ...
+            exp_indx + settings.expn) =...
+            sbtab.datasets(exp_indx).start_amount{j, 2};
+    end
+
+    tolerance_settings = create_tolerance_settings(exp_indx, settings, 1);
+
+    [success_eq, error_type, species_start_amounts] = ...
+        run_with_tolerances(@() equilibrate(exp_indx, settings, sim_par, ...
+        result, model_folders, sbtab, species_start_amounts, success_eq), ...
+        tolerance_settings, species_start_amounts);
+end
+species_start_amounts_1 = species_start_amounts;
+end
+
+function sim_par = ...
+    update_simulation_parameters(sim_par, parameters, settings, sbtab)
+% Update simulation parameters based on input and thermodynamic constraints
+
 % Iterate over all the parameters of the model
-for n = 1:size(sim_par,1)
-
+for n = 1:length(sim_par)
     % Update tested parameters
     if settings.partest(n) > 0
-        sim_par(n) = 10.^(parameters(settings.partest(n,1)));
+        sim_par(n) = 10 .^ parameters(settings.partest(n, 1));
     end
-
     % Update thermodynamic constrained parameters
-    if isfield(settings,'tci') && ~isempty(settings.tci) && ismember(n,settings.tci) && settings.partest(n) > 0
-        sim_par = update_thermo_constrained(sim_par, parameters,settings, n,sbtab);
+    if isfield(settings, 'tci') && ~isempty(settings.tci) &&...
+            ismember(n, settings.tci) && settings.partest(n) > 0
+        sim_par = ...
+            update_thermo_constrained(sim_par, parameters, settings, ...
+            n, sbtab);
     end
 end
 end
 
-function sim_par = update_thermo_constrained(sim_par, parameters, settings, n,sbtab)
+function sim_par = ...
+    update_thermo_constrained(sim_par, parameters, settings, n, sbtab)
+% Update parameters constrained by thermodynamic laws
 
-key_1 = ["tcm","tcd"];
-key_2 = ["*","/"];
+key_1 = ["tcm", "tcd"];
+key_2 = ["*", "/"];
+
 for k=1:2
-
-count = 0;
-for m = 1:size(settings.(key_1(k)), 2)
-    if settings.(key_1(k))(n, m) ~= 0
-        count = count +1;
-    end
-end
-% Iterate over the parameters that need to be multiplied for calculating the
-% parameter that depends on the thermodynamic constraints
-for m = 1:count
-    % Check that the parameter that is going to be used to calculate the
-    % parameter dependent on thermodynamic constraints is not the default
-    if settings.partest(settings.(key_1(k))(n, m), 1) > 0
-        % Check if the parameter needs to be set to the value relevant for
-        % Profile Likelihood
-        if isfield(settings, "PLind") && settings.partest(settings.(key_1(k))(n, m), 1) == settings.PLind
-            parameters(settings.partest(settings.(key_1(k))(n, m), 1)) = settings.PLval;
+    count = 0;
+    for m = 1:size(settings.(key_1(k)), 2)
+        if settings.(key_1(k))(n, m) ~= 0
+            count = count + 1;
         end
-        % Make the appropriate multiplications to get the thermodynamically
-        % constrained parameter
-        eval("sim_par(n) = sim_par(n) " + key_2(k) + " (10 ^ (parameters(settings.partest(settings.(key_1(k))(n, m), 1))));");
-    else
-        % Make the appropriate multiplications to get the thermodynamically
-        % constrained parameter
-
-        eval("sim_par(n) = sim_par(n) " + key_2(k) + "(sbtab.defpar{settings.(key_1(k))(n, m), 2});");
+    end
+    % Iterate over the parameters that need to be multiplied for
+    % calculating the parameter that depends on the thermodynamic
+    % constraints
+    for m = 1:count
+        % Check that the parameter that is going to be used to calculate
+        % the parameter dependent on thermodynamic constraints is not the
+        % default
+        if settings.partest(settings.(key_1(k))(n, m), 1) > 0
+            % Check if the parameter needs to be set to the value relevant
+            % for Profile Likelihood
+            if isfield(settings, "PLind") && ...
+                    settings.partest(settings.(key_1(k))(n, m), 1) == ...
+                    settings.PLind
+                parameters(settings.partest(settings.(key_1(k))(n, m), 1)) = ...
+                    settings.PLval;
+            end
+            % Make the appropriate multiplications to get the
+            % thermodynamically constrained parameter
+            eval("sim_par(n) = sim_par(n) " + key_2(k) + ...
+                " (10 ^ (parameters(settings.partest(" + ...
+                "settings.(key_1(k))(n, m), 1))));");
+        else
+            % Make the appropriate multiplications to get the
+            % thermodynamically constrained parameter
+            eval("sim_par(n) = sim_par(n) " + key_2(k) + ...
+                "(sbtab.defpar{settings.(key_1(k))(n, m), 2});");
+        end
     end
 end
 end
+
+function [species_start_amounts, error_type] = ...
+    equilibrate(n, settings, sim_par, result, model_folders, sbtab, ...
+    species_start_amounts, success)
+% Equilibrate the model
+
+result = f_sim(n + settings.expn, settings, sim_par, ...
+    species_start_amounts, result, model_folders, success);
+error_type = "";
+
+if result.simd{n + settings.expn}.Time(end, 1) ~= settings.eqt
+    % disp("n: " + n + " E" + (n - 1) + " time_eq: " + ...
+    %     result.simd{n + settings.expn}.Time(end, 1) + ...
+    %     " settings.eqt: " + settings.eqt)
+    % disp("pecado")
+    error("E" + (n - 1) + " fail_eq_out_time")
+    error_type = "et"; %equilibration time
 end
-
-function ssa = equilibrate(n,stg,sim_par,result,model_folders,sbtab,ssa,success)
-
-% Equilibrate the model 1
-result = f_sim(n+stg.expn,stg,sim_par,ssa,result,model_folders,success);
 
 % Update the start amounts based on equilibrium results
-for j = 1:size(sbtab.species,1)
-
-    final_amount = result.simd{n+stg.expn}.Data(end,j);
-
-    if final_amount < 1.0e-15
-        ssa(j,n) = 0;
-        if stg.simdetail
-            ssa(j,n+2*stg.expn) = 0;
+for j = 1:size(sbtab.species, 1)
+    final_amount = result.simd{n + settings.expn}.Data(end, j);
+    if final_amount < 10 ^ -10
+        species_start_amounts(j, n) = 0;
+        if settings.simdetail
+            species_start_amounts(j, n + 2 * settings.expn) = 0;
         end
     else
-        ssa(j,n) = final_amount;
-        if stg.simdetail
-            ssa(j,n+2*stg.expn) = final_amount;
+        species_start_amounts(j, n) = final_amount;
+        if settings.simdetail
+            species_start_amounts(j, n + 2 * settings.expn) = final_amount;
         end
     end
 end

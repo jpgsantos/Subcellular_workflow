@@ -1,0 +1,7 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example small' TableName='Compound' TableTitle='SBTAB example small Compound' TableType = 'Compound'									
+!ID	!Name	!Unit	!InitialValue	!IsConstant	!Assignment	!Interpolation	!Type	!Location	!ReferenceDOI	!Comment
+S0	iR	nanomolarity	2	0	0	0	kinetic	Compartment		inactive receptor
+S1	aR	nanomolarity	2	0	0	0	kinetic	Compartment		active receptor
+S2	iRL	nanomolarity	0	0	0	0	kinetic	Compartment		inactive receptor bound to ligand
+S3	aRL	nanomolarity	0	0	0	0	kinetic	Compartment		active receptor bound to ligand
+S4	L	nanomolarity	0	1	0	1	kinetic	Compartment		Ligand

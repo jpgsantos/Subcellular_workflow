@@ -42,9 +42,6 @@ disp("Plotting Optimization results")
 % Set font settings
 f_set_font_settings()
 
-% Define color map for the plots
-colour = {[1 0 0],[0 1 0],[0 0 1],[1 0.75 0],[1 0 1],[0 0.75 1]};
-
 % Create the first plot and delete any existing plot with the same name
 plots(1,:) = f_renew_plot('Optimization results');
 
@@ -54,6 +51,10 @@ nexttile(layout,[1 1]);
 
 % Determine the number of optimization methods used
 n_opt_methods = size(settings.pat,2);
+
+% Define color map for the plots
+colour = {[1 0 0],[0 1 0],[0 0 1],[1 0.75 0],[1 0 1],[0 0.75 1]};
+colour = generateRainbowGradient(n_opt_methods);
 
 % Create scatter plots for each optimization method and add them to the legend
 hold on
@@ -65,10 +66,15 @@ for n = settings.pat
     % Create a scatter plot for the optimization method
     scatter((1:settings.parnum)+((0.5/n_opt_methods)*m)-...
         ((0.5/n_opt_methods)*(n_opt_methods+1)/2),results.opt(n).x(I(1),:),...
-        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n})
+        20,'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
     % Add the method's name and score to the legend
+    if settings.useLog == 3
+    name{m} = ...
+        sprintf('%s (Score = %.2f)', results.opt(n).name, 10^results.opt(n).fval(I(1)));
+    else
     name{m} = ...
         sprintf('%s (Score = %.2f)', results.opt(n).name, results.opt(n).fval(I(1)));
+    end
 end
 
 % Add best parameter set, prior bounds, and vertical lines to the first
@@ -100,20 +106,24 @@ ylabel('Log10 of parameter value','Fontweight',...
     Axis_Fontweight,'FontSize',Axis_FontSize)
 xlabel('Parameters','Fontweight',Axis_Fontweight,'FontSize',Axis_FontSize)
 
-[~,t2] = title({"Best parameters after optimization", ...
+[~,t2] = title({strrep(settings.plot_name, "_", "\_") + "  Best parameters after optimization", ...
     "  Seconds: " + settings.optt + "  Pop Size: " + settings.popsize}," ",...
     'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 t2.FontSize = Major_Title_Spacing;
 parNames = cell(1,settings.parnum);
 
-for n = 1:settings.parnum
-    parNames{n} = char("P" + find(settings.partest==n));
-end
+% for n = 1:settings.parnum
+%     parNames{n} = char("P" + find(settings.partest==n));
+% end
+% 
+% for n = 1:size(parNames,2)
+%     if size(parNames{n},1) > 1
+%         parNames{n} = parNames{n}(1,:);
+%     end
+% end
 
-for n = 1:size(parNames,2)
-    if size(parNames{n},1) > 1
-        parNames{n} = parNames{n}(1,:);
-    end
+for n = 1:settings.parnum
+    parNames{n} = char("P" + n);
 end
 
 ax = gca;
@@ -139,9 +149,15 @@ for n = settings.pat
     fval_number = 1:size(results.opt(n).x,1);
 
     % Create a scatter plot for the optimization method
+    if settings.useLog == 3
+    scatter(fval_number+(0.75/n_opt_methods*m)-...
+        (0.75/n_opt_methods*(n_opt_methods+1)/2),B(fval_number),10,...
+        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
+    else
     scatter(fval_number+(0.75/n_opt_methods*m)-...
         (0.75/n_opt_methods*(n_opt_methods+1)/2),log10(B(fval_number)),10,...
-        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour{n})
+        'filled','MarkerFaceAlpha',1,'MarkerFaceColor',colour(m,:))
+    end
 
     % Add the method's name to the legend
     name{m} = sprintf('%s', results.opt(n).name);
@@ -156,12 +172,12 @@ ylabel('Log_{10}(Score)','Fontweight',...
     Axis_Fontweight,'FontSize',Axis_FontSize)
 xlabel('Ordered Scores','Fontweight',...
     Axis_Fontweight,'FontSize',Axis_FontSize)
-[~,t2] = title({"Scores of parameter sets after optimization", ...
+[~,t2] = title({strrep(settings.plot_name, "_", "\_") + "  Scores of parameter sets after optimization", ...
     "  Seconds: " + settings.optt + "  Pop Size: " + settings.popsize}," ",...
     'FontSize', Major_title_FontSize,'Fontweight',Major_title_Fontweight);
 
 t2.FontSize = Major_Title_Spacing;
-set(gca,'xtick',1:max(n_opts))
+% set(gca,'xtick',1:max(n_opts))
 xlim([0 max(n_opts) + 1])
 
 % Create the legend, set its properties

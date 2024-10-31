@@ -58,12 +58,14 @@ normalize = sbtab.datasets(exp_number).Normalize;
 if ~isempty(normalize)
     output_ID = sbtab.datasets(exp_number).output_ID{output_number}{:};
     norm_factor = extract_data(results, exp_number, output_number, sbtab);
-
-sim_results_norm = sim_results;
+    sim_results_norm = sim_results;
 
     % Normalize by the maximum value
     if contains(normalize, 'Max') && contains(normalize, output_ID)
         max_norm = max(norm_factor);
+        if max_norm == 0
+            max_norm = 1;
+        end
         sim_results_norm = sim_results / max_norm;
         if settings.simdetail
             sim_results_detailed = sim_results_detailed / max_norm;
@@ -72,9 +74,14 @@ sim_results_norm = sim_results;
 
     % Normalize to a value between 0 and 1
     if contains(normalize, 'Norm') && contains(normalize, output_ID)
-        max_norm = max(norm_factor);
-        min_norm = min(norm_factor);
+        max_norm = max(norm_factor(2:end));% Here because sometimes the first value presents strange results
+        min_norm = min(norm_factor(2:end));% Here because sometimes the first value presents strange results
+        if max_norm-min_norm == 0
+            max_norm = 1;
+            min_norm = 0;
+        end
         sim_results_norm = (sim_results-min_norm) / (max_norm-min_norm);
+        sim_results_norm(1) = sim_results_norm(2);% Here because sometimes the first value presents strange results
         if settings.simdetail
             sim_results_detailed = (sim_results_detailed-min_norm) / (max_norm-min_norm);
         end

@@ -12,4 +12,5 @@ Yh=[Y_SD(1,1:end-1); Y_SD(2,1:end-1); Y_SD(2,2:end); Y_SD(1,2:end); ];
 % Create the shaded area plot
 plot = patch(Xh,Yh,zeros(size(Xh)),'DisplayName',"Data\_SD",'EdgeColor',...
     'none','FaceColor',[0 0 0],'FaceAlpha',0.25,'HandleVisibility','off');
+reducepatch(plot,0.2)
 end

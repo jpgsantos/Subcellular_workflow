@@ -1,4 +1,4 @@
-function results = f_gsa(settings,model_folders)
+function results = f_gsa(settings, model_folders)
 % f_gsa - Performs global sensitivity analysis (GSA) using the
 % Sobol-Saltelli method on a given model
 %

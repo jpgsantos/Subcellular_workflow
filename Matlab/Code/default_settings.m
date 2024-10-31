@@ -294,12 +294,18 @@ stg.bestpa = stg.pa(1,:);
 
 %% Plots
 
+stg.lsa_samples = 1000;
+stg.lsa_range_from_best = 0.25;
+
 % Specifies whether to plot results (Plots)
 stg.plot = true;
 
 % Specifies whether to use long names in the title of the output plots in
 % f_plot_outputs.m (Plot outputs long names)
 stg.plotoln = true;
+
+
+stg.in_plot_trim = 1;
 
 %% Sensitivity analysis
 
@@ -323,6 +329,9 @@ stg.sasamplemode = 2;
 % Defines the sigma for creating the normal distribution of parameters to
 % perform Sensitivity Analysis (Sensitivity analysis sampling sigma)
 stg.sasamplesigma = 0.1;
+
+
+stg.gsabootstrapsize = ceil(sqrt(stg.sansamples));
 
 %% Profile Likelihood
 
@@ -426,7 +435,7 @@ stg.osm = 1;
 
 % Specifies the distance from the best parameter array to be used in
 % stg.osm method 2 (Distance from best parameter array)
-stg.dbs = 0.1;
+stg.dbpa = 0.1;
 
 % Specifies whether to use Multistart (Multistart)
 stg.mst = false;

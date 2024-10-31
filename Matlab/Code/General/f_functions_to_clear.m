@@ -1,4 +1,4 @@
-function [stg] = f_functions_to_clear()
+function [settings] = f_functions_to_clear()
 clear f_sim
 clear f_score
 clear f_prep_sim

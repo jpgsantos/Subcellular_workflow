@@ -2,7 +2,7 @@ function [figure_number,layout,plots] =...
     f_get_subplot(plot_total_n,plot_n,figure_number,fig_name,layout,plots)
 % Determines the layout for subplots, creates a new figure when needed, and
 % closes previous instances of the figure.
-% 
+%
 % Inputs:
 % - plot_total_n: Total number of plots to display
 % - plot_n: Current plot number
@@ -25,7 +25,7 @@ function [figure_number,layout,plots] =...
 % - f_renew_plot: Closes any existing figures with the specified name and
 % then creates a new figure with the given name and properties. It returns
 % a 1x2 cell array containing the figure name and the figure handle.
-% 
+%
 % Variables:
 % Loaded:
 % None
@@ -40,8 +40,8 @@ function [figure_number,layout,plots] =...
 
 size_total = 12;
 
-size_x = [1,1,1,2,3,3,4,4,3,4,4,4];
-size_y = [1,2,3,2,2,2,2,2,3,3,3,3];
+size_x = [1,1,1,2,2,2,2,2,3,3,3,3];
+size_y = [1,2,3,2,3,3,4,4,3,4,4,4];
 
 if mod(plot_n,size_total) == 0
     figure_number = figure_number + 1;
@@ -79,7 +79,7 @@ else
     % of plots and use the corresponding dimensions for the layout.
     remaining_plots =...
         plot_total_n - (floor(plot_total_n/size_total) * size_total);
-    
+
     layout =...
         tiledlayout(size_x(remaining_plots), size_y(remaining_plots),...
         'Padding', 'none', 'TileSpacing', 'tight');

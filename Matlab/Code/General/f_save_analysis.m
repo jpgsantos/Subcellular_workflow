@@ -1,4 +1,4 @@
-function f_save_analysis(settings,sb,results,model_folders,plots)
+function f_save_analysis(settings, sb, results, model_folders, plots)
 % This function saves the analysis results to the specified folder.
 %
 % Inputs:
@@ -35,21 +35,22 @@ Analysis_folder = model_folders.model.results.analysis.main;
 Analysis_date_folder = model_folders.model.results.analysis.date.main;
 
 % Create the directories if they do not exist
-[~,~] = mkdir(Results_Folder);
-[~,~] = mkdir(Analysis_folder);
-[~,~] = mkdir(Analysis_date_folder);
+[~, ~] = mkdir(Results_Folder);
+[~, ~] = mkdir(Analysis_folder);
+[~, ~] = mkdir(Analysis_date_folder);
 
 % Add the analysis date folder to the MATLAB path
 addpath(Analysis_date_folder)
 
 % Save the analysis data to the Analysis.mat file
 try
-    save (Analysis_date_folder + "Analysis.mat",'settings','sb','results','model_folders');
+    save (Analysis_date_folder + "Analysis.mat", 'settings', 'sb', ...
+        'results', 'model_folders');
 catch
     disp("failed to save analysis");
 end
 try
-    save (Analysis_date_folder + "Plots.mat",'plots');
+    save (Analysis_date_folder + "Plots.mat", 'plots');
 catch
     disp("failed to save plots");
 end

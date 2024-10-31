@@ -47,7 +47,7 @@ layout = tiledlayout(5,1,'Padding','tight','TileSpacing','tight');
 % Generate top plot of Scores figure
 nexttile(layout,[1 1]);
 
-diag_idx = 1:numel(stg.pat);
+diag_idx = stg.pat;
 score_diag = [rst(stg.pat).st];
 
 % Plot the total scores of each parameter array to test
@@ -63,8 +63,11 @@ title_texts = ["Sum of the Score of all Experiments (s_t)",...
     "Log base 10 of sum of the Score of all Experiments", ...
     "Sum of the Score of all Experiments (s_t)"];
 title_text = title_texts(stg.useLog+1);
+
+title(layout,strrep(stg.plot_name, "_", "\_"),'FontSize', Major_title_FontSize,...
+    'Fontweight',Major_title_Fontweight);
 title(title_text,...
-    "FontSize",Minor_title_FontSize,"FontWeight",Minor_title_Fontweight)
+    "FontSize", Minor_title_FontSize, "FontWeight", Minor_title_Fontweight)
 
 % Choose the bounds for the x axis so it aligns with the bottom plot
 xlim([min(diag_idx)-0.5 max(diag_idx)+0.5])
@@ -73,10 +76,15 @@ xlim([min(diag_idx)-0.5 max(diag_idx)+0.5])
 nexttile(layout,[4 1]);
 
 % Generate labels for left of heatmap (Experiment number Dataset number)
-label = arrayfun(@(n) strcat("E", num2str(n-1), " ", ...
+label_y = arrayfun(@(n) strcat("E", num2str(n-1), " ", ...
     strrep(string(sbtab.datasets(n).output_name), "_", "\_")), ...
     stg.exprun, 'UniformOutput', false);
-label = horzcat(label{:});
+label_y = horzcat(label_y{:});
+
+for n = stg.pat
+label_x{n} = "\theta_{" + n + "}";
+end
+label_x = horzcat(label_x{:});
 
 heatline = cell2mat(arrayfun(@(k) cell2mat(arrayfun(@(n) rst(k).sd(:, n)', ...
     stg.exprun, 'UniformOutput', false))', stg.pat, 'UniformOutput', false));
@@ -84,8 +92,8 @@ heatline = cell2mat(arrayfun(@(k) cell2mat(arrayfun(@(n) rst(k).sd(:, n)', ...
 heatline( ~any(heatline,2), : ) = [];
 
 % Plot the heatmap
-h = heatmap(heatline,'Colormap',turbo,'YDisplayLabels',label,...
-    'GridVisible','off','FontSize',7);
+h = heatmap(heatline,'Colormap',turbo,'YDisplayLabels',label_y, ...
+    'XDisplayLabels',label_x, 'GridVisible','off','FontSize',7);
 h.CellLabelFormat = '%.2e';
 
 h.Title = "\fontsize{10} \bf Score of each Experimental Output (s_d)";

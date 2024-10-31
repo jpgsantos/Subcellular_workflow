@@ -1,0 +1,5 @@
+!!SBtab	SBtabVersion='1.0' Document='SBTAB example small' TableName='Output' TableTitle='SBTAB example small Output' TableType = 'Quantity'								
+!ID	!Name	!Comment	!ErrorName	!ErrorType	!Unit	!ProbDist	!LaTeX	!Location	!Formula
+Y0	iRT	inactive receptor total amount	SD_Y0	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	iR + iRL
+Y1	aRT	active receptor total amount	SD_Y1	abs+rel random noise (std)	nanomolarity	normal	\ce{[Total_{\text{C}}]}	Compartment	aR + aRL
+Y2	RaRTR	Ratio of active receptor to total receptor amount	SD_Y2	abs+rel random noise (std)	dimensionless	normal	\ce{[Total_{\text{C}}]}	Compartment	(aR+ aRL)/(aR + aRL+iR + iRL)

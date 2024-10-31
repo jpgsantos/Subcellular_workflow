@@ -33,7 +33,7 @@ function results = f_sim(experiment_idx,settings,simulation_parameters,...
 %
 % Initialized:
 % None
-% 
+%
 % Persistent:
 % - models: Cell array containing the SimBiology models for each experiment
 % - configs: Cell array containing the configurations for each SimBiology
@@ -43,22 +43,19 @@ function results = f_sim(experiment_idx,settings,simulation_parameters,...
 persistent models
 persistent configs
 
+rel_tol_ind = abs(log10(settings.reltol_min)-log10(settings.reltol))+1;
+abs_tol_ind = abs(log10(settings.abstol_min)-log10(settings.abstol))+1;
 % If the function is called for the first time, load the appropriate model
 % and compile the code for simulation run
 if isempty(models)
 
     % Turn off warning messages
     warning('off','all')
-    % warning('off', 'SimBiology:InvalidSpeciesInitAmtUnits')
-    % warning('off', 'SimBiology:SolodeSolverIntegrationError');
-    % warning('off', 'SimBiology:Solver:IntegrationTolNotMet');
-    % warning('off', 'SimBiology:Solver:InfOrNaN');
-    % warning('off', 'SimBiology:solver');
 
-    %Generate an empty array to be populated with the model suited for each
-    %equilibration and experiment%
-    models = cell(1,settings.expn*(2 + settings.simdetail));
-    configs = cell(1,settings.expn*(2 + settings.simdetail));
+    % Generate an empty array to be populated with the model suited for
+    % each equilibration and experiment
+    models = cell(1, 1, settings.expn * (2 + settings.simdetail));
+    configs = cell(1, 1, settings.expn * (2 + settings.simdetail));
 
     % Set the file paths for the different models
     model_exp_default = main_model_folders.model.data.model_exp.default;
@@ -67,32 +64,39 @@ if isempty(models)
 
     % Iterate over the experiments thar are being run
     for n = settings.exprun
+        for j = 1:rel_tol_ind
+            for k = 1:abs_tol_ind
+                % Load and compile SimBiology models for each experiment
 
-        % Load and compile SimBiology models for each experiment
+                % Load models for main simulation
+                load(model_exp_default + n + ".mat", 'model_exp', ...
+                    'config_exp')
+                models{j, k, n} = model_exp;
+                configs{j, k, n} = config_exp;
 
-        % Load models for main simulation
-        load(model_exp_default + n + ".mat",'model_exp','config_exp')
-        models{n} = model_exp;
-        configs{n} = config_exp;
+                % Load models for equilibrium
+                load(model_exp_eq + n + ".mat", 'model_exp', 'config_exp')
+                models{j, k, n+settings.expn} = model_exp;
+                configs{j, k, n+settings.expn} = config_exp;
 
-        % Load models for equilibrium
-        load(model_exp_eq + n + ".mat",'model_exp','config_exp')
-        models{n+settings.expn} = model_exp;
-        configs{n+settings.expn} = config_exp;
-
-        % Load models for detailed simulation
-        if settings.simdetail
-            load(model_exp_detail + n + ".mat",'model_exp','config_exp')
-            models{n+2*settings.expn} = model_exp;
-            configs{n+2*settings.expn} = config_exp;
-        end
-
-        % Compile the model code if the option is selected in settings
-        if settings.sbioacc
-            sbioaccelerate(models{n},configs{n});
-            sbioaccelerate(models{n+settings.expn},configs{n+settings.expn});
-            if settings.simdetail
-                sbioaccelerate(models{n+2*settings.expn},configs{n+2*settings.expn});
+                % Load models for detailed simulation
+                if settings.simdetail
+                    load(model_exp_detail + n + ".mat", 'model_exp', ...
+                        'config_exp')
+                    models{j, k, n+2*settings.expn} = model_exp;
+                    configs{j, k, n+2*settings.expn} = config_exp;
+                end
+                % Compile the model code if the option is selected in
+                % settings
+                if settings.sbioacc
+                    sbioaccelerate(models{j, k, n}, configs{j,k,n});
+                    sbioaccelerate(models{j, k, n+settings.expn}, ...
+                        configs{j, k, n+settings.expn});
+                    if settings.simdetail
+                        sbioaccelerate(models{j, k, n+2*settings.expn}, ...
+                            configs{j, k, n+2*settings.expn});
+                    end
+                end
             end
         end
     end
@@ -100,25 +104,27 @@ end
 
 % substitute the start amount of the species in the model with the correct
 % ones for  simulations
-set(models{experiment_idx}.species(1:size(species_start_amount(:,experiment_idx),1)),...
-    {'InitialAmount'},num2cell(species_start_amount(:,experiment_idx)));
+set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.species(...
+    1:size(species_start_amount(:,experiment_idx),1)),...
+    {'InitialAmount'}, num2cell(species_start_amount(:,experiment_idx)));
 
 % Substitute the values of the parameters in the model for the correct one
 % for simultaions
-set(models{experiment_idx}.parameters(1:size(simulation_parameters,1)),...
-    {'Value'},num2cell(simulation_parameters));
+set(models{rel_tol_ind,abs_tol_ind,experiment_idx}.parameters(...
+    1:size(simulation_parameters,1)),...
+    {'Value'}, num2cell(simulation_parameters));
 
-if ~ success
-    configs_fail = configs{experiment_idx};
-    % configs_fail.SolverOptions
+if ~success
+    configs_fail = configs{rel_tol_ind,abs_tol_ind,experiment_idx};
     configs_fail.SolverOptions.AbsoluteTolerance = settings.abstol;
     configs_fail.SolverOptions.RelativeTolerance = settings.reltol;
-    configs_fail.SolverOptions.MaxStep = settings.maxstep;
-    results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
+    results.simd{experiment_idx} = ...
+    sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
         configs_fail);
 else
-    %simulate the model using matlab built in function
-    results.simd{experiment_idx} = sbiosimulate(models{experiment_idx},...
-        configs{experiment_idx});
+    % simulate the model using matlab built in function
+    results.simd{experiment_idx} = ...
+        sbiosimulate(models{rel_tol_ind,abs_tol_ind,experiment_idx},...
+        configs{rel_tol_ind,abs_tol_ind,experiment_idx});
 end
 end
