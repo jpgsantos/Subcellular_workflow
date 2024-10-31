@@ -200,7 +200,6 @@ end
 
 % Check if the date of the SBtab changed, if so clear functions
 listing = dir(specific_model_folder);
-
 for n = 1:size(listing, 1)
     if matches(settings.sbtab_excel_name, listing(n).name, ...
             "IgnoreCase", true)

@@ -10,8 +10,8 @@ plots = [plots; ...
 plots = [plots; ...
     f_plot_in_out(results.diag, settings, sbtab, Data, model_folder)];
 
- plots = [plots; ...
- f_plot_in_out_predict(results.diag, settings, sbtab, Data, model_folder)];
+ % plots = [plots; ...
+ % f_plot_in_out_predict(results.diag, settings, sbtab, Data, model_folder)];
 
 % plots = [plots;f_plot_outputs_2(results.diag, settings, sbtab, Data, model_folder)];
 end
@@ -467,17 +467,22 @@ innerLayout_output_TileSpan = [1 2];
 
 % Loop through each experiment to create figures for input and output data
 for exp_idx = exp
-
+   
     sub_fig_number = 0; % Track subplot numbers within the same figure
     % Initialize counter for figure management within the same experiment
     fig_number_same_exp = 1; 
     
+
+long_name = "Experiment " + (exp_idx - 1);
+short_name = "E" + (exp_idx - 1);
+
     % Create a new figure for each experiment
     [plots, innerLayout_input, innerLayout_output, ax, fig_number] = ...
         create_new_figure(stg, fig_number_same_exp, ...
         sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
         n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name);
 
     % Loop through each output dataset in the current experiment
     for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
@@ -509,7 +514,8 @@ for exp_idx = exp
                 create_new_figure(stg, fig_number_same_exp, ...
                 sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
                 n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name);
         end
 
         % Plot the simulation output data
@@ -559,7 +565,8 @@ for exp_idx = exp
                         create_new_figure(stg, fig_number_same_exp, ...
                         sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
                         n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-                        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+                        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name);
                 end
 
                 nexttile(innerLayout_output);
@@ -663,8 +670,10 @@ for exp_idx = stg.exp_predict
             n_outputs_exp_plus_norm(exp_idx) + 1;
         % Add one more if normalization is applied
         if ~isempty(sbtab.datasets(exp_idx).Normalize)
-            n_outputs_exp_plus_norm(exp_idx) = ...
-                n_outputs_exp_plus_norm(exp_idx) + 1;
+            if contains(sbtab.datasets(exp_idx).Normalize,sbtab.datasets(exp_idx).output_ID{out_idx})
+                n_outputs_exp_plus_norm(exp_idx) = ...
+                    n_outputs_exp_plus_norm(exp_idx) + 1;
+            end
         end
     end
 end
@@ -682,26 +691,38 @@ different_input_number = size(all_list_inputs, 2);
 colors = generateRainbowGradient(2 + different_input_number);
 
 % Set the maximum number of subplots allowed per figure
-max_right_subplots = 9;
-row_length = [1, 1, 2, 2, 3, 3, 4, 4, 3];
-column_length = [1, 2, 2, 2, 2, 2, 2, 2, 3];
-outer_layout_rows = 4;
+max_right_subplots = 16;
+row_length = [1, 1, 2, 2, 3, 3, 4, 4, 3, 4, 4, 4, 4, 4, 4, 4];
+column_length = [1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4];
+outer_layout_rows = 5;
 outer_layout_cols = 1;
-innerLayout_output_TileSpan = [3 1];
+innerLayout_output_TileSpan = [4 1];
 
+name_idx = 0;
 % Loop through each experiment to create figures for input and output data
 for exp_idx = stg.exp_predict(1:2:end)
-
+name_idx = name_idx + 1;
     sub_fig_number = 0; % Track subplot numbers within the same figure
     % Initialize counter for figure management within the same experiment
-    fig_number_same_exp = 1; 
-    
+    fig_number_same_exp = 1;
+
+    long_name_array = ["Basal Acetylcholine ", "Acetylcholine Peak", ...
+        "Acetylcholine Dip", "Basal Acetylcholine and Glutamate Peak", ...
+        "Acetylcholine Peak and Glutamate Peak", ...
+        "Acetylcholine Dip and Glutamate Peak"];
+    short_name_array = ["basal ACh", "ACh+", "ACh-", ...
+        "basal ACh Glu+", "ACh+ Glu+", "ACh- Glu+"];
+
+    long_name = long_name_array(name_idx);
+    short_name = short_name_array(name_idx);
+
     % Create a new figure for each experiment
     [plots, innerLayout_input, innerLayout_output, ax, fig_number] = ...
         create_new_figure(stg, fig_number_same_exp, ...
         sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
         n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name);
 
     % Loop through each output dataset in the current experiment
     for out_idx = 1:size(sbtab.datasets(exp_idx).output,2)
@@ -733,7 +754,8 @@ for exp_idx = stg.exp_predict(1:2:end)
                 create_new_figure(stg, fig_number_same_exp, ...
                 sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
                 n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name);
         end
 
         % Plot the simulation output data
@@ -779,7 +801,8 @@ for exp_idx = stg.exp_predict(1:2:end)
                         create_new_figure(stg, fig_number_same_exp, ...
                         sub_fig_number, max_right_subplots, exp_idx, fig_number, ...
                         n_outputs_exp_plus_norm, row_length, column_length, plots, ...
-                        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan);
+                        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan,  ...
+        long_name,  short_name);
                 end
                 nexttile(innerLayout_output);
                 hold on
@@ -811,14 +834,12 @@ for exp_idx = stg.exp_predict(1:2:end)
 end
 end
 
-
-
-
 function [plots, innerLayout_input, innerLayout_output, ax, fig_number] = ...
     create_new_figure(stg, fig_number_same_exp, sub_fig_number, ...
     max_right_subplots, exp_idx, fig_number, n_outputs_exp_plus_norm, ...
     row_length, column_length, plots, ...
-        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan)
+        outer_layout_rows, outer_layout_cols, innerLayout_output_TileSpan, ...
+        long_name,  short_name)
 % Helper function to create a new figure or reuse an existing one Set the
 % font settings for consistent appearance across all plots.
 f_set_font_settings();
@@ -836,17 +857,17 @@ end
 
 if reuse
     % Append sequence number to the figure name if reusing.
-    name_short = "E" + (exp_idx - 1) + " " + fig_number_same_exp;
+    name_short = short_name + " " + fig_number_same_exp;
     name_long = ...
-        strrep(stg.plot_name, "_", "\_") + "  Experiment " + (exp_idx - 1) ...
-        + " " + fig_number_same_exp + "  (E" + (exp_idx - 1) + " " + ...
-        fig_number_same_exp + ")";
+        strrep(stg.plot_name, "_", "\_") + "  " + long_name ...
+        + " " + fig_number_same_exp + "  (" + short_name + " " + ...
+    fig_number_same_exp + ")";
 else
     % Use a simpler name if not reusing.
-    name_short = "E" + (exp_idx - 1);
+    name_short = short_name;
     name_long = ...
-        strrep(stg.plot_name, "_", "\_") + "  Experiment " + ...
-        (exp_idx - 1) + "  (E" + (exp_idx - 1) + ")";
+        strrep(stg.plot_name, "_", "\_") + "  " + long_name + "  (" + ...
+        short_name + ")";
 end
 
 % Refresh or create a plot with the new naming convention. This function
